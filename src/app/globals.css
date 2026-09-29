@@ -133,7 +133,8 @@ body {
   background: var(--brass-soft);
 }
 
-/* Dashboard controls */
+/* Dashboard controls — in the components layer so Tailwind utilities (hidden, px-2, …) can override them */
+@layer components {
 .field-input {
   width: 100%;
   background: var(--surface);
@@ -305,6 +306,8 @@ body {
   background-size: 200% 100%;
   animation: shimmer 1.6s linear infinite;
   border-radius: var(--radius);
+}
+
 }
 
 /* Dialog + drawer (native <dialog>) */
