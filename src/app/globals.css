@@ -1,0 +1,369 @@
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Aoire Invites — dashboard design system
+   Ivory paper, ink, oxblood and brass. Editorial serif for headings, a quiet sans for UI.
+   (The public invitation has its own theme tokens: see src/invitation/styles/invitation.css)
+   ────────────────────────────────────────────────────────────────────────── */
+:root {
+  --paper: #f7f3ec;
+  --paper-2: #efe9dd;
+  --surface: #fffdf9;
+  --ink: #1c1a17;
+  --ink-2: #3a362f;
+  --muted: #6d675c;
+  --rule: #ded6c6;
+  --rule-strong: #c9bfab;
+  --accent: #7a2432; /* oxblood */
+  --accent-ink: #ffffff;
+  --accent-soft: #f1e3e3;
+  --brass: #a07b2a;
+  --brass-soft: #f3ead2;
+  --ok: #2f6b4f;
+  --ok-soft: #e3efe8;
+  --warn: #9a6a10;
+  --warn-soft: #f6ecd2;
+  --bad: #a6332c;
+  --bad-soft: #f6e0dd;
+  --info: #2c5a83;
+  --info-soft: #e1ebf4;
+  --radius-sm: 3px;
+  --radius: 6px;
+  --radius-lg: 10px;
+  --shadow-1: 0 1px 0 rgba(28, 26, 23, 0.04), 0 1px 2px rgba(28, 26, 23, 0.06);
+  --shadow-2: 0 10px 30px -12px rgba(28, 26, 23, 0.25), 0 2px 6px rgba(28, 26, 23, 0.06);
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-1: 120ms;
+  --dur-2: 220ms;
+  --dur-3: 420ms;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-brass: var(--brass);
+  --color-brass-soft: var(--brass-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), "Iowan Old Style", Georgia, serif;
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius-lg);
+
+  /* Invitation tokens (set per wedding by the theme) */
+  --color-inv-bg: var(--c-bg);
+  --color-inv-surface: var(--c-surface);
+  --color-inv-text: var(--c-text);
+  --color-inv-muted: var(--c-muted);
+  --color-inv-primary: var(--c-primary);
+  --color-inv-secondary: var(--c-secondary);
+  --color-inv-accent: var(--c-accent);
+  --color-inv-border: var(--c-border);
+  --color-inv-on-primary: var(--c-on-primary);
+  --color-inv-inverse: var(--c-inverse);
+  --color-inv-on-inverse: var(--c-on-inverse);
+  --font-heading: var(--f-heading);
+  --font-body: var(--f-body);
+  --font-script: var(--f-script);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Type scale — display serif for headings, restrained sizes */
+.display {
+  font-family: var(--font-display), "Iowan Old Style", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.08;
+}
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--muted);
+}
+.lede {
+  color: var(--muted);
+  font-size: 15.5px;
+  max-width: 60ch;
+}
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+.hairline {
+  border-color: var(--rule);
+}
+
+/* Focus — always visible, never removed */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+::selection {
+  background: var(--brass-soft);
+}
+
+/* Dashboard controls */
+.field-input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.75rem;
+  font-size: 15px;
+  color: var(--ink);
+  transition: border-color var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease);
+}
+.field-input::placeholder {
+  color: #9a9384;
+}
+.field-input:hover {
+  border-color: #b3a88f;
+}
+.field-input:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(122, 36, 50, 0.14);
+}
+.field-input[aria-invalid="true"] {
+  border-color: var(--bad);
+}
+.field-input:disabled {
+  background: var(--paper-2);
+  color: var(--muted);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 550;
+  font-size: 14.5px;
+  line-height: 1;
+  padding: 0.7rem 1.1rem;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease);
+  white-space: nowrap;
+  min-height: 42px;
+}
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-primary {
+  background: var(--ink);
+  color: var(--paper);
+}
+.btn-primary:hover:not(:disabled) {
+  background: #000;
+}
+.btn-accent {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.btn-accent:hover:not(:disabled) {
+  background: #641c29;
+}
+.btn-quiet {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--rule-strong);
+}
+.btn-quiet:hover:not(:disabled) {
+  background: var(--paper-2);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-2);
+}
+.btn-ghost:hover:not(:disabled) {
+  background: var(--paper-2);
+}
+.btn-danger {
+  background: transparent;
+  color: var(--bad);
+  border-color: #dcb2ad;
+}
+.btn-danger:hover:not(:disabled) {
+  background: var(--bad-soft);
+}
+.btn-sm {
+  padding: 0.45rem 0.75rem;
+  font-size: 13.5px;
+  min-height: 34px;
+}
+.btn-lg {
+  padding: 0.95rem 1.5rem;
+  font-size: 16px;
+  min-height: 50px;
+}
+
+/* Status chips: colour + text, never colour alone */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  letter-spacing: 0.01em;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.chip::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.85;
+}
+.chip-neutral { background: var(--paper-2); color: var(--ink-2); border-color: var(--rule); }
+.chip-ok { background: var(--ok-soft); color: var(--ok); }
+.chip-warn { background: var(--warn-soft); color: var(--warn); }
+.chip-bad { background: var(--bad-soft); color: var(--bad); }
+.chip-info { background: var(--info-soft); color: var(--info); }
+.chip-brass { background: var(--brass-soft); color: #7d5f16; }
+.chip-accent { background: var(--accent-soft); color: var(--accent); }
+
+/* Ledger tables — hairlines, no boxes */
+.ledger {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+}
+.ledger th {
+  text-align: left;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--rule-strong);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  background: var(--paper);
+}
+.ledger td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+.ledger tbody tr {
+  transition: background var(--dur-1) var(--ease);
+}
+.ledger tbody tr:hover {
+  background: rgba(239, 233, 221, 0.55);
+}
+
+/* Skeleton */
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--paper-2) 25%, #f7f3ec 50%, var(--paper-2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+  border-radius: var(--radius);
+}
+
+/* Dialog + drawer (native <dialog>) */
+dialog.sheet {
+  border: 0;
+  padding: 0;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-2);
+  max-width: min(94vw, 40rem);
+  width: 100%;
+  border-radius: var(--radius-lg);
+  margin: auto;
+  overflow: visible;
+}
+dialog.sheet::backdrop {
+  background: rgba(28, 26, 23, 0.45);
+  backdrop-filter: blur(2px);
+}
+dialog.sheet[open] {
+  animation: sheet-in var(--dur-2) var(--ease);
+}
+dialog.drawer {
+  margin: 0 0 0 auto;
+  height: 100dvh;
+  max-height: 100dvh;
+  max-width: min(100vw, 34rem);
+  border-radius: 0;
+}
+dialog.drawer[open] {
+  animation: drawer-in var(--dur-3) var(--ease);
+}
+@keyframes sheet-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes drawer-in {
+  from { transform: translateX(24px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+/* Scrollbars, subtle */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule-strong) transparent;
+}
+
+/* Reduced motion: honour the OS setting everywhere */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print: the guest pass and lists print cleanly */
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; }
+}
