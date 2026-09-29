@@ -235,7 +235,7 @@ async function main() {
   console.log("→ Seeding platform data");
   await ensurePackages();
   await ensureDesignLibrary();
-  const adminUser = await ensureSuperAdmin(process.env.SEED_ADMIN_EMAIL || "admin@aoire.in", process.env.SEED_ADMIN_PASSWORD || "ChangeMe-Now-123");
+  const adminUser = await ensureSuperAdmin(process.env.SEED_ADMIN_EMAIL || "admin@aoire.in", process.env.SEED_ADMIN_PASSWORD || "ChangeMe-Now-123", process.env.SEED_ADMIN_NAME || "Amal");
   const admin = (await loadActorForUser(adminUser.id)) as AdminActor;
   console.log(`  ✔ super admin: ${adminUser.email}`);
   console.log(`  ✔ packages: ${PACKAGE_DEFAULTS.map((p) => p.name).join(", ")}`);

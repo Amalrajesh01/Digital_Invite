@@ -2,6 +2,7 @@ import { getEntitlements } from "@/domain/packages/service";
 import { canUse, type Entitlements } from "@/domain/packages/entitlements";
 import type { InvitationDoc, SectionConfig } from "@/domain/doc/schema";
 import type { WeddingStatus } from "@/domain/doc/constants";
+import type { PackageKey } from "@/domain/packages/features";
 import type { ThemeTokens } from "@/domain/design/tokens";
 import { collectAssetIds, loadPublicGallery, loadPublicTracks, resolveMediaMap, type PublicTrack, type ResolvedMedia } from "@/domain/media/service";
 import { type GuestContext, resolveGuestContext } from "@/domain/guests/context";
@@ -81,10 +82,10 @@ function greetingsFor(g: { name: string; customGreeting: Record<string, string>;
   return out;
 }
 
-async function assemble(opts: { snap: Snapshot; guest: GuestContext | null; mode: "public" | "preview"; asStatus?: WeddingStatus; previewAsGuest?: boolean }): Promise<InvitationView> {
+async function assemble(opts: { snap: Snapshot; guest: GuestContext | null; mode: "public" | "preview"; asStatus?: WeddingStatus; previewAsGuest?: boolean; entitlements?: Entitlements }): Promise<InvitationView> {
   const { snap, guest, mode } = opts;
   const { wedding, meta } = snap;
-  const ent = await getEntitlements(wedding.id);
+  const ent = opts.entitlements ?? (await getEntitlements(wedding.id));
   const status = opts.asStatus ?? effectiveStatus(wedding);
   const locales = [meta.defaultLocale, ...(meta.secondaryLocale ? [meta.secondaryLocale] : [])];
   const advanced = canUse(ent, "advanced_greetings");
@@ -201,3 +202,34 @@ export function wantsTypes(view: InvitationView, ...types: string[]) {
 }
 
 export { tx, SECTION_META };
+
+/**
+ * Realistic template/theme preview for a wedding that has no content yet: the fully-written demo
+ * couple, laid out with the chosen template, dressed in the chosen theme, limited to the chosen package.
+ */
+export async function loadTemplatePreview(opts: { templateId?: string | null; themeId?: string | null; overrides?: unknown; packageKey: PackageKey; state?: WeddingStatus; demoSlug?: string }): Promise<InvitationView | null> {
+  const { getDb, schema } = await import("@/db/client");
+  const { eq } = await import("drizzle-orm");
+  const { TemplateConfig, generateSections } = await import("@/domain/design/templates");
+  const { ThemeTokens: TokensSchema, mergeTokens } = await import("@/domain/design/tokens");
+  const { resolveEntitlements } = await import("@/domain/packages/entitlements");
+  const { defaultFeaturesFor } = await import("@/domain/packages/features");
+  const db = await getDb();
+  const wedding = await getWeddingBySlug(opts.demoSlug ?? "meenakshi-and-aravind");
+  if (!wedding) return null;
+  const snap = await loadPublishedSnapshot(wedding);
+  if (!snap) return null;
+  const [tpl] = opts.templateId ? await db.select().from(schema.templates).where(eq(schema.templates.id, opts.templateId)) : [];
+  const [thm] = opts.themeId ? await db.select().from(schema.themes).where(eq(schema.themes.id, opts.themeId)) : [];
+  const ent = resolveEntitlements(opts.packageKey, defaultFeaturesFor(opts.packageKey));
+  const cfg = tpl ? TemplateConfig.safeParse(tpl.config) : null;
+  if (cfg?.success) {
+    const old = new Map(snap.doc.sections.map((x) => [x.type, x]));
+    snap.doc.sections = generateSections(cfg.data, ent).map((x) => ({ ...x, content: old.get(x.type)?.content ?? {} }));
+    snap.doc.opening.variant = cfg.data.opening;
+    snap.meta.flavor = cfg.data.flavor;
+  }
+  if (thm) snap.meta.tokens = mergeTokens(TokensSchema.parse(thm.tokens), opts.overrides);
+  else if (opts.overrides) snap.meta.tokens = mergeTokens(snap.meta.tokens, opts.overrides);
+  return assemble({ snap, guest: null, mode: "preview", asStatus: opts.state ?? "PUBLISHED", previewAsGuest: true, entitlements: ent });
+}

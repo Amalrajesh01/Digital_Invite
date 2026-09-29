@@ -14,20 +14,7 @@ import { type MediaKind, sanitizeFilename, validateUpload } from "./validate";
 export type MediaAsset = typeof schema.mediaAssets.$inferSelect;
 export type MediaCategory = MediaAsset["category"];
 
-export const MEDIA_CATEGORIES: { key: MediaCategory; label: string }[] = [
-  { key: "BRIDE", label: "Bride" },
-  { key: "GROOM", label: "Groom" },
-  { key: "COUPLE", label: "Couple" },
-  { key: "FAMILY", label: "Family" },
-  { key: "GALLERY", label: "Gallery" },
-  { key: "EVENT", label: "Events" },
-  { key: "VENUE", label: "Venue" },
-  { key: "VIDEO", label: "Videos" },
-  { key: "MUSIC", label: "Music" },
-  { key: "GUEST_UPLOAD", label: "Guest uploads" },
-  { key: "MEMORY", label: "Memories" },
-  { key: "OTHER", label: "Other" },
-];
+export { MEDIA_CATEGORIES } from "./categories";
 
 export interface ResolvedMedia {
   id: string;

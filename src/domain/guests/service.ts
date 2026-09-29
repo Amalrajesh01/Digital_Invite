@@ -368,7 +368,7 @@ export async function importGuestsCsv(actor: Actor | null, weddingId: string, cs
   return result;
 }
 
-export const CSV_TEMPLATE = "name,phone,email,group,seats,relationship,meal,accommodation,transport\nMeera Menon,9846000001,meera@example.com,Bride's family,3,Aunt,Vegetarian,yes,no\n";
+export { CSV_TEMPLATE } from "./csv";
 
 /** Spreadsheet formulas typed by a guest (=, +, -, @) must not execute when the CSV is opened in Excel. */
 function csvSafe(v: unknown): string {

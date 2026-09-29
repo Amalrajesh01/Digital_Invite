@@ -76,7 +76,7 @@ export async function listClients(actor: Actor) {
   }));
 }
 
-export async function assignClientToWedding(actor: Actor, input: { weddingId: string; email: string; name: string; phone?: string; role?: "OWNER" | "EDITOR" }) {
+export async function assignClientToWedding(actor: Actor | null, input: { weddingId: string; email: string; name: string; phone?: string; role?: "OWNER" | "EDITOR" }) {
   const admin = requireAdmin(actor);
   const db = await getDb();
   const [w] = await db.select({ id: schema.weddings.id }).from(schema.weddings).where(eq(schema.weddings.id, input.weddingId));
@@ -93,14 +93,14 @@ export async function assignClientToWedding(actor: Actor, input: { weddingId: st
   return user;
 }
 
-export async function removeClientFromWedding(actor: Actor, weddingId: string, userId: string) {
+export async function removeClientFromWedding(actor: Actor | null, weddingId: string, userId: string) {
   const admin = requireAdmin(actor);
   const db = await getDb();
   await db.delete(schema.weddingUsers).where(and(eq(schema.weddingUsers.weddingId, weddingId), eq(schema.weddingUsers.userId, userId)));
   await audit(admin, "client.removed", { weddingId, entityType: "user", entityId: userId });
 }
 
-export async function setUserDisabled(actor: Actor, userId: string, disabled: boolean) {
+export async function setUserDisabled(actor: Actor | null, userId: string, disabled: boolean) {
   const admin = requireAdmin(actor);
   if (admin.userId === userId) throw forbidden("You cannot disable your own account.");
   const db = await getDb();
@@ -160,13 +160,14 @@ export async function changePassword(userId: string, current: string | null, nex
   const db = await getDb();
   const [u] = await db.select().from(schema.users).where(eq(schema.users.id, userId));
   if (!u) throw notFound();
-  if (current !== null && !(await verifyPassword(current, u.passwordHash))) throw unauthorized("Your current password is not correct.");
+  // A password can only be set without the old one if the account has none yet (e.g. created by a magic link).
+  if (u.passwordHash && (current === null || !(await verifyPassword(current, u.passwordHash)))) throw unauthorized("Your current password is not correct.");
   await db.update(schema.users).set({ passwordHash: await hashPassword(next), updatedAt: new Date() }).where(eq(schema.users.id, userId));
   await destroyAllSessions(userId);
 }
 
 // ── magic links (passwordless client login) ────────────────────────────────
-export async function createMagicLink(actor: Actor, userId: string) {
+export async function createMagicLink(actor: Actor | null, userId: string) {
   requireAdmin(actor);
   return issueMagicToken(userId);
 }

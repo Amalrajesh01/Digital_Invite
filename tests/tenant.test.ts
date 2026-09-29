@@ -55,7 +55,11 @@ describe("tenant isolation", () => {
     await expect(updateWeddingSettings(clientA, a.id, { packageKey: "LUXURY" })).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(updateWeddingSettings(clientA, a.id, { slug: "hijack" })).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(updateWeddingSettings(clientA, a.id, { themeOverrides: {} })).rejects.toMatchObject({ code: "FORBIDDEN" });
-    await expect(publishWedding(clientA, a.id)).rejects.toMatchObject({ code: "FORBIDDEN" });
+    // A client may publish updates to an already-launched invitation, but not un-publish, archive or launch one.
+    const draftOnly = await makeWedding(admin, "SIGNATURE", { publish: false });
+    const fresh = await makeClient(admin, draftOnly.id);
+    await expect(publishWedding(fresh, draftOnly.id)).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publishWedding(clientA, a.id)).resolves.toBeTruthy();
     await expect(archiveWedding(clientA, a.id)).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(updateWeddingSettings(clientA, a.id, { contactEmail: "family@example.com" })).resolves.toBeTruthy();
   });

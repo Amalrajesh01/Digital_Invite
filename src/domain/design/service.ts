@@ -57,7 +57,7 @@ export async function getTheme(id: string) {
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 50);
 
 export async function saveTemplate(
-  actor: Actor,
+  actor: Actor | null,
   input: { id?: string; name: string; slug?: string; description?: string; status?: Status; supportedPackages?: string[]; config: unknown },
 ) {
   const admin = requireAdmin(actor);
@@ -97,14 +97,14 @@ export async function saveTemplate(
   return row;
 }
 
-export async function setTemplateStatus(actor: Actor, id: string, status: Status) {
+export async function setTemplateStatus(actor: Actor | null, id: string, status: Status) {
   const admin = requireAdmin(actor);
   const db = await getDb();
   await db.update(schema.templates).set({ status, updatedAt: new Date() }).where(eq(schema.templates.id, id));
   await audit(admin, `template.${status.toLowerCase()}`, { entityType: "template", entityId: id });
 }
 
-export async function duplicateTemplate(actor: Actor, id: string) {
+export async function duplicateTemplate(actor: Actor | null, id: string) {
   const src = await getTemplate(id);
   const db = await getDb();
   const [{ n }] = await db.select({ n: sql<number>`count(*)::int` }).from(schema.templates).where(sql`${schema.templates.slug} like ${src.slug + "-copy%"}`);
@@ -119,7 +119,7 @@ export async function duplicateTemplate(actor: Actor, id: string) {
 }
 
 export async function saveTheme(
-  actor: Actor,
+  actor: Actor | null,
   input: { id?: string; name: string; slug?: string; description?: string; status?: Status; supportedPackages?: string[]; tokens: unknown },
 ) {
   const admin = requireAdmin(actor);
@@ -156,14 +156,14 @@ export async function saveTheme(
   return row;
 }
 
-export async function setThemeStatus(actor: Actor, id: string, status: Status) {
+export async function setThemeStatus(actor: Actor | null, id: string, status: Status) {
   const admin = requireAdmin(actor);
   const db = await getDb();
   await db.update(schema.themes).set({ status, updatedAt: new Date() }).where(eq(schema.themes.id, id));
   await audit(admin, `theme.${status.toLowerCase()}`, { entityType: "theme", entityId: id });
 }
 
-export async function duplicateTheme(actor: Actor, id: string) {
+export async function duplicateTheme(actor: Actor | null, id: string) {
   const src = await getTheme(id);
   const db = await getDb();
   const [{ n }] = await db.select({ n: sql<number>`count(*)::int` }).from(schema.themes).where(and(sql`${schema.themes.slug} like ${src.slug + "-copy%"}`));

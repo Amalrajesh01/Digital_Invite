@@ -51,7 +51,7 @@ export interface CreateWeddingInput {
   weddingDate?: string | null;
 }
 
-export async function createWedding(actor: Actor, input: CreateWeddingInput): Promise<WeddingRow> {
+export async function createWedding(actor: Actor | null, input: CreateWeddingInput): Promise<WeddingRow> {
   const admin = requireAdmin(actor);
   const db = await getDb();
   const slug = input.slug ? normalizeSlug(input.slug) : `draft-${Math.random().toString(36).slice(2, 8)}`;
@@ -386,8 +386,9 @@ export async function getReadiness(actor: Actor | null, id: string) {
 
 export async function publishWedding(actor: Actor | null, id: string, opts: { label?: string } = {}) {
   const scope = await requireWeddingAccess(actor, id);
-  if (scope.actor.kind === "client") throw forbidden("Publishing is handled by your invitation designer.");
   const w = await getWedding(scope.actor, id);
+  // Clients may push updates to an invitation their designer has already launched — never the first launch.
+  if (scope.actor.kind === "client" && !w.publishedVersionId) throw forbidden("Your invitation designer launches the invitation. After that you can publish your updates.");
   const issues = await getReadiness(scope.actor, id);
   const blockers = issues.filter((i) => i.level === "error");
   if (blockers.length) {
