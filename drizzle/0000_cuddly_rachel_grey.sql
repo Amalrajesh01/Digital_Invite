@@ -173,6 +173,9 @@ CREATE TABLE "guests" (
 	"first_opened_at" timestamp with time zone,
 	"last_opened_at" timestamp with time zone,
 	"open_count" integer DEFAULT 0 NOT NULL,
+	"reminder_count" integer DEFAULT 0 NOT NULL,
+	"last_reminded_at" timestamp with time zone,
+	"source" text DEFAULT 'MANUAL' NOT NULL,
 	"archived_at" timestamp with time zone,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
@@ -310,7 +313,7 @@ CREATE TABLE "published_versions" (
 	"kind" text DEFAULT 'PUBLISHED' NOT NULL,
 	"label" text DEFAULT '' NOT NULL,
 	"doc" jsonb NOT NULL,
-	"theme_snapshot" jsonb DEFAULT '{}'::jsonb NOT NULL,
+	"render_meta" jsonb DEFAULT '{}'::jsonb NOT NULL,
 	"template_id" uuid,
 	"theme_id" uuid,
 	"created_by" uuid,
@@ -411,6 +414,7 @@ CREATE TABLE "time_capsule_items" (
 	"kind" text NOT NULL,
 	"body" text DEFAULT '' NOT NULL,
 	"asset_id" uuid,
+	"hidden" boolean DEFAULT false NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
@@ -497,7 +501,7 @@ CREATE TABLE "weddings" (
 	"contact_email" text,
 	"contact_phone" text,
 	"draft_doc" jsonb NOT NULL,
-	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"draft_updated_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"draft_updated_by" uuid,
 	"published_version_id" uuid,
 	"published_at" timestamp with time zone,
@@ -506,7 +510,8 @@ CREATE TABLE "weddings" (
 	"live_note" text,
 	"archived_at" timestamp with time zone,
 	"created_by" uuid,
-	"created_at" timestamp with time zone DEFAULT now() NOT NULL
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 ALTER TABLE "accommodation_requests" ADD CONSTRAINT "accommodation_requests_wedding_id_weddings_id_fk" FOREIGN KEY ("wedding_id") REFERENCES "public"."weddings"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
