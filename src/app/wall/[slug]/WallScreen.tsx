@@ -56,7 +56,7 @@ export function WallScreen({ slug, title, inviteUrl, initial }: { slug: string; 
           {/* blurred copy fills the letterbox so any photo shape looks intentional */}
           <img key={"bg" + current.id} src={current.url} alt="" aria-hidden className="absolute inset-0 size-full scale-110 object-cover opacity-40 blur-3xl" />
           <div className="relative grid place-items-center p-6 pb-28 sm:p-12 sm:pb-32">
-            <img key={current.id} src={current.url} alt={`Photo shared by ${current.by || "a guest"}`} className="max-h-[calc(100dvh-11rem)] max-w-full rounded-[calc(var(--r)+2px)] object-contain shadow-[0_30px_80px_rgba(0,0,0,.45)] [animation:wall-in_.9s_cubic-bezier(.2,.7,.2,1)]" />
+            <img key={current.id} src={current.url} alt={`Photo shared by ${current.by || "a guest"}`} className="max-h-[calc(100dvh-17rem)] max-w-full rounded-[calc(var(--r)+2px)] object-contain shadow-[0_30px_80px_rgba(0,0,0,.45)] [animation:wall-in_.9s_cubic-bezier(.2,.7,.2,1)]" />
           </div>
           <p key={"by" + current.id} aria-live="polite" className="absolute inset-x-0 bottom-24 text-center text-lg italic opacity-90 sm:bottom-28 sm:text-2xl" style={{ fontFamily: "var(--f-heading)" }}>
             {fresh === current.id && <span className="mr-3 rounded-full bg-[var(--c-accent)] px-3 py-1 align-middle text-xs font-semibold not-italic tracking-widest text-black">JUST IN</span>}
