@@ -105,9 +105,9 @@ function Palette({ open, onClose, entries }: { open: boolean; onClose: () => voi
           value={q}
           onChange={(e) => setQ(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "ArrowDown") (e.preventDefault(), setIdx((i) => Math.min(i + 1, list.length - 1)));
-            if (e.key === "ArrowUp") (e.preventDefault(), setIdx((i) => Math.max(i - 1, 0)));
-            if (e.key === "Enter") (e.preventDefault(), go(list[idx]));
+            if (e.key === "ArrowDown") { e.preventDefault(); setIdx((i) => Math.min(i + 1, list.length - 1)); }
+            if (e.key === "ArrowUp") { e.preventDefault(); setIdx((i) => Math.max(i - 1, 0)); }
+            if (e.key === "Enter") { e.preventDefault(); go(list[idx]); }
           }}
           placeholder="Search weddings, pages, actions…"
           aria-label="Search"

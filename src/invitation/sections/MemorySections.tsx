@@ -96,7 +96,7 @@ export function MemorySection({ section }: { section: SectionConfig }) {
 
 export function AnniversarySection({ section }: { section: SectionConfig }) {
   const { view, L, t, locale } = useInvitation();
-  const copy = useCopy(section, { title: "anniv.title" });
+  const customTitle = L((section.content as { title?: Parameters<typeof L>[0] }).title);
   const years = Math.max(1, view.wedding.yearsTogether);
   const next = view.wedding.nextAnniversary;
   const target = next ? zonedToUtc(next, "00:00", view.wedding.timezone) : null;
@@ -107,7 +107,7 @@ export function AnniversarySection({ section }: { section: SectionConfig }) {
     <Shell section={section}>
       <div className="text-center">
         <Reveal variant="fade"><p className="inv-eyebrow">{years === 1 ? t("anniv.year") : t("anniv.years", { n: years })}</p></Reveal>
-        <Reveal delay={100}><h2 className="inv-display mt-4 !text-[clamp(2.6rem,11vw,6rem)]">{years === 1 ? t("anniv.title") : t("anniv.titleN", { n: years })}</h2></Reveal>
+        <Reveal delay={100}><h2 className="inv-display mt-4 !text-[clamp(2.6rem,11vw,6rem)]">{customTitle || (years === 1 ? t("anniv.title") : t("anniv.titleN", { n: years }))}</h2></Reveal>
         {L(view.doc.anniversary.message) && <Reveal delay={200}><p className="inv-lede mx-auto mt-6">{L(view.doc.anniversary.message)}</p></Reveal>}
       </div>
       {photos.length > 0 && (

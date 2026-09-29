@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState, useTransition } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { AlertTriangle, Check, CircleCheck, Copy, ExternalLink, Sparkles } from "lucide-react";
 import { toast } from "sonner";
@@ -16,10 +16,9 @@ import type { ReadinessIssue } from "@/domain/wedding/doc-tools";
 import { newId } from "@/lib/id";
 import { assignClientAction, publishAction, readinessAction, regenerateSectionsAction, setFeatureOverrideAction, unpublishAction } from "@/app/actions/wedding";
 import { FormCard, Grid, Hint, LText, ListEditor } from "../forms";
-import { DevicePreview, type Device, type DevicePreviewHandle } from "../DevicePreview";
+import { DevicePreview, type Device } from "../DevicePreview";
 import { useDraft } from "../draft";
 import { Qr } from "@/invitation/engine/qr";
-import type { StepKey } from "../wizard/steps";
 
 export interface PackageCard { key: PackageKey; name: string; tagline: string; blurb: string; priceMin: number; priceMax: number; hasClientDashboard: boolean }
 

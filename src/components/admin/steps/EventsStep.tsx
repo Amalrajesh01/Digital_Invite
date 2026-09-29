@@ -17,7 +17,6 @@ const blank = (order: number): WeddingEvent => ({
 export function EventsStep() {
   const { doc, update, has, groups, settings, updateSettings } = useDraft();
   const venues = doc.venues;
-  const setEvent = (id: string, patch: Partial<WeddingEvent>) => update((d) => { const e = d.events.find((x) => x.id === id); if (e) Object.assign(e, patch); });
 
   return (
     <div className="space-y-6">

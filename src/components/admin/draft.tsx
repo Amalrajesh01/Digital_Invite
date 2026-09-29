@@ -81,7 +81,8 @@ export function DraftProvider({ weddingId, role, initialDoc, initialSettings, fe
   const undoStack = useRef<InvitationDoc[]>([]);
   const redoStack = useRef<InvitationDoc[]>([]);
   const lastPush = useRef(0);
-  const [, bump] = useState(0);
+  const [hist, setHist] = useState({ undo: false, redo: false });
+  const bump = useCallback(() => setHist({ undo: undoStack.current.length > 0, redo: redoStack.current.length > 0 }), []);
 
   const persist = useCallback(async (): Promise<boolean> => {
     if (saving.current) await saving.current;
@@ -136,7 +137,7 @@ export function DraftProvider({ weddingId, role, initialDoc, initialSettings, fe
         undoStack.current.push(docRef.current);
         if (undoStack.current.length > 60) undoStack.current.shift();
         redoStack.current = [];
-        bump((n) => n + 1);
+        bump();
       }
       lastPush.current = now;
       setDoc((cur) => {
@@ -148,7 +149,7 @@ export function DraftProvider({ weddingId, role, initialDoc, initialSettings, fe
       dirtyDoc.current = true;
       schedule();
     },
-    [schedule],
+    [schedule, bump],
   );
 
   const replaceDoc = useCallback(
@@ -166,16 +167,16 @@ export function DraftProvider({ weddingId, role, initialDoc, initialSettings, fe
     redoStack.current.push(docRef.current);
     lastPush.current = 0;
     replaceDoc(prev);
-    bump((n) => n + 1);
-  }, [replaceDoc]);
+    bump();
+  }, [replaceDoc, bump]);
   const redo = useCallback(() => {
     const nxt = redoStack.current.pop();
     if (!nxt) return;
     undoStack.current.push(docRef.current);
     lastPush.current = 0;
     replaceDoc(nxt);
-    bump((n) => n + 1);
-  }, [replaceDoc]);
+    bump();
+  }, [replaceDoc, bump]);
 
   const updateSettings = useCallback(
     (patch: Partial<WeddingSettings>) => {
@@ -223,7 +224,7 @@ export function DraftProvider({ weddingId, role, initialDoc, initialSettings, fe
   const value: DraftCtx = {
     weddingId, role, doc, update, settings, updateSettings, saveState, saveError, lastSaved, flush, features, has: (f) => features.includes(f),
     media, setMediaRows: setMediaRowsState, refreshMedia, groups,
-    undo, redo, canUndo: undoStack.current.length > 0, canRedo: redoStack.current.length > 0, replaceDoc,
+    undo, redo, canUndo: hist.undo, canRedo: hist.redo, replaceDoc,
   };
   return (
     <Ctx.Provider value={value}>
@@ -234,9 +235,10 @@ export function DraftProvider({ weddingId, role, initialDoc, initialSettings, fe
 
 export function SaveIndicator() {
   const { saveState, saveError, lastSaved, flush } = useDraft();
-  const [, tick] = useState(0);
+  const [now, setNow] = useState(0);
   useEffect(() => {
-    const id = setInterval(() => tick((n) => n + 1), 15000);
+    setNow(Date.now());
+    const id = setInterval(() => setNow(Date.now()), 15000);
     return () => clearInterval(id);
   }, []);
   if (saveState === "error")
@@ -247,7 +249,7 @@ export function SaveIndicator() {
         <button type="button" className="underline underline-offset-2" onClick={() => void flush()}>Retry</button>
       </span>
     );
-  const label = saveState === "saving" ? "Saving…" : lastSaved ? `Saved ${Math.max(1, Math.round((Date.now() - lastSaved.getTime()) / 1000)) < 60 ? "just now" : Math.round((Date.now() - lastSaved.getTime()) / 60000) + " min ago"}` : "All changes save automatically";
+  const label = saveState === "saving" ? "Saving…" : lastSaved ? `Saved ${now - lastSaved.getTime() < 60000 ? "just now" : Math.round((now - lastSaved.getTime()) / 60000) + " min ago"}` : "All changes save automatically";
   return (
     <span role="status" aria-live="polite" className="flex items-center gap-2 text-[13px] text-muted">
       <span aria-hidden className={saveState === "saving" ? "size-2 animate-pulse rounded-full bg-warn" : "size-2 rounded-full bg-ok"} />

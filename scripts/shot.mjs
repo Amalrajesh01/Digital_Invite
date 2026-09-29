@@ -14,7 +14,7 @@ page.on("pageerror", (e) => errors.push("pageerror: " + e.message));
 page.on("console", (m) => m.type() === "error" && errors.push("console: " + m.text()));
 await page.goto(url, { waitUntil: "networkidle", timeout: 90000 }).catch(() => {});
 const click = opt("click");
-if (click) for (const sel of click.split("|")) { await page.locator(sel).first().click({ timeout: 8000 }).catch((e) => errors.push("click failed: " + sel)); await page.waitForTimeout(Number(opt("clickwait") ?? 3200)); }
+if (click) for (const sel of click.split("|")) { await page.locator(sel).first().click({ timeout: 8000 }).catch(() => errors.push("click failed: " + sel)); await page.waitForTimeout(Number(opt("clickwait") ?? 3200)); }
 const scroll = opt("scroll");
 if (scroll) { await page.locator(scroll).first().scrollIntoViewIfNeeded().catch(() => {}); await page.waitForTimeout(1200); }
 if (full) {

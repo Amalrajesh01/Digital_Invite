@@ -111,7 +111,7 @@ export function PhotoWallSection({ section }: { section: SectionConfig }) {
   const items = useSharedPoll<{ items: WallItem[] }>(`wall:${slug}:${token ?? ""}`, () => get("/wall"), 6000, true);
   const seen = useRef<Set<string>>(new Set());
   const [fresh, setFresh] = useState<Set<string>>(new Set());
-  const list = items?.items ?? [];
+  const list = useMemo(() => items?.items ?? [], [items]);
   useEffect(() => {
     if (!list.length) return;
     const isFirst = seen.current.size === 0;

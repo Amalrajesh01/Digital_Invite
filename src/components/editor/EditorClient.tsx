@@ -40,7 +40,7 @@ export interface EditorProps {
 const toResolved = (m: MediaRow): ResolvedMedia => ({ id: m.id, kind: m.kind, mime: "", url: m.url, srcSet: m.srcSet, width: m.width, height: m.height, blur: m.blur, alt: m.alt, caption: m.caption, focal: m.focal });
 
 function DesignPanel({ templates, themes }: { templates: TemplateCard[]; themes: ThemeCard[] }) {
-  const { weddingId, settings, updateSettings, doc, update, flush } = useDraft();
+  const { weddingId, settings, doc, update, flush } = useDraft();
   const ask = useConfirm();
   const router = useRouter();
   const [busy, start] = useTransition();

@@ -2,7 +2,6 @@ import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { getDb, schema } from "@/db/client";
 import { forbidden, invalid, notFound } from "@/lib/errors";
 import { passCode } from "@/lib/id";
-import { zonedToUtc } from "@/lib/time";
 import { type Actor, requireWeddingAccess } from "@/domain/auth/access";
 import { audit } from "@/domain/audit/audit";
 import { getEntitlements } from "@/domain/packages/service";

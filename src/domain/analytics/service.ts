@@ -37,7 +37,7 @@ export async function weddingAnalytics(actor: Actor | null, weddingId: string, d
   const base = and(eq(schema.analyticsEvents.weddingId, weddingId), gte(schema.analyticsEvents.createdAt, since));
   const [views] = await db.select({ views: sql<number>`count(*) filter (where ${schema.analyticsEvents.type} = 'view')::int`, visitors: sql<number>`count(distinct ${schema.analyticsEvents.visitorId})::int` }).from(schema.analyticsEvents).where(base);
   const perDay = await db
-    .select({ day: sql<string>`to_char(${schema.analyticsEvents.createdAt}, 'YYYY-MM-DD')`, views: sql<number>`count(*) filter (where ${schema.analyticsEvents.type} = 'view')::int` })
+    .select({ day: sql<string>`to_char(${schema.analyticsEvents.createdAt} at time zone 'Asia/Kolkata', 'YYYY-MM-DD')`, views: sql<number>`count(*) filter (where ${schema.analyticsEvents.type} = 'view')::int` })
     .from(schema.analyticsEvents)
     .where(base)
     .groupBy(sql`1`)

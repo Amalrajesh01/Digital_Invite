@@ -4,13 +4,15 @@ import { cn } from "@/lib/cn";
  * Single-series, single-hue charts (no categorical palette needed). Thin marks, rounded data-ends
  * anchored to the baseline, recessive grid, direct labels, and a data table for anyone who prefers one.
  */
+const daysAgo = (n: number) => new Date(Date.now() - n * 86400000);
+
 export function DayBars({ data, label }: { data: { day: string; views: number }[]; label: string }) {
   const days = 30;
   const map = new Map(data.map((d) => [d.day, d.views]));
   const series = Array.from({ length: days }, (_, i) => {
-    const dt = new Date(Date.now() - (days - 1 - i) * 86400000);
-    const key = dt.toISOString().slice(0, 10);
-    return { key, label: dt.toLocaleDateString("en-IN", { day: "numeric", month: "short" }), v: map.get(key) ?? 0 };
+    const dt = daysAgo(days - 1 - i);
+    const key = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(dt);
+    return { key, label: dt.toLocaleDateString("en-IN", { day: "numeric", month: "short", timeZone: "Asia/Kolkata" }), v: map.get(key) ?? 0 };
   });
   const max = Math.max(1, ...series.map((s) => s.v));
   const W = 720, H = 180, pad = { l: 28, r: 8, t: 12, b: 24 };

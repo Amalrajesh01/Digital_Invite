@@ -19,7 +19,9 @@ const shared = new Map<string, Entry<unknown>>();
 export function useSharedPoll<T>(key: string, fetcher: () => Promise<T>, interval: number, enabled = true) {
   const [data, setData] = useState<T | null>((shared.get(key)?.data as T | null) ?? null);
   const fetchRef = useRef(fetcher);
-  fetchRef.current = fetcher;
+  useEffect(() => {
+    fetchRef.current = fetcher;
+  });
   useEffect(() => {
     if (!enabled) return;
     let entry = shared.get(key) as Entry<T> | undefined;

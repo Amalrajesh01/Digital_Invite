@@ -50,8 +50,8 @@ export function Menu({ items, label = "Actions", trigger, align = "right" }: { i
           id={id}
           role="menu"
           onKeyDown={(e) => {
-            if (e.key === "ArrowDown") (e.preventDefault(), move(1));
-            if (e.key === "ArrowUp") (e.preventDefault(), move(-1));
+            if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
+            if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
             if (e.key === "Tab") setOpen(false);
           }}
           className={cn("absolute z-40 mt-1 min-w-52 rounded-md border border-rule-strong bg-surface p-1 shadow-[var(--shadow-2)] [animation:sheet-in_.15s_var(--ease)]", align === "right" ? "right-0" : "left-0")}

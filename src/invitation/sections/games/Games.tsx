@@ -260,13 +260,15 @@ export function FindDiff({ name, onDone }: { name: string; onDone: (r: PlayResul
   };
   const all = found.size === g.spots.length;
   const done = useRef(false);
+  const [finished, setFinished] = useState(false);
   useEffect(() => {
     if (all && !done.current) {
       done.current = true;
+      setFinished(true);
       void play({ marked: [...found] }).catch(() => undefined);
     }
   }, [all, found, play]);
-  const Img = ({ id, interactive }: { id?: string; interactive?: boolean }) => (
+  const renderImg = (id: string | undefined, interactive?: boolean) => (
     <div className={cn("relative aspect-[4/3] overflow-hidden", interactive && "cursor-crosshair")} style={{ borderRadius: "var(--r)" }} onClick={interactive ? click : undefined}>
       <Photo id={id} className="absolute inset-0" seed={2} sizes="(max-width: 768px) 100vw, 600px" />
       {interactive && g.spots.map((s) => found.has(s.id) && (<span key={s.id} className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-[var(--c-accent)] bg-[var(--c-accent)]/20" style={{ left: `${s.x}%`, top: `${s.y}%`, width: `${Math.max(s.r, 6) * 2}%`, aspectRatio: "1" }} />))}
@@ -275,9 +277,9 @@ export function FindDiff({ name, onDone }: { name: string; onDone: (r: PlayResul
   return (
     <div>
       <p className="mb-4 text-center inv-muted">{t("games.found", { n: found.size, total: g.spots.length })}</p>
-      <div className="grid gap-3 md:grid-cols-2"><Img id={g.a} /><Img id={g.b} interactive /></div>
+      <div className="grid gap-3 md:grid-cols-2">{renderImg(g.a)}{renderImg(g.b, true)}</div>
       {error && <p className="inv-error text-center" role="alert">{error}</p>}
-      <div className="mt-5 text-center"><button type="button" className="inv-btn" disabled={busy || done.current} onClick={() => { done.current = true; void play({ marked: [...found] }).catch(() => undefined); }}>{t("games.finish")}</button></div>
+      <div className="mt-5 text-center"><button type="button" className="inv-btn" disabled={busy || finished} onClick={() => { done.current = true; setFinished(true); void play({ marked: [...found] }).catch(() => undefined); }}>{t("games.finish")}</button></div>
     </div>
   );
 }

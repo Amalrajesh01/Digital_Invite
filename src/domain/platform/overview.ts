@@ -88,7 +88,7 @@ export async function platformViewsPerDay(actor: Actor | null, days = 30) {
   const db = await getDb();
   const since = new Date(Date.now() - days * 86400000);
   return db
-    .select({ day: sql<string>`to_char(${schema.analyticsEvents.createdAt}, 'YYYY-MM-DD')`, views: sql<number>`count(*)::int` })
+    .select({ day: sql<string>`to_char(${schema.analyticsEvents.createdAt} at time zone 'Asia/Kolkata', 'YYYY-MM-DD')`, views: sql<number>`count(*)::int` })
     .from(schema.analyticsEvents)
     .where(and(eq(schema.analyticsEvents.type, "view"), sql`${schema.analyticsEvents.createdAt} >= ${since}`))
     .groupBy(sql`1`)

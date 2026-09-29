@@ -110,7 +110,7 @@ function Inner(p: WizardProps) {
     <div className="grid gap-8 lg:grid-cols-[13.5rem_minmax(0,1fr)]">
       <nav aria-label="Wedding setup steps" className="lg:sticky lg:top-20 lg:self-start">
         <ol className="hidden space-y-0.5 lg:block">
-          {steps.map((s, i) => {
+          {steps.map((s) => {
             const active = s.key === p.step;
             const st = done[s.key];
             return (
