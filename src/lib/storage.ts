@@ -39,7 +39,7 @@ export const mimeFromKey = (key: string) => MIME_BY_EXT[key.split(".").pop()?.to
 
 // ── local disk ─────────────────────────────────────────────────────────────
 function localRoot() {
-  return path.resolve(process.env.STORAGE_LOCAL_DIR || path.join(process.cwd(), "storage"));
+  return path.resolve(/*turbopackIgnore: true*/ process.env.STORAGE_LOCAL_DIR || path.join(process.cwd(), "storage"));
 }
 
 function safeLocalPath(key: string): string {
@@ -54,27 +54,27 @@ const localDriver: StorageDriver = {
   name: "local",
   async put(key, body) {
     const file = safeLocalPath(key);
-    await fsp.mkdir(path.dirname(file), { recursive: true });
-    await fsp.writeFile(file, body);
+    await fsp.mkdir(/*turbopackIgnore: true*/ path.dirname(file), { recursive: true });
+    await fsp.writeFile(/*turbopackIgnore: true*/ file, body);
   },
   async get(key, range) {
     const file = safeLocalPath(key);
     let stat: fs.Stats;
     try {
-      stat = await fsp.stat(file);
+      stat = await fsp.stat(/*turbopackIgnore: true*/ file);
     } catch {
       return null;
     }
     const contentType = mimeFromKey(key);
     if (range) {
       const end = Math.min(range.end ?? stat.size - 1, stat.size - 1);
-      const stream = Readable.toWeb(fs.createReadStream(file, { start: range.start, end })) as unknown as ReadableStream<Uint8Array>;
+      const stream = Readable.toWeb(fs.createReadStream(/*turbopackIgnore: true*/ file, { start: range.start, end })) as unknown as ReadableStream<Uint8Array>;
       return { body: stream, contentType, size: end - range.start + 1, range: { start: range.start, end, total: stat.size } };
     }
-    return { body: await fsp.readFile(file), contentType, size: stat.size };
+    return { body: await fsp.readFile(/*turbopackIgnore: true*/ file), contentType, size: stat.size };
   },
   async delete(key) {
-    await fsp.rm(safeLocalPath(key), { force: true });
+    await fsp.rm(/*turbopackIgnore: true*/ safeLocalPath(key), { force: true });
   },
   publicUrl: () => null,
   signedUrl: async () => null,

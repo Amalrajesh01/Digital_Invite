@@ -1,4 +1,4 @@
-// Screenshot helper for visual QA:  node scripts/shot.mjs <url> <out.png> [width=390] [height=844] [--full] [--click="selector"] [--wait=ms] [--scroll=selector]
+// Screenshot helper for visual QA:  node scripts/dev/shot.mjs <url> <out.png> [width=390] [height=844] [--full] [--click="selector"] [--wait=ms] [--scroll=selector]
 import { chromium } from "playwright";
 const args = process.argv.slice(2);
 const [url, out] = args;

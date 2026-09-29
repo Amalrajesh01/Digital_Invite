@@ -232,6 +232,9 @@ async function seedOrders(weddingIds: Record<string, string>) {
 }
 
 async function main() {
+  if (process.env.NODE_ENV === "production" && (process.env.SEED_ADMIN_PASSWORD ?? "").length < 12) {
+    throw new Error("Set SEED_ADMIN_PASSWORD (12+ characters) before seeding a production database.");
+  }
   console.log("→ Seeding platform data");
   await ensurePackages();
   await ensureDesignLibrary();

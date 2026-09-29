@@ -1,4 +1,4 @@
-// Section tour for visual QA:  node scripts/tour.mjs <url> <prefix> [width=390] [height=844] [ids=comma,separated]
+// Section tour for visual QA:  node scripts/dev/tour.mjs <url> <prefix> [width=390] [height=844] [ids=comma,separated]
 import { chromium } from "playwright";
 const [url, prefix, w = "390", h = "844", ids] = process.argv.slice(2);
 const width = Number(w), height = Number(h);

@@ -2,7 +2,8 @@ import { and, desc, eq, ilike, isNull, or, sql } from "drizzle-orm";
 import { getDb, schema } from "@/db/client";
 import { type Actor, requireAdmin } from "@/domain/auth/access";
 
-const like = (q: string) => `%${q.trim().replace(/[%_\\]/g, "")}%`;
+const clean = (q: string) => q.trim().replace(/[%_\\]/g, "");
+const like = (q: string) => `%${clean(q)}%`;
 
 /** Storage and moderation totals per wedding, for the platform-wide media page. */
 export async function mediaByWedding(actor: Actor | null) {
@@ -35,6 +36,8 @@ export async function searchGuestsAcrossWeddings(actor: Actor | null, q: string,
   requireAdmin(actor);
   const db = await getDb();
   const s = q.trim();
+  // A query made only of wildcard characters must not match everyone.
+  if (s && !clean(s)) return { rows: [], total: 0 };
   const where = and(
     isNull(schema.guests.archivedAt),
     s ? or(ilike(schema.guests.name, like(s)), ilike(schema.guests.email, like(s)), ilike(schema.guests.phone, like(s))) : undefined,
