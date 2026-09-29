@@ -45,6 +45,8 @@ const GROUPS: NavGroup[] = [
   },
 ];
 
+const daysAgo = (n: number) => new Date(Date.now() - n * 86400000);
+
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const admin = await requireAdminPage();
   const weddings = await listWeddings(admin);
@@ -52,7 +54,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const [{ n }] = await db
     .select({ n: sql<number>`count(*)::int` })
     .from(schema.notifications)
-    .where(and(eq(schema.notifications.status, "FAILED"), gte(schema.notifications.createdAt, new Date(Date.now() - 7 * 86400000))));
+    .where(and(eq(schema.notifications.status, "FAILED"), gte(schema.notifications.createdAt, daysAgo(7))));
 
   const palette: PaletteEntry[] = [
     ...GROUPS.flatMap((g) => g.items.map((i) => ({ label: i.label, href: i.href, group: "Go to" }))),

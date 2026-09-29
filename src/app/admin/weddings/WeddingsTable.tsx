@@ -60,9 +60,10 @@ export function WeddingsTable({ rows }: { rows: Row[] }) {
       } else toast.error(r.error?.message ?? "That did not work.");
     });
 
+  const [now] = useState(() => Date.now());
   const days = (d: string | null) => {
     if (!d) return null;
-    const n = Math.round((new Date(d + "T00:00:00Z").getTime() - Date.now()) / 86400000);
+    const n = Math.round((new Date(d + "T00:00:00Z").getTime() - now) / 86400000);
     return n;
   };
 
