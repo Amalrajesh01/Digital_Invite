@@ -48,8 +48,8 @@ export interface ResolvedMedia {
 type Variants = Record<string, { key: string; width: number; height: number }>;
 
 /** Same-origin URL that serves an asset (with access checks). R2 public buckets can bypass the app. */
-export function assetUrl(assetId: string, variant: "xl" | "lg" | "md" | "sm" | "file" = "lg"): string {
-  return `/api/media/${assetId}/${variant}`;
+export function assetUrl(assetId: string, variant: "xl" | "lg" | "md" | "sm" | "file" = "lg", version?: number): string {
+  return `/api/media/${assetId}/${variant}${version ? `?v=${version}` : ""}`;
 }
 
 export function toResolved(a: MediaAsset): ResolvedMedia {
@@ -58,7 +58,7 @@ export function toResolved(a: MediaAsset): ResolvedMedia {
   const pub = (v: "xl" | "lg" | "md" | "sm" | "file") => {
     const key = v === "file" ? a.storageKey : meta.variants?.[v]?.key;
     const direct = isPublic && key ? storage().publicUrl(key) : null;
-    return direct ?? assetUrl(a.id, v);
+    return direct ?? assetUrl(a.id, v, a.updatedAt.getTime());
   };
   const base: ResolvedMedia = {
     id: a.id,

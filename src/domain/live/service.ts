@@ -8,7 +8,7 @@ import { audit } from "@/domain/audit/audit";
 import { getEntitlements } from "@/domain/packages/service";
 import { assertCanUse, canUse } from "@/domain/packages/entitlements";
 import { loadRulesDoc } from "@/domain/wedding/snapshot";
-import type { LocalizedText, WeddingEvent } from "@/domain/doc/schema";
+import type { LocalizedText } from "@/domain/doc/schema";
 import type { GuestContext } from "@/domain/guests/context";
 import { visibleEventsFor } from "@/domain/wedding/view";
 
@@ -53,33 +53,10 @@ export async function listLiveUpdates(weddingId: string, limit = 30) {
     .limit(limit);
 }
 
-// ── what's happening now ───────────────────────────────────────────────────
-export interface LiveEventState {
-  current: WeddingEvent | null;
-  next: WeddingEvent | null;
-  mode: "AUTO" | "MANUAL";
-  note: string | null;
-}
-
-export function eventWindow(e: WeddingEvent, tz: string): { start: Date; end: Date } | null {
-  if (!e.date) return null;
-  const start = zonedToUtc(e.date, e.startTime || "00:00", tz);
-  const end = e.endTime ? zonedToUtc(e.date, e.endTime, tz) : new Date(start.getTime() + 3 * 3600 * 1000);
-  return { start, end: end.getTime() <= start.getTime() ? new Date(end.getTime() + 86400000) : end };
-}
-
-/** Pure: which event is on now / next. Manual "now" (set by the family on the day) wins over the clock. */
-export function computeLiveState(events: WeddingEvent[], tz: string, manualId: string | null, note: string | null, now = new Date()): LiveEventState {
-  const timed = events
-    .map((e) => ({ e, w: eventWindow(e, tz) }))
-    .filter((x): x is { e: WeddingEvent; w: { start: Date; end: Date } } => !!x.w)
-    .sort((a, b) => a.w.start.getTime() - b.w.start.getTime());
-  const manual = manualId ? events.find((e) => e.id === manualId) ?? null : null;
-  const current = manual ?? timed.find((x) => x.w.start <= now && now < x.w.end)?.e ?? null;
-  const afterCurrent = current ? timed.find((x) => x.e.id !== current.id && x.w.start.getTime() >= (eventWindow(current, tz)?.start.getTime() ?? now.getTime()))?.e : undefined;
-  const next = (current ? afterCurrent : timed.find((x) => x.w.start > now)?.e) ?? null;
-  return { current, next: next ?? null, mode: manual ? "MANUAL" : "AUTO", note };
-}
+// ── what's happening now (pure logic lives in ./state so the browser can share it) ──
+export { computeLiveState, eventWindow } from "./state";
+export type { LiveEventState } from "./state";
+import { computeLiveState } from "./state";
 
 export async function setLiveEvent(actor: Actor | null, weddingId: string, eventId: string | null, note: string | null = null) {
   const scope = await requireWeddingAccess(actor, weddingId, { feature: "event_day_mode" });

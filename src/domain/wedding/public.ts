@@ -167,7 +167,7 @@ async function assemble(opts: { snap: Snapshot; guest: GuestContext | null; mode
 }
 
 /** Public entry point used by /invite/[slug] and /invite/[slug]/[token]. */
-export async function loadPublicInvitation(slug: string, token?: string | null): Promise<LoadResult> {
+export async function loadPublicInvitation(slug: string, token?: string | null, opts: { asStatus?: WeddingStatus } = {}): Promise<LoadResult> {
   const wedding = await getWeddingBySlug(slug);
   if (!wedding) return { ok: false, reason: "not_found" };
   const snap = await loadPublishedSnapshot(wedding);
@@ -182,7 +182,9 @@ export async function loadPublicInvitation(slug: string, token?: string | null):
   const ent = await getEntitlements(wedding.id);
   // Personalised links only exist for packages that include them; ignore tokens if the feature is off.
   if (guest && !canUse(ent, "personalized_urls")) guest = null;
-  return { ok: true, view: await assemble({ snap, guest, mode: "public" }) };
+  // Only demonstration weddings may be viewed in a different lifecycle state.
+  const asStatus = wedding.isDemo ? opts.asStatus : undefined;
+  return { ok: true, view: await assemble({ snap, guest, mode: "public", asStatus }) };
 }
 
 /** Draft preview for Super Admin / clients (caller has already authorised access). */
