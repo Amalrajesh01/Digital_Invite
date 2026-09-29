@@ -1,4 +1,5 @@
-import { FEATURE_KEYS, type FeatureKey, type PackageKey, isFeatureKey } from "./features";
+import { FEATURE_KEYS, FEATURES, type FeatureKey, type PackageKey, isFeatureKey } from "./features";
+import { AppError } from "@/lib/errors";
 
 /**
  * A resolved, serialisable snapshot of what a wedding may use.
@@ -42,10 +43,10 @@ export function canUseAny(ent: Entitlements | null | undefined, features: readon
   return features.some((f) => canUse(ent, f));
 }
 
-export class FeatureNotAvailableError extends Error {
+export class FeatureNotAvailableError extends AppError {
   readonly feature: FeatureKey;
   constructor(feature: FeatureKey) {
-    super(`This feature is not part of the wedding's package (${feature}).`);
+    super("FEATURE_UNAVAILABLE", `${FEATURES[feature].label} is not included in this wedding’s package.`);
     this.name = "FeatureNotAvailableError";
     this.feature = feature;
   }

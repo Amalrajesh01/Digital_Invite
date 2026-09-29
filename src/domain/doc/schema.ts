@@ -15,7 +15,7 @@ export type LocalizedText = z.infer<typeof LocalizedText>;
 
 const L = () => LocalizedText.default({});
 const MediaId = z.string().optional();
-const ObjDefault = <T extends z.ZodRawShape>(shape: T) => z.object(shape).prefault({});
+const ObjDefault = <T extends z.ZodRawShape>(shape: T) => z.object(shape).prefault({} as never);
 
 const HexColor = z.string().regex(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/);
 const Time = z.string().regex(/^\d{2}:\d{2}$/).or(z.literal(""));
@@ -275,6 +275,13 @@ export const AnniversaryDoc = ObjDefault({ message: L(), highlightPhotos: z.arra
 export const LiveDoc = ObjDefault({ streamUrl: z.string().default(""), streamLabel: L() });
 export const SeoDoc = ObjDefault({ title: L(), description: L(), ogImage: MediaId });
 
+export const GreetingsDoc = ObjDefault({
+  /** Fallback greeting for personalised links. {name} is replaced with the guest name. */
+  default: L(),
+  byRelationship: z.array(z.object({ id: z.string(), match: z.string().default(""), text: L() })).default([]),
+});
+export type GreetingsDoc = z.infer<typeof GreetingsDoc>;
+
 export const I18nDoc = ObjDefault({
   /** Per-wedding overrides of built-in interface strings: { ml: { "rsvp.title": "…" } } */
   overrides: z.record(z.string(), z.record(z.string(), z.string())).default({}),
@@ -323,6 +330,7 @@ export const InvitationDoc = z.object({
   live: LiveDoc,
   seo: SeoDoc,
   i18n: I18nDoc,
+  guestGreetings: GreetingsDoc,
   sections: z.array(SectionConfig).default([]),
 });
 export type InvitationDoc = z.infer<typeof InvitationDoc>;

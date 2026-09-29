@@ -28,6 +28,8 @@ export async function syncCapsule(weddingId: string) {
     const [row] = await db.insert(schema.timeCapsules).values({ weddingId, unlockAt, prompt: doc.timeCapsule.prompt }).returning();
     return row;
   }
+  // Once a capsule has opened it stays open: a later edit of the date must never re-seal it.
+  if (cur.unlockAt.getTime() <= Date.now()) return cur;
   // The unlock date can be moved LATER by the couple's designer but never silently earlier once items exist.
   const [{ n }] = await db.select({ n: sql<number>`count(*)::int` }).from(schema.timeCapsuleItems).where(eq(schema.timeCapsuleItems.capsuleId, cur.id));
   if (n > 0 && unlockAt.getTime() < cur.unlockAt.getTime()) return cur;
