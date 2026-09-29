@@ -498,6 +498,7 @@ CREATE TABLE "weddings" (
 	"wedding_date" text,
 	"timezone" text DEFAULT 'Asia/Kolkata' NOT NULL,
 	"access_mode" text DEFAULT 'PUBLIC' NOT NULL,
+	"is_demo" boolean DEFAULT false NOT NULL,
 	"contact_email" text,
 	"contact_phone" text,
 	"draft_doc" jsonb NOT NULL,

@@ -1,5 +1,5 @@
 {
-  "id": "a52a33cc-ac00-4f0e-9946-d5918d75044c",
+  "id": "bf6171a0-8285-4c55-9476-7dcf2ae96983",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -4756,6 +4756,13 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'PUBLIC'"
+        },
+        "is_demo": {
+          "name": "is_demo",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
         },
         "contact_email": {
           "name": "contact_email",

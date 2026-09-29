@@ -215,6 +215,8 @@ export const weddings = pgTable(
     weddingDate: text("wedding_date"),
     timezone: text("timezone").notNull().default("Asia/Kolkata"),
     accessMode: text("access_mode").$type<"PUBLIC" | "PERSONALIZED_ONLY">().notNull().default("PUBLIC"),
+    /** Demonstration weddings may be previewed in any lifecycle state (?state=…) from the public URL. */
+    isDemo: boolean("is_demo").notNull().default(false),
     contactEmail: text("contact_email"),
     contactPhone: text("contact_phone"),
     draftDoc: jsonb("draft_doc").$type<InvitationDoc>().notNull(),
