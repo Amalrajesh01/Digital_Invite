@@ -31,6 +31,10 @@ export const env = {
   get resendKey() {
     return process.env.RESEND_API_KEY || "";
   },
+  /** Shared secret for /api/cron (Vercel Cron sends it as a Bearer token). */
+  get cronSecret() {
+    return process.env.CRON_SECRET || "";
+  },
   get emailFrom() {
     return process.env.EMAIL_FROM || "Aoire Invites <invites@example.com>";
   },
