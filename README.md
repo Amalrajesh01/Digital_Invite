@@ -152,3 +152,26 @@ Health probe for uptime monitors: `GET /api/health`.
   games). UI was verified visually with Playwright screenshots at phone, tablet and desktop widths; there is no
   automated browser test suite yet.
 * Custom-domain DNS verification is a manual switch, not an automatic DNS check.
+
+## Deploying to a single VPS (nginx + systemd + local PostgreSQL)
+
+This is how the reference server runs it; templates are in `deploy/`.
+
+1. Install Node 22, create a database and role (`createdb -O aoire_user aoire_invites`).
+2. Copy the source to `/home/deploy/apps/aoire-invites`, then create `.env.production` from
+   `deploy/env.production.example` (`chmod 600`; generate `APP_SECRET`, `CRON_SECRET` and a strong `SEED_ADMIN_PASSWORD`).
+3. `npm ci && set -a && . ./.env.production && set +a && npx next build && npm run db:migrate && npm run db:seed`
+4. `cp deploy/aoire-invites.service /etc/systemd/system/ && systemctl enable --now aoire-invites`
+5. `cp deploy/nginx-aoire-invites.conf /etc/nginx/sites-available/aoire-invites`, symlink into `sites-enabled`,
+   `nginx -t && systemctl reload nginx`, and open the port in the firewall. The nginx block must forward
+   `Host $http_host` (with the port) or Next.js rejects sign-in as a cross-origin request.
+6. Daily job: `30 2 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://127.0.0.1:8104/api/cron`.
+
+**Update:** upload the new source, `npm ci`, rebuild, `systemctl restart aoire-invites`, and `npm run db:migrate` if the schema changed.
+
+**Switch media to AWS S3:** create a private bucket and an IAM user limited to it, set `STORAGE_DRIVER=s3`,
+`S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` (leave `S3_ENDPOINT` empty for AWS), run
+`npm run storage:sync` once to copy existing files, then restart the service.
+
+**Go public with HTTPS:** point a domain at the server, add a second nginx `server_name`, run certbot, set
+`APP_URL=https://your.domain`, restart. Cookies become `Secure` automatically.
