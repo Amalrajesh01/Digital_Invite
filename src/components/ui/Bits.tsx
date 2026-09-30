@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 
-export function EmptyState({ title, body, action, className, mark = "❦" }: { title: string; body?: React.ReactNode; action?: React.ReactNode; className?: string; mark?: string }) {
+export function EmptyState({ title, body, action, className, mark }: { title: string; body?: React.ReactNode; action?: React.ReactNode; className?: string; mark?: string }) {
   return (
     <div className={cn("mx-auto flex max-w-md flex-col items-center px-6 py-14 text-center", className)}>
-      <div aria-hidden className="display text-[44px] leading-none text-brass">
-        {mark}
-      </div>
+      {mark ? <div aria-hidden className="display text-[44px] leading-none text-brass">{mark}</div> : (
+        <img src="/brand/mark.png" alt="" aria-hidden className="size-11 object-contain" />
+      )}
       <h3 className="display mt-4 text-[26px]">{title}</h3>
       {body && <p className="mt-2 text-[14.5px] text-muted">{body}</p>}
       {action && <div className="mt-5">{action}</div>}

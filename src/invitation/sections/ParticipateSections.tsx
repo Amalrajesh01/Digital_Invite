@@ -297,5 +297,5 @@ export function TimeCapsuleSection({ section }: { section: SectionConfig }) {
 function L_prompt(view: ReturnType<typeof useInvitation>["view"], locale: string) {
   const p = view.doc.timeCapsule.prompt;
   const text = p[locale] || p.en || Object.values(p)[0];
-  return text ? <p className="inv-muted mt-2 italic">{text}</p> : null;
+  return text ? <p className="inv-muted mt-2">{text}</p> : null;
 }

@@ -7,7 +7,7 @@ import type { AdminActor, ClientActor, UserActor } from "@/domain/auth/access";
 import { isMemberOf } from "@/domain/auth/access";
 import { env } from "@/lib/env";
 
-export const SESSION_COOKIE = "aoire_session";
+export const SESSION_COOKIE = "sbl_session";
 
 /** Resolved once per request. Every page/action asks this — never the browser. */
 export const getCurrentActor = cache(async (): Promise<UserActor | null> => {

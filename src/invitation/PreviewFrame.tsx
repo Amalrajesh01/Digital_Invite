@@ -9,7 +9,7 @@ import { filterDocForGuest, visibleSections } from "@/domain/wedding/view";
 import { InvitationApp } from "./InvitationApp";
 
 export interface PreviewPatch {
-  type: "aoire:patch";
+  type: "sbl:patch";
   doc?: InvitationDoc;
   tokens?: ThemeTokens;
   flavor?: string;
@@ -30,8 +30,8 @@ export function PreviewFrame({ view: initial, initialLocale, interactive }: { vi
   useEffect(() => {
     const on = (e: MessageEvent) => {
       if (e.origin !== window.location.origin || !e.data) return;
-      if (e.data.type === "aoire:patch") setPatch(e.data as PreviewPatch);
-      if (e.data.type === "aoire:focus") {
+      if (e.data.type === "sbl:patch") setPatch(e.data as PreviewPatch);
+      if (e.data.type === "sbl:focus") {
         const el = document.querySelector<HTMLElement>(`[data-section-id="${CSS.escape(String(e.data.sectionId))}"]`);
         if (el) {
           el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -41,7 +41,7 @@ export function PreviewFrame({ view: initial, initialLocale, interactive }: { vi
       }
     };
     window.addEventListener("message", on);
-    window.parent?.postMessage({ type: "aoire:ready" }, window.location.origin);
+    window.parent?.postMessage({ type: "sbl:ready" }, window.location.origin);
     return () => window.removeEventListener("message", on);
   }, []);
 
@@ -49,7 +49,7 @@ export function PreviewFrame({ view: initial, initialLocale, interactive }: { vi
     if (!interactive) return;
     const click = (e: MouseEvent) => {
       const el = (e.target as HTMLElement).closest<HTMLElement>("[data-section-id]");
-      if (el && window.parent !== window) window.parent.postMessage({ type: "aoire:select", sectionId: el.dataset.sectionId }, window.location.origin);
+      if (el && window.parent !== window) window.parent.postMessage({ type: "sbl:select", sectionId: el.dataset.sectionId }, window.location.origin);
     };
     document.addEventListener("click", click, true);
     return () => document.removeEventListener("click", click, true);
@@ -75,7 +75,7 @@ export function PreviewFrame({ view: initial, initialLocale, interactive }: { vi
 
   return (
     <>
-      {interactive && <style>{`[data-section-id]{position:relative;cursor:pointer} [data-section-id]:hover::after{content:"";position:absolute;inset:0;border:2px solid #7a2432;pointer-events:none;z-index:50;opacity:.55} .pv-flash::after{content:"";position:absolute;inset:0;border:3px solid #a07b2a;pointer-events:none;z-index:50;animation:pvf 1.4s ease-out forwards} @keyframes pvf{from{opacity:1}to{opacity:0}}`}</style>}
+      {interactive && <style>{`[data-section-id]{position:relative;cursor:pointer} [data-section-id]:hover::after{content:"";position:absolute;inset:0;border:2px solid #3056d3;pointer-events:none;z-index:50;opacity:.55} .pv-flash::after{content:"";position:absolute;inset:0;border:3px solid #4a6cf7;pointer-events:none;z-index:50;animation:pvf 1.4s ease-out forwards} @keyframes pvf{from{opacity:1}to{opacity:0}}`}</style>}
       <InvitationApp view={view} initialLocale={initialLocale} skipGate />
     </>
   );

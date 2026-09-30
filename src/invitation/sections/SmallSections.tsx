@@ -30,7 +30,7 @@ export function DressCodeSection({ section }: { section: SectionConfig }) {
               </li>
             ))}
           </ul>
-          {L(palette.note) && <p className="inv-muted mt-4 text-center text-[0.98rem] italic">{L(palette.note)}</p>}
+          {L(palette.note) && <p className="inv-muted mt-4 text-center text-[0.98rem]">{L(palette.note)}</p>}
         </Reveal>
       )}
       {section.variant !== "palette" && guide.looks.length > 0 && (
@@ -71,13 +71,13 @@ export function MenuSection({ section }: { section: SectionConfig }) {
                 <li key={it.id}>
                   <span className="text-[1.08rem]">{L(it.name)}</span>
                   <span className={cn("ml-2 inline-block size-2 rounded-full align-middle", it.veg ? "bg-[#3f8a52]" : "bg-[#b3372f]")} title={it.veg ? t("menu.veg") : t("menu.nonveg")} />
-                  {L(it.note) && <span className="inv-muted block text-[0.88rem] italic">{L(it.note)}</span>}
+                  {L(it.note) && <span className="inv-muted block text-[0.88rem]">{L(it.note)}</span>}
                 </li>
               ))}
             </ul>
           </div>
         ))}
-        {L(menu.note) && <p className="inv-muted mt-12 border-t border-[var(--c-border)] pt-6 text-[0.92rem] italic">{L(menu.note)}</p>}
+        {L(menu.note) && <p className="inv-muted mt-12 border-t border-[var(--c-border)] pt-6 text-[0.92rem]">{L(menu.note)}</p>}
       </Reveal>
     </Shell>
   );
@@ -118,7 +118,7 @@ export function ThankYouSection({ section }: { section: SectionConfig }) {
       <div className="text-center">
         <Reveal variant="fade"><p className="inv-eyebrow">{copy.eyebrow}</p></Reveal>
         {ty.photo && <Reveal className="mx-auto mt-8 w-[min(70vw,16rem)]"><Photo id={ty.photo} ratio="aspect-[4/5]" className="inv-arch-soft" seed={3} sizes="256px" /></Reveal>}
-        <Reveal delay={120}><p className="mt-10 whitespace-pre-line text-[clamp(1.2rem,4.2vw,1.55rem)] italic leading-[1.85]" style={{ fontFamily: "var(--f-heading)" }}>{L(ty.message)}</p></Reveal>
+        <Reveal delay={120}><p className="mt-10 whitespace-pre-line text-[clamp(1.2rem,4.2vw,1.55rem)] leading-[1.85]" style={{ fontFamily: "var(--f-heading)" }}>{L(ty.message)}</p></Reveal>
         {L(ty.signature) && <Reveal delay={200}><p className="inv-script mt-8 text-[clamp(2rem,8vw,3rem)] text-[var(--c-accent)]">{L(ty.signature)}</p></Reveal>}
       </div>
       {t("thanks.title") && null}

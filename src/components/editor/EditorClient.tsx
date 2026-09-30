@@ -99,15 +99,15 @@ function Editor({ title, slug, published, templates, themes }: Pick<EditorProps,
   // Push every edit into the live preview (debounced).
   useEffect(() => {
     const id = setTimeout(() => {
-      const patch: PreviewPatch = { type: "aoire:patch", doc, tokens, flavor, media: mediaMap, status: state as never, title: settings.title, secondaryLocale: settings.secondaryLocale };
+      const patch: PreviewPatch = { type: "sbl:patch", doc, tokens, flavor, media: mediaMap, status: state as never, title: settings.title, secondaryLocale: settings.secondaryLocale };
       frame.current?.post(patch);
     }, 120);
     return () => clearTimeout(id);
   }, [doc, tokens, flavor, mediaMap, state, settings.title, settings.secondaryLocale, ready]);
 
   const onMessage = useCallback((m: { type: string; sectionId?: unknown }) => {
-    if (m.type === "aoire:ready") setReady((n) => n + 1);
-    if (m.type === "aoire:select" && typeof m.sectionId === "string") {
+    if (m.type === "sbl:ready") setReady((n) => n + 1);
+    if (m.type === "sbl:select" && typeof m.sectionId === "string") {
       setSelected(m.sectionId);
       setTab("section");
       setPane("edit");
@@ -117,7 +117,7 @@ function Editor({ title, slug, published, templates, themes }: Pick<EditorProps,
   const select = (id: string) => {
     setSelected(id);
     setTab((t) => (t === "design" ? "section" : t));
-    frame.current?.post({ type: "aoire:focus", sectionId: id });
+    frame.current?.post({ type: "sbl:focus", sectionId: id });
     setPane("edit");
   };
 

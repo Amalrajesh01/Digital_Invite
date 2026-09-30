@@ -73,7 +73,7 @@ export default function GuestbookSection({ section }: { section: SectionConfig }
 
       <div className="mt-20">
         {wishes.length === 0 ? (
-          <p className="text-center inv-muted italic">{t("guestbook.empty")}</p>
+          <p className="text-center inv-muted">{t("guestbook.empty")}</p>
         ) : (
           <ul className="columns-1 gap-5 sm:columns-2 lg:columns-3 [&>li]:mb-5">
             {wishes.map((w, i) => (

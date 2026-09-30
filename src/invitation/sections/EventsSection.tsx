@@ -46,7 +46,7 @@ function Details({ e }: { e: WeddingEvent }) {
           <span className="flex gap-1.5" aria-hidden>{e.dressColors.map((c) => (<span key={c} className="size-4 rounded-full border border-black/15" style={{ background: c }} />))}</span>
         </div>
       )}
-      {L(e.notes) && <p className="mt-3 border-l-2 border-[var(--c-accent)] pl-3 text-[0.92rem] italic inv-muted">{L(e.notes)}</p>}
+      {L(e.notes) && <p className="mt-3 border-l-2 border-[var(--c-accent)] pl-3 text-[0.92rem] inv-muted">{L(e.notes)}</p>}
       {(L(e.ritual.title) || L(e.ritual.body)) && (
         <details className="mt-4 group">
           <summary className="cursor-pointer list-none text-[0.88rem] font-medium text-[var(--c-primary)] underline-offset-4 hover:underline">

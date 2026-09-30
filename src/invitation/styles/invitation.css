@@ -36,17 +36,17 @@
 .inv[data-dark="true"][data-grain="true"]::after { mix-blend-mode: screen; opacity: 0.04; }
 
 /* ── typography ───────────────────────────────────────────────────────── */
-.inv-display { font-family: var(--f-heading); font-weight: 400; font-size: clamp(3.4rem, 15vw, 9.5rem); line-height: 0.92; letter-spacing: -0.02em; }
-.inv-h2 { font-family: var(--f-heading); font-weight: 400; font-size: clamp(2.2rem, 8.5vw, 4.6rem); line-height: 1.02; letter-spacing: -0.012em; }
-.inv-h3 { font-family: var(--f-heading); font-weight: 400; font-size: clamp(1.5rem, 5vw, 2.1rem); line-height: 1.12; }
-.inv-h4 { font-family: var(--f-heading); font-weight: 500; font-size: 1.28rem; line-height: 1.2; }
-.inv-script { font-family: var(--f-script); font-weight: 400; line-height: 1.05; }
-.inv-eyebrow { font-family: var(--f-body); font-weight: 500; font-size: 0.72rem; line-height: 1.2; letter-spacing: 0.34em; text-transform: uppercase; color: var(--c-primary); }
+.inv-display { font-family: var(--f-heading); font-weight: 700; font-size: clamp(3rem, 13vw, 8rem); line-height: 0.98; letter-spacing: -0.04em; text-wrap: balance; }
+.inv-h2 { font-family: var(--f-heading); font-weight: 650; font-size: clamp(2rem, 7.5vw, 4rem); line-height: 1.06; letter-spacing: -0.03em; text-wrap: balance; }
+.inv-h3 { font-family: var(--f-heading); font-weight: 600; font-size: clamp(1.4rem, 4.6vw, 1.9rem); line-height: 1.15; letter-spacing: -0.02em; }
+.inv-h4 { font-family: var(--f-heading); font-weight: 600; font-size: 1.2rem; line-height: 1.25; letter-spacing: -0.01em; }
+.inv-script { font-family: var(--f-script); font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; }
+.inv-eyebrow { font-family: var(--f-body); font-weight: 500; font-size: 0.72rem; line-height: 1.2; letter-spacing: 0.2em; text-transform: uppercase; color: var(--c-primary); }
 .inv-lede { font-size: clamp(1.05rem, 3.4vw, 1.25rem); line-height: 1.7; color: var(--c-muted); max-width: 38rem; }
 .inv-body { color: var(--c-text); }
 .inv-muted { color: var(--c-muted); }
 .inv-num { font-variant-numeric: lining-nums tabular-nums; font-family: var(--f-heading); }
-.inv-italic { font-style: italic; }
+.inv-italic { font-style: normal; font-weight: 300; }
 
 /* Local-language typography: Malayalam and other Indic scripts need taller lines, no tracking,
    no uppercasing (tracking breaks conjunct letters). */

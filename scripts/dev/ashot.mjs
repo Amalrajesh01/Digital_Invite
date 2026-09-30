@@ -5,7 +5,7 @@ const who = args[0];
 const width = Number(args[1]), height = Number(args[2]);
 const flags = args.filter((a) => a.startsWith("--"));
 const pairs = args.slice(3).filter((a) => !a.startsWith("--"));
-const creds = { admin: ["admin@aoire.in", "ChangeMe-Now-123"], luxury: ["luxury.client@example.com", "Demo-Client-123"], signature: ["signature.client@example.com", "Demo-Client-123"] }[who];
+const creds = { admin: ["admin@stackbridgelab.com", "ChangeMe-Now-123"], luxury: ["luxury.client@example.com", "Demo-Client-123"], signature: ["signature.client@example.com", "Demo-Client-123"] }[who];
 const base = process.env.BASE ?? "http://localhost:3000";
 const opt = (n) => flags.find((a) => a.startsWith(`--${n}=`))?.split("=").slice(1).join("=");
 const browser = await chromium.launch();

@@ -117,7 +117,7 @@ export function LoginForm({ next, showDemoHint }: { next?: string; showDemoHint:
         <div className="mt-8 rounded-md border border-dashed border-rule-strong p-4 text-[13px] text-muted">
           <p className="eyebrow mb-2">Demo accounts (development)</p>
           <p>
-            Super Admin — <code>admin@aoire.in</code> / <code>ChangeMe-Now-123</code>
+            Super Admin — <code>admin@stackbridgelab.com</code> / <code>ChangeMe-Now-123</code>
           </p>
           <p className="mt-1">
             Luxury client — <code>luxury.client@example.com</code> / <code>Demo-Client-123</code>

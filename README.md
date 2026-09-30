@@ -1,4 +1,6 @@
-# Aoire Invites
+# StackBridge Invites
+
+_A product of [StackBridge Labs](https://www.stackbridgelab.com) — built by developers for the world._
 
 **Invite → Experience → Remember.** A multi-tenant SaaS for premium digital wedding invitations, sold at
 ₹2,000–₹10,000 per wedding. One invitation engine, three packages (Essential / Signature / Luxury) that differ
@@ -28,7 +30,7 @@ migrations and the same code.
 | Landing page | `/` |
 | Demo invitation (Luxury, illustrated, EN + ML) | `/invite/meenakshi-and-aravind` |
 | Other demos | `/invite/demo-cinematic`, `/invite/demo-signature`, `/invite/demo-essential` |
-| Super Admin studio | `/login` → `admin@aoire.in` / `ChangeMe-Now-123` (set `SEED_ADMIN_PASSWORD`) |
+| Super Admin studio | `/login` → `admin@stackbridgelab.com` / `ChangeMe-Now-123` (set `SEED_ADMIN_PASSWORD`) |
 | Client dashboards | `luxury.client@example.com`, `signature.client@example.com` / `Demo-Client-123` |
 | Visual editor | `/editor/{weddingId}` (button on every wedding) |
 | Projector photo wall | `/wall/meenakshi-and-aravind` |
@@ -157,17 +159,17 @@ Health probe for uptime monitors: `GET /api/health`.
 
 This is how the reference server runs it; templates are in `deploy/`.
 
-1. Install Node 22, create a database and role (`createdb -O aoire_user aoire_invites`).
-2. Copy the source to `/home/deploy/apps/aoire-invites`, then create `.env.production` from
+1. Install Node 22, create a database and role (`createdb -O stackbridge_user stackbridge_invites`).
+2. Copy the source to `/home/deploy/apps/stackbridge-invites`, then create `.env.production` from
    `deploy/env.production.example` (`chmod 600`; generate `APP_SECRET`, `CRON_SECRET` and a strong `SEED_ADMIN_PASSWORD`).
 3. `npm ci && set -a && . ./.env.production && set +a && npx next build && npm run db:migrate && npm run db:seed`
-4. `cp deploy/aoire-invites.service /etc/systemd/system/ && systemctl enable --now aoire-invites`
-5. `cp deploy/nginx-aoire-invites.conf /etc/nginx/sites-available/aoire-invites`, symlink into `sites-enabled`,
+4. `cp deploy/stackbridge-invites.service /etc/systemd/system/ && systemctl enable --now stackbridge-invites`
+5. `cp deploy/nginx-stackbridge-invites.conf /etc/nginx/sites-available/stackbridge-invites`, symlink into `sites-enabled`,
    `nginx -t && systemctl reload nginx`, and open the port in the firewall. The nginx block must forward
    `Host $http_host` (with the port) or Next.js rejects sign-in as a cross-origin request.
 6. Daily job: `30 2 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://127.0.0.1:8104/api/cron`.
 
-**Update:** upload the new source, `npm ci`, rebuild, `systemctl restart aoire-invites`, and `npm run db:migrate` if the schema changed.
+**Update:** upload the new source, `npm ci`, rebuild, `systemctl restart stackbridge-invites`, and `npm run db:migrate` if the schema changed.
 
 **Switch media to AWS S3:** create a private bucket and an IAM user limited to it, set `STORAGE_DRIVER=s3`,
 `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` (leave `S3_ENDPOINT` empty for AWS), run

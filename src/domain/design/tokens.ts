@@ -65,55 +65,34 @@ function stripUndefined<T extends object>(obj: T): T {
   return Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== undefined)) as T;
 }
 
-/** Fonts the platform loads on demand (Google Fonts, SIL OFL). Keep the list curated and premium. */
+/** Fonts the platform loads on demand (Google Fonts, SIL OFL). Sans-serif only: Inter is the house typeface. */
 export const FONT_CHOICES = {
-  heading: [
-    "Cormorant Garamond", "Playfair Display", "Fraunces", "Bodoni Moda", "Cinzel", "Italiana",
-    "Gilda Display", "DM Serif Display", "Instrument Serif", "Marcellus", "Libre Caslon Display",
-  ],
-  body: ["Jost", "Hanken Grotesk", "Manrope", "Lora", "Mulish", "Karla", "DM Sans", "Work Sans"],
-  script: ["Pinyon Script", "Great Vibes", "Allura", "Playball", "Parisienne", "Italianno", "Mr De Haviland"],
+  heading: ["Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Outfit", "Poppins", "Work Sans", "Hanken Grotesk"],
+  body: ["Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Work Sans", "Hanken Grotesk", "Mulish", "Karla"],
+  script: ["Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Outfit", "Poppins"],
 } as const;
 
 export const RADIUS_PX: Record<ThemeTokens["radius"], string> = { none: "0px", soft: "4px", round: "14px", pill: "999px" };
 
 const WEIGHTS: Record<string, string> = {
-  "Cormorant Garamond": "ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500",
-  "Playfair Display": "ital,wght@0,400;0,500;0,600;1,400;1,500",
-  "Fraunces": "ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400",
-  "Bodoni Moda": "ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400",
-  "Cinzel": "wght@400;500;600",
-  "Italiana": "",
-  "Gilda Display": "",
-  "DM Serif Display": "ital@0;1",
-  "Instrument Serif": "ital@0;1",
-  "Marcellus": "",
-  "Libre Caslon Display": "",
-  "Jost": "wght@300;400;500;600",
-  "Hanken Grotesk": "wght@300;400;500;600",
-  "Manrope": "wght@300;400;500;600",
-  "Lora": "ital,wght@0,400;0,500;1,400",
-  "Mulish": "wght@300;400;500;600",
-  "Karla": "wght@300;400;500;600",
-  "DM Sans": "opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600",
-  "Work Sans": "wght@300;400;500;600",
-  "Pinyon Script": "",
-  "Great Vibes": "",
-  "Allura": "",
-  "Playball": "",
-  "Parisienne": "",
-  "Italianno": "",
-  "Mr De Haviland": "",
-  "Noto Serif Malayalam": "wght@300;400;500;600",
-  "Noto Sans Malayalam": "wght@300;400;500;600",
-  "Manjari": "wght@100;400;700",
-  "Noto Serif Tamil": "wght@300;400;500;600",
-  "Noto Serif Telugu": "wght@300;400;500;600",
-  "Noto Serif Kannada": "wght@300;400;500;600",
-  "Noto Serif Devanagari": "wght@300;400;500;600",
-  "Noto Serif Bengali": "wght@300;400;500;600",
-  "Noto Serif Gujarati": "wght@300;400;500;600",
-  "Noto Serif Gurmukhi": "wght@300;400;500;600",
+  "Inter": "opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800",
+  "Manrope": "wght@300;400;500;600;700",
+  "Plus Jakarta Sans": "wght@300;400;500;600;700",
+  "Outfit": "wght@300;400;500;600;700",
+  "Poppins": "wght@300;400;500;600;700",
+  "DM Sans": "opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700",
+  "Work Sans": "wght@300;400;500;600;700",
+  "Hanken Grotesk": "wght@300;400;500;600;700",
+  "Mulish": "wght@300;400;500;600;700",
+  "Karla": "wght@300;400;500;600;700",
+  "Noto Sans Malayalam": "wght@300;400;500;600;700",
+  "Noto Sans Tamil": "wght@300;400;500;600;700",
+  "Noto Sans Telugu": "wght@300;400;500;600;700",
+  "Noto Sans Kannada": "wght@300;400;500;600;700",
+  "Noto Sans Devanagari": "wght@300;400;500;600;700",
+  "Noto Sans Bengali": "wght@300;400;500;600;700",
+  "Noto Sans Gujarati": "wght@300;400;500;600;700",
+  "Noto Sans Gurmukhi": "wght@300;400;500;600;700",
   "Noto Nastaliq Urdu": "wght@400;500;600",
 };
 

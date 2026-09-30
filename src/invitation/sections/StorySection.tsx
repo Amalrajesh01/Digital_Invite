@@ -178,7 +178,7 @@ function VoiceStory() {
         {playing ? <Pause className="size-4" /> : <Play className="size-4" />} {t("story.listen")}
       </button>
       <audio ref={ref} src={m.url} preload="none" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)} />
-      {L(v.transcript) && <p className="inv-muted mt-6 whitespace-pre-line text-[0.98rem] italic leading-[1.8]">{L(v.transcript)}</p>}
+      {L(v.transcript) && <p className="inv-muted mt-6 whitespace-pre-line text-[0.98rem] leading-[1.8]">{L(v.transcript)}</p>}
     </Reveal>
   );
 }

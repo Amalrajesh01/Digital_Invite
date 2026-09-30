@@ -18,10 +18,10 @@ export function themeStyle(tokens: ThemeTokens, secondaryLocale: string | null):
     "--c-on-primary": c.onPrimary,
     "--c-inverse": c.inverse,
     "--c-on-inverse": c.onInverse,
-    "--f-heading": `"${tokens.fonts.heading}", "Iowan Old Style", Georgia, serif`,
+    "--f-heading": `"${tokens.fonts.heading}", system-ui, -apple-system, "Segoe UI", sans-serif`,
     "--f-body": `"${tokens.fonts.body}", system-ui, sans-serif`,
-    "--f-script": `"${tokens.fonts.script}", "Snell Roundhand", cursive`,
-    "--f-local": ml ? `"${ml}", "${tokens.fonts.heading}", serif` : `"${tokens.fonts.heading}", serif`,
+    "--f-script": `"${tokens.fonts.script}", system-ui, sans-serif`,
+    "--f-local": ml ? `"${ml}", "${tokens.fonts.heading}", sans-serif` : `"${tokens.fonts.heading}", sans-serif`,
     "--r": RADIUS_PX[tokens.radius],
     "--motion": tokens.motion === "calm" ? "0.6" : tokens.motion === "rich" ? "1.25" : "1",
   };

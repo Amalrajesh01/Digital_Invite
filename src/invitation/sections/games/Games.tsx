@@ -240,7 +240,7 @@ export function Fortune({ name, onDone }: { name: string; onDone: (r: PlayResult
         </svg>
       </button>
       {!cracked && <p className="inv-muted mt-4">{t("games.crack")}</p>}
-      {res && <div className="mx-auto mt-8 max-w-sm border border-dashed border-[var(--c-accent)] bg-[var(--c-surface)] p-6 [animation:inv-rise_.8s_var(--ease)]"><p className="text-[1.15rem] italic leading-[1.7]" style={{ fontFamily: "var(--f-heading)" }}>“{res.detail?.label}”</p></div>}
+      {res && <div className="mx-auto mt-8 max-w-sm border border-dashed border-[var(--c-accent)] bg-[var(--c-surface)] p-6 [animation:inv-rise_.8s_var(--ease)]"><p className="text-[1.15rem] leading-[1.7]" style={{ fontFamily: "var(--f-heading)" }}>“{res.detail?.label}”</p></div>}
       {error && <p className="inv-error mt-4" role="alert">{error}</p>}
     </div>
   );

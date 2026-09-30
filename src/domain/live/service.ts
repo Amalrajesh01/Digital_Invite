@@ -86,7 +86,9 @@ export async function livePayload(weddingId: string, guest: GuestContext | null)
 }
 
 // ── QR pass & check-in ─────────────────────────────────────────────────────
-export const PASS_PREFIX = "AOIRE1:";
+export const PASS_PREFIX = "SBL1:";
+/** Passes issued before the rebrand still scan. */
+const LEGACY_PASS_PREFIX = "AOIRE1:";
 
 export async function ensurePass(weddingId: string, guestId: string): Promise<string> {
   const db = await getDb();
@@ -113,7 +115,7 @@ export async function getGuestPass(ctx: GuestContext) {
 
 export function parsePassPayload(input: string): string | null {
   const t = input.trim();
-  const code = t.startsWith(PASS_PREFIX) ? t.slice(PASS_PREFIX.length) : t;
+  const code = t.startsWith(PASS_PREFIX) ? t.slice(PASS_PREFIX.length) : t.startsWith(LEGACY_PASS_PREFIX) ? t.slice(LEGACY_PASS_PREFIX.length) : t;
   return /^[A-Z0-9]{8,16}$/.test(code.toUpperCase()) ? code.toUpperCase() : null;
 }
 

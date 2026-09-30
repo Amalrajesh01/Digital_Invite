@@ -115,7 +115,7 @@ export function ThemeStep({ themes, hidePreview }: { themes: ThemeCard[]; hidePr
             <div className="grid gap-4 sm:grid-cols-3">
               <SelectField label="Headings font" value={merged.fonts.heading} onChange={(e) => setFont("heading", e.target.value)}>{FONT_CHOICES.heading.map((f) => (<option key={f}>{f}</option>))}</SelectField>
               <SelectField label="Body font" value={merged.fonts.body} onChange={(e) => setFont("body", e.target.value)}>{FONT_CHOICES.body.map((f) => (<option key={f}>{f}</option>))}</SelectField>
-              <SelectField label="Script font (names, accents)" value={merged.fonts.script} onChange={(e) => setFont("script", e.target.value)}>{FONT_CHOICES.script.map((f) => (<option key={f}>{f}</option>))}</SelectField>
+              <SelectField label="Accent font (names)" value={merged.fonts.script} onChange={(e) => setFont("script", e.target.value)}>{FONT_CHOICES.script.map((f) => (<option key={f}>{f}</option>))}</SelectField>
             </div>
             <div className="grid gap-4 sm:grid-cols-3">
               <SelectField label="Corners" value={merged.radius} onChange={(e) => set({ radius: e.target.value })}><option value="none">Square</option><option value="soft">Soft</option><option value="round">Rounded</option><option value="pill">Pill</option></SelectField>

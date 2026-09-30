@@ -40,6 +40,6 @@ export const env = {
     return process.env.CRON_SECRET || "";
   },
   get emailFrom() {
-    return process.env.EMAIL_FROM || "Aoire Invites <invites@example.com>";
+    return process.env.EMAIL_FROM || "StackBridge Invites <invites@example.com>";
   },
 };

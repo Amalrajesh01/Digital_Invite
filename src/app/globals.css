@@ -1,24 +1,24 @@
 @import "tailwindcss";
 
 /* ──────────────────────────────────────────────────────────────────────────
-   Aoire Invites — dashboard design system
-   Ivory paper, ink, oxblood and brass. Editorial serif for headings, a quiet sans for UI.
+   StackBridge Invites — dashboard design system
+   Cool paper, deep navy ink and StackBridge blue. Inter throughout.
    (The public invitation has its own theme tokens: see src/invitation/styles/invitation.css)
    ────────────────────────────────────────────────────────────────────────── */
 :root {
-  --paper: #f7f3ec;
-  --paper-2: #efe9dd;
-  --surface: #fffdf9;
-  --ink: #1c1a17;
-  --ink-2: #3a362f;
-  --muted: #6d675c;
-  --rule: #ded6c6;
-  --rule-strong: #c9bfab;
-  --accent: #7a2432; /* oxblood */
+  --paper: #f5f7fb;
+  --paper-2: #e9eef7;
+  --surface: #ffffff;
+  --ink: #0b1b35;
+  --ink-2: #1f2d4a;
+  --muted: #667085;
+  --rule: #dbe2ee;
+  --rule-strong: #c0cbdf;
+  --accent: #3056d3; /* StackBridge blue */
   --accent-ink: #ffffff;
-  --accent-soft: #f1e3e3;
-  --brass: #a07b2a;
-  --brass-soft: #f3ead2;
+  --accent-soft: #e6ecff;
+  --brass: #4a6cf7; /* highlight blue (kept as the "premium" token) */
+  --brass-soft: #eaefff;
   --ok: #2f6b4f;
   --ok-soft: #e3efe8;
   --warn: #9a6a10;
@@ -30,8 +30,8 @@
   --radius-sm: 3px;
   --radius: 6px;
   --radius-lg: 10px;
-  --shadow-1: 0 1px 0 rgba(28, 26, 23, 0.04), 0 1px 2px rgba(28, 26, 23, 0.06);
-  --shadow-2: 0 10px 30px -12px rgba(28, 26, 23, 0.25), 0 2px 6px rgba(28, 26, 23, 0.06);
+  --shadow-1: 0 1px 0 rgba(11, 27, 53, 0.04), 0 1px 2px rgba(11, 27, 53, 0.07);
+  --shadow-2: 0 10px 30px -12px rgba(11, 27, 53, 0.22), 0 2px 6px rgba(11, 27, 53, 0.06);
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --dur-1: 120ms;
   --dur-2: 220ms;
@@ -60,7 +60,7 @@
   --color-info: var(--info);
   --color-info-soft: var(--info-soft);
   --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-display), "Iowan Old Style", Georgia, serif;
+  --font-display: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius);
   --radius-lg: var(--radius-lg);
@@ -96,12 +96,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Type scale — display serif for headings, restrained sizes */
+/* Type scale — Inter, tight tracking for headings */
 .display {
-  font-family: var(--font-display), "Iowan Old Style", Georgia, serif;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  line-height: 1.08;
+  font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 }
 .eyebrow {
   font-size: 11px;
@@ -219,7 +219,7 @@ body {
 .btn-danger {
   background: transparent;
   color: var(--bad);
-  border-color: #dcb2ad;
+  border-color: #f0b9b3;
 }
 .btn-danger:hover:not(:disabled) {
   background: var(--bad-soft);
@@ -261,7 +261,7 @@ body {
 .chip-warn { background: var(--warn-soft); color: var(--warn); }
 .chip-bad { background: var(--bad-soft); color: var(--bad); }
 .chip-info { background: var(--info-soft); color: var(--info); }
-.chip-brass { background: var(--brass-soft); color: #7d5f16; }
+.chip-brass { background: var(--brass-soft); color: var(--accent); }
 .chip-accent { background: var(--accent-soft); color: var(--accent); }
 
 /* Ledger tables — hairlines, no boxes */
@@ -293,7 +293,7 @@ body {
   transition: background var(--dur-1) var(--ease);
 }
 .ledger tbody tr:hover {
-  background: rgba(239, 233, 221, 0.55);
+  background: rgba(233, 238, 247, 0.6);
 }
 
 /* Skeleton */
@@ -302,7 +302,7 @@ body {
   to { background-position: -200% 0; }
 }
 .skeleton {
-  background: linear-gradient(90deg, var(--paper-2) 25%, #f7f3ec 50%, var(--paper-2) 75%);
+  background: linear-gradient(90deg, var(--paper-2) 25%, #f5f7fb 50%, var(--paper-2) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.6s linear infinite;
   border-radius: var(--radius);

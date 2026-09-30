@@ -49,8 +49,8 @@ const icsStamp = (d: Date) => d.toISOString().replace(/[-:]/g, "").replace(/\.\d
 /** Standards-compliant .ics so the event lands in any calendar app. */
 export function buildIcs(opts: { id: string; title: string; description: string; location: string; start: Date; end: Date; url: string }): string {
   return [
-    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Aoire Invites//EN", "CALSCALE:GREGORIAN", "BEGIN:VEVENT",
-    `UID:${opts.id}@aoire-invites`, `DTSTAMP:${icsStamp(new Date())}`, `DTSTART:${icsStamp(opts.start)}`, `DTEND:${icsStamp(opts.end)}`,
+    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//StackBridge Labs//StackBridge Invites//EN", "CALSCALE:GREGORIAN", "BEGIN:VEVENT",
+    `UID:${opts.id}@stackbridge-invites`, `DTSTAMP:${icsStamp(new Date())}`, `DTSTART:${icsStamp(opts.start)}`, `DTEND:${icsStamp(opts.end)}`,
     `SUMMARY:${icsEscape(opts.title)}`, `DESCRIPTION:${icsEscape(opts.description)}`, `LOCATION:${icsEscape(opts.location)}`, `URL:${opts.url}`,
     "END:VEVENT", "END:VCALENDAR",
   ].join("\r\n");

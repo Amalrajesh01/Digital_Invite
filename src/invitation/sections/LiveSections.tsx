@@ -46,7 +46,7 @@ export function LiveScheduleSection({ section }: { section: SectionConfig }) {
             <h3 className="inv-h2">{L(current.name)}</h3>
             <p className="inv-num mt-3 text-xl">{fmtRange(current, locale)}</p>
             {venueName(current) && <p className="mt-1 opacity-80">{venueName(current)}</p>}
-            {live?.note && <p className="mt-5 border-t border-current/15 pt-4 italic opacity-90">{live.note}</p>}
+            {live?.note && <p className="mt-5 border-t border-current/15 pt-4 opacity-90">{live.note}</p>}
           </Reveal>
         ) : (
           <p className="text-center text-lg opacity-80">{t("live.none")}</p>
@@ -87,7 +87,7 @@ export function LiveUpdatesSection({ section }: { section: SectionConfig }) {
     <Shell section={section} wide={false}>
       <SectionHead eyebrow={copy.eyebrow} title={copy.title || undefined} className="!mb-8" />
       {updates.length === 0 ? (
-        <p className="text-center inv-muted italic">{t("live.none")}</p>
+        <p className="text-center inv-muted">{t("live.none")}</p>
       ) : (
         <ol className="space-y-4" aria-live="polite">
           {updates.map((u) => (
@@ -128,7 +128,7 @@ export function PhotoWallSection({ section }: { section: SectionConfig }) {
       <SectionHead eyebrow={copy.eyebrow} title={copy.title || undefined} />
       <div className="mb-8 text-center"><a href="#s-guestupload" className="inv-btn inv-btn-ghost inv-btn-sm"><Camera className="size-3.5" /> {t("wall.add")}</a></div>
       {list.length === 0 ? (
-        <p className="text-center opacity-75 italic">{t("wall.empty")}</p>
+        <p className="text-center opacity-75">{t("wall.empty")}</p>
       ) : (
         <ul className="columns-2 gap-3 md:columns-4 [&>li]:mb-3" aria-live="polite">
           {list.map((p) => (
@@ -160,7 +160,7 @@ export function QrPassSection({ section }: { section: SectionConfig }) {
   const real = usePass();
   const g = view.guest;
   // Preview shows a realistic sample pass so Super Admin can design around it.
-  const pass: PassData | null = real ?? (g?.isPreview ? { code: "PREVIEW2027", payload: "AOIRE1:PREVIEW2027", seats: g.seats, name: g.name, checkedIn: [] } : null);
+  const pass: PassData | null = real ?? (g?.isPreview ? { code: "PREVIEW2027", payload: "SBL1:PREVIEW2027", seats: g.seats, name: g.name, checkedIn: [] } : null);
   const qr = useQrDataUrl(pass?.payload, { width: 480, dark: "#141210" });
   const events = sortEvents(view.doc.events);
   const main = events.find((e) => e.isMain) ?? events[0];
@@ -170,10 +170,10 @@ export function QrPassSection({ section }: { section: SectionConfig }) {
     c.width = 900; c.height = 1300;
     const x = c.getContext("2d")!;
     x.fillStyle = "#faf6ee"; x.fillRect(0, 0, 900, 1300);
-    x.strokeStyle = "#a07b2a"; x.lineWidth = 4; x.strokeRect(30, 30, 840, 1240);
+    x.strokeStyle = "#3056d3"; x.lineWidth = 4; x.strokeRect(30, 30, 840, 1240);
     x.fillStyle = "#1c1a17"; x.textAlign = "center";
     x.font = "600 34px system-ui"; x.fillText(view.wedding.title.toUpperCase(), 450, 130);
-    x.font = "italic 60px Georgia"; x.fillText(pass.name, 450, 260);
+    x.font = "600 56px Inter, system-ui, sans-serif"; x.fillText(pass.name, 450, 260);
     x.font = "34px system-ui"; x.fillText(pass.seats === 1 ? t("pass.seat") : t("pass.seats", { n: pass.seats }), 450, 320);
     const img = new Image(); img.src = qr; await img.decode();
     x.drawImage(img, 170, 380, 560, 560);

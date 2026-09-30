@@ -12,7 +12,7 @@ function Blurb({ p, role, align = "left" }: { p: Person; role: string; align?: "
     <div className={cn("mt-6", align === "center" && "text-center")}>
       <p className="inv-eyebrow">{role}</p>
       <h3 className="inv-h2 mt-2 !text-[clamp(2rem,7vw,3.2rem)]">{L(p.fullName) || L(p.name)}</h3>
-      {L(p.parents) && <p className="inv-muted mt-2 text-[0.95rem] italic">{L(p.parents)}</p>}
+      {L(p.parents) && <p className="inv-muted mt-2 text-[0.95rem]">{L(p.parents)}</p>}
       {L(p.bio) && <p className={cn("mt-4 max-w-md text-[1.02rem] leading-[1.8]", align === "center" && "mx-auto")}>{L(p.bio)}</p>}
     </div>
   );
@@ -24,7 +24,7 @@ function Quote() {
   if (!L(q.text)) return null;
   return (
     <Reveal className="mx-auto mt-20 max-w-2xl text-center md:mt-28">
-      <p className="inv-h3 italic !leading-[1.35]" style={{ fontFamily: "var(--f-heading)" }}>“{L(q.text)}”</p>
+      <p className="inv-h3 !leading-[1.35]" style={{ fontFamily: "var(--f-heading)" }}>“{L(q.text)}”</p>
       {L(q.author) && <p className="inv-eyebrow mt-5">— {L(q.author)}</p>}
     </Reveal>
   );

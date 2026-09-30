@@ -18,7 +18,7 @@ export default async function NotificationsPage() {
   return (
     <>
       <PageHeader eyebrow="System" title="Notifications" lede="Every email and WhatsApp message the platform has prepared. WhatsApp messages open in your own WhatsApp — the app never sends from a number you did not choose." actions={<QueueButton queued={count("QUEUED")} />} />
-      {!env.resendKey && <p role="status" className="mb-6 rounded-md bg-brass-soft px-4 py-3 text-[14px] text-[#6b5313]">No email provider is connected (RESEND_API_KEY is empty), so emails are recorded here as skipped instead of being delivered. Add the key and they will send.</p>}
+      {!env.resendKey && <p role="status" className="mb-6 rounded-md bg-brass-soft px-4 py-3 text-[14px] text-[#1f3f9e]">No email provider is connected (RESEND_API_KEY is empty), so emails are recorded here as skipped instead of being delivered. Add the key and they will send.</p>}
       <Ledger items={[{ label: "Sent", value: count("SENT") }, { label: "Waiting", value: count("QUEUED") }, { label: "Failed", value: count("FAILED") }, { label: "Skipped", value: count("SKIPPED") }]} className="mb-8" />
       {rows.length === 0 ? <EmptyState title="Nothing sent yet" body="Invitation emails, reminders and client access links will appear here." /> : (
         <div className="overflow-x-auto">

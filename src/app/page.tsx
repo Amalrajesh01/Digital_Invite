@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
-import { brand } from "@/lib/brand";
+import { brand, contactHref } from "@/lib/brand";
+import { Logo } from "@/components/brand/Logo";
 import { env } from "@/lib/env";
 import { listPackages } from "@/domain/packages/service";
 import { PACKAGE_DEFAULTS } from "@/domain/packages/catalog";
@@ -40,7 +41,7 @@ export default async function Home() {
     <div className="bg-paper text-ink">
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-ink focus:px-4 focus:py-2 focus:text-paper">Skip to content</a>
       <header className="mx-auto flex max-w-[76rem] items-center justify-between px-5 py-6 sm:px-8">
-        <Link href="/" className="display text-[30px] leading-none">{brand.short}<span className="ml-1.5 text-[15px] not-italic text-muted" style={{ fontFamily: "var(--font-ui)" }}>Invites</span></Link>
+        <Link href="/" aria-label={brand.name} className="flex items-center gap-3"><Logo height={40} /><span className="hidden border-l border-rule-strong pl-3 text-[13px] font-semibold text-muted sm:block">Invites</span></Link>
         <nav aria-label="Main" className="flex items-center gap-1 text-[14.5px]">
           <a href="#packages" className="btn btn-ghost btn-sm hidden sm:inline-flex">Packages</a>
           <a href="#how" className="btn btn-ghost btn-sm hidden sm:inline-flex">How it works</a>
@@ -52,7 +53,7 @@ export default async function Home() {
         <section className="mx-auto grid max-w-[76rem] items-center gap-12 px-5 pb-20 pt-8 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:pb-28 lg:pt-14">
           <div>
             <p className="eyebrow">{brand.tagline}</p>
-            <h1 className="display mt-5 text-[clamp(44px,7vw,84px)] leading-[0.98]">The invitation your guests <em className="not-italic text-accent">keep</em>.</h1>
+            <h1 className="display mt-5 text-[clamp(44px,7vw,84px)] leading-[0.98]">The invitation your guests <span className="text-accent">keep</span>.</h1>
             <p className="lede mt-6 max-w-xl">A wedding invitation that opens like an envelope, greets every guest by name, gathers RSVPs and photographs on the day — and quietly becomes the family’s memory book. In English and in Malayalam, or the language your family speaks.</p>
             <div className="mt-9 flex flex-wrap items-center gap-3">
               <Link href={DEMO} className="btn btn-accent btn-lg">See a real invitation <ArrowRight className="size-4" aria-hidden /></Link>
@@ -64,7 +65,7 @@ export default async function Home() {
           <div className="relative mx-auto w-full max-w-[22rem]">
             <div aria-hidden className="absolute -inset-6 -z-10 rounded-[3rem] bg-[radial-gradient(circle_at_50%_30%,var(--brass-soft),transparent_70%)]" />
             <div className="rounded-[2.6rem] border-[9px] border-ink bg-ink shadow-[0_40px_80px_-30px_rgba(28,26,23,.55)]">
-              <iframe title="Live demo of a Aoire invitation" src={DEMO} loading="lazy" className="block aspect-[9/19] w-full rounded-[1.9rem] bg-paper" />
+              <iframe title="Live demo of a StackBridge invitation" src={DEMO} loading="lazy" className="block aspect-[9/19] w-full rounded-[1.9rem] bg-paper" />
             </div>
           </div>
         </section>
@@ -93,8 +94,8 @@ export default async function Home() {
           </div>
           <div className="rounded-lg border border-rule-strong bg-surface p-8 sm:p-10" lang="ml">
             <p className="text-[13px] uppercase tracking-[0.2em] text-muted" lang="en">Sample</p>
-            <p className="mt-5 text-[34px] leading-[1.5]" style={{ fontFamily: "'Noto Serif Malayalam', var(--font-display), serif" }}>മീനാക്ഷി &amp; അരവിന്ദ്</p>
-            <p className="mt-3 text-[20px] leading-[1.9] text-ink-2" style={{ fontFamily: "'Noto Serif Malayalam', serif" }}>ഞങ്ങളുടെ വിവാഹത്തിൽ പങ്കെടുത്ത് അനുഗ്രഹിക്കാൻ സ്നേഹപൂർവ്വം ക്ഷണിക്കുന്നു.</p>
+            <p className="mt-5 text-[34px] leading-[1.5]" style={{ fontFamily: "'Noto Sans Malayalam', var(--font-ui), sans-serif" }}>മീനാക്ഷി &amp; അരവിന്ദ്</p>
+            <p className="mt-3 text-[20px] leading-[1.9] text-ink-2" style={{ fontFamily: "'Noto Sans Malayalam', sans-serif" }}>ഞങ്ങളുടെ വിവാഹത്തിൽ പങ്കെടുത്ത് അനുഗ്രഹിക്കാൻ സ്നേഹപൂർവ്വം ക്ഷണിക്കുന്നു.</p>
           </div>
         </section>
 
@@ -114,7 +115,7 @@ export default async function Home() {
                   <ul className="mb-8 mt-6 space-y-3 text-[15px]">
                     {(HIGHLIGHTS[p.key] ?? []).map((h) => (<li key={h} className="flex gap-3"><Check className="mt-0.5 size-4 shrink-0 text-brass" aria-hidden /><span>{h}</span></li>))}
                   </ul>
-                  <a href={`mailto:${brand.supportEmail}?subject=${encodeURIComponent(`${p.name} wedding invitation`)}`} className={`btn btn-lg mt-auto ${p.key === "SIGNATURE" ? "btn-accent" : "btn-quiet"}`}>Ask about {p.name}</a>
+                  <a href={contactHref(`${p.name} wedding invitation`)} target="_blank" rel="noopener noreferrer" className={`btn btn-lg mt-auto ${p.key === "SIGNATURE" ? "btn-accent" : "btn-quiet"}`}>Ask about {p.name}</a>
                 </li>
               ))}
             </ul>
@@ -141,14 +142,21 @@ export default async function Home() {
           <div className="mx-auto max-w-[76rem] px-5 py-20 text-center sm:px-8">
             <h2 className="display text-[clamp(34px,5vw,60px)]">Let’s make yours.</h2>
             <p className="mx-auto mt-4 max-w-xl text-paper/75">Tell us about the wedding and we will send a private preview with your names on it.</p>
-            <a href={`mailto:${brand.supportEmail}?subject=${encodeURIComponent("I’d like a wedding invitation")}`} className="btn btn-accent btn-lg mt-8">Write to us</a>
+            <a href={contactHref("I’d like a wedding invitation")} target="_blank" rel="noopener noreferrer" className="btn btn-accent btn-lg mt-8">Write to us</a>
           </div>
         </section>
       </main>
 
-      <footer className="mx-auto flex max-w-[76rem] flex-wrap items-center justify-between gap-4 px-5 py-8 text-[13.5px] text-muted sm:px-8">
-        <p>© {new Date().getFullYear()} {brand.name}</p>
-        <p><a className="underline underline-offset-4" href={`mailto:${brand.supportEmail}`}>{brand.supportEmail}</a> · <Link className="underline underline-offset-4" href="/login">Sign in</Link></p>
+      <footer className="border-t border-rule-strong bg-surface">
+        <div className="mx-auto flex max-w-[76rem] flex-wrap items-center justify-between gap-x-8 gap-y-5 px-5 py-9 sm:px-8">
+          <div>
+            <a href={brand.companyUrl} target="_blank" rel="noopener noreferrer" aria-label={brand.company}><Logo height={38} /></a>
+            <p className="mt-3 text-[13.5px] text-muted">© {new Date().getFullYear()} {brand.company}. All rights reserved. {brand.madeBy}.</p>
+          </div>
+          <p className="text-[13.5px] text-muted">
+            <a className="underline underline-offset-4" href={brand.companyUrl} target="_blank" rel="noopener noreferrer">stackbridgelab.com</a> · <a className="underline underline-offset-4" href={contactHref()} target="_blank" rel="noopener noreferrer">Contact</a> · <Link className="underline underline-offset-4" href="/login">Sign in</Link>
+          </p>
+        </div>
       </footer>
     </div>
   );

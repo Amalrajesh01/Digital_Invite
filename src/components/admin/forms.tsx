@@ -57,7 +57,7 @@ export function LText({ label, value, onChange, multiline, rows = 3, hint, place
         {secondary && (
           <div className="relative">
             <Input aria-label={`${label} (${info?.label ?? secondary})`} {...(multiline ? { rows } : {})} lang={secondary} value={v[secondary] ?? ""} maxLength={maxLength} placeholder={placeholderLocal ?? info?.native} onChange={(e) => set(secondary, e.target.value)} className={cn("field-input", multiline && "resize-y leading-loose")} style={{ fontFamily: "var(--font-local), var(--font-ui)" }} />
-            <span aria-hidden className="pointer-events-none absolute right-2.5 top-2 rounded bg-brass-soft px-1.5 py-0.5 text-[10px] font-semibold text-[#7d5f16]">{info?.native ?? secondary.toUpperCase()}</span>
+            <span aria-hidden className="pointer-events-none absolute right-2.5 top-2 rounded bg-brass-soft px-1.5 py-0.5 text-[10px] font-semibold text-accent">{info?.native ?? secondary.toUpperCase()}</span>
           </div>
         )}
       </div>
@@ -146,5 +146,5 @@ export function ListEditor<T>({ items, onChange, render, make, title, addLabel, 
 }
 
 export function Hint({ children }: { children: React.ReactNode }) {
-  return <p className="rounded-md bg-brass-soft/70 px-4 py-3 text-[13.5px] leading-relaxed text-[#6b5313]">{children}</p>;
+  return <p className="rounded-md bg-brass-soft/70 px-4 py-3 text-[13.5px] leading-relaxed text-[#1f3f9e]">{children}</p>;
 }

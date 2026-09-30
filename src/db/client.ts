@@ -10,8 +10,8 @@ interface Holder {
   promise?: Promise<Db>;
   close?: () => Promise<void>;
 }
-const g = globalThis as unknown as { __aoireDb?: Holder };
-const holder: Holder = (g.__aoireDb ??= {});
+const g = globalThis as unknown as { __sblDb?: Holder };
+const holder: Holder = (g.__sblDb ??= {});
 
 async function connect(): Promise<Db> {
   const url = env.databaseUrl;

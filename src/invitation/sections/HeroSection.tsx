@@ -109,7 +109,7 @@ function FullBleed({ section }: { section: SectionConfig }) {
         <div>
           <h1 className="leading-[0.86]">
             <RevealWords as="div" text={h.names.a} className="inv-display !text-[clamp(3.6rem,19vw,12rem)]" delay={200} />
-            <RevealWords as="div" text={`${"&"} ${h.names.b}`} className="inv-display !text-[clamp(3.6rem,19vw,12rem)] italic" delay={420} />
+            <RevealWords as="div" text={`${"&"} ${h.names.b}`} className="inv-display !text-[clamp(3.6rem,19vw,12rem)]" delay={420} />
           </h1>
           <Reveal delay={650} className="mt-8 flex flex-wrap items-end justify-between gap-x-10 gap-y-4 border-t border-white/25 pt-5">
             <div>
@@ -135,14 +135,14 @@ function Split({ section }: { section: SectionConfig }) {
             <RevealWords as="div" text={h.names.a} className="inv-display !text-[clamp(3.8rem,17vw,10.5rem)]" delay={100} />
             <div className="flex items-baseline gap-4">
               <span className="inv-script text-[clamp(2.6rem,10vw,5rem)] text-[var(--c-accent)]" aria-hidden>&amp;</span>
-              <RevealWords as="div" text={h.names.b} className="inv-display !text-[clamp(3.8rem,17vw,10.5rem)] italic" delay={300} />
+              <RevealWords as="div" text={h.names.b} className="inv-display !text-[clamp(3.8rem,17vw,10.5rem)]" delay={300} />
             </div>
           </h1>
           <Reveal delay={450} className="mt-10 grid max-w-xl grid-cols-[auto_1fr] gap-x-8 gap-y-3 border-t border-[var(--c-border)] pt-6">
             <p className="inv-eyebrow self-center">{fmtDate(h.date, h.locale, "weekday")}</p>
             <p className="inv-num text-xl">{fmtDate(h.date, h.locale, "short")}</p>
             {(h.venueName || h.city) && (<><p className="inv-eyebrow self-center">·</p><p className="inv-muted">{[h.venueName, h.city].filter(Boolean).join(", ")}</p></>)}
-            {h.tagline && (<p className="col-span-2 mt-2 max-w-md text-[1.02rem] italic text-[var(--c-muted)]" style={{ fontFamily: "var(--f-heading)" }}>{h.tagline}</p>)}
+            {h.tagline && (<p className="col-span-2 mt-2 max-w-md text-[1.02rem] text-[var(--c-muted)]" style={{ fontFamily: "var(--f-heading)" }}>{h.tagline}</p>)}
           </Reveal>
         </div>
         <div className="order-1 md:order-2 md:col-span-5">
@@ -172,7 +172,7 @@ function Centered({ section }: { section: SectionConfig }) {
           <div className="mx-auto my-7 h-px w-16 bg-[var(--c-accent)]" />
           <p className="inv-num text-[1.2rem] tracking-[0.12em]">{h.dateText}</p>
           {(h.venueName || h.city) && <p className="inv-muted mt-1">{[h.venueName, h.city].filter(Boolean).join(" · ")}</p>}
-          {h.tagline && <p className="inv-lede mx-auto mt-6 italic">{h.tagline}</p>}
+          {h.tagline && <p className="inv-lede mx-auto mt-6">{h.tagline}</p>}
         </Reveal>
         <ScrollCue />
       </div>

@@ -58,15 +58,15 @@ export function WallScreen({ slug, title, inviteUrl, initial }: { slug: string; 
           <div className="relative grid place-items-center p-6 pb-28 sm:p-12 sm:pb-32">
             <img key={current.id} src={current.url} alt={`Photo shared by ${current.by || "a guest"}`} className="max-h-[calc(100dvh-17rem)] max-w-full rounded-[calc(var(--r)+2px)] object-contain shadow-[0_30px_80px_rgba(0,0,0,.45)] [animation:wall-in_.9s_cubic-bezier(.2,.7,.2,1)]" />
           </div>
-          <p key={"by" + current.id} aria-live="polite" className="absolute inset-x-0 bottom-24 text-center text-lg italic opacity-90 sm:bottom-28 sm:text-2xl" style={{ fontFamily: "var(--f-heading)" }}>
-            {fresh === current.id && <span className="mr-3 rounded-full bg-[var(--c-accent)] px-3 py-1 align-middle text-xs font-semibold not-italic tracking-widest text-black">JUST IN</span>}
+          <p key={"by" + current.id} aria-live="polite" className="absolute inset-x-0 bottom-24 text-center text-lg opacity-90 sm:bottom-28 sm:text-2xl" style={{ fontFamily: "var(--f-heading)" }}>
+            {fresh === current.id && <span className="mr-3 rounded-full bg-[var(--c-accent)] px-3 py-1 align-middle text-xs font-semibold tracking-widest text-black">JUST IN</span>}
             {current.by ? `Shared by ${current.by}` : ""}
           </p>
         </>
       ) : (
         <div className="grid place-items-center p-10 text-center">
           <div>
-            <p className="text-5xl opacity-60" aria-hidden>❦</p>
+            <img src="/brand/mark-white.png" alt="" aria-hidden className="mx-auto size-16 object-contain opacity-70" />
             <h1 className="mt-6 text-4xl sm:text-6xl" style={{ fontFamily: "var(--f-heading)" }}>{title}</h1>
             <p className="mx-auto mt-5 max-w-xl text-xl opacity-80">Photos from the celebration will appear here as guests share them. Scan the code to add yours.</p>
           </div>

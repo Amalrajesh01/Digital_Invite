@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { requireUserPage } from "@/lib/session";
 import { listWeddings } from "@/domain/wedding/service";
 import { brand } from "@/lib/brand";
+import { Logo } from "@/components/brand/Logo";
 import { logoutAction } from "@/app/actions/auth";
 import { PackageChip, StatusChip } from "@/components/ui/Chip";
 import { formatDateLong } from "@/lib/time";
@@ -19,10 +20,10 @@ export default async function ClientHome() {
   if (weddings.length === 1) redirect(`/client/${weddings[0].id}`);
   return (
     <main className="mx-auto min-h-dvh max-w-2xl px-6 py-16">
-      <p className="display text-[30px]">{brand.name}</p>
+      <Logo height={44} />
       <h1 className="display mt-10 text-[44px]">Your weddings</h1>
       {weddings.length === 0 ? (
-        <p className="mt-4 text-muted">No weddings are linked to your account yet. Please contact your invitation designer at {brand.supportEmail}.</p>
+        <p className="mt-4 text-muted">No weddings are linked to your account yet. Please contact your invitation designer at {brand.company}.</p>
       ) : (
         <ul className="mt-8 divide-y divide-rule border-y border-rule">
           {weddings.map((w) => (

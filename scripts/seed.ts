@@ -116,7 +116,7 @@ async function seedWedding(admin: AdminActor, spec: DemoSpec) {
 
   // music
   const track = await upload(w.id, art.music, "sandhya-raagam.wav", "MUSIC", ["AUDIO"]);
-  await saveTrack(admin, w.id, { assetId: track.id, title: "Sandhya Raagam", artist: "Aoire Studio (ambient)", isPrimary: true, inPlaylist: true });
+  await saveTrack(admin, w.id, { assetId: track.id, title: "Sandhya Raagam", artist: "StackBridge Studio (ambient)", isPrimary: true, inPlaylist: true });
   if (clipA && clipB) {
     await saveTrack(admin, w.id, { assetId: clipA.id, title: "The Lamp Lullaby", artist: "Demo melody", inPlaylist: true });
     await saveTrack(admin, w.id, { assetId: clipB.id, title: "The Boat Song", artist: "Demo melody", inPlaylist: true });
@@ -222,7 +222,7 @@ async function seedOrders(weddingIds: Record<string, string>) {
   const [{ n }] = await db.select({ n: (await import("drizzle-orm")).sql<number>`count(*)::int` }).from(schema.orders);
   if (n > 0) return;
   const rows: (typeof schema.orders.$inferInsert)[] = [
-    { customerName: "Meenakshi & Aravind (portfolio demo)", customerContact: "solutions@aoire.in", packageKey: "LUXURY", amountInr: 0, status: "FREE_PORTFOLIO", notes: "Portfolio wedding — showcases every Luxury feature.", weddingId: weddingIds.luxury },
+    { customerName: "Meenakshi & Aravind (portfolio demo)", customerContact: "", packageKey: "LUXURY", amountInr: 0, status: "FREE_PORTFOLIO", notes: "Portfolio wedding — showcases every Luxury feature.", weddingId: weddingIds.luxury },
     { customerName: "Portfolio · Signature demo", customerContact: "", packageKey: "SIGNATURE", amountInr: 0, status: "FREE_PORTFOLIO", weddingId: weddingIds.signature },
     { customerName: "Portfolio · Essential demo", customerContact: "", packageKey: "ESSENTIAL", amountInr: 0, status: "FREE_PORTFOLIO", weddingId: weddingIds.essential },
     { customerName: "Enquiry: Nisha & Rohit", customerContact: "+91 90000 11122", packageKey: "SIGNATURE", amountInr: 4999, status: "QUOTED", notes: "Wedding in March. Wants Malayalam + English." },
@@ -238,7 +238,7 @@ async function main() {
   console.log("→ Seeding platform data");
   await ensurePackages();
   await ensureDesignLibrary();
-  const adminUser = await ensureSuperAdmin(process.env.SEED_ADMIN_EMAIL || "admin@aoire.in", process.env.SEED_ADMIN_PASSWORD || "ChangeMe-Now-123", process.env.SEED_ADMIN_NAME || "Amal");
+  const adminUser = await ensureSuperAdmin(process.env.SEED_ADMIN_EMAIL || "admin@stackbridgelab.com", process.env.SEED_ADMIN_PASSWORD || "ChangeMe-Now-123", process.env.SEED_ADMIN_NAME || "Amal");
   const admin = (await loadActorForUser(adminUser.id)) as AdminActor;
   console.log(`  ✔ super admin: ${adminUser.email}`);
   console.log(`  ✔ packages: ${PACKAGE_DEFAULTS.map((p) => p.name).join(", ")}`);

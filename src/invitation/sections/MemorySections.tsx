@@ -77,7 +77,7 @@ export function MemorySection({ section }: { section: SectionConfig }) {
           <h3 className="inv-h2 mt-3 text-center">{L(book.title)}</h3>
           {L(book.intro) && <p className="inv-lede mx-auto mt-4 text-center">{L(book.intro)}</p>}
           <div className="mt-10 grid gap-3 sm:grid-cols-3">{book.photos.map((p) => (<Photo key={p.id} id={p.id} ratio="aspect-square" seed={2} sizes="(max-width: 768px) 100vw, 300px" />))}</div>
-          <div className="mt-10 grid gap-6 md:grid-cols-2">{book.messages.map((m) => (<blockquote key={m.id} className="border-l-2 border-[var(--c-accent)] pl-4 italic leading-[1.8]">“{m.body}”<footer className="inv-eyebrow mt-2 not-italic !text-[0.66rem]">{m.authorName}</footer></blockquote>))}</div>
+          <div className="mt-10 grid gap-6 md:grid-cols-2">{book.messages.map((m) => (<blockquote key={m.id} className="border-l-2 border-[var(--c-accent)] pl-4 leading-[1.8]">“{m.body}”<footer className="inv-eyebrow mt-2 !text-[0.66rem]">{m.authorName}</footer></blockquote>))}</div>
         </div>
       )}
 

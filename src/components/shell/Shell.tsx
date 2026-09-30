@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { brand } from "@/lib/brand";
+import { ProductLockup } from "@/components/brand/Logo";
 import { logoutAction } from "@/app/actions/auth";
 import { ConfirmProvider } from "@/components/ui/Confirm";
 
@@ -148,7 +149,7 @@ export function Shell({ homeHref, groups, user, palette, bell, context, children
 
   const Brand = (
     <div className="px-5 pb-5 pt-6">
-      <Link href={homeHref} className="display block text-[28px] leading-none">{brand.short}<span className="ml-1.5 text-[15px] text-muted not-italic" style={{ fontFamily: "var(--font-ui)" }}>Invites</span></Link>
+      <Link href={homeHref} aria-label={brand.name}><ProductLockup /></Link>
       {context && (
         <Link href={context.href ?? homeHref} className="mt-5 block rounded-md border border-rule bg-surface px-3 py-2.5 transition-colors hover:border-rule-strong">
           <span className="eyebrow block !text-[10px]">Wedding</span>
@@ -181,7 +182,7 @@ export function Shell({ homeHref, groups, user, palette, bell, context, children
         <div className="min-w-0">
           <header className="no-print sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-rule bg-paper/92 px-4 backdrop-blur-[2px] lg:px-8">
             <button type="button" className="btn btn-ghost btn-sm !px-2 lg:hidden" onClick={() => setMenu(true)} aria-label="Open menu"><Menu className="size-5" /></button>
-            <Link href={homeHref} className="display text-[22px] leading-none lg:hidden">{brand.short}</Link>
+            <Link href={homeHref} aria-label={brand.name} className="lg:hidden"><ProductLockup /></Link>
             <button type="button" onClick={() => setCmd(true)} className="ml-auto flex h-9 min-w-9 items-center gap-2.5 rounded-md border border-rule-strong bg-surface px-3 text-[13.5px] text-muted transition-colors hover:border-ink-2 sm:ml-0 sm:mr-auto sm:w-72">
               <Search className="size-4" aria-hidden /><span className="hidden flex-1 text-left sm:block">Search or jump to…</span><span className="hidden items-center gap-0.5 sm:flex"><Command className="size-3" /><kbd className="text-[11px] font-medium">K</kbd></span>
             </button>

@@ -57,7 +57,7 @@ export function SectionPanel({ section, tab, weddingId }: { section: SectionConf
   return (
     <div className="space-y-6">
       <div><p className="eyebrow">{meta.group}</p><h2 className="display text-[30px]">{meta.label}</h2><p className="mt-1 text-[13.5px] text-muted">{meta.description}</p></div>
-      {locked && <p className="flex items-center gap-2 rounded-md bg-brass-soft px-3 py-2.5 text-[13.5px] text-[#6b5313]"><Lock className="size-4" />Not included in this wedding’s package, so guests won’t see it.</p>}
+      {locked && <p className="flex items-center gap-2 rounded-md bg-brass-soft px-3 py-2.5 text-[13.5px] text-[#1f3f9e]"><Lock className="size-4" />Not included in this wedding’s package, so guests won’t see it.</p>}
       <Switch label="Show this section" checked={section.enabled} onChange={(v) => set((s) => void (s.enabled = v))} />
 
       {meta.variants.length > 1 && (

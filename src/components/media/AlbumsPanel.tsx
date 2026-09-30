@@ -70,7 +70,7 @@ export function AlbumsPanel({ weddingId, advanced }: { weddingId: string; advanc
 
       <div>
         {!album ? (
-          <EmptyState mark="❦" title="Create your first album" body="Albums group photographs on the invitation — for example ‘Pre-wedding’, ‘Haldi’ or ‘The families’." />
+          <EmptyState title="Create your first album" body="Albums group photographs on the invitation — for example ‘Pre-wedding’, ‘Haldi’ or ‘The families’." />
         ) : (
           <div className="space-y-5">
             <div className="grid gap-4 md:grid-cols-2">

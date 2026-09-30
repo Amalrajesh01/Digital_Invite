@@ -8,7 +8,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-# Aoire Invites — project notes for agents
+# StackBridge Invites — project notes for agents
 
 Read `README.md` first. Rules that keep this codebase coherent:
 

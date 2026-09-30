@@ -30,15 +30,15 @@ export type RsvpStatus = (typeof RSVP_STATUSES)[number];
 
 /** Languages Super Admin can offer as the secondary (local) language. */
 export const LOCALES = [
-  { code: "ml", label: "Malayalam", native: "മലയാളം", font: "Noto Serif Malayalam" },
-  { code: "ta", label: "Tamil", native: "தமிழ்", font: "Noto Serif Tamil" },
-  { code: "te", label: "Telugu", native: "తెలుగు", font: "Noto Serif Telugu" },
-  { code: "kn", label: "Kannada", native: "ಕನ್ನಡ", font: "Noto Serif Kannada" },
-  { code: "hi", label: "Hindi", native: "हिन्दी", font: "Noto Serif Devanagari" },
-  { code: "mr", label: "Marathi", native: "मराठी", font: "Noto Serif Devanagari" },
-  { code: "bn", label: "Bengali", native: "বাংলা", font: "Noto Serif Bengali" },
-  { code: "gu", label: "Gujarati", native: "ગુજરાતી", font: "Noto Serif Gujarati" },
-  { code: "pa", label: "Punjabi", native: "ਪੰਜਾਬੀ", font: "Noto Serif Gurmukhi" },
+  { code: "ml", label: "Malayalam", native: "മലയാളം", font: "Noto Sans Malayalam" },
+  { code: "ta", label: "Tamil", native: "தமிழ்", font: "Noto Sans Tamil" },
+  { code: "te", label: "Telugu", native: "తెలుగు", font: "Noto Sans Telugu" },
+  { code: "kn", label: "Kannada", native: "ಕನ್ನಡ", font: "Noto Sans Kannada" },
+  { code: "hi", label: "Hindi", native: "हिन्दी", font: "Noto Sans Devanagari" },
+  { code: "mr", label: "Marathi", native: "मराठी", font: "Noto Sans Devanagari" },
+  { code: "bn", label: "Bengali", native: "বাংলা", font: "Noto Sans Bengali" },
+  { code: "gu", label: "Gujarati", native: "ગુજરાતી", font: "Noto Sans Gujarati" },
+  { code: "pa", label: "Punjabi", native: "ਪੰਜਾਬੀ", font: "Noto Sans Gurmukhi" },
   { code: "ur", label: "Urdu", native: "اردو", font: "Noto Nastaliq Urdu" },
 ] as const;
 export type LocaleCode = (typeof LOCALES)[number]["code"];
