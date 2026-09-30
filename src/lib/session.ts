@@ -19,7 +19,7 @@ export async function setSessionCookie(token: string, expiresAt: Date) {
   const jar = await cookies();
   jar.set(SESSION_COOKIE, token, {
     httpOnly: true,
-    secure: env.isProd,
+    secure: env.secureCookies,
     sameSite: "lax",
     path: "/",
     expires: expiresAt,

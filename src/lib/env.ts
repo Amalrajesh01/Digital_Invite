@@ -17,6 +17,10 @@ export const env = {
   get storageDriver(): "local" | "s3" {
     return process.env.STORAGE_DRIVER === "s3" ? "s3" : "local";
   },
+  /** Cookies are marked Secure only when the site is served over https (a plain-http IP would drop them). */
+  get secureCookies() {
+    return this.appUrl.startsWith("https://");
+  },
   get isProd() {
     return process.env.NODE_ENV === "production";
   },

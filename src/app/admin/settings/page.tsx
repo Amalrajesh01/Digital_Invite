@@ -17,9 +17,9 @@ export default async function SettingsPage() {
   const [{ free }] = await db.select({ free: sql<number>`count(*)::int` }).from(schema.weddings).where(eq(schema.weddings.customerClass, "FREE_PORTFOLIO"));
   const usingLocalDb = !env.databaseUrl;
   const rows: { label: string; value: string; ok: boolean; help?: string }[] = [
-    { label: "Public address", value: env.appUrl, ok: env.isProd ? !env.appUrl.includes("localhost") : true, help: "Set APP_URL to your real domain so invitation links and WhatsApp previews are correct." },
+    { label: "Public address", value: env.appUrl, ok: env.isProd ? env.appUrl.startsWith("https://") && !env.appUrl.includes("localhost") : true, help: "Attach a domain with HTTPS and set APP_URL to it — links, QR codes and WhatsApp previews use this address." },
     { label: "Database", value: usingLocalDb ? "Built-in local database" : "PostgreSQL (Supabase or similar)", ok: env.isProd ? !usingLocalDb : true, help: "Set DATABASE_URL to a hosted Postgres for production." },
-    { label: "Photo & video storage", value: env.storageDriver === "s3" ? `Object storage · ${env.s3.bucket || "bucket not set"}` : "This server’s disk", ok: env.isProd ? env.storageDriver === "s3" : true, help: "Use Cloudflare R2 (STORAGE_DRIVER=s3) on hosts without a permanent disk." },
+    { label: "Photo & video storage", value: env.storageDriver === "s3" ? `Object storage · ${env.s3.bucket || "bucket not set"}` : "This server’s disk (back up the storage folder)", ok: true, help: "" },
     { label: "Email", value: env.resendKey ? "Resend connected" : "Not connected — emails are kept in the outbox", ok: !!env.resendKey, help: "Add RESEND_API_KEY to send invitations and client sign-in emails." },
   ];
   return (
