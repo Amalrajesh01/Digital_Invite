@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# One-command deploy. Install ONCE on the server:
+#   install -m 755 deploy/stackbridge-deploy /usr/local/bin/stackbridge-deploy
+# Then, from anywhere:
+#   ssh -i ~/.ssh/netjet_hetzner root@65.108.245.110 "stackbridge-deploy"
+#   ssh -i ~/.ssh/netjet_hetzner root@65.108.245.110 "REF=my-branch stackbridge-deploy"   # another branch / tag / commit
+#   ssh -i ~/.ssh/netjet_hetzner root@65.108.245.110 "REFRESH_LIBRARY=1 stackbridge-deploy" # also refresh built-in templates/themes
+# It fetches the ref into a clone (like `git fetch && git reset --hard`), then hands over to that commit's deploy/deploy.sh.
+set -Eeuo pipefail
+REPO=${REPO:-https://github.com/Amalrajesh01/Digital_Invite.git}
+SRC=${SRC:-/home/deploy/src/stackbridge-invites}
+REF=${REF:-main}
+
+[ -d "$SRC/.git" ] || { runuser -u deploy -- mkdir -p "$(dirname "$SRC")"; runuser -u deploy -- git clone --quiet "$REPO" "$SRC"; }
+runuser -u deploy -- bash -c "cd '$SRC' && git fetch --quiet --prune origin '$REF' && git reset --quiet --hard FETCH_HEAD"
+export SRC
+exec bash "$SRC/deploy/deploy.sh"

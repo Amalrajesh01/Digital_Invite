@@ -204,7 +204,19 @@ This is how the reference server runs it; templates are in `deploy/`.
    `Host $http_host` (with the port) or Next.js rejects sign-in as a cross-origin request.
 6. Daily job: `30 2 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://127.0.0.1:8104/api/cron`.
 
-**Update:** upload the new source, `npm ci`, rebuild, `systemctl restart stackbridge-invites`, and `npm run db:migrate` if the schema changed.
+**Update — one command** (after a one-time `install -m 755 deploy/stackbridge-deploy /usr/local/bin/stackbridge-deploy` on the server):
+
+```bash
+ssh -i ~/.ssh/netjet_hetzner root@65.108.245.110 "stackbridge-deploy"
+```
+
+It fetches `origin/main` into `/home/deploy/src/stackbridge-invites`, backs up the database and uploads, builds the commit in a
+staging directory (memory-capped, so it cannot starve the other apps on the box), applies any new migrations, swaps it in and
+health-checks it through nginx — rolling back automatically if the app does not come up. It refuses to deploy a commit older than
+the one that is live. Options: `REF=<branch|tag|sha>` deploys something other than `main`; `REFRESH_LIBRARY=1` also runs
+`npm run library:refresh`; `FORCE=1` redeploys the same/older commit. Backups go to `/home/deploy/backups` (last 7 kept); the
+previous build stays in `.next.prev`. Manual route: upload the source, `npm ci`, rebuild, `systemctl restart stackbridge-invites`,
+and `npm run db:migrate` if the schema changed.
 
 **Switch media to AWS S3:** create a private bucket and an IAM user limited to it, set `STORAGE_DRIVER=s3`,
 `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` (leave `S3_ENDPOINT` empty for AWS), run
