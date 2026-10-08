@@ -1,6 +1,6 @@
 // Invitation QA captures.
 //   node scripts/dev/inv.mjs <url> <prefix> [width=390] [height=844] [--sections=hero,story,…] [--progress=0,.5,1] [--gate]
-//        [--opening=1200,2600] [--full] [--reduced] [--locale=ml] [--celebrate]
+//        [--opening=1200,2600] [--full] [--reduced] [--locale=ml] [--celebrate] [--wait=ms]
 // Writes .shots/<prefix>-<name>.png. By default the opening gate is skipped (as a returning visitor would);
 // pass --gate to tap through it like a first-time guest, and --opening=ms,ms to capture the celebration.
 import { chromium } from "playwright";
@@ -38,7 +38,8 @@ if (!skipGate) {
 
 const sections = await page.evaluate(() => [...document.querySelectorAll("[data-section-type]")].map((e) => e.getAttribute("data-section-type")));
 const total = () => page.evaluate(() => document.documentElement.scrollHeight - innerHeight);
-const scrollTo = async (y) => { await page.evaluate((yy) => window.scrollTo(0, yy), y); await page.waitForTimeout(1500); };
+const settle = Number(opt("wait") ?? 1500);
+const scrollTo = async (y) => { await page.evaluate((yy) => window.scrollTo(0, yy), y); await page.waitForTimeout(settle); };
 
 // warm up lazy sections + reveal observers by sweeping once
 const th = await total();
