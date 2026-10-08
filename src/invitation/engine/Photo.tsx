@@ -27,6 +27,8 @@ export function ArtFallback({ seed = 0, className, label }: { seed?: number; cla
 
 interface PhotoProps {
   id?: string | null;
+  /** Landscape version of the same picture for wide screens (art direction): used from 768px up. */
+  wideId?: string | null;
   alt?: string;
   className?: string;
   imgClassName?: string;
@@ -41,34 +43,44 @@ interface PhotoProps {
 
 /**
  * Responsive photograph: srcset from server-generated WebP variants, blur-up placeholder,
- * focal-point aware cropping, lazy loading below the fold.
+ * focal-point aware cropping, lazy loading below the fold — and a themed placeholder if the
+ * file is missing or fails to load, so a broken image can never reach a guest.
  */
-export function Photo({ id, alt, className, imgClassName, priority, sizes, seed, ratio, focal }: PhotoProps) {
+export function Photo({ id, wideId, alt, className, imgClassName, priority, sizes, seed, ratio, focal }: PhotoProps) {
   const { media, L } = useInvitation();
   const m = media(id);
+  const wide = wideId ? media(wideId) : undefined;
   const [loaded, setLoaded] = useState(false);
-  if (!m || m.kind !== "IMAGE") return <div className={cn("relative overflow-hidden", ratio, className)}><ArtFallback seed={seed ?? 0} /></div>;
+  const [failed, setFailed] = useState(false);
+  if (!m || m.kind !== "IMAGE" || failed) return <div className={cn("relative overflow-hidden", ratio, className)}><ArtFallback seed={seed ?? 0} /></div>;
   const f = focal ?? m.focal;
+  const fw = wide?.focal ?? f;
   const text = alt ?? L(m.alt);
+  const useWide = !!wide && wide.kind === "IMAGE";
+  const pos = (p?: { x: number; y: number }) => (p ? `${p.x}% ${p.y}%` : undefined);
   return (
     <div className={cn("relative overflow-hidden", ratio, className)} style={m.blur ? { backgroundImage: `url(${m.blur})`, backgroundSize: "cover", backgroundPosition: "center" } : { background: "var(--c-border)" }}>
-      <img
-        src={m.url}
-        srcSet={m.srcSet}
-        sizes={sizes ?? m.sizes}
-        alt={text}
-        width={m.width}
-        height={m.height}
-        loading={priority ? "eager" : "lazy"}
-        decoding="async"
-        fetchPriority={priority ? "high" : undefined}
-        onLoad={() => setLoaded(true)}
-        ref={(el) => {
-          if (el?.complete && !loaded) setLoaded(true);
-        }}
-        className={cn("absolute inset-0 h-full w-full object-cover transition-opacity duration-700", loaded ? "opacity-100" : "opacity-0", imgClassName)}
-        style={f ? { objectPosition: `${f.x}% ${f.y}%` } : undefined}
-      />
+      <picture>
+        {useWide && <source media="(min-width: 768px)" srcSet={wide!.srcSet ?? wide!.url} sizes={sizes ?? "100vw"} />}
+        <img
+          src={m.url}
+          srcSet={m.srcSet}
+          sizes={sizes ?? m.sizes}
+          alt={text}
+          width={m.width}
+          height={m.height}
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          fetchPriority={priority ? "high" : undefined}
+          onLoad={() => setLoaded(true)}
+          onError={() => setFailed(true)}
+          ref={(el) => {
+            if (el?.complete && el.naturalWidth > 0 && !loaded) setLoaded(true);
+          }}
+          className={cn("absolute inset-0 h-full w-full object-cover transition-opacity duration-700", loaded ? "opacity-100" : "opacity-0", useWide && "inv-wide-pos", imgClassName)}
+          style={{ objectPosition: pos(f), ...(useWide && fw ? ({ "--wide-pos": pos(fw) } as React.CSSProperties) : null) }}
+        />
+      </picture>
     </div>
   );
 }

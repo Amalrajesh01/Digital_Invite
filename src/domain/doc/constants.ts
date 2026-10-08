@@ -5,8 +5,8 @@ export type WeddingStatus = (typeof WEDDING_STATUSES)[number];
 export const PUBLIC_STATUSES: readonly WeddingStatus[] = ["PUBLISHED", "LIVE_EVENT", "POST_EVENT", "MEMORY", "ANNIVERSARY"];
 
 export const SECTION_TYPES = [
-  "hero", "countdown", "couple", "story", "timeline", "family", "events", "venue", "travel",
-  "gallery", "dresscode", "menu", "rsvp", "guestbook", "music", "quiz", "games", "scavenger",
+  "hero", "countdown", "couple", "story", "timeline", "family", "events", "ceremonies", "venue", "travel",
+  "gallery", "film", "dresscode", "menu", "rsvp", "guestbook", "music", "quiz", "games", "scavenger",
   "photowall", "guestupload", "wishes", "qrpass", "checkin", "livesched", "liveupdate", "livestream",
   "timecapsule", "memory", "anniversary", "thankyou", "contact",
 ] as const;

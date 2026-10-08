@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Copy, Languages, MessageCircle, Pause, Play, Share2, Volume2, VolumeX, QrCode } from "lucide-react";
+import { Copy, Languages, MessageCircle, Share2, Volume2, VolumeX, QrCode } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/cn";
 import { localeInfo } from "@/domain/doc/constants";
@@ -9,8 +9,8 @@ import { InvDialog } from "./Dialog";
 import { Qr } from "./qr";
 import { whatsappHref } from "./format";
 
-/** Floating controls: language switch, share, music, sticky RSVP. Solid, quiet, thumb-reachable. */
-const pill = "grid place-items-center border border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[0_6px_20px_-10px_rgba(0,0,0,.4)] transition-transform hover:-translate-y-0.5 active:translate-y-0";
+/** Floating controls: music, language, share, sticky RSVP. Dark frosted glass, so they read over a photograph and over paper alike. */
+const pill = "inv-glass grid place-items-center transition-transform hover:-translate-y-0.5 active:translate-y-0";
 
 export function LanguageToggle() {
   const { view, locale, setLocale, multilingual, t } = useInvitation();
@@ -19,9 +19,9 @@ export function LanguageToggle() {
   const def = view.wedding.defaultLocale;
   const on = (l: string) => locale === l;
   return (
-    <div role="group" aria-label={t("common.language")} className="flex overflow-hidden rounded-full border border-[var(--c-border)] bg-[var(--c-surface)] text-[0.78rem] font-medium shadow-[0_6px_20px_-10px_rgba(0,0,0,.4)]">
+    <div role="group" aria-label={t("common.language")} className="inv-glass flex overflow-hidden rounded-full text-[0.78rem] font-medium">
       {[def, sec].map((l) => (
-        <button key={l} type="button" lang={l} aria-pressed={on(l)} onClick={() => setLocale(l)} className={cn("min-h-11 min-w-11 px-3.5 transition-colors", on(l) ? "bg-[var(--c-primary)] text-[var(--c-on-primary)]" : "text-[var(--c-muted)] hover:text-[var(--c-text)]")}>
+        <button key={l} type="button" lang={l} aria-pressed={on(l)} onClick={() => setLocale(l)} className={cn("min-h-11 min-w-11 px-3.5 transition-colors", on(l) ? "bg-white/90 text-[#1c1a17]" : "text-white/80 hover:text-white")}>
           {l === def ? (def === "en" ? "EN" : localeInfo(def)?.native ?? def.toUpperCase()) : localeInfo(l)?.native ?? l.toUpperCase()}
         </button>
       ))}
@@ -30,34 +30,45 @@ export function LanguageToggle() {
   );
 }
 
+/**
+ * "♪ Music" — three honest states: off (never started), playing, paused. Music never starts on its own;
+ * it begins only from the guest's tap on the opening screen or on this control.
+ */
 export function MusicPill() {
   const { music, t, entered } = useInvitation();
+  const [started, setStarted] = useState(false);
+  useEffect(() => {
+    if (music.playing) setStarted(true);
+  }, [music.playing]);
   if (!music.ready || !entered) return null;
+  const state = music.playing ? "playing" : started ? "paused" : "off";
+  const status = state === "playing" ? t("music.playingNow") : state === "paused" ? t("music.paused") : t("music.off");
   return (
-    <div className="fixed bottom-4 left-4 z-40 flex items-center gap-2 md:bottom-6 md:left-6">
-      <button type="button" onClick={music.toggle} aria-pressed={music.playing} aria-label={music.playing ? t("music.pause") : t("music.play")} className={cn(pill, "size-12 rounded-full")}>
-        {music.playing ? (
-          <span className="flex h-4 items-end gap-[3px]" aria-hidden>
-            {[0, 1, 2].map((i) => (<span key={i} className="w-[3px] rounded-full bg-[var(--c-primary)]" style={{ height: "100%", animation: `eq 1s ease-in-out ${i * 0.18}s infinite alternate` }} />))}
-          </span>
-        ) : (<Play className="size-4 translate-x-px" />)}
+    <div className="fixed left-3 top-3 z-40 flex items-center gap-2 md:left-6 md:top-5">
+      <button type="button" onClick={music.toggle} aria-pressed={music.playing} aria-label={music.playing ? t("music.pause") : t("music.play")} data-state={state} className="inv-glass music-pill">
+        <span className="music-glyph" aria-hidden>
+          {music.playing ? (
+            <span className="flex h-3.5 items-end gap-[2.5px]">
+              {[0, 1, 2, 3].map((i) => (<span key={i} className="w-[2.5px] rounded-full bg-current" style={{ height: "100%", animation: `eq 1s ease-in-out ${i * 0.15}s infinite alternate` }} />))}
+            </span>
+          ) : (
+            <span className="music-note">♪</span>
+          )}
+        </span>
+        <span className="music-text"><span className="music-label">{t("music.label")}</span><span className="music-status">{status}</span></span>
       </button>
       {music.playing && (
         <button type="button" onClick={music.toggleMute} aria-label={music.muted ? t("music.unmute") : t("music.mute")} className={cn(pill, "size-10 rounded-full")}>
           {music.muted ? <VolumeX className="size-4" /> : <Volume2 className="size-4" />}
         </button>
       )}
-      {music.playing && music.current && (
-        <span className="hidden max-w-[14rem] truncate rounded-full border border-[var(--c-border)] bg-[var(--c-surface)] px-4 py-2 text-[0.8rem] text-[var(--c-muted)] md:block">{music.current.title}{music.current.artist ? ` · ${music.current.artist}` : ""}</span>
-      )}
       <style>{`@keyframes eq { from { transform: scaleY(.25); } to { transform: scaleY(1); } } @media (prefers-reduced-motion: reduce) { [style*="eq "] { animation: none !important; } }`}</style>
-      {false && <Pause />}
     </div>
   );
 }
 
 export function StickyRsvp() {
-  const { view, t, entered } = useInvitation();
+  const { view, t, entered, journeyTogether } = useInvitation();
   const [visible, setVisible] = useState(false);
   const has = view.sections.some((s) => s.type === "rsvp");
   const replied = !!view.guest?.rsvp;
@@ -77,7 +88,7 @@ export function StickyRsvp() {
   }, [has, entered]);
   if (!has || replied) return null;
   return (
-    <a href="#s-rsvp" className={cn("fixed bottom-5 left-1/2 z-40 -translate-x-1/2 transition-all duration-500 md:hidden", visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-6 opacity-0")}>
+    <a href="#s-rsvp" className={cn("fixed bottom-[6.6rem] left-1/2 z-40 -translate-x-1/2 transition-all duration-500 md:hidden", visible && !journeyTogether ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-6 opacity-0")}>
       <span className="inv-btn !rounded-full shadow-[0_14px_30px_-12px_rgba(0,0,0,.55)]">{t("nav.rsvp")}</span>
     </a>
   );

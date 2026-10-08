@@ -65,16 +65,33 @@ function stripUndefined<T extends object>(obj: T): T {
   return Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== undefined)) as T;
 }
 
-/** Fonts the platform loads on demand (Google Fonts, SIL OFL). Sans-serif only: Inter is the house typeface. */
+/**
+ * Fonts the platform loads on demand (Google Fonts, SIL OFL). The studio itself is Inter-only; invitations
+ * may pair an elegant display serif (names, headings) with Inter for supporting text — the wedding-stationery look.
+ */
 export const FONT_CHOICES = {
-  heading: ["Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Outfit", "Poppins", "Work Sans", "Hanken Grotesk"],
+  heading: ["Cormorant Garamond", "Playfair Display", "Cinzel", "Marcellus", "Bodoni Moda", "DM Serif Display", "Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Outfit", "Poppins", "Work Sans", "Hanken Grotesk"],
   body: ["Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Work Sans", "Hanken Grotesk", "Mulish", "Karla"],
-  script: ["Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Outfit", "Poppins"],
+  script: ["Cormorant Garamond", "Playfair Display", "Pinyon Script", "Great Vibes", "Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Outfit", "Poppins"],
 } as const;
+
+/** Display serifs: drive the invitation's typographic details (case, tracking, weights). */
+export const SERIF_FONTS: readonly string[] = ["Cormorant Garamond", "Playfair Display", "Cinzel", "Marcellus", "Bodoni Moda", "DM Serif Display"];
+/** Accent fonts that have a true italic; everything else is shown upright (a synthesised slant looks cheap). */
+export const ITALIC_ACCENTS: readonly string[] = ["Cormorant Garamond", "Playfair Display", "DM Serif Display", "Bodoni Moda"];
+export const isSerif = (family: string) => SERIF_FONTS.includes(family);
 
 export const RADIUS_PX: Record<ThemeTokens["radius"], string> = { none: "0px", soft: "4px", round: "14px", pill: "999px" };
 
 const WEIGHTS: Record<string, string> = {
+  "Cormorant Garamond": "ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600",
+  "Playfair Display": "ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600",
+  "Cinzel": "wght@400;500;600;700",
+  "Marcellus": "",
+  "Bodoni Moda": "ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400;1,6..96,500",
+  "DM Serif Display": "ital@0;1",
+  "Pinyon Script": "",
+  "Great Vibes": "",
   "Inter": "opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800",
   "Manrope": "wght@300;400;500;600;700",
   "Plus Jakarta Sans": "wght@300;400;500;600;700",

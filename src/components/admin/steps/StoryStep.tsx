@@ -3,6 +3,7 @@ import { newId } from "@/lib/id";
 import { FormCard, Grid, Hint, LText, ListEditor } from "../forms";
 import { MediaField } from "../MediaField";
 import { useDraft } from "../draft";
+import { MilestonesEditor, StoryPrologue } from "./ExperienceSteps";
 
 export function StoryStep() {
   const { doc, update, has } = useDraft();
@@ -10,13 +11,15 @@ export function StoryStep() {
   const extras = has("couple_extras");
   return (
     <div className="space-y-6">
+      <StoryPrologue />
+      <MilestonesEditor />
       <FormCard title="How we met" description="A short, warm paragraph. This is often the most-read part of the invitation.">
         <LText label="Title" value={s.howWeMet.title} onChange={(v) => update((d) => void (d.story.howWeMet.title = v))} placeholder="A yellow umbrella" />
         <LText label="The story" multiline rows={5} value={s.howWeMet.body} onChange={(v) => update((d) => void (d.story.howWeMet.body = v))} />
         <MediaField label="Photo" value={s.howWeMet.photo} category="COUPLE" onChange={(id) => update((d) => void (d.story.howWeMet.photo = id))} aspect="aspect-[5/4]" />
       </FormCard>
 
-      <FormCard title="Our journey — timeline chapters" description="Three to five chapters read best: the first meeting, a turning point, the proposal.">
+      <FormCard title="Longer chapters (optional)" description="Fuller stories with photographs, shown in “Our story”. Three to five read best. Hide them from the section’s settings if the milestones already tell it.">
         <ListEditor
           items={s.chapters}
           onChange={(items) => update((d) => void (d.story.chapters = items))}

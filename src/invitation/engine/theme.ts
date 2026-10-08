@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { RADIUS_PX, googleFontsHref, type ThemeTokens } from "@/domain/design/tokens";
+import { ITALIC_ACCENTS, RADIUS_PX, googleFontsHref, type ThemeTokens } from "@/domain/design/tokens";
 import { localeInfo } from "@/domain/doc/constants";
 
 /** Design tokens → CSS custom properties. Components read `var(--c-*)`; no colour is ever hard-coded. */
@@ -21,6 +21,7 @@ export function themeStyle(tokens: ThemeTokens, secondaryLocale: string | null):
     "--f-heading": `"${tokens.fonts.heading}", system-ui, -apple-system, "Segoe UI", sans-serif`,
     "--f-body": `"${tokens.fonts.body}", system-ui, sans-serif`,
     "--f-script": `"${tokens.fonts.script}", system-ui, sans-serif`,
+    "--f-script-style": ITALIC_ACCENTS.includes(tokens.fonts.script) ? "italic" : "normal",
     "--f-local": ml ? `"${ml}", "${tokens.fonts.heading}", sans-serif` : `"${tokens.fonts.heading}", sans-serif`,
     "--r": RADIUS_PX[tokens.radius],
     "--motion": tokens.motion === "calm" ? "0.6" : tokens.motion === "rich" ? "1.25" : "1",

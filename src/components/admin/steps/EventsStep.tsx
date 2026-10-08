@@ -7,6 +7,7 @@ import type { WeddingEvent } from "@/domain/doc/schema";
 import { FormCard, Grid, Hint, LText, ListEditor } from "../forms";
 import { MediaField } from "../MediaField";
 import { useDraft } from "../draft";
+import { CeremoniesEditor } from "./ExperienceSteps";
 import { fmtDate } from "@/invitation/engine/format";
 
 const blank = (order: number): WeddingEvent => ({
@@ -90,6 +91,7 @@ export function EventsStep() {
         />
         {venues.length === 0 && <Hint>Tip: add the venue(s) first (Venue step) so you can pick one for each event. <Link className="underline" href="venue">Go to Venue</Link></Hint>}
       </FormCard>
+      <CeremoniesEditor />
       {settings.weddingDate == null && doc.events.some((e) => e.isMain && e.date) && (
         <Hint>
           The wedding date is not set yet.{" "}

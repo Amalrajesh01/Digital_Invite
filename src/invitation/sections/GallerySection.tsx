@@ -62,6 +62,45 @@ export function Lightbox({ items, index, onClose, onIndex }: { items: Item[]; in
   );
 }
 
+/**
+ * Editorial spreads: five photographs per spread on a 12-column grid, deliberately different in size and
+ * proportion, two of them overlapping their neighbours. The second spread is a mirror image of the first.
+ * On a phone it relaxes into a staggered two-column layout.
+ */
+const CELLS: { c: [number, number]; r: [number, number]; frame?: boolean; ratio: string }[] = [
+  { c: [1, 7], r: [1, 11], ratio: "3 / 4" },
+  { c: [6, 10], r: [3, 8], frame: true, ratio: "1 / 1" },
+  { c: [10, 13], r: [1, 6], ratio: "3 / 4" },
+  { c: [8, 13], r: [8, 13], ratio: "5 / 4" },
+  { c: [2, 7], r: [10, 15], frame: true, ratio: "4 / 3" },
+];
+
+function Spreads({ items, onOpen }: { items: Item[]; onOpen: (i: number) => void }) {
+  const spreads: Item[][] = [];
+  for (let i = 0; i < items.length; i += CELLS.length) spreads.push(items.slice(i, i + CELLS.length));
+  return (
+    <div className="spreads">
+      {spreads.map((group, si) => (
+        <div key={si} className="spread">
+          {group.map((it, k) => {
+            const cell = CELLS[k];
+            const mirror = si % 2 === 1;
+            const [c0, c1] = mirror ? [14 - cell.c[1], 14 - cell.c[0]] : cell.c;
+            const vars = { "--c": `${c0} / ${c1}`, "--r": `${cell.r[0]} / ${cell.r[1]}`, "--ratio": cell.ratio } as React.CSSProperties;
+            return (
+              <div key={it.id} className={cn("spread-cell", cell.frame && "spread-frame")} style={vars}>
+                <Reveal delay={k * 90} className="h-full">
+                  <Thumb item={it} onOpen={() => onOpen(si * CELLS.length + k)} className="h-full" sizes="(max-width: 768px) 50vw, 40vw" />
+                </Reveal>
+              </div>
+            );
+          })}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function Thumb({ item, onOpen, className, sizes, style }: { item: Item; onOpen: () => void; className?: string; sizes: string; style?: React.CSSProperties }) {
   const { L, t } = useInvitation();
   const [loaded, setLoaded] = useState(false);
@@ -94,12 +133,7 @@ export default function GallerySection({ section }: { section: SectionConfig }) 
       )}
 
       {variant === "editorial" ? (
-        <div className="grid auto-rows-[9rem] grid-cols-2 gap-3 md:auto-rows-[13rem] md:grid-cols-6 md:gap-4">
-          {shown.map((it, i) => {
-            const span = ["md:col-span-3 md:row-span-2 row-span-2", "md:col-span-3", "md:col-span-2", "md:col-span-2", "md:col-span-2 row-span-2", "md:col-span-4"][i % 6];
-            return (<Reveal key={it.id} delay={(i % 3) * 70} className={cn("min-h-0", span)}><Thumb item={it} onOpen={() => setOpen(i)} className="h-full" sizes="(max-width: 768px) 50vw, 40vw" /></Reveal>);
-          })}
-        </div>
+        <Spreads items={shown} onOpen={setOpen} />
       ) : variant === "carousel" ? (
         <div className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 md:mx-0 md:px-0" tabIndex={0} aria-label={t("gallery.title")}>
           {shown.map((it, i) => (<div key={it.id} className="w-[82vw] shrink-0 snap-center md:w-[34rem]"><Thumb item={it} onOpen={() => setOpen(i)} className="aspect-[4/5] md:aspect-[4/3]" sizes="(max-width: 768px) 82vw, 544px" /></div>))}

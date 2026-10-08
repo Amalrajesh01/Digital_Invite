@@ -3,15 +3,14 @@ import { cn } from "@/lib/cn";
 import type { SectionConfig, LocalizedText } from "@/domain/doc/schema";
 import { useInvitation } from "../engine/context";
 import { Reveal, RevealWords } from "../engine/motion";
-import { Divider } from "../engine/Ornament";
 import type { StringKey } from "../i18n/strings";
 
 export type Tone = "light" | "tint" | "night";
 
 const DEFAULT_TONE: Partial<Record<SectionConfig["type"], Tone>> = {
-  countdown: "night", story: "tint", timeline: "tint", events: "tint", dresscode: "tint", games: "tint", quiz: "tint", scavenger: "tint",
-  rsvp: "night", livesched: "night", photowall: "night", liveupdate: "tint", livestream: "night", qrpass: "tint", checkin: "light",
-  timecapsule: "night", anniversary: "night", thankyou: "tint", memory: "light", travel: "tint", wishes: "tint", guestupload: "light",
+  story: "light", timeline: "tint", countdown: "night", events: "light", ceremonies: "tint", dresscode: "tint", games: "tint", quiz: "tint", scavenger: "tint",
+  film: "night", rsvp: "tint", livesched: "night", photowall: "night", liveupdate: "tint", livestream: "night", qrpass: "tint", checkin: "light",
+  timecapsule: "night", anniversary: "night", thankyou: "tint", memory: "light", travel: "tint", wishes: "tint", guestupload: "light", gallery: "light",
 };
 
 export function toneFor(section: SectionConfig, flavor: string): Tone {
@@ -38,22 +37,21 @@ export function useCopy(section: SectionConfig, defaults: { eyebrow?: StringKey 
 }
 
 export function SectionHead({ eyebrow, title, intro, align = "center", tone, className }: { eyebrow?: string; title?: string; intro?: string; align?: "center" | "left"; tone?: Tone; className?: string }) {
-  const { view } = useInvitation();
+  void tone;
   return (
-    <div className={cn("inv-head", align === "left" && "!text-left", className)}>
+    <div className={cn("inv-head chap", align === "left" && "!text-left", className)}>
+      <Reveal variant="fade"><span className="chap-line" aria-hidden style={align === "left" ? { marginInline: 0 } : undefined} /></Reveal>
       {eyebrow && (
-        <Reveal variant="fade">
+        <Reveal variant="fade" delay={80}>
           <p className="inv-eyebrow">{eyebrow}</p>
         </Reveal>
       )}
       {title && <RevealWords text={title} className="inv-h2" />}
       {intro && (
         <Reveal delay={150} className={cn(align === "center" && "mx-auto")}>
-          <p className="inv-lede mt-5">{intro}</p>
+          <p className={cn("inv-lede mt-5", align === "center" && "mx-auto")}>{intro}</p>
         </Reveal>
       )}
-      {align === "center" && <Divider kind={view.tokens.divider} className="mt-6" />}
-      {tone && null}
     </div>
   );
 }

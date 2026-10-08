@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { SECTION_TYPES, WEDDING_STATUSES } from "./constants";
+import { DEFAULT_EVENT_TYPE, EVENT_TYPES } from "./event-types";
 
 /**
  * The Invitation Document — everything an invitation *says*, independent of who is looking at it.
@@ -85,6 +86,12 @@ export const StoryChapter = z.object({
 export type StoryChapter = z.infer<typeof StoryChapter>;
 
 export const StoryDoc = ObjDefault({
+  /** The opening lines of "Our story" — one thought per line, e.g. "Two paths.
+One unexpected meeting." */
+  intro: L(),
+  introPhoto: MediaId,
+  /** "The beginning": a handful of dated milestones, e.g. 2019 · First meeting. Falls back to the chapters when empty. */
+  milestones: z.array(z.object({ id: z.string(), year: z.string().max(24).default(""), title: L(), caption: L(), photo: MediaId })).default([]),
   chapters: z.array(StoryChapter).default([]),
   howWeMet: ObjDefault({ title: L(), body: L(), photo: MediaId }),
   thenNow: z
@@ -215,7 +222,7 @@ export const RsvpDoc = ObjDefault({
   askTransport: z.boolean().default(true),
   pickupLocations: z.array(z.object({ id: z.string(), label: L() })).default([]),
   allowCompanions: z.boolean().default(true),
-  askEventResponses: z.boolean().default(false),
+  askEventResponses: z.boolean().default(true),
   thankYou: L(),
   whatsappNumber: z.string().default(""),
 });
@@ -252,6 +259,62 @@ export const GamesDoc = ObjDefault({
 });
 export type GamesDoc = z.infer<typeof GamesDoc>;
 
+// ── imagery, ceremonies, film, chat, journey ───────────────────────────────
+/**
+ * The named photograph slots a customer can replace without touching any component.
+ * Resolution (with fallbacks) lives in `src/domain/imagery/slots.ts`; this is just where the choices are stored.
+ */
+export const ImagesDoc = ObjDefault({
+  couple: MediaId, // the main photograph of the two of them (hero & story fall back to it)
+  coupleWide: MediaId, // optional landscape version of it for desktop screens
+  ceremony: MediaId, // the wedding ceremony
+  family: MediaId, // the two families together
+  story: MediaId, // the photograph beside the opening lines of "Our story"
+});
+export type ImagesDoc = z.infer<typeof ImagesDoc>;
+
+export const CEREMONY_GLYPHS = ["lamp", "kalash", "flame", "rings", "drum", "flower", "bowl", "knot", "none"] as const;
+export const Ceremony = z.object({
+  id: z.string(),
+  name: L(),
+  /** "Morning of 10 December", "Before the muhurtham" — free text, so no two weddings need the same ceremonies. */
+  when: L(),
+  description: L(),
+  photo: MediaId,
+  glyph: z.enum(CEREMONY_GLYPHS).default("lamp"), // line illustration shown when there is no photograph
+});
+export type Ceremony = z.infer<typeof Ceremony>;
+export const CeremoniesDoc = ObjDefault({
+  intro: L(),
+  items: z.array(Ceremony).default([]),
+});
+export type CeremoniesDoc = z.infer<typeof CeremoniesDoc>;
+
+/** The wedding film: a YouTube / Vimeo link, a direct .mp4/.webm link, or an uploaded video. Empty = section hidden. */
+export const FilmDoc = ObjDefault({
+  url: z.string().max(400).default(""),
+  video: MediaId,
+  poster: MediaId,
+  title: L(),
+  caption: L(),
+});
+export type FilmDoc = z.infer<typeof FilmDoc>;
+
+export const WhatsAppDoc = ObjDefault({
+  /** Digits with country code, e.g. 919846000000. Falls back to the RSVP number, then the first contact. */
+  number: z.string().max(24).default(""),
+  /** Pre-filled message. {title} becomes the invitation title. */
+  message: L(),
+});
+export type WhatsAppDoc = z.infer<typeof WhatsAppDoc>;
+
+/** The two small illustrated figures that walk towards each other as the guest scrolls. */
+export const JourneyDoc = ObjDefault({
+  enabled: z.boolean().default(true),
+  style: z.enum(["auto", "classic", "kerala", "western"]).default("auto"),
+});
+export type JourneyDoc = z.infer<typeof JourneyDoc>;
+
 // ── misc content ───────────────────────────────────────────────────────────
 export const OpeningDoc = ObjDefault({
   variant: z.enum(["none", "envelope", "seal", "cinematic", "swipe", "curtain"]).default("envelope"),
@@ -260,6 +323,8 @@ export const OpeningDoc = ObjDefault({
   showInitials: z.boolean().default(true),
   locationAware: z.boolean().default(false),
   invitedLine: L(), // "You are invited"
+  /** What falls when the invitation opens: "auto" follows the event type. */
+  celebration: z.enum(["auto", "petals", "confetti", "off"]).default("auto"),
 });
 
 export const TimeCapsuleDoc = ObjDefault({
@@ -312,6 +377,7 @@ export type SectionConfig = z.infer<typeof SectionConfig>;
 // ── the document ───────────────────────────────────────────────────────────
 export const InvitationDoc = z.object({
   schemaVersion: z.literal(1).default(1),
+  eventType: z.enum(EVENT_TYPES).default(DEFAULT_EVENT_TYPE),
   couple: CoupleDoc,
   family: FamilyDoc,
   story: StoryDoc,
@@ -324,6 +390,11 @@ export const InvitationDoc = z.object({
   contacts: ContactDoc,
   games: GamesDoc,
   opening: OpeningDoc,
+  images: ImagesDoc,
+  ceremonies: CeremoniesDoc,
+  film: FilmDoc,
+  whatsapp: WhatsAppDoc,
+  journey: JourneyDoc,
   timeCapsule: TimeCapsuleDoc,
   thankYou: ThankYouDoc,
   anniversary: AnniversaryDoc,

@@ -8,6 +8,7 @@ import { Reveal } from "../engine/motion";
 import { embedUrl, whatsappHref } from "../engine/format";
 import { readableOn } from "../engine/theme";
 import { Divider } from "../engine/Ornament";
+import { ChatCta } from "../engine/Chat";
 import { Shell, SectionHead, useCopy } from "./shared";
 
 export function DressCodeSection({ section }: { section: SectionConfig }) {
@@ -104,6 +105,7 @@ export function ContactSection({ section }: { section: SectionConfig }) {
           </li>
         ))}
       </ul>
+      <ChatCta className="mt-10" />
     </Shell>
   );
 }

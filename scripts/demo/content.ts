@@ -10,6 +10,10 @@ export interface DemoMedia {
   gallery: { id: string; caption: LocalizedText; alt: LocalizedText }[];
   story: { cafe: string; corridor: string; train: string; thenA: string; thenB: string };
   puzzleA: string; puzzleB: string; clipA: string; clipB: string; og: string;
+  /** Optional slots (filled when real photographs are available). */
+  family?: string; storyPhoto?: string;
+  milestones?: { umbrella?: string; coffee?: string; train?: string; proposal?: string };
+  ceremonies?: { varavelppu?: string; thalikettu?: string; pudava?: string };
 }
 
 export const DEMO = {
@@ -285,9 +289,37 @@ export function buildDemoDoc(base: InvitationDoc, m: DemoMedia, opts: { full: bo
   doc.live = { streamUrl: "", streamLabel: L("Watch the Muhurtham live", "മുഹൂർത്തം തത്സമയം കാണുക") } as never;
   doc.seo = { title: L("Meenakshi & Aravind — Wedding Invitation", "മീനാക്ഷി & അരവിന്ദ് — വിവാഹ ക്ഷണം"), description: L("Together with our families, we invite you to celebrate our wedding on 24 January 2027 at Kumarakom, Kerala.", "ഇരു കുടുംബങ്ങളോടൊപ്പം, 2027 ജനുവരി 24-ന് കേരളത്തിലെ കുമരകത്ത് നടക്കുന്ന ഞങ്ങളുടെ വിവാഹത്തിൽ പങ്കുചേരാൻ നിങ്ങളെ ക്ഷണിക്കുന്നു."), ogImage: m.og } as never;
 
-  // section content: hero background + friendly headings
+  // ── the new storytelling layer ───────────────────────────────────────────
+  doc.eventType = "hindu_wedding";
+  doc.journey = { enabled: true, style: "kerala" };
+  doc.images = { couple: m.hero, story: m.storyPhoto ?? m.story.cafe, family: m.family, ceremony: undefined, coupleWide: undefined };
+  doc.story.intro = L("Two paths.\nOne yellow umbrella.\nA thousand cups of filter coffee.\nAnd now, forever.", "രണ്ട് വഴികൾ.\nഒരു മഞ്ഞ കുട.\nആയിരം കപ്പ് ഫിൽട്ടർ കാപ്പി.\nഇനി, എന്നെന്നേക്കും.");
+  doc.story.introPhoto = m.storyPhoto ?? m.story.cafe;
+  const ms = m.milestones ?? {};
+  doc.story.milestones = [
+    { id: newId(), year: "2018", title: L("The borrowed umbrella", "കടം വാങ്ങിയ കുട"), caption: L("A downpour in Kochi, one yellow umbrella with a broken rib, and a walk to the bus stop neither of them remembers.", "കൊച്ചിയിൽ ഒരു പെരുമഴ, ഒടിഞ്ഞ കമ്പിയുള്ള ഒരു മഞ്ഞ കുട, ഇരുവരും ഓർക്കാത്ത ബസ് സ്റ്റോപ്പ് വരെയുള്ള ഒരു നടത്തം."), photo: ms.umbrella },
+    { id: newId(), year: "2019", title: L("Filter coffee, long answers", "ഫിൽട്ടർ കാപ്പി, നീണ്ട മറുപടികൾ"), caption: L("One steel tumbler became two, then three hours. A café sketched on a napkin, kept in a diary.", "ഒരു സ്റ്റീൽ ടംബ്ലർ രണ്ടായി, പിന്നെ മൂന്ന് മണിക്കൂറായി. ഒരു നാപ്കിനിൽ വരച്ച കഫേ, ഡയറിയിൽ സൂക്ഷിച്ചത്."), photo: ms.coffee },
+    { id: newId(), year: "2022", title: L("The 11:40 night train", "രാത്രി 11:40-ന്റെ ട്രെയിൻ"), caption: L("Two cities, two hundred and eleven tickets. The distance became a joke between them.", "രണ്ട് നഗരങ്ങൾ, ഇരുനൂറ്റി പതിനൊന്ന് ടിക്കറ്റുകൾ. ദൂരം അവർക്കിടയിൽ ഒരു തമാശയായി."), photo: ms.train },
+    { id: newId(), year: "2025", title: L("The question, on the water", "വെള്ളത്തിന്മേൽ ഒരു ചോദ്യം"), caption: L("A quiet kettuvallam at sunset, a lamp lit, the whole family hiding in the next boat.", "സൂര്യാസ്തമയത്തിൽ ശാന്തമായ ഒരു കെട്ടുവള്ളം, തെളിഞ്ഞ വിളക്ക്, അടുത്ത ബോട്ടിൽ ഒളിച്ചിരിക്കുന്ന കുടുംബം."), photo: ms.proposal },
+    { id: newId(), year: "2027", title: L("Muhurtham", "മുഹൂർത്തം"), caption: L("24 January, 10:30 — beside a lamp that is already lit, with everyone they love.", "ജനുവരി 24, 10:30 — ഇതിനകം തെളിഞ്ഞ ഒരു വിളക്കിനരികെ, അവർ സ്നേഹിക്കുന്ന എല്ലാവരോടുമൊപ്പം.") },
+  ];
+  doc.ceremonies = {
+    intro: L("A Kerala wedding is short and spare — a lamp, a thread, a garland, a saree — and every part of it means something. A few of the moments you will see:", "ഒരു കേരള വിവാഹം ലളിതവും ചുരുക്കവുമാണ് — ഒരു വിളക്ക്, ഒരു ചരട്, ഒരു മാല, ഒരു സാരി — അതിലെ ഓരോ ഭാഗത്തിനും അർത്ഥമുണ്ട്. നിങ്ങൾ കാണാനിരിക്കുന്ന ചില നിമിഷങ്ങൾ:"),
+    items: [
+      { id: newId(), name: L("Ganapathi Pooja", "ഗണപതി പൂജ"), when: L("At dawn, at home", "പുലർച്ചെ, വീട്ടിൽ"), description: L("The day begins with a prayer to Ganapathi before the lit nilavilakku, for a beginning free of obstacles.", "തടസ്സങ്ങളില്ലാത്ത തുടക്കത്തിനായി, തെളിഞ്ഞ നിലവിളക്കിന് മുന്നിൽ ഗണപതിയെ പ്രാർത്ഥിച്ചുകൊണ്ട് ദിവസം ആരംഭിക്കുന്നു."), glyph: "kalash" },
+      { id: newId(), name: L("Varavelppu", "വരവേൽപ്പ്"), when: L("9:30 am, at the gate", "രാവിലെ 9:30, ഗേറ്റിൽ"), description: L("The groom’s family is welcomed with a lamp, garlands and sandalwood — the first embrace of the two families.", "വരന്റെ കുടുംബത്തെ വിളക്കും മാലയും ചന്ദനവും കൊണ്ട് വരവേൽക്കുന്നു — രണ്ട് കുടുംബങ്ങളുടെയും ആദ്യ ആലിംഗനം."), photo: m.ceremonies?.varavelppu, glyph: "flower" },
+      { id: newId(), name: L("Thalikettu", "താലികെട്ട്"), when: L("10:30 am, the muhurtham", "രാവിലെ 10:30, മുഹൂർത്തം"), description: L("As the nadaswaram rises, the groom ties the thali around the bride’s neck. The heart of the day, in a single breath.", "നാദസ്വരം ഉയരുമ്പോൾ വരൻ വധുവിന്റെ കഴുത്തിൽ താലി ചാർത്തുന്നു. ഒരൊറ്റ ശ്വാസത്തിൽ ദിവസത്തിന്റെ ഹൃദയം."), photo: m.ceremonies?.thalikettu, glyph: "knot" },
+      { id: newId(), name: L("Pudava Kodukkal", "പുടവ കൊടുക്കൽ"), when: L("Just after the thali", "താലിക്ക് തൊട്ടുപിന്നാലെ"), description: L("The groom gifts the bride a kasavu pudava — a lifetime of care, folded in cream and gold.", "വരൻ വധുവിന് കസവ് പുടവ സമ്മാനിക്കുന്നു — ക്രീമിലും സ്വർണ്ണത്തിലും മടക്കിയ ജീവിതകാലത്തെ കരുതൽ."), photo: m.ceremonies?.pudava, glyph: "bowl" },
+      { id: newId(), name: L("Sadhya", "സദ്യ"), when: L("12:30 pm", "ഉച്ചയ്ക്ക് 12:30"), description: L("Twenty-four dishes on a banana leaf, served by family. Ask for the payasam twice — everyone does.", "വാഴയിലയിൽ ഇരുപത്തിനാല് വിഭവങ്ങൾ, കുടുംബം വിളമ്പുന്നത്. പായസം രണ്ടാമതും ചോദിക്കൂ — എല്ലാവരും ചോദിക്കും."), glyph: "bowl" },
+      { id: newId(), name: L("Griha Pravesham", "ഗൃഹപ്രവേശം"), when: L("Evening, the new home", "സന്ധ്യയ്ക്ക്, പുതിയ വീട്ടിൽ"), description: L("The bride steps into her new home carrying a lit lamp — light entering light.", "വധു തെളിഞ്ഞ വിളക്കുമായി പുതിയ വീട്ടിലേക്ക് കടക്കുന്നു — വെളിച്ചത്തിലേക്ക് വെളിച്ചം."), glyph: "lamp" },
+    ],
+  } as never;
+  doc.whatsapp = { number: "919846000000", message: L("Hello! I’m writing about {title}.", "നമസ്കാരം! {title} സംബന്ധിച്ചാണ് ഞാൻ എഴുതുന്നത്.") };
+  doc.film = { url: "", video: undefined, poster: undefined, title: {}, caption: {} };
+
+  // section content: friendly headings, and the story reads as chapters of the timeline instead of twice
   for (const s of doc.sections) {
-    if (s.type === "hero") s.content = { ...s.content, background: m.hero };
+    if (s.type === "story") s.settings = { ...s.settings, showChapters: false };
     if (s.type === "venue" && opts.full) s.variant = "map";
     if (s.type === "travel" && opts.full) s.variant = "planner";
     if (s.type === "family") s.variant = opts.full ? "tree" : "editorial";

@@ -23,8 +23,23 @@ import { env } from "../src/lib/env";
 import { galleryScenes, heroScene, pookalamPuzzle, portraitScene, storyScenes, toJpeg, toSepia, venueScene } from "./demo/art";
 import { makeAmbientWav, makeMelodyWav } from "./demo/audio";
 import { buildDemoDoc, DEMO, type DemoMedia } from "./demo/content";
+import { buildAnanyaDoc, ANANYA, type AnanyaMedia } from "./demo/ananya";
+import { STOCK, stockPhoto } from "./demo/photos";
+import sharp from "sharp";
 
 const L = (en: string, ml?: string): Record<string, string> => (ml ? { en, ml } : { en });
+/** Kerala gallery: [stock photo id, English caption, Malayalam caption]. */
+const GALLERY_STOCK: [string, string, string][] = [
+  ["Xqa_NWl4xEY", "Radiant in kanjivaram silk", "കാഞ്ചീപുരം പട്ടിൽ തിളങ്ങുന്നവൾ"],
+  ["rjgFxE3eARQ", "Among the golden blossoms", "സുവർണ്ണ പൂക്കൾക്കിടയിൽ"],
+  ["SiMzEeMrX2E", "A father, a child, a garland", "ഒരച്ഛൻ, ഒരു കുഞ്ഞ്, ഒരു മാല"],
+  ["lj6_-FoCHng", "The vintage car, the old church", "പഴയ കാർ, പഴയ പള്ളി"],
+  ["ykcXm_u84sg", "Petals, and a promise", "ദളങ്ങൾ, ഒരു വാഗ്ദാനം"],
+  ["0mYmjAkmScE", "The hall, lit for the evening", "സന്ധ്യയ്ക്കായി തെളിച്ച ഹാൾ"],
+  ["VJP7K4uihUA", "Family, in kasavu", "കസവിൽ, കുടുംബം"],
+  ["b9xLrj7w2AY", "Walking home together", "ഒരുമിച്ച് വീട്ടിലേക്ക് നടക്കുമ്പോൾ"],
+];
+/** Fallback captions for the illustrated art, used only if the stock photographs are not on disk. */
 const GALLERY_CAPTIONS: [string, string][] = [
   ["The lamp that will light our home", "ഞങ്ങളുടെ വീടിന് വെളിച്ചമേകുന്ന വിളക്ക്"],
   ["Jasmine, strung by Ammamma", "അമ്മമ്മ കോർത്ത മുല്ലപ്പൂമാല"],
@@ -65,6 +80,25 @@ async function upload(weddingId: string, buf: Buffer, name: string, category: Me
   return ingestFile({ weddingId, buffer: buf, filename: name, category, allow, source: "SYSTEM", retention: "PERMANENT", ...extra });
 }
 
+/** Uploads one bundled photograph (once per wedding) and sets its focal point so faces survive cropping. */
+async function stockAsset(weddingId: string, id: string, category: MediaCategory, cache: Map<string, string>, extra: { caption?: Record<string, string>; alt?: Record<string, string> } = {}): Promise<string | null> {
+  const hit = cache.get(id);
+  if (hit) return hit;
+  const buf = stockPhoto(id);
+  if (!buf) return null;
+  const info = STOCK[id];
+  const asset = await upload(weddingId, buf, `${id}.jpg`, category, ["IMAGE"], { alt: extra.alt ?? { en: info?.alt ?? "" }, caption: extra.caption });
+  if (info?.focal) {
+    const db = await getDb();
+    await db.update(schema.mediaAssets).set({ focalX: info.focal.x, focalY: info.focal.y }).where(eq(schema.mediaAssets.id, asset.id));
+  }
+  cache.set(id, asset.id);
+  return asset.id;
+}
+
+const sepia = (buf: Buffer) => sharp(buf).resize({ width: 1000 }).modulate({ saturation: 0.3 }).tint({ r: 190, g: 160, b: 120 }).jpeg({ quality: 84 }).toBuffer();
+const social = (buf: Buffer) => sharp(buf).resize(1200, 630, { fit: "cover", position: "attention" }).jpeg({ quality: 84 }).toBuffer();
+
 interface DemoSpec {
   slug: string;
   title: string;
@@ -73,6 +107,8 @@ interface DemoSpec {
   theme: string;
   full: boolean;
   clientEmail?: string;
+  /** "auto" follows the event type; "confetti" shows the side-cannon confetti instead of petals. */
+  celebration?: "auto" | "petals" | "confetti" | "off";
 }
 
 async function seedWedding(admin: AdminActor, spec: DemoSpec) {
@@ -88,23 +124,37 @@ async function seedWedding(admin: AdminActor, spec: DemoSpec) {
   await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com" }).where(eq(schema.weddings.id, w.id));
   const art = (cache ??= await renderArt());
 
-  // media
-  const hero = await upload(w.id, art.hero, "hero.jpg", "COUPLE", ["IMAGE"], { alt: L("Meenakshi and Aravind on the jetty at dusk", "സന്ധ്യയിൽ ജെട്ടിയിൽ മീനാക്ഷിയും അരവിന്ദും") });
-  const bride = await upload(w.id, art.bride, "bride.jpg", "BRIDE", ["IMAGE"], { alt: L("Portrait of Meenakshi", "മീനാക്ഷിയുടെ ചിത്രം") });
-  const groom = await upload(w.id, art.groom, "groom.jpg", "GROOM", ["IMAGE"], { alt: L("Portrait of Aravind", "അരവിന്ദിന്റെ ചിത്രം") });
-  const venue = await upload(w.id, art.venue, "venue.jpg", "VENUE", ["IMAGE"], { alt: L("Vembanad Heritage Pavilion at golden hour", "സ്വർണ്ണ വെളിച്ചത്തിൽ വേമ്പനാട് ഹെറിറ്റേജ് പവലിയൻ") });
-  const og = await upload(w.id, art.og, "og.jpg", "OTHER");
+  // media — real photographs when the bundled stock is present, the procedural illustrations otherwise
+  const assets = new Map<string, string>();
+  const sid = (k: string, c: MediaCategory, extra?: { caption?: Record<string, string>; alt?: Record<string, string> }) => stockAsset(w.id, k, c, assets, extra);
+  const hero = { id: (await sid("Zx9In5UiU0w", "COUPLE", { alt: L("Meenakshi and Aravind laughing together in a garden, she holding a lotus, he in a mundu", "പൂന്തോട്ടത്തിൽ ചിരിച്ചുകൊണ്ട് താമരപ്പൂവുമായി മീനാക്ഷിയും മുണ്ടുടുത്ത അരവിന്ദും") })) ?? (await upload(w.id, art.hero, "hero.jpg", "COUPLE", ["IMAGE"], { alt: L("Meenakshi and Aravind on the jetty at dusk", "സന്ധ്യയിൽ ജെട്ടിയിൽ മീനാക്ഷിയും അരവിന്ദും") })).id };
+  const bride = { id: (await sid("Rm9DL9DmGi4", "BRIDE", { alt: L("Portrait of Meenakshi in a gold and red silk saree", "സ്വർണ്ണ-ചുവപ്പ് പട്ടുസാരിയിൽ മീനാക്ഷിയുടെ ചിത്രം") })) ?? (await upload(w.id, art.bride, "bride.jpg", "BRIDE", ["IMAGE"], { alt: L("Portrait of Meenakshi", "മീനാക്ഷിയുടെ ചിത്രം") })).id };
+  const groom = { id: (await sid("gXWVyFpRCRU", "GROOM", { alt: L("Portrait of Aravind in a white sherwani", "വെള്ള ഷെർവാണിയിൽ അരവിന്ദിന്റെ ചിത്രം") })) ?? (await upload(w.id, art.groom, "groom.jpg", "GROOM", ["IMAGE"], { alt: L("Portrait of Aravind", "അരവിന്ദിന്റെ ചിത്രം") })).id };
+  const venue = { id: (await sid("UX3-_dGbCzk", "VENUE", { alt: L("The pavilion stage under a banyan tree strung with marigold garlands at golden hour", "സ്വർണ്ണ വെളിച്ചത്തിൽ ജമന്തിമാലകൾ തൂക്കിയ ആൽമരത്തിന് കീഴിലെ പവലിയൻ വേദി") })) ?? (await upload(w.id, art.venue, "venue.jpg", "VENUE", ["IMAGE"], { alt: L("Vembanad Heritage Pavilion at golden hour", "സ്വർണ്ണ വെളിച്ചത്തിൽ വേമ്പനാട് ഹെറിറ്റേജ് പവലിയൻ") })).id };
+  const heroBuf = stockPhoto("Zx9In5UiU0w");
+  const og = await upload(w.id, heroBuf ? await social(heroBuf) : art.og, "og.jpg", "OTHER");
   const gallery: DemoMedia["gallery"] = [];
-  for (let i = 0; i < art.gallery.length; i++) {
-    const [en, ml] = GALLERY_CAPTIONS[i];
-    const a = await upload(w.id, art.gallery[i], `gallery-${i + 1}.jpg`, "GALLERY", ["IMAGE"], { caption: L(en, ml), alt: L(en, ml) });
-    gallery.push({ id: a.id, caption: L(en, ml), alt: L(en, ml) });
+  for (let i = 0; i < GALLERY_STOCK.length; i++) {
+    const [sidKey, en, ml] = GALLERY_STOCK[i];
+    const stockId = await sid(sidKey, "GALLERY", { caption: L(en, ml), alt: L(en, ml) });
+    if (stockId) { gallery.push({ id: stockId, caption: L(en, ml), alt: L(en, ml) }); continue; }
+    const [cen, cml] = GALLERY_CAPTIONS[i];
+    const a = await upload(w.id, art.gallery[i], `gallery-${i + 1}.jpg`, "GALLERY", ["IMAGE"], { caption: L(cen, cml), alt: L(cen, cml) });
+    gallery.push({ id: a.id, caption: L(cen, cml), alt: L(cen, cml) });
   }
-  const cafe = await upload(w.id, art.cafe, "story-cafe.jpg", "COUPLE");
-  const corridor = await upload(w.id, art.corridor, "story-corridor.jpg", "COUPLE");
-  const train = await upload(w.id, art.train, "story-train.jpg", "COUPLE");
-  const thenA = await upload(w.id, art.thenA, "then.jpg", "COUPLE");
-  const thenB = await upload(w.id, art.thenB, "now.jpg", "COUPLE");
+  const coffeeId = await sid("ZghCtT63KMk", "COUPLE");
+  const corridorId = gallery[3].id;
+  const trainId = gallery[7].id;
+  const cafe = { id: coffeeId ?? (await upload(w.id, art.cafe, "story-cafe.jpg", "COUPLE")).id };
+  const corridor = { id: coffeeId ? corridorId : (await upload(w.id, art.corridor, "story-corridor.jpg", "COUPLE")).id };
+  const train = { id: coffeeId ? trainId : (await upload(w.id, art.train, "story-train.jpg", "COUPLE")).id };
+  const thenSrc = stockPhoto("lj6_-FoCHng"), nowSrc = stockPhoto("ZghCtT63KMk");
+  const thenA = await upload(w.id, thenSrc ? await sepia(thenSrc) : art.thenA, "then.jpg", "COUPLE");
+  const thenB = await upload(w.id, nowSrc ? await sharp(nowSrc).resize({ width: 1000 }).jpeg({ quality: 84 }).toBuffer() : art.thenB, "now.jpg", "COUPLE");
+  const familyId = await sid("VJP7K4uihUA", "FAMILY");
+  const varavelppu = await sid("SiMzEeMrX2E", "EVENT");
+  const thalikettu = await sid("b9xLrj7w2AY", "EVENT");
+  const pudava = await sid("rjgFxE3eARQ", "EVENT");
   const puzzleA = spec.full ? await upload(w.id, art.puzzleA, "puzzle-a.jpg", "OTHER") : null;
   const puzzleB = spec.full ? await upload(w.id, art.puzzleB, "puzzle-b.jpg", "OTHER") : null;
   const clipA = spec.full ? await upload(w.id, art.clipA, "clip-a.wav", "MUSIC", ["AUDIO"]) : null;
@@ -126,11 +176,16 @@ async function seedWedding(admin: AdminActor, spec: DemoSpec) {
     hero: hero.id, bride: bride.id, groom: groom.id, venue: venue.id, gallery,
     story: { cafe: cafe.id, corridor: corridor.id, train: train.id, thenA: thenA.id, thenB: thenB.id },
     puzzleA: puzzleA?.id ?? "", puzzleB: puzzleB?.id ?? "", clipA: clipA?.id ?? "", clipB: clipB?.id ?? "", og: og.id,
+    family: familyId ?? undefined,
+    storyPhoto: coffeeId ?? undefined,
+    milestones: coffeeId ? { umbrella: corridorId, coffee: coffeeId, train: trainId, proposal: gallery[4].id } : undefined,
+    ceremonies: { varavelppu: varavelppu ?? undefined, thalikettu: thalikettu ?? undefined, pudava: pudava ?? undefined },
   };
   const cur = await getWedding(admin, w.id);
   const doc = buildDemoDoc(cur.draftDoc, media, { full: spec.full });
   // Package-specific tuning of what the demo turns on
   if (spec.pkg === "ESSENTIAL") doc.rsvp.askEventResponses = false;
+  if (spec.celebration) doc.opening.celebration = spec.celebration;
   await saveDraft(admin, w.id, doc);
 
   // people (Signature & Luxury)
@@ -144,6 +199,65 @@ async function seedWedding(admin: AdminActor, spec: DemoSpec) {
 
   await publishWedding(admin, w.id, { label: "Launch" });
   console.log(`  ✔ ${spec.slug}  (${spec.pkg})`);
+  return w.id;
+}
+
+/**
+ * Ananya & Arjun — the English-only north Indian showcase (Hindu wedding in Udaipur, 12 Dec 2026).
+ * Every photograph is a bundled stock picture uploaded through the normal media pipeline.
+ */
+async function seedAnanya(admin: AdminActor) {
+  const db = await getDb();
+  const [existing] = await db.select({ id: schema.weddings.id }).from(schema.weddings).where(eq(schema.weddings.slug, ANANYA.slug));
+  if (existing) {
+    console.log(`  • ${ANANYA.slug} already exists — skipping`);
+    return existing.id;
+  }
+  const [tpl] = await db.select().from(schema.templates).where(eq(schema.templates.slug, "cinematic-noir"));
+  const [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, "royal-gold"));
+  const w = await createWedding(admin, { title: ANANYA.title, slug: ANANYA.slug, packageKey: "LUXURY", customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", secondaryLocale: null, weddingDate: ANANYA.date });
+  await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com" }).where(eq(schema.weddings.id, w.id));
+  const art = (cache ??= await renderArt());
+  const assets = new Map<string, string>();
+  const need = async (k: string, c: MediaCategory, caption?: Record<string, string>) => {
+    const id = await stockAsset(w.id, k, c, assets, caption ? { caption } : {});
+    if (!id) throw new Error(`Missing stock photograph assets/stock/${k}.jpg — restore it, or re-run npm run db:reset after adding it.`);
+    return id;
+  };
+  const hero = await need("2oQy4GAGxbk", "COUPLE");
+  const heroWide = await need("2XXQkrL0k-Q", "COUPLE");
+  const couple = await need("3ZISmV72cbM", "COUPLE");
+  const bride = await need("VPwSJhu5uhs", "BRIDE");
+  const groom = await need("mab4JkLEe80", "GROOM");
+  const ceremony = await need("7O422yG_b80", "EVENT");
+  const venue = await need("BEdxXAiRfRM", "VENUE");
+  const wideBuf = stockPhoto("2XXQkrL0k-Q")!;
+  const og = (await upload(w.id, await social(wideBuf), "og.jpg", "OTHER")).id;
+  const GAL: [string, string][] = [
+    ["d9RsO9BHFVQ", "Under a canopy of golden light"], ["SHFOaVaVe2A", "A quiet walk before the noise begins"], ["shqK5G-J-Ac", "Red, gold and a held breath"], ["NCrvRQdvTx8", "After sunset"],
+    ["d-jyMeP6uNQ", "By the river"], ["8DItNV005qM", "Garlands and glances"], ["OzyvCE9a60M", "The first hours as a married couple"], ["kp7XkkCLnlY", "In front of the flowers"],
+    ["M8YKi58QKrM", "Petals everywhere"], ["ohENjR9w0bk", "Eyes lowered, heart full"], ["2DZmm6QKFQE", "The doorway to a new life"], ["Po-nggQqplE", "Henna, bangles and a nervous smile"],
+    ["ICnMRhxJLYg", "The groom, ready"], ["Y3QEAct9JT4", "Fairy lights and family"], ["jWBxlyVZ3bg", "Side by side"], ["DC0d6A2kX0k", "A ceiling of jasmine"],
+  ];
+  const gallery: AnanyaMedia["gallery"] = [];
+  for (const [k, cap] of GAL) {
+    const id = await need(k, "GALLERY", { en: cap });
+    gallery.push({ id, caption: { en: cap }, alt: { en: STOCK[k]?.alt ?? cap } });
+  }
+  const media: AnanyaMedia = {
+    hero, heroWide, couple, bride, groom, venue, ceremony, story: couple, og, gallery,
+    events: { mehendi: await need("SUwPo4ErQCc", "EVENT"), sangeet: await need("gG5MoExhMnU", "EVENT"), wedding: ceremony, reception: await need("OQDYhr9HRNo", "EVENT") },
+    ceremonies: { haldi: await need("IFCN-tBVNPI", "EVENT"), mehendi: await need("fVL0zZdk-R4", "EVENT"), baraat: await need("gG5MoExhMnU", "EVENT"), kanyadaan: await need("bWQ6-0c_ZcM", "EVENT"), phera: await need("lAze38kfdAs", "EVENT"), reception: await need("OQDYhr9HRNo", "EVENT"), puja: await need("EiGfP6DxgN8", "EVENT") },
+    milestones: { first: await need("8DItNV005qM", "COUPLE"), chapter: await need("d-jyMeP6uNQ", "COUPLE"), promise: await need("lKwp3-FQomY", "COUPLE"), wedding: await need("7O422yG_b80", "EVENT") },
+  };
+  const album = await saveAlbum(admin, w.id, { title: { en: "Pre-wedding" }, kind: "OFFICIAL", coverAssetId: gallery[0].id });
+  await addToAlbum(admin, w.id, album.id, gallery.map((g) => g.id));
+  const track = await upload(w.id, art.music, "raag-yaman.wav", "MUSIC", ["AUDIO"]);
+  await saveTrack(admin, w.id, { assetId: track.id, title: "Raag Yaman", artist: "StackBridge Studio (ambient)", isPrimary: true, inPlaylist: true });
+  const cur = await getWedding(admin, w.id);
+  await saveDraft(admin, w.id, buildAnanyaDoc(cur.draftDoc, media));
+  await publishWedding(admin, w.id, { label: "Launch" });
+  console.log(`  ✔ ${ANANYA.slug}  (LUXURY)`);
   return w.id;
 }
 
@@ -223,6 +337,7 @@ async function seedOrders(weddingIds: Record<string, string>) {
   if (n > 0) return;
   const rows: (typeof schema.orders.$inferInsert)[] = [
     { customerName: "Meenakshi & Aravind (portfolio demo)", customerContact: "", packageKey: "LUXURY", amountInr: 0, status: "FREE_PORTFOLIO", notes: "Portfolio wedding — showcases every Luxury feature.", weddingId: weddingIds.luxury },
+    { customerName: "Ananya & Arjun (portfolio demo)", customerContact: "", packageKey: "LUXURY", amountInr: 0, status: "FREE_PORTFOLIO", notes: "Portfolio wedding — north Indian, cinematic.", weddingId: weddingIds.ananya },
     { customerName: "Portfolio · Signature demo", customerContact: "", packageKey: "SIGNATURE", amountInr: 0, status: "FREE_PORTFOLIO", weddingId: weddingIds.signature },
     { customerName: "Portfolio · Essential demo", customerContact: "", packageKey: "ESSENTIAL", amountInr: 0, status: "FREE_PORTFOLIO", weddingId: weddingIds.essential },
     { customerName: "Enquiry: Nisha & Rohit", customerContact: "+91 90000 11122", packageKey: "SIGNATURE", amountInr: 4999, status: "QUOTED", notes: "Wedding in March. Wants Malayalam + English." },
@@ -244,10 +359,11 @@ async function main() {
   console.log(`  ✔ packages: ${PACKAGE_DEFAULTS.map((p) => p.name).join(", ")}`);
   if (process.env.SEED_DEMO === "false") return;
 
-  console.log("→ Creating demonstration weddings (illustrated art, fictional couple)");
+  console.log("→ Creating demonstration weddings (stock photography, fictional couples)");
   const ids: Record<string, string> = {};
   ids.luxury = await seedWedding(admin, { slug: DEMO.slug, title: DEMO.title, pkg: "LUXURY", template: "royal-heritage", theme: "kasavu", full: true, clientEmail: "luxury.client@example.com" });
-  ids.cinematic = await seedWedding(admin, { slug: "demo-cinematic", title: DEMO.title, pkg: "LUXURY", template: "cinematic-noir", theme: "midnight-sapphire", full: true });
+  ids.ananya = await seedAnanya(admin);
+  ids.cinematic = await seedWedding(admin, { slug: "demo-cinematic", title: DEMO.title, pkg: "LUXURY", template: "cinematic-noir", theme: "midnight-sapphire", full: true, celebration: "confetti" });
   ids.signature = await seedWedding(admin, { slug: "demo-signature", title: DEMO.title, pkg: "SIGNATURE", template: "editorial", theme: "emerald-ivory", full: false, clientEmail: "signature.client@example.com" });
   ids.essential = await seedWedding(admin, { slug: "demo-essential", title: DEMO.title, pkg: "ESSENTIAL", template: "minimal-luxury", theme: "rose-gold", full: false });
   await seedOrders(ids);

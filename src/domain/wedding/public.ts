@@ -18,6 +18,7 @@ import { env } from "@/lib/env";
 import { localeInfo } from "@/domain/doc/constants";
 import { SECTION_META } from "@/domain/doc/sections";
 import { tx } from "@/domain/doc/schema";
+import { resolveSlot } from "@/domain/imagery/slots";
 
 export interface PublicGuest {
   name: string;
@@ -135,7 +136,7 @@ async function assemble(opts: { snap: Snapshot; guest: GuestContext | null; mode
     anniversary: want("anniversary") ? await listAnniversaryEntries(wedding.id) : [],
   };
 
-  const ogId = doc.seo.ogImage ?? doc.couple.bride.photo ?? doc.couple.groom.photo;
+  const ogId = doc.seo.ogImage ?? resolveSlot({ doc, gallery }, "couple");
   const canonical = `${env.appUrl}/invite/${wedding.slug}`;
   return {
     mode,

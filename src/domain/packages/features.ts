@@ -35,7 +35,7 @@ export const FEATURES = {
   custom_url: { label: "Custom wedding URL", description: "A memorable link such as /invite/nihal-and-fida.", group: "Invitation", tier: "ESSENTIAL" },
   music: { label: "Background music", description: "Tap-to-play music with cover art and progress.", group: "Invitation", tier: "ESSENTIAL" },
   story: { label: "Couple story & timeline", description: "How we met, timeline chapters and the couple's story.", group: "Invitation", tier: "ESSENTIAL" },
-  gallery: { label: "Photo gallery", description: "Albums, editorial grid and full-screen viewer.", group: "Invitation", tier: "ESSENTIAL" },
+  gallery: { label: "Photo gallery & wedding film", description: "Albums, editorial spreads, a full-screen viewer and an optional wedding film.", group: "Invitation", tier: "ESSENTIAL" },
   venue_basic: { label: "Venue, map & parking", description: "Google Maps link, parking and dress code.", group: "Travel & Venue", tier: "ESSENTIAL" },
   rsvp: { label: "RSVP", description: "Will you be joining us? Yes / No / Maybe with a simple form.", group: "Guests & RSVP", tier: "ESSENTIAL" },
   whatsapp_share: { label: "WhatsApp & link sharing", description: "One-tap share to WhatsApp, native share and copy link.", group: "Invitation", tier: "ESSENTIAL" },

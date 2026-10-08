@@ -48,6 +48,9 @@ export interface InvitationCtx {
   setGateOpen: (v: boolean) => void;
   entered: boolean;
   setEntered: (v: boolean) => void;
+  /** True once the two illustrated figures have finished their walk and stand together at the end of the page. */
+  journeyTogether: boolean;
+  setJourneyTogether: (v: boolean) => void;
 }
 
 const Ctx = createContext<InvitationCtx | null>(null);
@@ -175,6 +178,7 @@ export function InvitationProvider({ view, children, initialLocale, onOpenShare 
   const [reducedMotion, setReducedMotion] = useState(false);
   const [gateOpen, setGateOpen] = useState(false);
   const [entered, setEntered] = useState(false);
+  const [journeyTogether, setJourneyTogether] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -233,7 +237,7 @@ export function InvitationProvider({ view, children, initialLocale, onOpenShare 
 
   const value: InvitationCtx = {
     view, slug, locale, setLocale, multilingual, t, L, media, has, reducedMotion, music, token, isPreview, post, get,
-    openShare: onOpenShare, gateOpen, setGateOpen, entered, setEntered,
+    openShare: onOpenShare, gateOpen, setGateOpen, entered, setEntered, journeyTogether, setJourneyTogether,
   };
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

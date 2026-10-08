@@ -12,6 +12,8 @@ import { CoupleStep } from "@/components/admin/steps/CoupleStep";
 import { EventsStep } from "@/components/admin/steps/EventsStep";
 import { FamilyStep } from "@/components/admin/steps/FamilyStep";
 import { StoryStep } from "@/components/admin/steps/StoryStep";
+import { CeremoniesEditor, FilmEditor } from "@/components/admin/steps/ExperienceSteps";
+import { assignSlot, ownSlotValue } from "@/domain/imagery/slots";
 import { VenueStep } from "@/components/admin/steps/VenueStep";
 import { RsvpSetupStep } from "@/components/admin/steps/SetupSteps";
 import { GamesSetup } from "@/components/workspace/GamesSetup";
@@ -21,7 +23,7 @@ import Link from "next/link";
 const TOGGLES: Partial<Record<SectionConfig["type"], { key: string; label: string; hint?: string; def: boolean }[]>> = {
   hero: [{ key: "showCountdown", label: "Show a small countdown", def: true }],
   story: [
-    { key: "showHowWeMet", label: "Show ‘How we met’", def: true }, { key: "showThenNow", label: "Show ‘Then & now’ sliders", def: true }, { key: "showMemoryCards", label: "Show memory cards", def: true },
+    { key: "showChapters", label: "Show the longer chapters", def: true }, { key: "showHowWeMet", label: "Show ‘How we met’", def: true }, { key: "showThenNow", label: "Show ‘Then & now’ sliders", def: true }, { key: "showMemoryCards", label: "Show memory cards", def: true },
     { key: "showPersonality", label: "Show ‘Getting to know us’ cards", def: true }, { key: "showVoice", label: "Show the voice story", def: true },
   ],
 };
@@ -30,7 +32,7 @@ const PHASES = WEDDING_STATUSES.filter((s) => s !== "DRAFT" && s !== "PREVIEW");
 const PHASE_LABEL: Record<string, string> = { PUBLISHED: "Before the wedding", LIVE_EVENT: "On the wedding day", POST_EVENT: "Just after (thank-you)", MEMORY: "Memories", ANNIVERSARY: "Anniversary" };
 
 export function SectionPanel({ section, tab, weddingId }: { section: SectionConfig; tab: "section" | "content"; weddingId: string }) {
-  const { update, has, groups } = useDraft();
+  const { update, has, groups, doc } = useDraft();
   const meta = SECTION_META[section.type];
   const locked = !!meta.feature && !has(meta.feature);
   const set = (fn: (s: SectionConfig) => void) => update((d) => { const s = d.sections.find((x) => x.id === section.id); if (s) fn(s); });
@@ -41,9 +43,11 @@ export function SectionPanel({ section, tab, weddingId }: { section: SectionConf
 
   if (tab === "content") {
     switch (section.type) {
-      case "hero": return <div className="space-y-5"><MediaField label="Hero background photo" value={section.content.background as string | undefined} category="COUPLE" onChange={(id) => set((s) => void (s.content = { ...s.content, background: id }))} aspect="aspect-[3/4]" />{section.variant === "fullbleed" && <MediaField label="Background video (optional)" kinds={["VIDEO"]} category="VIDEO" value={section.content.video as string | undefined} onChange={(id) => set((s) => void (s.content = { ...s.content, video: id }))} />}<Hint>Names, date and tagline come from the couple’s details.</Hint><CoupleStep /></div>;
+      case "hero": return <div className="space-y-5"><MediaField label="Couple photograph (the hero)" value={ownSlotValue(doc, "couple")} category="COUPLE" onChange={(id) => update((d) => assignSlot(d, "couple", id))} aspect="aspect-[2/3]" hint="Portrait, faces in the upper half. The same photograph is used in “Our story” and the link preview." /><MediaField label="Landscape version for desktop (optional)" value={ownSlotValue(doc, "coupleWide")} category="COUPLE" onChange={(id) => update((d) => assignSlot(d, "coupleWide", id))} aspect="aspect-[16/10]" hint="Used on tablets and desktops so a wide screen never crops the two of you." />{section.variant === "fullbleed" && <MediaField label="Background video (optional)" kinds={["VIDEO"]} category="VIDEO" value={section.content.video as string | undefined} onChange={(id) => set((s) => void (s.content = { ...s.content, video: id }))} />}<Hint>Names, date and tagline come from the couple’s details.</Hint><CoupleStep /></div>;
       case "couple": return <CoupleStep />;
       case "story": case "timeline": return <StoryStep />;
+      case "ceremonies": return <CeremoniesEditor />;
+      case "film": return <FilmEditor />;
       case "family": return <FamilyStep />;
       case "events": case "countdown": case "livesched": case "dresscode": case "menu": return <EventsStep />;
       case "venue": case "travel": return <VenueStep />;

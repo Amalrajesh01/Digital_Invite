@@ -9,6 +9,7 @@ import { checkSlugAction } from "@/app/actions/wedding";
 import { FormCard, Grid, Hint, LText, ListEditor } from "../forms";
 import { MediaField } from "../MediaField";
 import { useDraft } from "../draft";
+import { CelebrationCard, ChatCard } from "./ExperienceSteps";
 import type { Person } from "@/domain/doc/schema";
 
 function PersonForm({ who }: { who: "bride" | "groom" }) {
@@ -87,6 +88,8 @@ export function CoupleStep() {
         {settings.secondaryLocale && <Hint>Every text box below now has an English side and a {LOCALES.find((l) => l.code === settings.secondaryLocale)?.label} side. Fill both; anything left empty falls back to English.</Hint>}
       </FormCard>
 
+      <CelebrationCard />
+
       <div className="grid gap-6 lg:grid-cols-2"><PersonForm who="bride" /><PersonForm who="groom" /></div>
 
       <FormCard title="Words on the invitation">
@@ -102,6 +105,8 @@ export function CoupleStep() {
           <SelectField label="Who is named first?" value={doc.couple.order} onChange={(e) => update((d) => void (d.couple.order = e.target.value as never))}><option value="bride-first">Bride first</option><option value="groom-first">Groom first</option></SelectField>
         </Grid>
       </FormCard>
+
+      <ChatCard />
 
       <FormCard title="How each guest is greeted" description="Personal links open with “Dear {name}, …”. Use {name} where the guest’s name should appear.">
         <LText label="Default greeting" multiline value={doc.guestGreetings.default} onChange={(v) => update((d) => void (d.guestGreetings.default = v))} placeholder="Dear {name}, we would love to celebrate this special day with you." />

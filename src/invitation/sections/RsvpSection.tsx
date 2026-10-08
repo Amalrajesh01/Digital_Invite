@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Check, Minus, Plus, MessageCircle } from "lucide-react";
+import { Minus, Plus, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/cn";
 import type { SectionConfig } from "@/domain/doc/schema";
@@ -11,6 +11,7 @@ import { sortEvents } from "@/domain/wedding/view";
 import { todayInZone } from "@/lib/time";
 import { ApiError, useInvitation } from "../engine/context";
 import { Reveal } from "../engine/motion";
+import { ChatCta } from "../engine/Chat";
 import { fmtDate, whatsappHref } from "../engine/format";
 import { Shell, SectionHead, useCopy, InlineNotice } from "./shared";
 
@@ -158,9 +159,10 @@ export default function RsvpSection({ section }: { section: SectionConfig }) {
     ? whatsappHref(cfg.whatsappNumber, `${personal ? guest!.name : watch("name") || ""} — ${status ? t(`rsvp.${status.toLowerCase() as "yes"}`) : ""}${status === "YES" ? ` (${count})` : ""} · ${view.wedding.title}`)
     : null;
 
-  const ChoiceBtn = ({ v, label }: { v: Choice; label: string }) => (
-    <button type="button" className="inv-choice !justify-center text-center" aria-pressed={status === v} onClick={() => { setValue("status", v, { shouldValidate: true }); if (v === "YES") syncCompanions(form.getValues("attendingCount")); }}>
-      <span className="inv-h4 !font-normal">{label}</span>
+  const choose = (v: Choice) => { setValue("status", v, { shouldValidate: true }); if (v === "YES") syncCompanions(form.getValues("attendingCount")); };
+  const ChoiceBtn = ({ v, label, cls }: { v: Choice; label: string; cls?: string }) => (
+    <button type="button" className={cn("rsvp-choice", cls)} aria-pressed={status === v} onClick={() => choose(v)}>
+      <span className="rsvp-choice-label">{label}</span>
     </button>
   );
 
@@ -181,10 +183,11 @@ export default function RsvpSection({ section }: { section: SectionConfig }) {
       {cfg.deadline && <p className="-mt-6 mb-8 text-center text-[0.92rem] opacity-80">{t("rsvp.deadline", { date: fmtDate(cfg.deadline, locale, "long") })}</p>}
 
       {reply && !editing ? (
-        <Reveal className="inv-card mx-auto max-w-lg p-8 text-center">
-          <span className="mx-auto grid size-14 place-items-center rounded-full bg-[var(--c-accent)] text-[var(--c-inverse)]"><Check className="size-7" /></span>
-          <p className="inv-h3 mt-5">{reply.message}</p>
-          <p className="inv-muted mt-3 text-[0.96rem]">{t("rsvp.yourReply")}: <strong className="text-[var(--c-text)]">{t(`rsvp.${reply.status.toLowerCase() as "yes"}`)}{reply.status === "YES" ? ` · ${reply.count}` : ""}</strong></p>
+        <Reveal className="rsvp-thanks mx-auto max-w-lg">
+          <svg viewBox="0 0 24 24" className="rsvp-thanks-heart" aria-hidden><path d="M12 21.2S4.6 16.4 2.7 11.3A5.5 5.5 0 0 1 12 6.4a5.5 5.5 0 0 1 9.3 4.9C19.4 16.4 12 21.2 12 21.2Z" fill="currentColor" /></svg>
+          <p className="rsvp-thanks-title">{t("rsvp.thankYou")}</p>
+          <p className="inv-serif-lede mt-5 !text-[clamp(1.2rem,4vw,1.6rem)]">{reply.status === "YES" ? t("rsvp.celebrate") : reply.status === "NO" ? t("rsvp.thanksNo") : t("rsvp.thanksMaybe")}</p>
+          <p className="inv-muted mt-4 text-[0.92rem]">{t("rsvp.yourReply")}: <strong className="text-[var(--c-text)]">{t(`rsvp.${reply.status.toLowerCase() as "yes"}`)}{reply.status === "YES" ? ` · ${reply.count}` : ""}</strong></p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             {!closed && <button type="button" className="inv-btn inv-btn-ghost inv-btn-sm" onClick={() => setEditing(true)}>{t("rsvp.change")}</button>}
             {view.entitlements.features.includes("qr_pass") && personal && <a href="#s-qrpass" className="inv-btn inv-btn-sm">{t("rsvp.getPass")}</a>}
@@ -192,12 +195,12 @@ export default function RsvpSection({ section }: { section: SectionConfig }) {
         </Reveal>
       ) : (
         <form onSubmit={onSubmit} noValidate className="space-y-7" aria-label={copy.title}>
-          <div role="group" aria-label={t("rsvp.title")} className="grid gap-3 sm:grid-cols-3">
-            <ChoiceBtn v="YES" label={t("rsvp.yes")} />
-            <ChoiceBtn v="NO" label={t("rsvp.no")} />
-            <ChoiceBtn v="MAYBE" label={t("rsvp.maybe")} />
+          <div role="group" aria-label={t("rsvp.title")} className="rsvp-choices">
+            <ChoiceBtn v="YES" label={t("rsvp.accept")} cls="rsvp-choice-accept" />
+            <ChoiceBtn v="NO" label={t("rsvp.decline")} />
           </div>
-          {errors.status && <p className="inv-error" role="alert">{errors.status.message}</p>}
+          <button type="button" className="inv-linkbtn rsvp-maybe" aria-pressed={status === "MAYBE"} onClick={() => choose("MAYBE")}>{t("rsvp.maybe")}</button>
+          {errors.status && <p className="inv-error text-center" role="alert">{errors.status.message}</p>}
 
           {status && (
             <div className="space-y-7 [animation:inv-rise_.45s_var(--ease)]">
@@ -295,6 +298,7 @@ export default function RsvpSection({ section }: { section: SectionConfig }) {
           )}
         </form>
       )}
+      <ChatCta hint className="mt-16" />
     </Shell>
   );
 }

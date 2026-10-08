@@ -36,10 +36,14 @@ export interface TemplateSeed {
 
 type Over = Partial<Record<(typeof SECTION_TYPES)[number], { variant?: string; enabled?: boolean; settings?: Record<string, unknown> }>>;
 
-/** Canonical top-to-bottom order shared by all templates. Lifecycle rules decide what shows when. */
+/**
+ * Canonical top-to-bottom order shared by all templates — the story the guest scrolls through:
+ * the photograph, who they are, how it began, the countdown, the days, the rituals, the families,
+ * the place, the memories, the film, and finally the reply. Lifecycle rules decide what shows when.
+ */
 const ORDER: (typeof SECTION_TYPES)[number][] = [
-  "hero", "countdown", "couple", "story", "timeline", "family", "events", "livesched", "liveupdate", "livestream", "dresscode", "menu",
-  "venue", "travel", "gallery", "music", "quiz", "games", "scavenger", "rsvp", "qrpass", "checkin", "photowall", "guestupload",
+  "hero", "story", "timeline", "countdown", "couple", "events", "ceremonies", "family", "livesched", "liveupdate", "livestream", "dresscode", "menu",
+  "venue", "travel", "gallery", "film", "music", "quiz", "games", "scavenger", "rsvp", "qrpass", "checkin", "photowall", "guestupload",
   "guestbook", "wishes", "timecapsule", "memory", "anniversary", "thankyou", "contact",
 ];
 
@@ -59,20 +63,21 @@ export const TEMPLATE_SEEDS: TemplateSeed[] = [
   {
     slug: "royal-heritage",
     name: "Royal Heritage",
-    description: "A ceremonial envelope opens onto arch-framed portraits, ornamented dividers and ticket-style event cards. Rooted in traditional Indian stationery.",
+    description: "A ceremonial envelope opens onto a full-screen photograph, falling petals and a story told in editorial chapters. Rooted in traditional Indian stationery.",
     config: {
       flavor: "royal",
       opening: "envelope",
       suggestedTheme: "royal-gold",
       sections: sections({
-        hero: { variant: "arch" },
-        countdown: { variant: "ring" },
+        hero: { variant: "fullbleed" },
+        countdown: { variant: "classic" },
         couple: { variant: "arch" },
         story: { variant: "chapters" },
-        timeline: { enabled: false },
+        timeline: { variant: "vertical" },
         family: { variant: "editorial" },
-        events: { variant: "cards" },
-        gallery: { variant: "masonry" },
+        events: { variant: "editorial" },
+        ceremonies: { variant: "editorial" },
+        gallery: { variant: "editorial" },
         rsvp: { variant: "classic" },
         guestbook: { variant: "wall" },
       }),
@@ -91,10 +96,11 @@ export const TEMPLATE_SEEDS: TemplateSeed[] = [
         countdown: { variant: "classic" },
         couple: { variant: "editorial" },
         story: { variant: "chapters" },
-        timeline: { variant: "horizontal", enabled: false },
+        timeline: { variant: "vertical" },
         family: { variant: "editorial" },
-        events: { variant: "timeline" },
-        gallery: { variant: "carousel" },
+        events: { variant: "editorial" },
+        ceremonies: { variant: "editorial" },
+        gallery: { variant: "editorial" },
         rsvp: { variant: "card" },
         guestbook: { variant: "wall" },
       }),
@@ -110,10 +116,11 @@ export const TEMPLATE_SEEDS: TemplateSeed[] = [
       suggestedTheme: "emerald-ivory",
       sections: sections({
         hero: { variant: "split" },
-        countdown: { variant: "events" },
+        countdown: { variant: "classic" },
         couple: { variant: "editorial" },
         story: { variant: "chapters" },
-        timeline: { enabled: false },
+        timeline: { variant: "vertical" },
+        ceremonies: { variant: "editorial" },
         family: { variant: "editorial" },
         events: { variant: "editorial" },
         gallery: { variant: "editorial" },
@@ -135,9 +142,10 @@ export const TEMPLATE_SEEDS: TemplateSeed[] = [
         countdown: { variant: "classic" },
         couple: { variant: "portraits" },
         story: { variant: "cards" },
-        timeline: { variant: "vertical", enabled: false },
+        timeline: { variant: "vertical" },
+        ceremonies: { variant: "grid" },
         family: { variant: "list" },
-        events: { variant: "cards" },
+        events: { variant: "editorial" },
         gallery: { variant: "masonry" },
         rsvp: { variant: "card" },
         guestbook: { variant: "list" },

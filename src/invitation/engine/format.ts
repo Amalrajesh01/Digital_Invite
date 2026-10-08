@@ -110,3 +110,12 @@ export function embedUrl(url: string): string | null {
 export function whatsappHref(phone: string, text: string): string {
   return `https://wa.me/${phone.replace(/\D/g, "")}?text=${encodeURIComponent(text)}`;
 }
+
+/** What the wedding-film player may load from a pasted link: a YouTube/Vimeo embed or a direct https video file. */
+export function filmSourceFromUrl(url: string): { kind: "embed" | "file"; src: string } | null {
+  const embed = embedUrl(url);
+  if (embed) return { kind: "embed", src: embed + (embed.includes("?") ? "&" : "?") + "autoplay=1" };
+  const direct = safeExternal(url);
+  if (direct && direct.startsWith("https://") && /.(mp4|webm|mov)$/i.test(new URL(direct).pathname)) return { kind: "file", src: direct };
+  return null;
+}

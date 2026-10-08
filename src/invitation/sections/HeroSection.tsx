@@ -9,7 +9,17 @@ import { KasavuBand, Rosette, Divider } from "../engine/Ornament";
 import { fmtDate } from "../engine/format";
 import { eventStart } from "../engine/format";
 import { useCoupleNames } from "../opening/Gate";
+import { useSlot } from "../engine/images";
+import { EVENT_TYPE_INFO } from "@/domain/doc/event-types";
 import { ChevronDown } from "lucide-react";
+
+/** Smoothly scrolls to whatever section follows the hero (it need not be a particular one). */
+function goNext(e: React.MouseEvent) {
+  const next = document.getElementById("s-hero")?.parentElement?.nextElementSibling;
+  if (!next) return;
+  e.preventDefault();
+  next.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+}
 
 function useHeroData(section: SectionConfig) {
   const { view, L, t, locale, entered } = useInvitation();
@@ -19,14 +29,15 @@ function useHeroData(section: SectionConfig) {
   const venue = doc.venues.find((v) => v.id === main?.venueId) ?? doc.venues[0];
   const date = main?.date || view.wedding.weddingDate || "";
   const content = section.content as Record<string, string | undefined>;
-  const galleryFirst = view.gallery[0]?.items[0]?.id;
-  const bg = content.background || galleryFirst || doc.couple.bride.photo || doc.couple.groom.photo;
+  const bg = useSlot("couple"); // the couple photograph (hero override → couple slot → gallery → portraits)
+  const wide = useSlot("coupleWide");
+  const phraseKey = `invite.phrase.${EVENT_TYPE_INFO[doc.eventType].phrase}` as const;
   const eyebrowKey = LIFECYCLE_HEADLINE[view.wedding.status];
   const status = view.wedding.status;
   const eyebrow = status === "ANNIVERSARY" && view.wedding.yearsTogether > 1 ? t("anniv.years", { n: view.wedding.yearsTogether }) : t(eyebrowKey as never);
   const target = main ? eventStart(main, view.wedding.timezone) : null;
   return {
-    names, bg, date, dateText: date ? fmtDate(date, locale, "long") : "", shortDate: date ? fmtDate(date, locale, "monthDay") + ", " + date.slice(0, 4) : "",
+    names, bg, wide, phraseKey, status, date, dateText: date ? fmtDate(date, locale, "long") : "", dots: date ? date.split("-").reverse() : [], shortDate: date ? fmtDate(date, locale, "monthDay") + ", " + date.slice(0, 4) : "",
     venueName: venue ? L(venue.name) : "", city: venue ? L(venue.city) : "", tagline: L(doc.couple.tagline), invitation: L(doc.couple.invitation) || t("invite.together"),
     eyebrow, entered, locale, video: content.video, target, hashtag: doc.couple.hashtag, settings: section.settings,
   };
@@ -47,7 +58,7 @@ function MiniCountdown({ target, className }: { target: Date | null; className?:
 function ScrollCue({ light }: { light?: boolean }) {
   const { t } = useInvitation();
   return (
-    <a href="#s-couple" aria-label={t("invite.scroll")} className={cn("mx-auto mt-10 flex flex-col items-center gap-2 text-[0.68rem] uppercase tracking-[0.3em] no-underline opacity-70 transition-opacity hover:opacity-100", light ? "text-white" : "text-[var(--c-primary)]")}>
+    <a href="#main" onClick={goNext} aria-label={t("invite.scroll")} className={cn("mx-auto mt-10 flex flex-col items-center gap-2 text-[0.68rem] uppercase tracking-[0.3em] no-underline opacity-70 transition-opacity hover:opacity-100", light ? "text-white" : "text-[var(--c-primary)]")}>
       <span>{t("invite.scroll")}</span>
       <ChevronDown className="size-4 animate-[inv-float_2.4s_ease-in-out_infinite]" />
     </a>
@@ -85,38 +96,56 @@ function Arch({ section }: { section: SectionConfig }) {
   );
 }
 
+/**
+ * The opening scene. A full-viewport photograph of the two of them, a scrim that is deepest behind the words
+ * (and barely there over their faces), then — in this order — the invitation line, the names, what is
+ * happening, the date, and a quiet cue to keep scrolling.
+ */
 function FullBleed({ section }: { section: SectionConfig }) {
   const h = useHeroData(section);
-  const { media, reducedMotion } = useInvitation();
+  const { media, reducedMotion, t } = useInvitation();
   const vid = media(h.video);
+  const upcoming = h.status === "DRAFT" || h.status === "PREVIEW" || h.status === "PUBLISHED";
   return (
-    <header data-section="hero" id="s-hero" className="inv-night relative isolate min-h-[100svh] overflow-hidden text-white" style={{ color: "#fff" }}>
-      <div className="absolute inset-0 -z-10">
+    <header data-section="hero" id="s-hero" className="hero">
+      <div className="hero-bg">
         {vid && vid.kind === "VIDEO" && !reducedMotion ? (
           <video src={vid.url} autoPlay muted loop playsInline poster={media(h.bg)?.url} className="h-full w-full object-cover" />
         ) : (
-          <Parallax amount={70} className="h-full w-full">
-            <Photo id={h.bg} priority className="h-full w-full" seed={1} sizes="100vw" />
+          <Parallax amount={60} className="h-full w-full">
+            <Photo id={h.bg} wideId={h.wide} priority className="h-full w-full" seed={1} sizes="100vw" />
           </Parallax>
         )}
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,5,4,.55)_0%,rgba(6,5,4,.08)_30%,rgba(6,5,4,.55)_62%,rgba(6,5,4,.92)_100%)]" />
+        <div className="hero-shade" />
       </div>
-      <div className="inv-wrap relative flex min-h-[100svh] flex-col justify-between pb-14 pt-20 md:pb-20">
-        <div className="flex items-start justify-between gap-6">
-          <Reveal variant="fade"><p className="inv-eyebrow !text-white/85">{h.eyebrow}</p></Reveal>
-          <Reveal variant="fade" delay={200}><p className="inv-num hidden text-right text-sm text-white/80 md:block">{h.shortDate}</p></Reveal>
-        </div>
-        <div>
-          <h1 className="leading-[0.86]">
-            <RevealWords as="div" text={h.names.a} className="inv-display !text-[clamp(3.6rem,19vw,12rem)]" delay={200} />
-            <RevealWords as="div" text={`${"&"} ${h.names.b}`} className="inv-display !text-[clamp(3.6rem,19vw,12rem)]" delay={420} />
+      <div className="hero-inner">
+        <div className="hero-copy">
+          <Reveal variant="fade" delay={150}>
+            <p className="hero-eyebrow">{upcoming ? h.invitation : h.eyebrow}</p>
+          </Reveal>
+          <h1 className="hero-title">
+            <RevealWords as="span" text={h.names.a} className="hero-name" delay={350} />
+            <span className="hero-and" aria-hidden>{t("invite.and")}</span>
+            <RevealWords as="span" text={h.names.b} className="hero-name" delay={560} />
           </h1>
-          <Reveal delay={650} className="mt-8 flex flex-wrap items-end justify-between gap-x-10 gap-y-4 border-t border-white/25 pt-5">
-            <div>
-              <p className="inv-num text-[clamp(1.15rem,4.6vw,1.6rem)]">{h.dateText}</p>
-              {(h.venueName || h.city) && <p className="mt-0.5 text-[0.95rem] text-white/75">{[h.venueName, h.city].filter(Boolean).join(" · ")}</p>}
-            </div>
-            {h.settings.showCountdown !== false && <p className="text-[0.92rem] text-white/85"><MiniCountdown target={h.target} /></p>}
+          {upcoming && (
+            <Reveal delay={900}>
+              <p className="hero-phrase">{t(h.phraseKey)}</p>
+            </Reveal>
+          )}
+          {h.dots.length === 3 && (
+            <Reveal delay={1050}>
+              <p className="hero-date inv-num" aria-label={h.dateText}>
+                <span>{h.dots[0]}</span><i aria-hidden /><span>{h.dots[1]}</span><i aria-hidden /><span>{h.dots[2]}</span>
+              </p>
+              {(h.venueName || h.city) && <p className="hero-place">{[h.venueName, h.city].filter(Boolean).join(" · ")}</p>}
+            </Reveal>
+          )}
+          <Reveal variant="fade" delay={1400}>
+            <a href="#main" onClick={goNext} className="hero-cue" aria-label={t("invite.scrollExplore")}>
+              <span>{t("invite.scrollExplore")}</span>
+              <span className="hero-cue-line" aria-hidden />
+            </a>
           </Reveal>
         </div>
       </div>
@@ -132,10 +161,10 @@ function Split({ section }: { section: SectionConfig }) {
         <div className="order-2 flex flex-col justify-end pb-12 pt-8 md:order-1 md:col-span-7 md:pb-8 md:pt-0">
           <Reveal variant="fade" className="flex items-center gap-4"><span className="h-px w-10 bg-[var(--c-primary)]" /><p className="inv-eyebrow">{h.eyebrow}</p></Reveal>
           <h1 className="mt-6 leading-[0.88]">
-            <RevealWords as="div" text={h.names.a} className="inv-display !text-[clamp(3.8rem,17vw,10.5rem)]" delay={100} />
+            <RevealWords as="div" text={h.names.a} className="inv-display !text-[clamp(3.4rem,14vw,4.8rem)] md:!text-[clamp(3.4rem,8.2vw,6.6rem)]" delay={100} />
             <div className="flex items-baseline gap-4">
               <span className="inv-script text-[clamp(2.6rem,10vw,5rem)] text-[var(--c-accent)]" aria-hidden>&amp;</span>
-              <RevealWords as="div" text={h.names.b} className="inv-display !text-[clamp(3.8rem,17vw,10.5rem)]" delay={300} />
+              <RevealWords as="div" text={h.names.b} className="inv-display !text-[clamp(3.4rem,14vw,4.8rem)] md:!text-[clamp(3.4rem,8.2vw,6.6rem)]" delay={300} />
             </div>
           </h1>
           <Reveal delay={450} className="mt-10 grid max-w-xl grid-cols-[auto_1fr] gap-x-8 gap-y-3 border-t border-[var(--c-border)] pt-6">

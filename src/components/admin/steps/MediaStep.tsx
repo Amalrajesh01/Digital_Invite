@@ -6,6 +6,7 @@ import { AlbumsPanel } from "@/components/media/AlbumsPanel";
 import { FormCard, Hint } from "../forms";
 import { MediaField } from "../MediaField";
 import { useDraft } from "../draft";
+import { FilmEditor, KeyPhotos } from "./ExperienceSteps";
 
 export function MediaStep() {
   const { weddingId, doc, update, has } = useDraft();
@@ -21,17 +22,16 @@ export function MediaStep() {
       </div>
 
       {tab === "key" && (
-        <FormCard title="The photographs that matter most" description="Choose these first — they appear on the opening screen and hero. Everything else can be added later.">
-          <div className="grid gap-6 md:grid-cols-3">
-            <MediaField label="Hero photograph" value={hero?.content.background as string | undefined} category="COUPLE" onChange={(id) => set("hero", "background", id)} aspect="aspect-[3/4]" hint="A full-length or three-quarter photo of the couple. Vertical works best on phones." />
-            <MediaField label="Bride’s portrait" value={doc.couple.bride.photo} category="BRIDE" onChange={(id) => update((d) => void (d.couple.bride.photo = id))} aspect="aspect-[3/4]" />
-            <MediaField label="Groom’s portrait" value={doc.couple.groom.photo} category="GROOM" onChange={(id) => update((d) => void (d.couple.groom.photo = id))} aspect="aspect-[3/4]" />
-          </div>
-          <MediaField label="Social preview image (WhatsApp / Facebook)" value={doc.seo.ogImage} category="COUPLE" onChange={(id) => update((d) => void (d.seo.ogImage = id))} aspect="aspect-[1200/630]" hint="Shown when the link is shared. Landscape, with the couple near the centre. Leave empty to use the hero." />
-          {hero && has("invitation") && (
-            <MediaField label="Hero video (optional, Cinematic template)" kinds={["VIDEO"]} category="VIDEO" value={hero.content.video as string | undefined} onChange={(id) => set("hero", "video", id)} hint="A short, muted loop (10–20 seconds). Phones on data-saver or reduced motion see the photo instead." />
-          )}
-        </FormCard>
+        <>
+          <FormCard title="The photographs that matter most" description="Each photograph below has a name and a job — choose one and it changes everywhere it appears. Nothing else needs touching to swap a picture.">
+            <KeyPhotos />
+            <MediaField label="Social preview image (WhatsApp / Facebook)" value={doc.seo.ogImage} category="COUPLE" onChange={(id) => update((d) => void (d.seo.ogImage = id))} aspect="aspect-[1200/630]" hint="Shown when the link is shared. Landscape, with the couple near the centre. Leave empty to use the couple photograph." className="max-w-md" />
+            {hero && has("invitation") && (
+              <MediaField label="Hero video (optional, full-screen hero)" kinds={["VIDEO"]} category="VIDEO" value={hero.content.video as string | undefined} onChange={(id) => set("hero", "video", id)} hint="A short, muted loop (10–20 seconds). Phones on data-saver or reduced motion see the photo instead." className="max-w-md" />
+            )}
+          </FormCard>
+          <FilmEditor />
+        </>
       )}
 
       {tab === "library" && (

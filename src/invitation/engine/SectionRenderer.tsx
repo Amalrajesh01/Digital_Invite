@@ -19,6 +19,8 @@ const REGISTRY: Record<SectionType, React.ComponentType<{ section: SectionConfig
   timeline: dynamic(() => import("../sections/TimelineSection")),
   family: dynamic(() => import("../sections/FamilySection")),
   events: dynamic(() => import("../sections/EventsSection")),
+  ceremonies: dynamic(() => import("../sections/CeremoniesSection")),
+  film: dynamic(() => import("../sections/FilmSection")),
   venue: dynamic(() => import("../sections/VenueSection")),
   travel: dynamic(() => import("../sections/TravelSection")),
   gallery: dynamic(() => import("../sections/GallerySection")),

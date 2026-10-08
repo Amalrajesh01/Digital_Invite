@@ -6,7 +6,24 @@ import type { SectionConfig } from "@/domain/doc/schema";
 import { useInvitation } from "../engine/context";
 import { Photo } from "../engine/Photo";
 import { Reveal } from "../engine/motion";
+import { useSlot } from "../engine/images";
 import { Shell, SectionHead, useCopy } from "./shared";
+
+/** The opening lines — one thought per line — beside a photograph of the two of them. */
+function Prologue() {
+  const { view, L } = useInvitation();
+  const photo = useSlot("story");
+  const lines = L(view.doc.story.intro).split(/\n+/).map((x) => x.trim()).filter(Boolean);
+  if (!lines.length) return null;
+  return (
+    <div className="prologue mb-20 md:mb-36">
+      <Reveal variant="mask" className="prologue-photo"><Photo id={photo} ratio="aspect-[4/5]" className="w-full" seed={9} sizes="(max-width: 900px) 78vw, 480px" /></Reveal>
+      <ul className="prologue-lines">
+        {lines.map((ln, i) => (<Reveal as="li" key={i} delay={i * 280}>{ln}</Reveal>))}
+      </ul>
+    </div>
+  );
+}
 
 function HowWeMet() {
   const { view, L, t } = useInvitation();
@@ -185,15 +202,16 @@ function VoiceStory() {
 
 export default function StorySection({ section }: { section: SectionConfig }) {
   const { has, view } = useInvitation();
-  const copy = useCopy(section, { title: "story.title" });
+  const copy = useCopy(section, { eyebrow: "story.eyebrow", title: "story.title" });
   const s = section.settings as Record<string, boolean | undefined>;
   const extras = has("couple_extras");
   const cards = section.variant === "cards";
   return (
     <Shell section={section}>
       <SectionHead eyebrow={copy.eyebrow} title={copy.title || undefined} intro={copy.intro} className="!mb-12" />
+      <Prologue />
       {s.showHowWeMet !== false && <HowWeMet />}
-      <Chapters cards={cards} />
+      {s.showChapters !== false && <Chapters cards={cards} />}
       {extras && s.showThenNow !== false && <ThenNow />}
       {extras && s.showMemoryCards !== false && <MemoryDeck />}
       {extras && s.showPersonality !== false && <Personality />}

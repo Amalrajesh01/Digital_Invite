@@ -5,48 +5,47 @@ import type { FamilyMember, SectionConfig } from "@/domain/doc/schema";
 import { useInvitation } from "../engine/context";
 import { Photo } from "../engine/Photo";
 import { Reveal } from "../engine/motion";
+import { useSlot } from "../engine/images";
 import { Segmented } from "./Segmented";
 import { Shell, SectionHead, useCopy } from "./shared";
 
-function Person({ m, big }: { m: FamilyMember; big?: boolean }) {
-  const { L } = useInvitation();
-  return (
-    <div className="flex items-center gap-4">
-      {m.photo && <Photo id={m.photo} className={cn("shrink-0 rounded-full", big ? "size-20" : "size-14")} seed={7} sizes="80px" />}
-      <div className="min-w-0">
-        <p className={cn("inv-h4", big && "!text-[1.5rem]")}>{L(m.name)}</p>
-        <p className="inv-muted text-[0.92rem]">{L(m.relation)}</p>
-      </div>
-    </div>
-  );
-}
-
+/**
+ * "With the blessings of our parents" — set as typography. Each side is a family name, the parents' line in
+ * the display face and a quiet list of the people who matter; one optional photograph of everyone together.
+ */
 function Editorial() {
   const { view, L, t } = useInvitation();
   const f = view.doc.family;
+  const c = view.doc.couple;
+  const photo = useSlot("family");
   const side = (s: "bride" | "groom") => f.members.filter((m) => m.side === s);
-  const block = (s: "bride" | "groom", title: string, fam: string) => (
-    <Reveal className="relative">
+  const block = (s: "bride" | "groom", title: string, fam: string, parents: string) => (
+    <Reveal className="fam-side">
       <p className="inv-eyebrow">{title}</p>
-      {fam && <h3 className="inv-h2 mt-3 !text-[clamp(1.9rem,6vw,3rem)]">{fam}</h3>}
-      <ul className="mt-8 divide-y divide-[var(--c-border)]">
-        {side(s).map((m) => (
-          <li key={m.id} className="py-4">
-            <Person m={m} />
-            {L(m.blurb) && <p className="inv-muted mt-2 pl-0 text-[0.95rem] leading-[1.75] md:pl-[4.5rem]">{L(m.blurb)}</p>}
-          </li>
-        ))}
-      </ul>
+      {fam && <h3 className="fam-name">{fam}</h3>}
+      {parents && <p className="fam-parents">{parents}</p>}
+      {side(s).length > 0 && (
+        <ul className="fam-list">
+          {side(s).map((m) => (
+            <li key={m.id}>
+              {m.photo && <Photo id={m.photo} className="fam-avatar" seed={7} sizes="56px" />}
+              <span className="fam-person"><span className="fam-person-name">{L(m.name)}</span><span className="fam-person-rel">{L(m.relation)}</span></span>
+            </li>
+          ))}
+        </ul>
+      )}
     </Reveal>
   );
   return (
     <>
-      <div className="grid gap-16 md:grid-cols-2 md:gap-24">
-        {block("bride", t("family.bride"), L(f.brideFamilyName))}
-        {block("groom", t("family.groom"), L(f.groomFamilyName))}
+      {photo && <Reveal variant="mask" className="fam-photo"><Photo id={photo} ratio="aspect-[3/2] md:aspect-[2/1]" className="w-full" seed={5} sizes="(max-width: 1100px) 100vw, 1100px" /></Reveal>}
+      <div className="fam-grid">
+        {block("bride", t("family.bride"), L(f.brideFamilyName), L(c.bride.parents))}
+        <span className="fam-amp inv-script" aria-hidden>&amp;</span>
+        {block("groom", t("family.groom"), L(f.groomFamilyName), L(c.groom.parents))}
       </div>
       {f.party.length > 0 && (
-        <div className="mt-24">
+        <div className="mt-28">
           <p className="inv-eyebrow mb-10 text-center">{t("family.party")}</p>
           <ul className="mx-auto grid max-w-4xl grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4">
             {f.party.map((p, i) => (
@@ -147,7 +146,7 @@ function Tree() {
 
 export default function FamilySection({ section }: { section: SectionConfig }) {
   const { has, view } = useInvitation();
-  const copy = useCopy(section, { title: "family.title" });
+  const copy = useCopy(section, { eyebrow: "family.title", title: "family.blessings" });
   const f = view.doc.family;
   if (!f.members.length && !f.party.length) return null;
   const variant = section.variant === "tree" && !has("family_tree") ? "editorial" : section.variant;

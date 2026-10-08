@@ -1,5 +1,5 @@
 "use client";
-import { CalendarPlus, MapPin, Navigation } from "lucide-react";
+import { CalendarPlus, MapPin } from "lucide-react";
 import { cn } from "@/lib/cn";
 import type { SectionConfig, Venue, WeddingEvent } from "@/domain/doc/schema";
 import { sortEvents } from "@/domain/wedding/view";
@@ -14,6 +14,8 @@ function useEventParts(e: WeddingEvent) {
   const venue: Venue | undefined = view.doc.venues.find((v) => v.id === e.venueId);
   const tz = view.wedding.timezone;
   const where = venue ? [L(venue.name), L(venue.city)].filter(Boolean).join(", ") : "";
+  const venueName = venue ? L(venue.name) : "";
+  const address = venue ? L(venue.address) : "";
   const directions = venue ? mapsUrl({ mapUrl: e.mapUrl || venue.mapUrl, lat: venue.lat, lng: venue.lng, query: `${L(venue.name)} ${L(venue.address)}` }) : e.mapUrl || "";
   const addToCalendar = () => {
     const start = eventStart(e, tz);
@@ -21,7 +23,7 @@ function useEventParts(e: WeddingEvent) {
     const end = e.endTime ? (eventStart({ date: e.date, startTime: e.endTime }, tz) as Date) : new Date(start.getTime() + 2 * 3600e3);
     downloadText(`${L(e.name).replace(/[^\p{L}\p{N}]+/gu, "-")}.ics`, "text/calendar", buildIcs({ id: e.id, title: `${L(e.name)} — ${view.wedding.title}`, description: L(e.description), location: venue ? `${L(venue.name)}, ${L(venue.address)}` : "", start, end: end.getTime() > start.getTime() ? end : new Date(start.getTime() + 2 * 3600e3), url: `${location.origin}/invite/${view.wedding.slug}` }));
   };
-  return { venue, where, directions, addToCalendar, time: fmtRange(e, locale), day: fmtDate(e.date, locale, "day"), month: fmtDate(e.date, locale, "month"), weekday: fmtDate(e.date, locale, "weekday"), long: fmtDate(e.date, locale, "long"), t, L };
+  return { venue, where, venueName, address, directions, addToCalendar, time: fmtRange(e, locale), day: fmtDate(e.date, locale, "day"), month: fmtDate(e.date, locale, "month"), weekday: fmtDate(e.date, locale, "weekday"), year: e.date.slice(0, 4), long: fmtDate(e.date, locale, "long"), t, L };
 }
 
 function Actions({ e }: { e: WeddingEvent }) {
@@ -29,7 +31,7 @@ function Actions({ e }: { e: WeddingEvent }) {
   return (
     <div className="mt-5 flex flex-wrap gap-2.5">
       {e.date && <button type="button" className="inv-btn inv-btn-ghost inv-btn-sm" onClick={p.addToCalendar}><CalendarPlus className="size-3.5" /> {p.t("events.calendar")}</button>}
-      {p.directions && <a className="inv-btn inv-btn-ghost inv-btn-sm" href={p.directions} target="_blank" rel="noopener noreferrer"><Navigation className="size-3.5" /> {p.t("events.directions")}</a>}
+      {p.directions && <a className="inv-btn inv-btn-ghost inv-btn-sm" href={p.directions} target="_blank" rel="noopener noreferrer"><MapPin className="size-3.5" /> {p.t("events.maps")}</a>}
     </div>
   );
 }
@@ -117,23 +119,44 @@ function TimelineItem({ e, i }: { e: WeddingEvent; i: number }) {
   );
 }
 
+/**
+ * A day of the wedding, set like a magazine spread: the photograph, the date as large numerals, and the
+ * details as quiet typography — no card, no border, just space and hairlines.
+ */
 function EditorialRow({ e, i }: { e: WeddingEvent; i: number }) {
   const p = useEventParts(e);
+  const { t } = useInvitation();
+  const photo = e.photo || p.venue?.photo;
+  const flip = i % 2 === 1;
   return (
-    <Reveal className="grid gap-5 border-t border-[var(--c-border)] py-9 md:grid-cols-[6rem_1.2fr_1fr] md:gap-10">
-      <span className="inv-num text-[2.6rem] leading-none text-[var(--c-accent)]">{String(i + 1).padStart(2, "0")}</span>
-      <div>
-        <h3 className="inv-h2 !text-[clamp(1.8rem,6vw,3rem)]">{p.L(e.name)}</h3>
-        <Details e={e} />
-      </div>
-      <div className="md:pt-2">
-        <p className="inv-num text-xl">{p.long}</p>
-        <p className="inv-num text-[var(--c-primary)]">{p.time}</p>
-        {p.where && <p className="mt-2 inv-muted">{p.where}</p>}
-        {e.photo && <Photo id={e.photo} ratio="aspect-[4/3]" className="mt-4 w-full" seed={i} sizes="(max-width: 768px) 100vw, 360px" />}
-        <Actions e={e} />
-      </div>
-    </Reveal>
+    <article className={cn("stage", flip && "stage-flip", !photo && "stage-bare")}>
+      {photo && (
+        <Reveal variant="mask" className="stage-media">
+          <Photo id={photo} ratio="aspect-[4/5]" className="w-full" seed={i} sizes="(max-width: 900px) 100vw, 520px" />
+          <span className="stage-index inv-num" aria-hidden>{String(i + 1).padStart(2, "0")}</span>
+        </Reveal>
+      )}
+      <Reveal className="stage-body" delay={120}>
+        <div className="stage-date">
+          <span className="stage-weekday">{p.weekday}</span>
+          <span className="stage-day inv-num">{p.day}</span>
+          <span className="stage-month">{p.month} {p.year}</span>
+        </div>
+        <div className="stage-info">
+          {e.isMain && <p className="inv-eyebrow !text-[var(--c-accent)]">{t("events.main")}</p>}
+          <h3 className="stage-name">{p.L(e.name)}</h3>
+          {p.time && <p className="stage-time inv-num">{p.time}</p>}
+          {(p.venueName || p.address) && (
+            <p className="stage-venue">
+              {p.venueName && <strong>{p.venueName}</strong>}
+              {p.address && <span>{p.address}</span>}
+            </p>
+          )}
+          <Details e={e} />
+          <Actions e={e} />
+        </div>
+      </Reveal>
+    </article>
   );
 }
 
@@ -148,7 +171,7 @@ export default function EventsSection({ section }: { section: SectionConfig }) {
       {section.variant === "timeline" ? (
         <DayTimeline events={events} />
       ) : section.variant === "editorial" ? (
-        <div className="mx-auto max-w-5xl border-b border-[var(--c-border)]">{events.map((e, i) => (<EditorialRow key={e.id} e={e} i={i} />))}</div>
+        <div className="stages">{events.map((e, i) => (<EditorialRow key={e.id} e={e} i={i} />))}</div>
       ) : (
         <div className={cn("mx-auto grid gap-6", events.length > 1 ? "max-w-6xl lg:grid-cols-2" : "max-w-2xl")}>{events.map((e, i) => (<Ticket key={e.id} e={e} i={i} />))}</div>
       )}

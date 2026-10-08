@@ -55,7 +55,7 @@ export function Reveal({ children, delay = 0, className, as: Tag = "div", varian
 }
 
 /** Headline that rises word by word out of a mask. Falls back to plain text for reduced motion. */
-export function RevealWords({ text, className, as: Tag = "h2", delay = 0 }: { text: string; className?: string; as?: "h1" | "h2" | "h3" | "p" | "div"; delay?: number }) {
+export function RevealWords({ text, className, as: Tag = "h2", delay = 0 }: { text: string; className?: string; as?: "h1" | "h2" | "h3" | "p" | "div" | "span"; delay?: number }) {
   const [ref, inView] = useInView<HTMLElement>({ threshold: 0.3 });
   const Comp = Tag as React.ElementType;
   const words = text.split(/(\s+)/);
@@ -81,14 +81,23 @@ export function Parallax({ children, amount = 40, className }: { children: React
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = ref.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // phones keep the whole photograph (faces near the edge must not be cropped by the overscan)
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches || window.innerWidth < 768) {
+      if (el) el.style.transform = "none";
+      return;
+    }
     let raf = 0;
+    const SCALE = 1.1;
     const update = () => {
       raf = 0;
-      const r = el.getBoundingClientRect();
+      // Measure the (untransformed) host, never the element itself: its own rect already includes the
+      // translation this function applies, which would feed back into the next frame.
+      const r = (el.parentElement ?? el).getBoundingClientRect();
       const vh = window.innerHeight;
-      const progress = (r.top + r.height / 2 - vh / 2) / vh; // -1 … 1
-      el.style.transform = `translate3d(0, ${(-progress * amount).toFixed(1)}px, 0) scale(1.08)`;
+      const progress = Math.max(-1, Math.min(1, (r.top + r.height / 2 - vh / 2) / vh));
+      // never shift further than the scale-up overscan, or an edge of the photograph would show
+      const limit = Math.min(amount, ((SCALE - 1) * r.height) / 2);
+      el.style.transform = `translate3d(0, ${(-progress * limit).toFixed(1)}px, 0) scale(${SCALE})`;
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
@@ -103,7 +112,7 @@ export function Parallax({ children, amount = 40, className }: { children: React
     };
   }, [amount]);
   return (
-    <div ref={ref} className={cn("will-change-transform", className)} style={{ transform: "scale(1.08)" }}>
+    <div ref={ref} className={cn("will-change-transform", className)} style={{ transform: "scale(1.1)" }}>
       {children}
     </div>
   );
