@@ -21,6 +21,8 @@ const notFound = () => new Response("Not found", { status: 404, headers: { "Cach
 export async function GET(req: Request, ctx: { params: Promise<{ id: string; variant: string }> }) {
   const { id, variant } = await ctx.params;
   if (!UUID.test(id)) return notFound();
+  // Hot-linking: other websites may not embed our photographs (browsers state this themselves; link-preview crawlers send nothing and still work).
+  if (req.headers.get("sec-fetch-site") === "cross-site" && ["image", "video", "audio", "script", "style"].includes(req.headers.get("sec-fetch-dest") ?? "")) return notFound();
   const db = await getDb();
   const [row] = await db
     .select({ a: schema.mediaAssets, publishedVersionId: schema.weddings.publishedVersionId, status: schema.weddings.status, archivedAt: schema.weddings.archivedAt })

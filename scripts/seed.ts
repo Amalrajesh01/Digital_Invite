@@ -286,7 +286,6 @@ async function seedShowcase(admin: AdminActor, c: ShowcaseCfg) {
     if (!id) throw new Error(`Missing stock photograph assets/stock/${stock}.jpg`);
     ids.set(key, id);
   }
-  const og = ids.get(c.seo.og)!;
   const gallery: string[] = [];
   for (const [stock, cap] of c.gallery) {
     const id = await stockAsset(w.id, stock, "GALLERY", assets, { caption: { en: cap }, key: `g:${stock}` });

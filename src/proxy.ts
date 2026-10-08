@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { guardPreview } from "@/lib/guard";
 
 /**
  * Custom domains. A verified domain such as meenakshiandaravind.com shows that couple's invitation:
@@ -24,6 +25,12 @@ async function resolveSlug(origin: string, host: string): Promise<string | null>
 }
 
 export async function proxy(req: NextRequest) {
+  if (req.nextUrl.pathname.startsWith("/preview/")) {
+    const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || req.headers.get("x-real-ip") || "local";
+    const g = guardPreview(req.headers, ip);
+    if (!g.ok) return new NextResponse("Automated access to these previews is not permitted.", { status: g.status, headers: { "Retry-After": String(g.retry ?? 3600), "Cache-Control": "no-store" } });
+    return NextResponse.next();
+  }
   const host = (req.headers.get("host") ?? "").toLowerCase().split(":")[0];
   const appHost = new URL(process.env.APP_URL || "http://localhost:3000").hostname.toLowerCase();
   if (!host || host === appHost || host === "localhost" || host === "127.0.0.1" || host.endsWith(".vercel.app")) return NextResponse.next();
@@ -38,4 +45,4 @@ export async function proxy(req: NextRequest) {
 }
 
 // Only the invitation entry points: the root and a single token segment. Assets and APIs are never touched.
-export const config = { matcher: ["/", "/((?!api|_next|invite|wall|admin|client|editor|preview|login|favicon.ico|robots.txt|sitemap.xml)[^/.]+)"] };
+export const config = { matcher: ["/preview/:path*", "/", "/((?!api|_next|invite|wall|admin|client|editor|preview|login|favicon.ico|robots.txt|sitemap.xml)[^/.]+)"] };
