@@ -2,6 +2,7 @@
  * Seeds the platform: packages, templates, themes, the Super Admin and beautiful demonstration weddings.
  *   npm run db:seed            → everything
  *   SEED_DEMO=false npm run db:seed   → platform data + admin only (production)
+ *   SEED_ONLY=ananya-and-arjun npm run db:seed   → add just that showcase to an existing database (skipped if it exists)
  */
 import { eq } from "drizzle-orm";
 import { closeDb, getDb, schema } from "../src/db/client";
@@ -217,7 +218,6 @@ async function seedAnanya(admin: AdminActor) {
   const [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, "royal-gold"));
   const w = await createWedding(admin, { title: ANANYA.title, slug: ANANYA.slug, packageKey: "LUXURY", customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", secondaryLocale: null, weddingDate: ANANYA.date });
   await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com" }).where(eq(schema.weddings.id, w.id));
-  const art = (cache ??= await renderArt());
   const assets = new Map<string, string>();
   const need = async (k: string, c: MediaCategory, caption?: Record<string, string>) => {
     const id = await stockAsset(w.id, k, c, assets, caption ? { caption } : {});
@@ -252,7 +252,7 @@ async function seedAnanya(admin: AdminActor) {
   };
   const album = await saveAlbum(admin, w.id, { title: { en: "Pre-wedding" }, kind: "OFFICIAL", coverAssetId: gallery[0].id });
   await addToAlbum(admin, w.id, album.id, gallery.map((g) => g.id));
-  const track = await upload(w.id, art.music, "raag-yaman.wav", "MUSIC", ["AUDIO"]);
+  const track = await upload(w.id, makeAmbientWav(), "raag-yaman.wav", "MUSIC", ["AUDIO"]);
   await saveTrack(admin, w.id, { assetId: track.id, title: "Raag Yaman", artist: "StackBridge Studio (ambient)", isPrimary: true, inPlaylist: true });
   const cur = await getWedding(admin, w.id);
   await saveDraft(admin, w.id, buildAnanyaDoc(cur.draftDoc, media));
@@ -358,6 +358,13 @@ async function main() {
   console.log(`  ✔ super admin: ${adminUser.email}`);
   console.log(`  ✔ packages: ${PACKAGE_DEFAULTS.map((p) => p.name).join(", ")}`);
   if (process.env.SEED_DEMO === "false") return;
+  if (process.env.SEED_ONLY) {
+    if (process.env.SEED_ONLY !== ANANYA.slug) throw new Error(`SEED_ONLY supports only "${ANANYA.slug}".`);
+    await seedAnanya(admin);
+    console.log(`
+Done. Open ${env.appUrl}/invite/${ANANYA.slug}`);
+    return;
+  }
 
   console.log("→ Creating demonstration weddings (stock photography, fictional couples)");
   const ids: Record<string, string> = {};

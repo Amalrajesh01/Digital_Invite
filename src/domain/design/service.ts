@@ -1,4 +1,5 @@
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
+import { isDeepStrictEqual } from "node:util";
 import { getDb, schema } from "@/db/client";
 import { conflict, invalid, notFound } from "@/lib/errors";
 import { type Actor, requireAdmin } from "@/domain/auth/access";
@@ -26,6 +27,59 @@ export async function ensureDesignLibrary(): Promise<void> {
       .values({ slug: t.slug, name: t.name, description: t.description, tokens: t.tokens, status: "PUBLISHED" })
       .onConflictDoNothing();
   }
+}
+
+export interface LibraryRefreshReport {
+  updated: string[];
+  unchanged: string[];
+  /** Edited in the studio since they were created — left exactly as the studio left them. */
+  skippedEdited: string[];
+}
+
+/**
+ * Brings the BUILT-IN templates and themes up to date on an existing database.
+ *
+ * `ensureDesignLibrary` only inserts what is missing, so a deployment that predates a design release keeps the old
+ * look for ever. This updates a built-in row to the shipped definition only when nobody has edited it in the studio
+ * (the studio audits every edit as `theme.updated` / `template.updated`); edited rows are reported and left alone.
+ * Idempotent, versioned and audited. Already-published invitations are snapshots and do not change; weddings keep
+ * their own section list, so only new weddings pick up a template change.
+ */
+export async function refreshBuiltInLibrary(actor: Actor | null = null): Promise<LibraryRefreshReport> {
+  await ensureDesignLibrary();
+  const db = await getDb();
+  const report: LibraryRefreshReport = { updated: [], unchanged: [], skippedEdited: [] };
+  const studioEdited = async (entityType: "theme" | "template", id: string) => {
+    const hit = await db
+      .select({ id: schema.auditLogs.id })
+      .from(schema.auditLogs)
+      .where(and(eq(schema.auditLogs.entityType, entityType), eq(schema.auditLogs.entityId, id), inArray(schema.auditLogs.action, [`${entityType}.updated`])))
+      .limit(1);
+    return hit.length > 0;
+  };
+
+  for (const t of THEME_SEEDS) {
+    const [row] = await db.select().from(schema.themes).where(eq(schema.themes.slug, t.slug));
+    if (!row) continue;
+    if (isDeepStrictEqual(row.tokens, t.tokens) && row.name === t.name && row.description === t.description) { report.unchanged.push(`theme:${t.slug}`); continue; }
+    if (await studioEdited("theme", row.id)) { report.skippedEdited.push(`theme:${t.slug}`); continue; }
+    await db.update(schema.themes).set({ name: t.name, description: t.description, tokens: t.tokens, version: row.version + 1, updatedAt: new Date() }).where(eq(schema.themes.id, row.id));
+    await audit(actor, "theme.refreshed", { entityType: "theme", entityId: row.id, metadata: { slug: t.slug, from: row.version, to: row.version + 1 } });
+    report.updated.push(`theme:${t.slug}`);
+  }
+
+  for (const t of TEMPLATE_SEEDS) {
+    const [row] = await db.select().from(schema.templates).where(eq(schema.templates.slug, t.slug));
+    if (!row) continue;
+    if (isDeepStrictEqual(row.config, t.config) && row.name === t.name && row.description === t.description) { report.unchanged.push(`template:${t.slug}`); continue; }
+    if (await studioEdited("template", row.id)) { report.skippedEdited.push(`template:${t.slug}`); continue; }
+    const version = row.version + 1;
+    await db.update(schema.templates).set({ name: t.name, description: t.description, config: t.config, version, updatedAt: new Date() }).where(eq(schema.templates.id, row.id));
+    await db.insert(schema.templateVersions).values({ templateId: row.id, version, config: t.config });
+    await audit(actor, "template.refreshed", { entityType: "template", entityId: row.id, metadata: { slug: t.slug, from: row.version, to: version } });
+    report.updated.push(`template:${t.slug}`);
+  }
+  return report;
 }
 
 export async function listTemplates(opts: { status?: Status; packageKey?: string } = {}) {
