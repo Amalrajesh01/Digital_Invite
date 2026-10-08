@@ -200,7 +200,8 @@ async function seedWedding(admin: AdminActor, spec: DemoSpec) {
   // client login (Signature & Luxury)
   if (spec.clientEmail) {
     const c = await assignClientToWedding(admin, { weddingId: w.id, email: spec.clientEmail, name: "Anagha Nair", role: "OWNER" });
-    await changePassword(c.id, null, "Demo-Client-123");
+    // a client that already exists (re-seeding a demo) keeps the password it was given the first time
+    await changePassword(c.id, null, "Demo-Client-123").catch(() => undefined);
   }
 
   await publishWedding(admin, w.id, { label: "Launch" });
