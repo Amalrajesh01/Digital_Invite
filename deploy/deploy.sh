@@ -42,8 +42,9 @@ log "deploying $SHA — $SUBJECT"
 if [ -n "$OLD_FULL" ] && [ "$OLD_FULL" = "$FULL" ] && [ -z "${FORCE:-}" ]; then
   echo "already deployed ($SHA). Nothing to do (FORCE=1 to redeploy)."; echo "DONE_STACKBRIDGE_DEPLOYED $SHA (unchanged)"; exit 0
 fi
-if [ -n "$OLD_FULL" ] && git -C "$SRC" cat-file -e "$OLD_FULL^{commit}" 2>/dev/null && git -C "$SRC" merge-base --is-ancestor "$FULL" "$OLD_FULL" && [ -z "${FORCE:-}" ]; then
-  die "$SHA is OLDER than the live commit ${OLD_FULL:0:7} — refusing to roll the site back. Merge/push first, or FORCE=1."
+if [ -n "$OLD_FULL" ] && [ -z "${FORCE:-}" ]; then
+  git -C "$SRC" cat-file -e "$OLD_FULL^{commit}" 2>/dev/null || die "the live commit ${OLD_FULL:0:7} is not in the clone, so I cannot tell whether $SHA is newer — push it first, or FORCE=1."
+  git -C "$SRC" merge-base --is-ancestor "$FULL" "$OLD_FULL" && die "$SHA is OLDER than the live commit ${OLD_FULL:0:7} — refusing to roll the site back. Merge/push first, or FORCE=1."
 fi
 
 TEMP_SWAP=""
