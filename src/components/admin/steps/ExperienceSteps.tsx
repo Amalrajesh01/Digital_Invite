@@ -32,6 +32,12 @@ export function CelebrationCard() {
         <>
           <Switch label="Show the walking bride and groom" hint="Two small illustrated figures start in the bottom corners and walk towards each other as the guest scrolls — hand in hand by the last section." checked={doc.journey.enabled} onChange={(v) => update((d) => void (d.journey.enabled = v))} />
           {doc.journey.enabled && (
+            <Grid>
+              <TextField label="Bride’s face zoom" type="number" step="0.05" min="0.4" max="6" value={String(doc.journey.headZoom.bride)} onChange={(e) => update((d) => void (d.journey.headZoom.bride = Math.min(6, Math.max(0.4, Number(e.target.value) || 1))))} hint="The figures wear the bride’s and groom’s real faces (from their portraits). Raise to zoom in on a wide photo, lower for a tight close-up. Set the face position as each photo’s focal point in the Media library." />
+              <TextField label="Groom’s face zoom" type="number" step="0.05" min="0.4" max="6" value={String(doc.journey.headZoom.groom)} onChange={(e) => update((d) => void (d.journey.headZoom.groom = Math.min(6, Math.max(0.4, Number(e.target.value) || 1))))} />
+            </Grid>
+          )}
+          {doc.journey.enabled && (
             <SelectField label="Their outfits" value={doc.journey.style} onChange={(e) => update((d) => void (d.journey.style = e.target.value as never))}>
               <option value="auto">Automatic for this occasion</option>
               <option value="classic">Lehenga & sherwani</option>

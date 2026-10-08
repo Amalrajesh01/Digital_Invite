@@ -3,6 +3,7 @@ import { SECTION_TYPES } from "@/domain/doc/constants";
 import { SECTION_META, makeSection } from "@/domain/doc/sections";
 import type { SectionConfig } from "@/domain/doc/schema";
 import { canUse, type Entitlements } from "@/domain/packages/entitlements";
+import { EVENT_TYPES } from "@/domain/doc/event-types";
 
 /**
  * A template controls STRUCTURE and LAYOUT only: default sections, order, variants, the opening
@@ -16,6 +17,10 @@ export const TemplateConfig = z.object({
   opening: z.enum(["none", "envelope", "seal", "cinematic", "swipe", "curtain"]),
   /** Suggested theme slug for the wizard's default pick. */
   suggestedTheme: z.string().optional(),
+  /** The occasion a wedding made from this template starts as (drives the opening, the walking couple and the starter ceremonies). */
+  eventType: z.enum(EVENT_TYPES).optional(),
+  /** Slug of the demonstration wedding whose content the template preview is shown with. */
+  demo: z.string().optional(),
   sections: z.array(
     z.object({
       type: z.enum(SECTION_TYPES),
@@ -126,6 +131,56 @@ export const TEMPLATE_SEEDS: TemplateSeed[] = [
         gallery: { variant: "editorial" },
         rsvp: { variant: "classic" },
         guestbook: { variant: "list" },
+      }),
+    },
+  },
+  {
+    slug: "chapel-romance",
+    name: "Chapel Romance",
+    description: "For a Christian wedding: a wax-seal opening, a full-screen photograph, soft champagne tones, the day told from betrothal to reception and the church ceremony explained. Available in every package.",
+    config: {
+      flavor: "royal",
+      opening: "seal",
+      suggestedTheme: "ivory-chapel",
+      eventType: "christian_wedding",
+      demo: "anna-and-joseph",
+      sections: sections({
+        hero: { variant: "fullbleed" },
+        countdown: { variant: "classic" },
+        couple: { variant: "editorial" },
+        story: { variant: "chapters" },
+        timeline: { variant: "vertical" },
+        family: { variant: "editorial" },
+        events: { variant: "editorial" },
+        ceremonies: { variant: "editorial" },
+        gallery: { variant: "editorial" },
+        rsvp: { variant: "classic" },
+        guestbook: { variant: "wall" },
+      }),
+    },
+  },
+  {
+    slug: "nikah-noor",
+    name: "Nikah Noor",
+    description: "For a Muslim wedding: curtains part on a full-screen photograph, emerald and gold, mehendi, nikah and walima set as spreads and the traditions explained with care. Available in every package.",
+    config: {
+      flavor: "royal",
+      opening: "curtain",
+      suggestedTheme: "emerald-ivory",
+      eventType: "muslim_wedding",
+      demo: "zainab-and-imran",
+      sections: sections({
+        hero: { variant: "fullbleed" },
+        countdown: { variant: "classic" },
+        couple: { variant: "arch" },
+        story: { variant: "chapters" },
+        timeline: { variant: "vertical" },
+        family: { variant: "editorial" },
+        events: { variant: "editorial" },
+        ceremonies: { variant: "editorial" },
+        gallery: { variant: "editorial" },
+        rsvp: { variant: "classic" },
+        guestbook: { variant: "wall" },
       }),
     },
   },

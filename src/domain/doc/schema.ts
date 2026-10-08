@@ -312,6 +312,8 @@ export type WhatsAppDoc = z.infer<typeof WhatsAppDoc>;
 export const JourneyDoc = ObjDefault({
   enabled: z.boolean().default(true),
   style: z.enum(["auto", "classic", "kerala", "western"]).default("auto"),
+  /** How far to zoom into each portrait for the figure's head (1 = a head-and-shoulders photograph; tight close-ups need less). */
+  headZoom: ObjDefault({ bride: z.number().min(0.4).max(6).default(1), groom: z.number().min(0.4).max(6).default(1) }),
 });
 export type JourneyDoc = z.infer<typeof JourneyDoc>;
 

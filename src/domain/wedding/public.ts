@@ -216,15 +216,19 @@ export async function loadTemplatePreview(opts: { templateId?: string | null; th
   const { resolveEntitlements } = await import("@/domain/packages/entitlements");
   const { defaultFeaturesFor } = await import("@/domain/packages/features");
   const db = await getDb();
-  const wedding = await getWeddingBySlug(opts.demoSlug ?? "meenakshi-and-aravind");
+  const [tpl] = opts.templateId ? await db.select().from(schema.templates).where(eq(schema.templates.id, opts.templateId)) : [];
+  const tplCfg = tpl ? TemplateConfig.safeParse(tpl.config) : null;
+  // each template previews with its own showcase (the Christian template with the Christian demo), else the flagship
+  const wanted = opts.demoSlug ?? (tplCfg?.success ? tplCfg.data.demo : undefined);
+  const wedding = (wanted ? await getWeddingBySlug(wanted) : null) ?? (await getWeddingBySlug("meenakshi-and-aravind"));
   if (!wedding) return null;
   const snap = await loadPublishedSnapshot(wedding);
   if (!snap) return null;
-  const [tpl] = opts.templateId ? await db.select().from(schema.templates).where(eq(schema.templates.id, opts.templateId)) : [];
   const [thm] = opts.themeId ? await db.select().from(schema.themes).where(eq(schema.themes.id, opts.themeId)) : [];
   const ent = resolveEntitlements(opts.packageKey, defaultFeaturesFor(opts.packageKey));
-  const cfg = tpl ? TemplateConfig.safeParse(tpl.config) : null;
+  const cfg = tplCfg;
   if (cfg?.success) {
+    if (cfg.data.eventType) snap.doc.eventType = cfg.data.eventType;
     const old = new Map(snap.doc.sections.map((x) => [x.type, x]));
     snap.doc.sections = generateSections(cfg.data, ent).map((x) => ({ ...x, content: old.get(x.type)?.content ?? {} }));
     snap.doc.opening.variant = cfg.data.opening;

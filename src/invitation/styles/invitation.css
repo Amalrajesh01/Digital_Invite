@@ -186,6 +186,10 @@ html.js .rw.in .rw-word { transform: none; }
 .inv[data-decor="floral"] .inv-decor-bg { background-image: radial-gradient(60% 40% at 8% 0%, color-mix(in srgb, var(--c-accent) 22%, transparent), transparent 70%), radial-gradient(50% 40% at 100% 100%, color-mix(in srgb, var(--c-primary) 14%, transparent), transparent 70%); }
 
 
+/* the big-head version of the walking couple is taller, so the faces can be recognised */
+.inv[data-heads="true"] { --fig-h: 6.8rem; }
+@media (min-width: 768px) { .inv[data-heads="true"] { --fig-h: 9.4rem; } }
+
 /* art-directed (landscape) photographs use their own focal point from tablet width up */
 @media (min-width: 768px) { .inv-wide-pos { object-position: var(--wide-pos) !important; } }
 

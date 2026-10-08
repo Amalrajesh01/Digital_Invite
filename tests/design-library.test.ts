@@ -61,3 +61,14 @@ describe("refreshing the built-in design library on an existing database", () =>
     expect((after.tokens as ThemeTokens).fonts.heading).toBe("Inter"); // untouched, exactly as the studio left it
   });
 });
+
+describe("faith templates", () => {
+  it("ships Christian and Muslim templates that every package may use", async () => {
+    
+    for (const [slug, eventType] of [["chapel-romance", "christian_wedding"], ["nikah-noor", "muslim_wedding"]] as const) {
+      const t = TEMPLATE_SEEDS.find((x) => x.slug === slug);
+      expect(t?.config.eventType).toBe(eventType);
+      expect(t?.config.demo).toBeTruthy();
+    }
+  });
+});

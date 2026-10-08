@@ -22,7 +22,7 @@ export function buildAnanyaDoc(base: InvitationDoc, m: AnanyaMedia): InvitationD
   const doc = structuredClone(base) as InvitationDoc;
 
   doc.eventType = "hindu_wedding";
-  doc.journey = { enabled: true, style: "classic" };
+  doc.journey = { enabled: true, style: "classic", headZoom: { bride: 0.62, groom: 1.4 } };
   doc.images = { couple: m.hero, coupleWide: m.heroWide, ceremony: m.ceremony, family: m.family, story: m.story };
 
   doc.couple = {

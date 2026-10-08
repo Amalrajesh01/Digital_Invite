@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import { useId, type CSSProperties, type ReactNode } from "react";
 import type { FigureStyle } from "@/domain/doc/event-types";
 
 /**
@@ -25,6 +25,10 @@ export const PALETTE: Palette = {
 export const THEMED_PALETTE: Palette = { ...PALETTE, gold: "var(--c-accent, #D6AC47)", goldLight: "color-mix(in srgb, var(--c-accent, #D6AC47) 55%, #fff)" };
 
 type P = { p: Palette };
+type B = P & { bare?: boolean };
+
+/** A real photograph used as the figure's head (chibi proportions): face-centred crop, drawn on top of the body. */
+export interface HeadPhoto { src: string; /** face centre, 0–1 of the picture */ fx: number; fy: number; /** picture width / height */ ratio: number; tilt: number; zoom: number }
 
 const armStyle = (dir: 1 | -1, sx: number, sy: number): CSSProperties => ({
   transformOrigin: `${sx}px ${sy}px`,
@@ -49,22 +53,43 @@ function Arm({ p, sx, sy, dx = 0, sleeve, sleeveLen = 0.5, cuff, bangles, dir, c
   );
 }
 
-function Svg({ children, label }: { children: ReactNode; label?: string }) {
+const BODY = 0.72; // body scale when a real head is shown (chibi: the head is large, the body small)
+const HEAD = { cx: 50, cy: 45, r: 33 };
+
+function PhotoHead({ head }: { head: HeadPhoto }) {
+  const id = useId();
+  const W = HEAD.r * 4 * head.zoom; // zoom 1 ≈ the picture is twice as wide as the head circle
+  const H = W / head.ratio;
+  const x = HEAD.cx - head.fx * W, y = HEAD.cy - head.fy * H;
+  return (
+    <g transform={`rotate(${head.tilt} ${HEAD.cx} ${HEAD.cy + HEAD.r})`}>
+      <circle cx={HEAD.cx} cy={HEAD.cy + 1.5} r={HEAD.r + 1.8} fill="#000" opacity=".16" />
+      <clipPath id={id}><circle cx={HEAD.cx} cy={HEAD.cy} r={HEAD.r} /></clipPath>
+      <circle cx={HEAD.cx} cy={HEAD.cy} r={HEAD.r} fill="#E9D8C4" />
+      <image href={head.src} x={x} y={y} width={W} height={H} clipPath={`url(#${id})`} preserveAspectRatio="none" />
+      <circle cx={HEAD.cx} cy={HEAD.cy} r={HEAD.r} fill="none" stroke="#fff" strokeWidth="2.6" />
+      <circle cx={HEAD.cx} cy={HEAD.cy} r={HEAD.r + 1.3} fill="none" stroke="var(--c-accent, #D6AC47)" strokeWidth=".9" />
+    </g>
+  );
+}
+
+function Svg({ children, label, head }: { children: ReactNode; label?: string; head?: HeadPhoto }) {
   return (
     <svg viewBox="0 0 100 200" role={label ? "img" : undefined} aria-label={label} aria-hidden={label ? undefined : true} focusable="false" overflow="visible" className="block h-full w-auto">
       <ellipse cx="50" cy="198.4" rx="36" ry="2.2" fill="#000" opacity=".16" />
-      {children}
+      {head ? <g transform={`translate(${50 - 50 * BODY} ${198 - 198 * BODY}) scale(${BODY})`}>{children}</g> : children}
+      {head && <PhotoHead head={head} />}
     </svg>
   );
 }
 
 /* ───────────────────────── BRIDES ───────────────────────── */
 
-function BrideClassic({ p }: P) {
+function BrideClassic({ p, bare }: B) {
   return (
     <>
       {/* veil, behind everything */}
-      <path d="M50 3.5C34 3.5 27 16 27 31C27 55 21 86 18 126L82 126C79 86 73 55 73 31C73 16 66 3.5 50 3.5Z" fill={p.redDeep} />
+      {!bare && <path d="M50 3.5C34 3.5 27 16 27 31C27 55 21 86 18 126L82 126C79 86 73 55 73 31C73 16 66 3.5 50 3.5Z" fill={p.redDeep} />}
       {/* lehenga */}
       <path d="M40 88L60 88C65 122 87 152 93 191Q50 201 7 191C13 152 35 122 40 88Z" fill={p.red} />
       <path d="M50 90C47 130 41 162 31 195Q41 198 50 198Z" fill="#fff" opacity=".08" />
@@ -88,7 +113,7 @@ function BrideClassic({ p }: P) {
       <path d="M44.4 33.5Q50 42 55.6 33.5" stroke={p.gold} strokeWidth="1.6" fill="none" />
       <path d="M43 36Q50 54 57 36" stroke={p.gold} strokeWidth="1" fill="none" />
       <circle cx="50" cy="48.2" r="1.7" fill={p.gold} />
-      <g transform="rotate(4 50 30)">
+      {!bare && (<g transform="rotate(4 50 30)">
         <path d="M41.6 16C40.8 6.8 59.2 6.8 58.4 16C56 11 44 11 41.6 16Z" fill={p.hair} />
         <ellipse cx="50" cy="19.4" rx="8" ry="10.4" fill={p.skin} />
         <path d="M41.6 16C40.8 6.8 59.2 6.8 58.4 16C56 11 44 11 41.6 16Z" fill={p.hair} />
@@ -103,7 +128,7 @@ function BrideClassic({ p }: P) {
         <circle cx="41.9" cy="25.2" r="1.3" fill={p.gold} />
         <circle cx="58.1" cy="25.2" r="1.3" fill={p.gold} />
         <circle cx="53" cy="22.8" r=".55" fill={p.gold} />
-      </g>
+      </g>)}
       {/* arms: outer hangs, inner reaches */}
       <Arm p={p} sx={35} sy={41} dx={-2.5} sleeve={p.redLight} cuff={p.gold} bangles={[p.red, p.gold, p.red, p.gold]} dir={-1} />
       <Arm p={p} sx={65} sy={41} dx={3} sleeve={p.redLight} cuff={p.gold} bangles={[p.red, p.gold, p.red, p.gold]} dir={-1} className="fig-arm" />
@@ -111,7 +136,7 @@ function BrideClassic({ p }: P) {
   );
 }
 
-function BrideKerala({ p }: P) {
+function BrideKerala({ p, bare }: B) {
   return (
     <>
       {/* saree: straight fall, wide kasavu border */}
@@ -136,7 +161,7 @@ function BrideKerala({ p }: P) {
       <path d="M44.2 33.6Q50 42.4 55.8 33.6" stroke={p.gold} strokeWidth="1.8" fill="none" />
       <path d="M43 36.6Q50 56 57 36.6" stroke={p.gold} strokeWidth="1" fill="none" />
       <circle cx="50" cy="49.6" r="1.8" fill={p.gold} />
-      <g transform="rotate(4 50 30)">
+      {!bare && (<g transform="rotate(4 50 30)">
         {/* hair, bun and jasmine */}
         <circle cx="50" cy="5.6" r="5.4" fill={p.hair} />
         <path d="M44.4 7.6Q50 12 55.6 7.6" stroke="#fff" strokeWidth="2.4" strokeDasharray=".2 2.4" strokeLinecap="round" fill="none" />
@@ -148,19 +173,19 @@ function BrideKerala({ p }: P) {
         <circle cx="50" cy="13.4" r="1" fill={p.red} />
         <circle cx="41.9" cy="25.4" r="1.2" fill={p.gold} />
         <circle cx="58.1" cy="25.4" r="1.2" fill={p.gold} />
-      </g>
+      </g>)}
       <Arm p={p} sx={35} sy={41} dx={-2} sleeve={p.redDeep} sleeveLen={0.34} cuff={p.gold} bangles={[p.gold, p.gold, p.red, p.gold]} dir={-1} />
       <Arm p={p} sx={65} sy={41} dx={2.5} sleeve={p.redDeep} sleeveLen={0.34} cuff={p.gold} bangles={[p.gold, p.gold, p.red, p.gold]} dir={-1} className="fig-arm" />
     </>
   );
 }
 
-function BrideWestern({ p }: P) {
+function BrideWestern({ p, bare }: B) {
   return (
     <>
       {/* long veil behind */}
-      <path d="M50 4C38 4 31 14 31 28C31 56 24 96 16 150Q50 160 84 150C76 96 69 56 69 28C69 14 62 4 50 4Z" fill="#fff" opacity=".55" />
-      <path d="M50 4C38 4 31 14 31 28C31 56 24 96 16 150Q50 160 84 150C76 96 69 56 69 28C69 14 62 4 50 4Z" fill="none" stroke="#E6E0D2" strokeWidth=".8" />
+      {!bare && (<><path d="M50 4C38 4 31 14 31 28C31 56 24 96 16 150Q50 160 84 150C76 96 69 56 69 28C69 14 62 4 50 4Z" fill="#fff" opacity=".55" />
+      <path d="M50 4C38 4 31 14 31 28C31 56 24 96 16 150Q50 160 84 150C76 96 69 56 69 28C69 14 62 4 50 4Z" fill="none" stroke="#E6E0D2" strokeWidth=".8" /></>)}
       {/* gown */}
       <path d="M39 86L61 86C66 120 88 152 96 192Q50 202 4 192C12 152 34 120 39 86Z" fill={p.white} />
       <path d="M39 86L61 86C66 120 88 152 96 192Q50 202 4 192C12 152 34 120 39 86Z" fill="none" stroke="#E4DDCB" strokeWidth=".8" />
@@ -172,7 +197,7 @@ function BrideWestern({ p }: P) {
       <path d="M36 40C40 36.4 60 36.4 64 40L61.4 86Q50 92 38.6 86Z" fill="none" stroke="#E4DDCB" strokeWidth=".8" />
       <path d="M40.5 38.4Q45.5 46 50 41.4Q54.5 46 59.5 38.4" stroke="#E4DDCB" strokeWidth="1" fill={p.skin} />
       <path d="M46.3 28L53.7 28L54.6 38.4L45.4 38.4Z" fill={p.skinShade} />
-      <g transform="rotate(4 50 30)">
+      {!bare && (<g transform="rotate(4 50 30)">
         <path d="M41.2 16C40.4 7.2 59.6 7.2 58.8 16C56.4 11 43.6 11 41.2 16Z" fill={p.hair} />
         <circle cx="50" cy="6.2" r="4.6" fill={p.hair} />
         <ellipse cx="50" cy="19.4" rx="8" ry="10.4" fill={p.skin} />
@@ -183,7 +208,7 @@ function BrideWestern({ p }: P) {
         <path d="M43 6Q50 2 57 6" stroke="#fff" strokeWidth="2.2" fill="none" opacity=".9" />
         <circle cx="41.9" cy="25" r="1" fill={p.goldLight} />
         <circle cx="58.1" cy="25" r="1" fill={p.goldLight} />
-      </g>
+      </g>)}
       <path d="M45 34.5Q50 39 55 34.5" stroke={p.goldLight} strokeWidth="1" fill="none" />
       <Arm p={p} sx={35.5} sy={42} dx={-2} sleeve={p.white} sleeveLen={0.2} dir={-1} />
       {/* bouquet in the outer hand */}
@@ -200,7 +225,7 @@ function BrideWestern({ p }: P) {
 
 /* ───────────────────────── GROOMS ───────────────────────── */
 
-function GroomClassic({ p }: P) {
+function GroomClassic({ p, bare }: B) {
   return (
     <>
       {/* churidar + juttis */}
@@ -224,7 +249,7 @@ function GroomClassic({ p }: P) {
       <path d="M38.5 36.5Q50 84 61.5 36.5" stroke={p.marigold} strokeWidth="3.6" strokeDasharray=".1 3.9" strokeLinecap="round" fill="none" />
       <path d="M38.5 36.5Q50 84 61.5 36.5" stroke={p.saffron} strokeWidth="1.6" strokeDasharray=".1 7.8" strokeDashoffset="3.9" strokeLinecap="round" fill="none" />
       <path d="M46.3 28L53.7 28L54 38L46 38Z" fill={p.skinShade} />
-      <g transform="rotate(-4 50 30)">
+      {!bare && (<g transform="rotate(-4 50 30)">
         <ellipse cx="50" cy="20.4" rx="7.8" ry="10" fill={p.skin} />
         <ellipse cx="45" cy="24.2" rx="2.3" ry="1.4" fill={p.blush} opacity=".35" />
         <ellipse cx="55" cy="24.2" rx="2.3" ry="1.4" fill={p.blush} opacity=".35" />
@@ -242,14 +267,14 @@ function GroomClassic({ p }: P) {
         <circle cx="44.4" cy="9.6" r=".8" fill={p.red} />
         <path d="M44.4 8Q42 2 38.4 -1" stroke={p.goldLight} strokeWidth=".9" fill="none" strokeLinecap="round" />
         <path d="M44.6 8Q43 3 41.6 0" stroke={p.goldLight} strokeWidth=".7" fill="none" strokeLinecap="round" />
-      </g>
+      </g>)}
       <Arm p={p} sx={66} sy={41} dx={2.6} sleeve={p.ivory} sleeveLen={0.92} cuff={p.gold} dir={-1} />
       <Arm p={p} sx={34} sy={41} dx={-3} sleeve={p.ivory} sleeveLen={0.92} cuff={p.gold} dir={1} className="fig-arm" />
     </>
   );
 }
 
-function GroomKerala({ p }: P) {
+function GroomKerala({ p, bare }: B) {
   return (
     <>
       {/* mundu with broad kasavu kara */}
@@ -271,7 +296,7 @@ function GroomKerala({ p }: P) {
       <path d="M45 102L56 98L60 134L50 138Z" fill={p.ivory} />
       <path d="M56 98L60 134" stroke={p.gold} strokeWidth="2" fill="none" />
       <path d="M46.3 28L53.7 28L54 38L46 38Z" fill={p.skinShade} />
-      <g transform="rotate(-4 50 30)">
+      {!bare && (<g transform="rotate(-4 50 30)">
         <ellipse cx="50" cy="19.6" rx="7.8" ry="10" fill={p.skin} />
         <path d="M42 14.8C41.4 6 58.6 6 58 14.8C55.6 10.4 44.4 10.4 42 14.8Z" fill={p.hair} />
         <ellipse cx="45" cy="23.6" rx="2.3" ry="1.4" fill={p.blush} opacity=".35" />
@@ -279,14 +304,14 @@ function GroomKerala({ p }: P) {
         <path d="M46 24.6Q50 22.8 54 24.6Q50 26.4 46 24.6Z" fill={p.hair} />
         <path d="M48.4 27.4Q50 28.4 51.6 27.4" stroke={p.skinShade} strokeWidth=".9" strokeLinecap="round" fill="none" />
         <path d="M50 12.4L50 15.6" stroke="#E8E0CE" strokeWidth="1.2" strokeLinecap="round" />
-      </g>
+      </g>)}
       <Arm p={p} sx={66} sy={41} dx={2.6} sleeve={p.ivory} sleeveLen={0.5} cuff={p.gold} dir={-1} />
       <Arm p={p} sx={34} sy={41} dx={-3} sleeve={p.ivory} sleeveLen={0.5} cuff={p.gold} dir={1} className="fig-arm" />
     </>
   );
 }
 
-function GroomWestern({ p }: P) {
+function GroomWestern({ p, bare }: B) {
   return (
     <>
       <path d="M40.5 120L59.5 120L60.6 188L51.4 188L50 134L48.6 188L39.4 188Z" fill={p.navy} />
@@ -305,29 +330,29 @@ function GroomWestern({ p }: P) {
       <circle cx="50" cy="43.2" r="1.2" fill={p.redDeep} />
       <circle cx="59" cy="52" r="1.9" fill="#fff" />
       <circle cx="59" cy="52" r=".8" fill={p.rose} />
-      <g transform="rotate(-4 50 30)">
+      {!bare && (<g transform="rotate(-4 50 30)">
         <ellipse cx="50" cy="19.6" rx="7.8" ry="10" fill={p.skin} />
         <path d="M41.8 15.4C40.6 5.4 59.4 5.4 58.2 15.4C56.4 10.6 43.6 10.6 41.8 15.4Z" fill={p.hair} />
         <ellipse cx="45" cy="23.6" rx="2.3" ry="1.4" fill={p.blush} opacity=".35" />
         <ellipse cx="55" cy="23.6" rx="2.3" ry="1.4" fill={p.blush} opacity=".35" />
         <path d="M46.4 24.6Q50 23 53.6 24.6Q50 26 46.4 24.6Z" fill={p.hair} opacity=".85" />
         <path d="M48.4 27.4Q50 28.4 51.6 27.4" stroke={p.skinShade} strokeWidth=".9" strokeLinecap="round" fill="none" />
-      </g>
+      </g>)}
       <Arm p={p} sx={66} sy={41} dx={2.6} sleeve={p.navy} sleeveLen={0.9} cuff="#fff" dir={-1} />
       <Arm p={p} sx={34} sy={41} dx={-3} sleeve={p.navy} sleeveLen={0.9} cuff="#fff" dir={1} className="fig-arm" />
     </>
   );
 }
 
-const BRIDES: Record<FigureStyle, (a: P) => ReactNode> = { classic: BrideClassic, kerala: BrideKerala, western: BrideWestern };
-const GROOMS: Record<FigureStyle, (a: P) => ReactNode> = { classic: GroomClassic, kerala: GroomKerala, western: GroomWestern };
+const BRIDES: Record<FigureStyle, (a: B) => ReactNode> = { classic: BrideClassic, kerala: BrideKerala, western: BrideWestern };
+const GROOMS: Record<FigureStyle, (a: B) => ReactNode> = { classic: GroomClassic, kerala: GroomKerala, western: GroomWestern };
 
-export function Bride({ style, palette = THEMED_PALETTE, label }: { style: FigureStyle; palette?: Palette; label?: string }) {
+export function Bride({ style, palette = THEMED_PALETTE, label, head }: { style: FigureStyle; palette?: Palette; label?: string; head?: HeadPhoto }) {
   const Body = BRIDES[style];
-  return <Svg label={label}><Body p={palette} /></Svg>;
+  return <Svg label={label} head={head}><Body p={palette} bare={!!head} /></Svg>;
 }
 
-export function Groom({ style, palette = THEMED_PALETTE, label }: { style: FigureStyle; palette?: Palette; label?: string }) {
+export function Groom({ style, palette = THEMED_PALETTE, label, head }: { style: FigureStyle; palette?: Palette; label?: string; head?: HeadPhoto }) {
   const Body = GROOMS[style];
-  return <Svg label={label}><Body p={palette} /></Svg>;
+  return <Svg label={label} head={head}><Body p={palette} bare={!!head} /></Svg>;
 }

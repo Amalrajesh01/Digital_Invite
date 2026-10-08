@@ -13,7 +13,7 @@ import { themeFontHref, themeStyle } from "./engine/theme";
 import { Gate, useCoupleNames } from "./opening/Gate";
 import { Divider } from "./engine/Ornament";
 import { Celebration } from "./engine/Celebration";
-import { Journey } from "./engine/Journey";
+import { Journey, useHeads } from "./engine/Journey";
 import { ChatCta } from "./engine/Chat";
 import { isSerif } from "@/domain/design/tokens";
 import { journeyEnabled } from "@/domain/doc/event-types";
@@ -44,6 +44,7 @@ function Footer() {
 function Inner({ skipGate }: { skipGate?: boolean }) {
   const { view, locale, post, isPreview, entered } = useInvitation();
   const tk = view.tokens;
+  const heads = useHeads();
   const href = themeFontHref(tk, view.wedding.secondaryLocale);
 
   // one anonymous page-view event per visit (random per-browser id, no IP, no fingerprint)
@@ -62,6 +63,7 @@ function Inner({ skipGate }: { skipGate?: boolean }) {
       data-grain={tk.grain}
       data-serif={isSerif(tk.fonts.heading)}
       data-event={view.doc.eventType}
+      data-heads={!!heads.bride && journeyEnabled(view.doc)}
       data-dark={tk.dark}
       data-button={tk.button}
       data-card={tk.card}

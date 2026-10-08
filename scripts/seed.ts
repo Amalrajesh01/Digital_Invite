@@ -26,6 +26,9 @@ import { makeAmbientWav, makeMelodyWav } from "./demo/audio";
 import { buildDemoDoc, DEMO, type DemoMedia } from "./demo/content";
 import { buildAnanyaDoc, ANANYA, type AnanyaMedia } from "./demo/ananya";
 import { STOCK, stockPhoto } from "./demo/photos";
+import { buildShowcaseDoc, type ShowcaseCfg } from "./demo/showcase";
+import { CHRISTIAN } from "./demo/christian";
+import { MUSLIM } from "./demo/muslim";
 import sharp from "sharp";
 
 const L = (en: string, ml?: string): Record<string, string> => (ml ? { en, ml } : { en });
@@ -82,18 +85,20 @@ async function upload(weddingId: string, buf: Buffer, name: string, category: Me
 }
 
 /** Uploads one bundled photograph (once per wedding) and sets its focal point so faces survive cropping. */
-async function stockAsset(weddingId: string, id: string, category: MediaCategory, cache: Map<string, string>, extra: { caption?: Record<string, string>; alt?: Record<string, string> } = {}): Promise<string | null> {
-  const hit = cache.get(id);
+async function stockAsset(weddingId: string, id: string, category: MediaCategory, cache: Map<string, string>, extra: { caption?: Record<string, string>; alt?: Record<string, string>; focal?: { x: number; y: number }; key?: string } = {}): Promise<string | null> {
+  const ck = extra.key ?? id;
+  const hit = cache.get(ck);
   if (hit) return hit;
   const buf = stockPhoto(id);
   if (!buf) return null;
   const info = STOCK[id];
   const asset = await upload(weddingId, buf, `${id}.jpg`, category, ["IMAGE"], { alt: extra.alt ?? { en: info?.alt ?? "" }, caption: extra.caption });
-  if (info?.focal) {
+  const focal = extra.focal ?? info?.focal;
+  if (focal) {
     const db = await getDb();
-    await db.update(schema.mediaAssets).set({ focalX: info.focal.x, focalY: info.focal.y }).where(eq(schema.mediaAssets.id, asset.id));
+    await db.update(schema.mediaAssets).set({ focalX: focal.x, focalY: focal.y }).where(eq(schema.mediaAssets.id, asset.id));
   }
-  cache.set(id, asset.id);
+  cache.set(ck, asset.id);
   return asset.id;
 }
 
@@ -261,6 +266,44 @@ async function seedAnanya(admin: AdminActor) {
   return w.id;
 }
 
+/** English-only LUXURY showcase built from a ShowcaseCfg (Christian and Muslim weddings). */
+async function seedShowcase(admin: AdminActor, c: ShowcaseCfg) {
+  const db = await getDb();
+  const [existing] = await db.select({ id: schema.weddings.id }).from(schema.weddings).where(eq(schema.weddings.slug, c.slug));
+  if (existing) {
+    console.log(`  • ${c.slug} already exists — skipping`);
+    return existing.id;
+  }
+  const [tpl] = await db.select().from(schema.templates).where(eq(schema.templates.slug, c.template));
+  const [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, c.theme));
+  if (!tpl || !thm) throw new Error(`Template "${c.template}" or theme "${c.theme}" is missing — run npm run library:refresh first.`);
+  const w = await createWedding(admin, { title: c.title, slug: c.slug, packageKey: "LUXURY", customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", secondaryLocale: null, weddingDate: c.date });
+  await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com" }).where(eq(schema.weddings.id, w.id));
+  const assets = new Map<string, string>();
+  const ids = new Map<string, string>();
+  for (const [key, stock, category, opts] of c.needs) {
+    const id = await stockAsset(w.id, stock, category, assets, { key, focal: opts?.focal });
+    if (!id) throw new Error(`Missing stock photograph assets/stock/${stock}.jpg`);
+    ids.set(key, id);
+  }
+  const og = ids.get(c.seo.og)!;
+  const gallery: string[] = [];
+  for (const [stock, cap] of c.gallery) {
+    const id = await stockAsset(w.id, stock, "GALLERY", assets, { caption: { en: cap }, key: `g:${stock}` });
+    if (id) gallery.push(id);
+  }
+  const album = await saveAlbum(admin, w.id, { title: { en: "Gallery" }, kind: "OFFICIAL", coverAssetId: gallery[0] });
+  await addToAlbum(admin, w.id, album.id, gallery);
+  const track = await upload(w.id, makeAmbientWav(), "ambient.wav", "MUSIC", ["AUDIO"]);
+  await saveTrack(admin, w.id, { assetId: track.id, title: c.track, artist: "StackBridge Studio (ambient)", isPrimary: true, inPlaylist: true });
+  const cur = await getWedding(admin, w.id);
+  const doc = buildShowcaseDoc(cur.draftDoc, c, (k) => ids.get(k));
+  await saveDraft(admin, w.id, doc);
+  await publishWedding(admin, w.id, { label: "Launch" });
+  console.log(`  ✔ ${c.slug}  (LUXURY)`);
+  return w.id;
+}
+
 async function seedPeople(admin: AdminActor, weddingId: string, slug: string, pkg: PackageKey, gallery: DemoMedia["gallery"], art: NonNullable<typeof cache>) {
   const db = await getDb();
   const groups = await db.select().from(schema.guestGroups).where(eq(schema.guestGroups.weddingId, weddingId));
@@ -359,10 +402,13 @@ async function main() {
   console.log(`  ✔ packages: ${PACKAGE_DEFAULTS.map((p) => p.name).join(", ")}`);
   if (process.env.SEED_DEMO === "false") return;
   if (process.env.SEED_ONLY) {
-    if (process.env.SEED_ONLY !== ANANYA.slug) throw new Error(`SEED_ONLY supports only "${ANANYA.slug}".`);
-    await seedAnanya(admin);
+    const only = process.env.SEED_ONLY;
+    if (only === ANANYA.slug) await seedAnanya(admin);
+    else if (only === CHRISTIAN.slug) await seedShowcase(admin, CHRISTIAN);
+    else if (only === MUSLIM.slug) await seedShowcase(admin, MUSLIM);
+    else throw new Error(`SEED_ONLY supports "${ANANYA.slug}", "${CHRISTIAN.slug}" or "${MUSLIM.slug}".`);
     console.log(`
-Done. Open ${env.appUrl}/invite/${ANANYA.slug}`);
+Done. Open ${env.appUrl}/invite/${only}`);
     return;
   }
 
@@ -370,6 +416,8 @@ Done. Open ${env.appUrl}/invite/${ANANYA.slug}`);
   const ids: Record<string, string> = {};
   ids.luxury = await seedWedding(admin, { slug: DEMO.slug, title: DEMO.title, pkg: "LUXURY", template: "royal-heritage", theme: "kasavu", full: true, clientEmail: "luxury.client@example.com" });
   ids.ananya = await seedAnanya(admin);
+  ids.christian = await seedShowcase(admin, CHRISTIAN);
+  ids.muslim = await seedShowcase(admin, MUSLIM);
   ids.cinematic = await seedWedding(admin, { slug: "demo-cinematic", title: DEMO.title, pkg: "LUXURY", template: "cinematic-noir", theme: "midnight-sapphire", full: true, celebration: "confetti" });
   ids.signature = await seedWedding(admin, { slug: "demo-signature", title: DEMO.title, pkg: "SIGNATURE", template: "editorial", theme: "emerald-ivory", full: false, clientEmail: "signature.client@example.com" });
   ids.essential = await seedWedding(admin, { slug: "demo-essential", title: DEMO.title, pkg: "ESSENTIAL", template: "minimal-luxury", theme: "rose-gold", full: false });

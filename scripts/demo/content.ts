@@ -291,7 +291,7 @@ export function buildDemoDoc(base: InvitationDoc, m: DemoMedia, opts: { full: bo
 
   // ── the new storytelling layer ───────────────────────────────────────────
   doc.eventType = "hindu_wedding";
-  doc.journey = { enabled: true, style: "kerala" };
+  doc.journey = { enabled: true, style: "kerala", headZoom: { bride: 1.0, groom: 1.3 } };
   doc.images = { couple: m.hero, story: m.storyPhoto ?? m.story.cafe, family: m.family, ceremony: undefined, coupleWide: undefined };
   doc.story.intro = L("Two paths.\nOne yellow umbrella.\nA thousand cups of filter coffee.\nAnd now, forever.", "രണ്ട് വഴികൾ.\nഒരു മഞ്ഞ കുട.\nആയിരം കപ്പ് ഫിൽട്ടർ കാപ്പി.\nഇനി, എന്നെന്നേക്കും.");
   doc.story.introPhoto = m.storyPhoto ?? m.story.cafe;

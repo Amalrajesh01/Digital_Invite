@@ -2,7 +2,24 @@
 import { useEffect, useRef } from "react";
 import { figureStyleFor, journeyEnabled } from "@/domain/doc/event-types";
 import { useInvitation } from "./context";
-import { Bride, Groom } from "./figures";
+import { Bride, Groom, type HeadPhoto } from "./figures";
+import type { ResolvedMedia } from "@/domain/media/service";
+
+/** A real portrait as a figure's head: the smallest rendition is plenty for a head a few dozen pixels across. */
+function headFrom(m: ResolvedMedia | undefined, tilt: number, zoom: number): HeadPhoto | undefined {
+  if (!m || m.kind !== "IMAGE" || !m.width || !m.height) return undefined;
+  const smallest = m.srcSet?.split(",")[0]?.trim().split(" ")[0];
+  return { src: smallest || m.url, fx: (m.focal?.x ?? 50) / 100, fy: (m.focal?.y ?? 32) / 100, ratio: m.width / m.height, tilt, zoom };
+}
+
+/** Both portraits, or neither: a real head on one figure and a drawn one on the other would not match. */
+export function useHeads(): { bride?: HeadPhoto; groom?: HeadPhoto } {
+  const { view, media } = useInvitation();
+  const z = view.doc.journey.headZoom;
+  const bride = headFrom(media(view.doc.couple.bride.photo), 4, z.bride);
+  const groom = headFrom(media(view.doc.couple.groom.photo), -4, z.groom);
+  return bride && groom ? { bride, groom } : {};
+}
 
 /**
  * Two small illustrated figures stand in the bottom corners — the bride on the left, the groom on the right —
@@ -23,6 +40,8 @@ export function Journey() {
   const { view, entered, reducedMotion, journeyTogether, setJourneyTogether, t } = useInvitation();
   const enabled = journeyEnabled(view.doc);
   const style = figureStyleFor(view.doc);
+  const heads = useHeads();
+  const hasHeads = !!heads.bride;
   const root = useRef<HTMLDivElement>(null);
   const bride = useRef<HTMLDivElement>(null);
   const groom = useRef<HTMLDivElement>(null);
@@ -42,7 +61,7 @@ export function Journey() {
       // arrive slightly before the very bottom so the last screen shows the couple standing together
       const q = clamp(p / 0.965);
       const margin = vw < 640 ? 8 : 20;
-      const overlap = fw * 0.03; // hands meet at the seam
+      const overlap = fw * (hasHeads ? 0.285 : 0.03); // hands meet at the seam (the smaller bodies of the big-head version reach less far)
       const pair = fw * 2 - overlap;
       const bx1 = vw / 2 - pair / 2, gx1 = bx1 + fw - overlap;
       const bx0 = margin, gx0 = vw - margin - fw;
@@ -75,14 +94,14 @@ export function Journey() {
       if (raf) cancelAnimationFrame(raf);
       setJourneyTogether(false);
     };
-  }, [enabled, entered, setJourneyTogether, style]);
+  }, [enabled, entered, setJourneyTogether, style, hasHeads]);
 
   if (!enabled || !entered) return null;
   return (
     <div ref={root} className="journey" data-walking="false" data-together={journeyTogether} data-calm={reducedMotion} role="presentation" aria-hidden>
       <span className="journey-glow" />
-      <div ref={bride} className="journey-fig"><div className="journey-bob"><Bride style={style} /></div></div>
-      <div ref={groom} className="journey-fig"><div className="journey-bob journey-bob-b"><Groom style={style} /></div></div>
+      <div ref={bride} className="journey-fig"><div className="journey-bob"><Bride style={style} head={heads.bride} /></div></div>
+      <div ref={groom} className="journey-fig"><div className="journey-bob journey-bob-b"><Groom style={style} head={heads.groom} /></div></div>
       <span className="journey-heart" title={t("journey.together")}>
         <svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M12 21.2S4.6 16.4 2.7 11.3A5.5 5.5 0 0 1 12 6.4a5.5 5.5 0 0 1 9.3 4.9C19.4 16.4 12 21.2 12 21.2Z" fill="var(--c-accent)" /></svg>
       </span>

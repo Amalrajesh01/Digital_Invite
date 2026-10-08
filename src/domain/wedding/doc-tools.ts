@@ -3,12 +3,15 @@ import { InvitationDoc as InvitationDocSchema, emptyDoc } from "@/domain/doc/sch
 import { generateSections, type TemplateConfig } from "@/domain/design/templates";
 import type { Entitlements } from "@/domain/packages/entitlements";
 import { newId } from "@/lib/id";
+import { STARTER_CEREMONIES } from "@/domain/doc/starter-ceremonies";
 
 /** Sensible starting content so a freshly generated invitation never looks empty. */
 export function buildInitialDoc(template: TemplateConfig | null, ent: Entitlements, locale: string | null): InvitationDoc {
   const doc = emptyDoc();
   const t = (en: string, local?: string): LocalizedText => (locale && local ? { en, [locale]: local } : { en });
   doc.opening.variant = template?.opening ?? "envelope";
+  if (template?.eventType) doc.eventType = template.eventType;
+  doc.ceremonies.items = STARTER_CEREMONIES[doc.eventType].map((c) => ({ id: newId(), name: t(c.name), when: {}, description: t(c.description), photo: undefined, glyph: c.glyph }));
   doc.rsvp.mealOptions = [
     { id: newId(), label: t("Vegetarian", "സസ്യാഹാരം") },
     { id: newId(), label: t("Non-vegetarian", "മാംസാഹാരം") },

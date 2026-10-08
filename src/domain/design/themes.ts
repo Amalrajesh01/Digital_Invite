@@ -70,6 +70,16 @@ export const THEME_SEEDS: ThemeSeed[] = [
     },
   },
   {
+    slug: "ivory-chapel",
+    name: "Ivory Chapel",
+    description: "Warm ivory, sage and champagne gold. Soft, hushed and timeless — made for church weddings and quiet elegance.",
+    tokens: {
+      colors: { primary: "#5F7561", secondary: "#34404F", accent: "#B79A68", background: "#F8F5EF", surface: "#FFFFFF", text: "#25282B", muted: "#6A6E73", border: "#E5DFD2", onPrimary: "#FFFFFF", inverse: "#222B33", onInverse: "#F2EEE6" },
+      fonts: { heading: "Cormorant Garamond", body: "Inter", script: "Cormorant Garamond" },
+      radius: "soft", button: "outline", card: "flat", divider: "line", decor: "minimal", motion: "calm", grain: true, dark: false,
+    },
+  },
+  {
     slug: "bridge-blue",
     name: "Bridge Blue",
     description: "Clean navy and electric blue on cool white. Modern, crisp and confident — the StackBridge signature look.",

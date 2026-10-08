@@ -19,7 +19,7 @@ describe("the experience layer is backwards compatible", () => {
   it("a document saved before it existed parses as a Hindu wedding with every new feature at its default", () => {
     const old = parseDoc({ couple: { bride: { name: { en: "A" } }, groom: { name: { en: "B" } } }, sections: [] });
     expect(old.eventType).toBe("hindu_wedding");
-    expect(old.journey).toEqual({ enabled: true, style: "auto" });
+    expect(old.journey).toEqual({ enabled: true, style: "auto", headZoom: { bride: 1, groom: 1 } });
     expect(old.opening.celebration).toBe("auto");
     expect(old.images).toEqual({});
     expect(old.ceremonies.items).toEqual([]);
