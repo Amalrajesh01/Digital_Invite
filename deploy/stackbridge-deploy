@@ -15,4 +15,5 @@ REF=${REF:-main}
 # fetch every branch (so the deploy can tell what is newer than what is live), then check out the requested ref
 runuser -u deploy -- bash -c "cd '$SRC' && git fetch --quiet --prune origin && git fetch --quiet origin '$REF' && git reset --quiet --hard FETCH_HEAD"
 export SRC
+[ -f "$SRC/deploy/deploy.sh" ] || { echo "!! '$REF' does not contain deploy/deploy.sh yet — merge the branch that adds it into main first, or deploy it explicitly: REF=<branch> stackbridge-deploy" >&2; exit 1; }
 exec bash "$SRC/deploy/deploy.sh"
