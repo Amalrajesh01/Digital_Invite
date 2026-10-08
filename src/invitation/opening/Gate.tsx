@@ -8,7 +8,7 @@ import { fmtDate } from "../engine/format";
 import { distanceKm } from "../engine/format";
 
 type State = "closed" | "opening" | "leaving" | "gone";
-const DURATION: Record<string, number> = { envelope: 2400, seal: 1500, cinematic: 250, swipe: 350, curtain: 1600, none: 0 };
+const DURATION: Record<string, number> = { envelope: 3000, seal: 1500, cinematic: 250, swipe: 350, curtain: 1600, none: 0 };
 
 export function useCoupleNames() {
   const { view, L, t } = useInvitation();
@@ -29,6 +29,20 @@ function GateMonogram() {
       <text x="64" y="46" fontSize="30" style={{ fontFamily: "var(--f-script)", fill: "var(--c-on-inverse)", opacity: 0.85 }}>&amp;</text>
       <text x="92" y="56" fontSize="64" className="mono-stroke" style={{ fontFamily: "var(--f-heading)", animationDelay: "0.6s, 2.6s" }}>{ib}</text>
     </svg>
+  );
+}
+
+/** The wax stamp: bride, groom and the wedding date pressed into the seal. */
+function SealFace({ names, date, sealText }: { names: { a: string; b: string }; date: string; sealText?: string }) {
+  const parts = date ? date.split("-").map(Number) : [];
+  const short = parts.length === 3 ? `${String(parts[2]).padStart(2, "0")} · ${String(parts[1]).padStart(2, "0")} · ${parts[0]}` : sealText ?? "";
+  return (
+    <div className="disc">
+      <span className="wax-name">{names.a}</span>
+      <span className="wax-amp">&amp;</span>
+      <span className="wax-name">{names.b}</span>
+      {short && <span className="wax-date">{short}</span>}
+    </div>
   );
 }
 
@@ -87,7 +101,9 @@ function LocationHint() {
 export function Gate({ skip }: { skip?: boolean }) {
   const { view, t, L, music, setEntered, reducedMotion, slug, locale, has } = useInvitation();
   const op = view.doc.opening;
-  const variant = op.variant;
+  // Every invitation opens with the same realistic wax-sealed envelope; "none" still skips the opening entirely.
+  // (The older seal / cinematic / swipe / curtain scenes below are kept but are no longer selected.)
+  const variant = (op.variant === "none" ? "none" : "envelope") as typeof op.variant;
   const [state, setState] = useState<State>(variant === "none" || skip ? "gone" : "closed");
   const [seqDone, setSeqDone] = useState(false);
   const primary = useRef<HTMLButtonElement>(null);
@@ -200,21 +216,27 @@ export function Gate({ skip }: { skip?: boolean }) {
     >
       {variant === "envelope" && (
         <div className="gate-inner">
-          {Header}
+          <p className="inv-eyebrow !text-[var(--c-accent)]">{invited}</p>
+          {greeting && <p className="gate-dear">{greeting}</p>}
           <div className="env" data-open={isOpening} role="button" tabIndex={0} aria-label={t("gate.tapToOpen")} onClick={() => open(wantsMusic)} onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), open(wantsMusic))}>
-            <div className="env-body" />
+            <div className="env-back" />
             <div className="env-card">
               <div>
                 <p className="inv-eyebrow" style={{ fontSize: "0.6rem", color: "var(--c-primary)" }}>{t("invite.together")}</p>
                 <p className="mt-2 text-2xl" style={{ fontFamily: "var(--f-heading)" }}>{names.a}</p>
                 <p className="inv-script my-0.5 text-3xl text-[var(--c-accent)]">&amp;</p>
                 <p className="text-2xl" style={{ fontFamily: "var(--f-heading)" }}>{names.b}</p>
+                {mainDate && <p className="mt-3 text-[0.7rem] tracking-[0.3em] opacity-70">{fmtDate(mainDate, locale, "long")}</p>}
               </div>
             </div>
             <div className="env-pocket" />
-            <div className="env-flap" />
-            <div className="env-seal" aria-hidden>{op.sealText || names.initials.charAt(0)}</div>
+            <div className="env-flap"><div className="face front" /><div className="face back" /></div>
+            <div className="wax" aria-hidden>
+              <div className="wax-half l"><SealFace names={names} date={mainDate} sealText={op.sealText} /></div>
+              <div className="wax-half r"><SealFace names={names} date={mainDate} sealText={op.sealText} /></div>
+            </div>
           </div>
+          {wantsMusic && !isOpening && <p className="gate-hint">{t("gate.tapToOpen")}</p>}
           {seatsText && <p className="gate-hint">{seatsText}</p>}
           {Actions}
         </div>

@@ -389,6 +389,13 @@ async function seedOrders(weddingIds: Record<string, string>) {
   await db.insert(schema.orders).values(rows);
 }
 
+const CLASSIC_DEMOS: Record<string, DemoSpec> = {
+  [DEMO.slug]: { slug: DEMO.slug, title: DEMO.title, pkg: "LUXURY", template: "royal-heritage", theme: "kasavu", full: true, clientEmail: "luxury.client@example.com" },
+  "demo-cinematic": { slug: "demo-cinematic", title: DEMO.title, pkg: "LUXURY", template: "cinematic-noir", theme: "midnight-sapphire", full: true, celebration: "confetti" },
+  "demo-signature": { slug: "demo-signature", title: DEMO.title, pkg: "SIGNATURE", template: "editorial", theme: "emerald-ivory", full: false, clientEmail: "signature.client@example.com" },
+  "demo-essential": { slug: "demo-essential", title: DEMO.title, pkg: "ESSENTIAL", template: "minimal-luxury", theme: "rose-gold", full: false },
+};
+
 async function main() {
   if (process.env.NODE_ENV === "production" && (process.env.SEED_ADMIN_PASSWORD ?? "").length < 12) {
     throw new Error("Set SEED_ADMIN_PASSWORD (12+ characters) before seeding a production database.");
@@ -406,7 +413,8 @@ async function main() {
     if (only === ANANYA.slug) await seedAnanya(admin);
     else if (only === CHRISTIAN.slug) await seedShowcase(admin, CHRISTIAN);
     else if (only === MUSLIM.slug) await seedShowcase(admin, MUSLIM);
-    else throw new Error(`SEED_ONLY supports "${ANANYA.slug}", "${CHRISTIAN.slug}" or "${MUSLIM.slug}".`);
+    else if (CLASSIC_DEMOS[only]) await seedWedding(admin, CLASSIC_DEMOS[only]);
+    else throw new Error(`SEED_ONLY supports "${[ANANYA.slug, CHRISTIAN.slug, MUSLIM.slug, ...Object.keys(CLASSIC_DEMOS)].join('", "')}".`);
     console.log(`
 Done. Open ${env.appUrl}/invite/${only}`);
     return;
@@ -414,13 +422,13 @@ Done. Open ${env.appUrl}/invite/${only}`);
 
   console.log("→ Creating demonstration weddings (stock photography, fictional couples)");
   const ids: Record<string, string> = {};
-  ids.luxury = await seedWedding(admin, { slug: DEMO.slug, title: DEMO.title, pkg: "LUXURY", template: "royal-heritage", theme: "kasavu", full: true, clientEmail: "luxury.client@example.com" });
+  ids.luxury = await seedWedding(admin, CLASSIC_DEMOS[DEMO.slug]);
   ids.ananya = await seedAnanya(admin);
   ids.christian = await seedShowcase(admin, CHRISTIAN);
   ids.muslim = await seedShowcase(admin, MUSLIM);
-  ids.cinematic = await seedWedding(admin, { slug: "demo-cinematic", title: DEMO.title, pkg: "LUXURY", template: "cinematic-noir", theme: "midnight-sapphire", full: true, celebration: "confetti" });
-  ids.signature = await seedWedding(admin, { slug: "demo-signature", title: DEMO.title, pkg: "SIGNATURE", template: "editorial", theme: "emerald-ivory", full: false, clientEmail: "signature.client@example.com" });
-  ids.essential = await seedWedding(admin, { slug: "demo-essential", title: DEMO.title, pkg: "ESSENTIAL", template: "minimal-luxury", theme: "rose-gold", full: false });
+  ids.cinematic = await seedWedding(admin, CLASSIC_DEMOS["demo-cinematic"]);
+  ids.signature = await seedWedding(admin, CLASSIC_DEMOS["demo-signature"]);
+  ids.essential = await seedWedding(admin, CLASSIC_DEMOS["demo-essential"]);
   await seedOrders(ids);
   console.log(`\nDone. Open ${env.appUrl}/invite/${DEMO.slug}`);
   console.log(`Super Admin: ${adminUser.email}  /  ${process.env.SEED_ADMIN_PASSWORD || "ChangeMe-Now-123"}`);

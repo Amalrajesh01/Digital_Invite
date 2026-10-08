@@ -13,24 +13,45 @@
 .gate-skip { background: none; border: 0; color: inherit; opacity: 0.7; font: inherit; font-size: 0.85rem; text-decoration: underline; text-underline-offset: 0.3em; cursor: pointer; padding: 0.6rem 1rem; min-height: 2.75rem; }
 .gate-skip:hover { opacity: 1; }
 
-/* ── envelope ──────────────────────────────────────────────────────────── */
-.env { position: relative; width: min(84vw, 25rem); aspect-ratio: 1.42; perspective: 1400px; margin-top: 1rem; cursor: pointer; }
-.env-body, .env-flap, .env-card, .env-pocket { position: absolute; inset: 0; }
-.env-body { background: color-mix(in srgb, var(--c-on-inverse) 84%, #6b5a3a); border-radius: 4px; box-shadow: 0 30px 60px -28px rgba(0,0,0,.65); }
-.env-card { inset: 7% 6% 10%; background: color-mix(in srgb, var(--c-on-inverse) 55%, #fff); color: var(--c-inverse); border-radius: 3px; display: grid; place-items: center; text-align: center; padding: 1rem; transition: transform 1.1s var(--ease) 0.55s; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
-.env-card::before { content: ""; position: absolute; inset: 6px; border: 1px solid color-mix(in srgb, var(--c-accent) 60%, transparent); pointer-events: none; }
-.env-pocket { background: color-mix(in srgb, var(--c-on-inverse) 94%, #6b5a3a); clip-path: polygon(0 0, 50% 52%, 100% 0, 100% 100%, 0 100%); border-radius: 4px; }
-.env-pocket::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.35), rgba(80,60,20,.14)); }
-.env-flap { background: color-mix(in srgb, var(--c-on-inverse) 90%, #6b5a3a); clip-path: polygon(0 0, 100% 0, 50% 58%); transform-origin: 50% 0; transition: transform 0.9s var(--ease), z-index 0s linear 0.45s; z-index: 4; backface-visibility: hidden; border-radius: 4px 4px 0 0; }
-.env-flap::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.4), rgba(80,60,20,.16)); }
-.env-seal { position: absolute; left: 50%; top: 52%; width: 22%; aspect-ratio: 1; translate: -50% -50%; z-index: 6; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-heading); font-size: clamp(1.1rem, 5vw, 1.6rem); color: color-mix(in srgb, var(--c-on-primary) 92%, transparent); background: radial-gradient(circle at 34% 30%, color-mix(in srgb, var(--c-primary) 70%, #fff), var(--c-primary) 55%, color-mix(in srgb, var(--c-primary) 60%, #000)); box-shadow: 0 6px 14px rgba(0,0,0,.45), inset 0 0 0 3px color-mix(in srgb, var(--c-primary) 70%, #000), inset 0 2px 5px rgba(255,255,255,.35); transition: transform 0.5s var(--ease), opacity 0.4s; }
-.env-seal::after { content: ""; position: absolute; inset: 14%; border-radius: 50%; border: 1px dashed color-mix(in srgb, var(--c-on-primary) 50%, transparent); }
-.env:hover .env-seal { transform: scale(1.06); }
+/* ── envelope: a wax-sealed envelope that opens for real ──────────────────── */
+.env { --paper: color-mix(in srgb, var(--c-on-inverse) 86%, #7a6440); --paper-lo: color-mix(in srgb, var(--c-on-inverse) 70%, #5a4624); position: relative; width: min(88vw, 26rem); aspect-ratio: 1.42; perspective: 1500px; margin-top: 0.8rem; cursor: pointer; filter: drop-shadow(0 34px 34px rgba(0,0,0,.5)); }
+.env-back, .env-flap, .env-card, .env-pocket { position: absolute; inset: 0; }
+.env-back { background: linear-gradient(180deg, var(--paper-lo), color-mix(in srgb, var(--paper-lo) 80%, #000)); border-radius: 5px; }
+.env-card { inset: 6% 6% 9%; z-index: 2; background: linear-gradient(180deg, #fffdf8, #f4ecdc); color: #2b2620; border-radius: 3px; display: grid; place-items: center; text-align: center; padding: 1rem; transition: transform 1.3s var(--ease) 1.05s; box-shadow: 0 2px 6px rgba(0,0,0,.25); }
+.env-card::before { content: ""; position: absolute; inset: 7px; border: 1px solid color-mix(in srgb, var(--c-accent) 65%, transparent); pointer-events: none; }
+.env-pocket { z-index: 3; border-radius: 5px; background: var(--paper); clip-path: polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%); }
+.env-pocket::before { content: ""; position: absolute; inset: 0; background:
+  linear-gradient(to bottom right, transparent 49.6%, rgba(60,40,10,.22) 50%, transparent 50.8%) 0 0 / 50% 100% no-repeat,
+  linear-gradient(to bottom left, transparent 49.6%, rgba(60,40,10,.22) 50%, transparent 50.8%) 100% 0 / 50% 100% no-repeat,
+  linear-gradient(180deg, transparent 55%, rgba(60,40,10,.16)); }
+.env-pocket::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(95deg, rgba(255,255,255,.07) 0 2px, rgba(0,0,0,.025) 2px 4px), linear-gradient(180deg, rgba(255,255,255,.3), rgba(80,60,20,.12)); }
+.env-flap { z-index: 4; transform-style: preserve-3d; transform-origin: 50% 0; transition: transform 1s var(--ease) 0.5s, z-index 0s linear 1s; }
+.env-flap .face { position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 50% 60%); backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 5px 5px 0 0; }
+.env-flap .front { background: linear-gradient(180deg, color-mix(in srgb, var(--paper) 92%, #fff), var(--paper)); }
+.env-flap .front::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(95deg, rgba(255,255,255,.07) 0 2px, rgba(0,0,0,.025) 2px 4px); }
+.env-flap .back { transform: rotateX(180deg); background: repeating-linear-gradient(45deg, color-mix(in srgb, var(--c-accent) 38%, var(--paper-lo)) 0 6px, color-mix(in srgb, var(--c-accent) 26%, var(--paper-lo)) 6px 12px); box-shadow: inset 0 -10px 20px rgba(0,0,0,.2); }
+
+/* the wax seal: names and date pressed into it */
+.wax { position: absolute; left: 50%; top: 56%; width: 36%; aspect-ratio: 1; translate: -50% -50%; z-index: 6; }
+.wax-half { position: absolute; inset: 0; transition: transform 0.9s cubic-bezier(.5,0,.8,.6), opacity 0.7s ease 0.2s; }
+.wax-half.l { clip-path: polygon(0 0, 53% 0, 45% 24%, 55% 48%, 46% 74%, 52% 100%, 0 100%); }
+.wax-half.r { clip-path: polygon(53% 0, 100% 0, 100% 100%, 52% 100%, 46% 74%, 55% 48%, 45% 24%); }
+.wax .disc { position: absolute; inset: 0; border-radius: 50% 47% 52% 48% / 48% 52% 47% 51%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.08em; text-align: center; padding: 14%; line-height: 1.05; color: color-mix(in srgb, var(--c-on-primary) 94%, transparent);
+  background: radial-gradient(circle at 34% 28%, color-mix(in srgb, var(--c-primary) 62%, #fff), var(--c-primary) 50%, color-mix(in srgb, var(--c-primary) 58%, #000));
+  box-shadow: 0 10px 18px -6px rgba(0,0,0,.65), inset 0 0 0 4px color-mix(in srgb, var(--c-primary) 70%, #000), inset 0 3px 7px rgba(255,255,255,.35), inset 0 -4px 8px rgba(0,0,0,.3); }
+.wax .disc::after { content: ""; position: absolute; inset: 9%; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--c-on-primary) 55%, transparent); }
+.wax-name { font-family: var(--f-heading); font-size: clamp(0.72rem, 3.5vw, 1rem); max-width: 100%; overflow-wrap: anywhere; text-shadow: 0 1px 1px rgba(0,0,0,.35); }
+.wax-amp { font-family: var(--f-script); font-size: clamp(0.8rem, 3.8vw, 1.1rem); color: color-mix(in srgb, var(--c-on-primary) 80%, var(--c-accent)); }
+.wax-date { margin-top: 0.3em; font-size: clamp(0.4rem, 1.9vw, 0.55rem); letter-spacing: 0.14em; opacity: 0.85; }
+.env:not([data-open="true"]) .wax { animation: wax-pulse 2.6s ease-in-out infinite; }
+@keyframes wax-pulse { 0%, 100% { filter: drop-shadow(0 0 0 transparent); } 50% { filter: drop-shadow(0 0 14px color-mix(in srgb, var(--c-accent) 80%, transparent)); } }
 .env:focus-visible { outline-offset: 10px; }
-.env[data-open="true"] .env-flap { transform: rotateX(180deg); z-index: 1; }
-.env[data-open="true"] .env-seal { opacity: 0; transform: scale(1.5) rotate(20deg); }
-.env[data-open="true"] .env-card { transform: translateY(-62%) scale(1.02); }
 .env[data-open="true"] { cursor: default; }
+.env[data-open="true"] .wax-half.l { transform: translate(-70%, 120%) rotate(-28deg); opacity: 0; }
+.env[data-open="true"] .wax-half.r { transform: translate(70%, 130%) rotate(26deg); opacity: 0; }
+.env[data-open="true"] .env-flap { transform: rotateX(180deg); z-index: 1; }
+.env[data-open="true"] .env-card { transform: translateY(-66%) scale(1.04); }
+@media (prefers-reduced-motion: reduce) { .env:not([data-open="true"]) .wax { animation: none; } }
 
 /* ── seal ──────────────────────────────────────────────────────────────── */
 .seal-wrap { position: relative; width: min(64vw, 15rem); aspect-ratio: 1; margin-top: 0.5rem; cursor: pointer; }

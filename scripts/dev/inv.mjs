@@ -26,7 +26,7 @@ const shot = (name, full = false) => page.screenshot({ path: `.shots/${prefix}-$
 if (!skipGate) {
   await shot("gate");
   await page.locator(".cine").first().click({ timeout: 800 }).catch(() => {});
-  const btn = page.getByRole("button", { name: /continue without music|tap to open|^enter/i }).first();
+  const btn = page.getByRole("button", { name: /continue without music|tap to open|click here|^enter/i }).first();
   await btn.click({ timeout: 5000 }).catch(() => errors.push("gate click failed"));
   const marks = (opt("opening") ?? "").split(",").filter(Boolean).map(Number);
   let t = 0;
