@@ -23,6 +23,8 @@ KEEP=${KEEP:-7}
 log() { printf '\n\033[1m== %s\033[0m\n' "$*"; }
 die() { printf '\n\033[31m!! %s\033[0m\n' "$*" >&2; exit 1; }
 as_app() { runuser -u "$RUN_AS" -- bash -c "$1"; }
+# git runs as the clone's owner (root would trip git's "dubious ownership" check)
+src_git() { runuser -u "$RUN_AS" -- git -C "$SRC" "$@"; }
 http() { curl -s -m 30 -o /dev/null -w '%{http_code}' "$1" || true; }
 load_env='set -a && . ./.env.production && set +a'
 
@@ -32,9 +34,9 @@ load_env='set -a && . ./.env.production && set +a'
 exec 9>/var/lock/stackbridge-deploy.lock
 flock -n 9 || die "another deploy is already running"
 
-SHA=$(git -C "$SRC" rev-parse --short HEAD)
-FULL=$(git -C "$SRC" rev-parse HEAD)
-SUBJECT=$(git -C "$SRC" log -1 --format=%s)
+SHA=$(src_git rev-parse --short HEAD)
+FULL=$(src_git rev-parse HEAD)
+SUBJECT=$(src_git log -1 --format=%s)
 OLD_FULL=$(cat "$LIVE/.deployed-sha" 2>/dev/null || true)
 TS=$(date +%Y%m%d-%H%M%S)
 log "deploying $SHA — $SUBJECT"
@@ -43,8 +45,8 @@ if [ -n "$OLD_FULL" ] && [ "$OLD_FULL" = "$FULL" ] && [ -z "${FORCE:-}" ]; then
   echo "already deployed ($SHA). Nothing to do (FORCE=1 to redeploy)."; echo "DONE_STACKBRIDGE_DEPLOYED $SHA (unchanged)"; exit 0
 fi
 if [ -n "$OLD_FULL" ] && [ -z "${FORCE:-}" ]; then
-  git -C "$SRC" cat-file -e "$OLD_FULL^{commit}" 2>/dev/null || die "the live commit ${OLD_FULL:0:7} is not in the clone, so I cannot tell whether $SHA is newer — push it first, or FORCE=1."
-  git -C "$SRC" merge-base --is-ancestor "$FULL" "$OLD_FULL" && die "$SHA is OLDER than the live commit ${OLD_FULL:0:7} — refusing to roll the site back. Merge/push first, or FORCE=1."
+  src_git cat-file -e "$OLD_FULL^{commit}" 2>/dev/null || die "the live commit ${OLD_FULL:0:7} is not in the clone, so I cannot tell whether $SHA is newer — push it first, or FORCE=1."
+  src_git merge-base --is-ancestor "$FULL" "$OLD_FULL" && die "$SHA is OLDER than the live commit ${OLD_FULL:0:7} — refusing to roll the site back. Merge/push first, or FORCE=1."
 fi
 
 TEMP_SWAP=""
