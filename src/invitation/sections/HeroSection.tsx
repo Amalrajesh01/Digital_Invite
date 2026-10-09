@@ -8,9 +8,9 @@ import { Parallax, Reveal, RevealWords, useCountdown } from "../engine/motion";
 import { KasavuBand, Rosette, Divider } from "../engine/Ornament";
 import { fmtDate } from "../engine/format";
 import { eventStart } from "../engine/format";
-import { useCoupleNames } from "../opening/Gate";
+import { useSubject } from "../engine/subject";
 import { useSlot } from "../engine/images";
-import { EVENT_TYPE_INFO } from "@/domain/doc/event-types";
+import { EVENT_TYPE_INFO, toneOf } from "@/domain/doc/event-types";
 import { ChevronDown } from "lucide-react";
 
 /** Smoothly scrolls to whatever section follows the hero (it need not be a particular one). */
@@ -21,26 +21,52 @@ function goNext(e: React.MouseEvent) {
   next.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
 }
 
+/** "short" names get the big display size; a long headline ("Leadership Conclave 2026") is set smaller so it stays on 2–3 lines. */
+const lengthOf = (s: string) => (s.length <= 13 ? "short" : s.length <= 26 ? "medium" : "long");
+
 function useHeroData(section: SectionConfig) {
   const { view, L, t, locale, entered } = useInvitation();
-  const names = useCoupleNames();
+  const names = useSubject();
   const doc = view.doc;
   const main = doc.events.find((e) => e.isMain) ?? doc.events[0];
   const venue = doc.venues.find((v) => v.id === main?.venueId) ?? doc.venues[0];
   const date = main?.date || view.wedding.weddingDate || "";
   const content = section.content as Record<string, string | undefined>;
-  const bg = useSlot("couple"); // the couple photograph (hero override → couple slot → gallery → portraits)
+  const bg = useSlot("couple"); // the main photograph (hero override → couple/main slot → gallery → portraits)
   const wide = useSlot("coupleWide");
   const phraseKey = `invite.phrase.${EVENT_TYPE_INFO[doc.eventType].phrase}` as const;
   const eyebrowKey = LIFECYCLE_HEADLINE[view.wedding.status];
   const status = view.wedding.status;
   const eyebrow = status === "ANNIVERSARY" && view.wedding.yearsTogether > 1 ? t("anniv.years", { n: view.wedding.yearsTogether }) : t(eyebrowKey as never);
   const target = main ? eventStart(main, view.wedding.timezone) : null;
+  const invitation = names.isCouple ? L(doc.couple.invitation) || t("invite.together") : names.invitation || t("gate.cardLine");
   return {
     names, bg, wide, phraseKey, status, date, dateText: date ? fmtDate(date, locale, "long") : "", dots: date ? date.split("-").reverse() : [], shortDate: date ? fmtDate(date, locale, "monthDay") + ", " + date.slice(0, 4) : "",
-    venueName: venue ? L(venue.name) : "", city: venue ? L(venue.city) : "", tagline: L(doc.couple.tagline), invitation: L(doc.couple.invitation) || t("invite.together"),
+    dateLabel: L(doc.occasion.dateLabel),
+    phrase: names.isCouple ? t(phraseKey) : names.subtitle || t(phraseKey),
+    venueName: venue ? L(venue.name) : "", city: venue ? L(venue.city) : "", tagline: names.isCouple ? L(doc.couple.tagline) : "", invitation,
+    hosts: names.hosts,
+    size: lengthOf(names.a),
     eyebrow, entered, locale, video: content.video, target, hashtag: doc.couple.hashtag, settings: section.settings,
   };
+}
+
+type HeroData = ReturnType<typeof useHeroData>;
+
+/** The headline: one name, or two joined by an ampersand — never a stray "&" for an occasion that has no couple. */
+function Title({ h, nameClass, andClass, delayA = 350, delayB = 560, as = "span" }: { h: HeroData; nameClass: string; andClass: string; delayA?: number; delayB?: number; as?: "span" | "div" }) {
+  const { t } = useInvitation();
+  return (
+    <>
+      <RevealWords as={as} text={h.names.a} className={nameClass} delay={delayA} />
+      {h.names.isCouple && (
+        <>
+          <span className={andClass} aria-hidden>{t("invite.and")}</span>
+          <RevealWords as={as} text={h.names.b} className={nameClass} delay={delayB} />
+        </>
+      )}
+    </>
+  );
 }
 
 function MiniCountdown({ target, className }: { target: Date | null; className?: string }) {
@@ -67,6 +93,7 @@ function ScrollCue({ light }: { light?: boolean }) {
 
 function Arch({ section }: { section: SectionConfig }) {
   const h = useHeroData(section);
+  const { t } = useInvitation();
   return (
     <header data-section="hero" id="s-hero" className="relative isolate overflow-hidden inv-decor-bg">
       <Rosette className="pointer-events-none absolute left-1/2 top-[38%] -z-10 w-[130vw] max-w-[62rem] -translate-x-1/2 -translate-y-1/2 text-[var(--c-accent)] opacity-[0.16]" />
@@ -80,15 +107,21 @@ function Arch({ section }: { section: SectionConfig }) {
           </div>
         </Reveal>
         <h1 className="mt-9 flex flex-col items-center gap-0 leading-none">
-          <RevealWords as="div" text={h.names.a} className="inv-display" delay={300} />
-          <span className="inv-script -my-1 text-[clamp(2.4rem,9vw,4rem)] text-[var(--c-accent)]" aria-hidden>&amp;</span>
-          <RevealWords as="div" text={h.names.b} className="inv-display" delay={450} />
+          <RevealWords as="div" text={h.names.a} className={cn("inv-display", h.size !== "short" && "!text-[clamp(2.2rem,10vw,4.6rem)]")} delay={300} />
+          {h.names.isCouple && (
+            <>
+              <span className="inv-script -my-1 text-[clamp(2.4rem,9vw,4rem)] text-[var(--c-accent)]" aria-hidden>&amp;</span>
+              <RevealWords as="div" text={h.names.b} className="inv-display" delay={450} />
+            </>
+          )}
         </h1>
+        {!h.names.isCouple && h.phrase && <Reveal delay={420}><p className="inv-serif-lede mt-3 text-[var(--c-muted)]">{h.phrase}</p></Reveal>}
         <Reveal delay={500}>
           <Divider kind="ornament" className="mt-4" />
-          <p className="inv-num text-[clamp(1.2rem,4.5vw,1.6rem)] tracking-[0.06em]">{h.dateText}</p>
+          <p className="inv-num text-[clamp(1.2rem,4.5vw,1.6rem)] tracking-[0.06em]">{h.dateLabel || h.dateText}</p>
           {(h.venueName || h.city) && <p className="inv-muted mt-1 text-[0.98rem]">{[h.venueName, h.city].filter(Boolean).join(" · ")}</p>}
           {h.settings.showCountdown !== false && <p className="mt-4 text-[0.9rem] text-[var(--c-primary)]"><MiniCountdown target={h.target} /></p>}
+          {h.hosts && <p className="inv-muted mt-3 text-[0.9rem]">{t("hero.hostedBy", { hosts: h.hosts })}</p>}
         </Reveal>
         <ScrollCue />
       </div>
@@ -103,9 +136,10 @@ function Arch({ section }: { section: SectionConfig }) {
  */
 function FullBleed({ section }: { section: SectionConfig }) {
   const h = useHeroData(section);
-  const { media, reducedMotion, t } = useInvitation();
+  const { media, reducedMotion, t, view } = useInvitation();
   const vid = media(h.video);
   const upcoming = h.status === "DRAFT" || h.status === "PREVIEW" || h.status === "PUBLISHED";
+  const register = !h.names.isCouple && toneOf(view.doc) === "professional" && view.sections.some((s) => s.type === "rsvp") && upcoming;
   return (
     <header data-section="hero" id="s-hero" className="hero">
       <div className="hero-bg">
@@ -123,22 +157,30 @@ function FullBleed({ section }: { section: SectionConfig }) {
           <Reveal variant="fade" delay={150}>
             <p className="hero-eyebrow">{upcoming ? h.invitation : h.eyebrow}</p>
           </Reveal>
-          <h1 className="hero-title">
-            <RevealWords as="span" text={h.names.a} className="hero-name" delay={350} />
-            <span className="hero-and" aria-hidden>{t("invite.and")}</span>
-            <RevealWords as="span" text={h.names.b} className="hero-name" delay={560} />
+          <h1 className="hero-title" data-len={h.size} data-couple={h.names.isCouple}>
+            <Title h={h} nameClass="hero-name" andClass="hero-and" />
           </h1>
-          {upcoming && (
+          {upcoming && h.phrase && (
             <Reveal delay={900}>
-              <p className="hero-phrase">{t(h.phraseKey)}</p>
+              <p className="hero-phrase">{h.phrase}</p>
             </Reveal>
           )}
-          {h.dots.length === 3 && (
+          {(h.dots.length === 3 || h.dateLabel) && (
             <Reveal delay={1050}>
-              <p className="hero-date inv-num" aria-label={h.dateText}>
-                <span>{h.dots[0]}</span><i aria-hidden /><span>{h.dots[1]}</span><i aria-hidden /><span>{h.dots[2]}</span>
-              </p>
+              {h.dateLabel ? (
+                <p className="hero-date hero-date-text inv-num" aria-label={h.dateLabel}>{h.dateLabel}</p>
+              ) : (
+                <p className="hero-date inv-num" aria-label={h.dateText}>
+                  <span>{h.dots[0]}</span><i aria-hidden /><span>{h.dots[1]}</span><i aria-hidden /><span>{h.dots[2]}</span>
+                </p>
+              )}
               {(h.venueName || h.city) && <p className="hero-place">{[h.venueName, h.city].filter(Boolean).join(" · ")}</p>}
+              {h.hosts && <p className="hero-place hero-hosts">{t("hero.hostedBy", { hosts: h.hosts })}</p>}
+            </Reveal>
+          )}
+          {register && (
+            <Reveal delay={1200}>
+              <a href="#s-rsvp" className="hero-register">{t("nav.rsvp")}</a>
             </Reveal>
           )}
           <Reveal variant="fade" delay={1400}>
@@ -155,22 +197,30 @@ function FullBleed({ section }: { section: SectionConfig }) {
 
 function Split({ section }: { section: SectionConfig }) {
   const h = useHeroData(section);
+  const { t } = useInvitation();
+  const big = "!text-[clamp(3.4rem,14vw,4.8rem)] md:!text-[clamp(3.4rem,8.2vw,6.6rem)]";
+  const long = "!text-[clamp(2.3rem,9vw,3.4rem)] md:!text-[clamp(2.6rem,5.2vw,4.6rem)]";
+  const size = h.size === "short" || h.names.isCouple ? big : long;
   return (
     <header data-section="hero" id="s-hero" className="relative isolate overflow-hidden">
       <div className="inv-wrap grid min-h-[100svh] items-stretch gap-0 pt-6 md:grid-cols-12 md:gap-10 md:py-10">
         <div className="order-2 flex flex-col justify-end pb-12 pt-8 md:order-1 md:col-span-7 md:pb-8 md:pt-0">
-          <Reveal variant="fade" className="flex items-center gap-4"><span className="h-px w-10 bg-[var(--c-primary)]" /><p className="inv-eyebrow">{h.eyebrow}</p></Reveal>
+          <Reveal variant="fade" className="flex items-center gap-4"><span className="h-px w-10 bg-[var(--c-primary)]" /><p className="inv-eyebrow">{h.names.isCouple ? h.eyebrow : h.invitation}</p></Reveal>
           <h1 className="mt-6 leading-[0.88]">
-            <RevealWords as="div" text={h.names.a} className="inv-display !text-[clamp(3.4rem,14vw,4.8rem)] md:!text-[clamp(3.4rem,8.2vw,6.6rem)]" delay={100} />
-            <div className="flex items-baseline gap-4">
-              <span className="inv-script text-[clamp(2.6rem,10vw,5rem)] text-[var(--c-accent)]" aria-hidden>&amp;</span>
-              <RevealWords as="div" text={h.names.b} className="inv-display !text-[clamp(3.4rem,14vw,4.8rem)] md:!text-[clamp(3.4rem,8.2vw,6.6rem)]" delay={300} />
-            </div>
+            <RevealWords as="div" text={h.names.a} className={cn("inv-display", size)} delay={100} />
+            {h.names.isCouple && (
+              <div className="flex items-baseline gap-4">
+                <span className="inv-script text-[clamp(2.6rem,10vw,5rem)] text-[var(--c-accent)]" aria-hidden>&amp;</span>
+                <RevealWords as="div" text={h.names.b} className={cn("inv-display", size)} delay={300} />
+              </div>
+            )}
           </h1>
+          {!h.names.isCouple && h.phrase && <Reveal delay={300}><p className="inv-serif-lede mt-5 max-w-xl text-[var(--c-muted)]">{h.phrase}</p></Reveal>}
           <Reveal delay={450} className="mt-10 grid max-w-xl grid-cols-[auto_1fr] gap-x-8 gap-y-3 border-t border-[var(--c-border)] pt-6">
             <p className="inv-eyebrow self-center">{fmtDate(h.date, h.locale, "weekday")}</p>
-            <p className="inv-num text-xl">{fmtDate(h.date, h.locale, "short")}</p>
+            <p className="inv-num text-xl">{h.dateLabel || fmtDate(h.date, h.locale, "short")}</p>
             {(h.venueName || h.city) && (<><p className="inv-eyebrow self-center">·</p><p className="inv-muted">{[h.venueName, h.city].filter(Boolean).join(", ")}</p></>)}
+            {h.hosts && (<><p className="inv-eyebrow self-center">·</p><p className="inv-muted">{t("hero.hostedBy", { hosts: h.hosts })}</p></>)}
             {h.tagline && (<p className="col-span-2 mt-2 max-w-md text-[1.02rem] text-[var(--c-muted)]" style={{ fontFamily: "var(--f-heading)" }}>{h.tagline}</p>)}
           </Reveal>
         </div>
@@ -187,20 +237,28 @@ function Split({ section }: { section: SectionConfig }) {
 
 function Centered({ section }: { section: SectionConfig }) {
   const h = useHeroData(section);
+  const { t } = useInvitation();
+  const cls = h.size === "short" || h.names.isCouple ? "!text-[clamp(2.8rem,12vw,6rem)]" : "!text-[clamp(2.1rem,8.5vw,4.2rem)]";
   return (
     <header data-section="hero" id="s-hero" className="relative isolate overflow-hidden">
       <div className="inv-wrap flex min-h-[100svh] flex-col items-center justify-center py-20 text-center">
-        <Reveal variant="fade"><p className="inv-eyebrow">{h.eyebrow}</p></Reveal>
+        <Reveal variant="fade"><p className="inv-eyebrow">{h.names.isCouple ? h.eyebrow : h.invitation}</p></Reveal>
         <Reveal delay={100} className="mt-8"><Photo id={h.bg} priority className="size-[8.5rem] rounded-full ring-1 ring-[var(--c-border)] ring-offset-8 ring-offset-[var(--c-bg)] md:size-40" seed={2} sizes="160px" /></Reveal>
         <h1 className="mt-9 leading-[0.95]">
-          <RevealWords as="div" text={h.names.a} className="inv-display !text-[clamp(2.8rem,12vw,6rem)]" delay={150} />
-          <span className="inv-script my-1 block text-[clamp(1.8rem,7vw,3rem)] text-[var(--c-accent)]" aria-hidden>&amp;</span>
-          <RevealWords as="div" text={h.names.b} className="inv-display !text-[clamp(2.8rem,12vw,6rem)]" delay={300} />
+          <RevealWords as="div" text={h.names.a} className={cn("inv-display", cls)} delay={150} />
+          {h.names.isCouple && (
+            <>
+              <span className="inv-script my-1 block text-[clamp(1.8rem,7vw,3rem)] text-[var(--c-accent)]" aria-hidden>&amp;</span>
+              <RevealWords as="div" text={h.names.b} className={cn("inv-display", cls)} delay={300} />
+            </>
+          )}
         </h1>
+        {!h.names.isCouple && h.phrase && <Reveal delay={260}><p className="inv-serif-lede mt-4 text-[var(--c-muted)]">{h.phrase}</p></Reveal>}
         <Reveal delay={400}>
           <div className="mx-auto my-7 h-px w-16 bg-[var(--c-accent)]" />
-          <p className="inv-num text-[1.2rem] tracking-[0.12em]">{h.dateText}</p>
+          <p className="inv-num text-[1.2rem] tracking-[0.12em]">{h.dateLabel || h.dateText}</p>
           {(h.venueName || h.city) && <p className="inv-muted mt-1">{[h.venueName, h.city].filter(Boolean).join(" · ")}</p>}
+          {h.hosts && <p className="inv-muted mt-2 text-[0.92rem]">{t("hero.hostedBy", { hosts: h.hosts })}</p>}
           {h.tagline && <p className="inv-lede mx-auto mt-6">{h.tagline}</p>}
         </Reveal>
         <ScrollCue />

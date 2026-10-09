@@ -17,6 +17,8 @@ const previewHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // NEXT_DIST_DIR lets a second copy of the app (a QA server next to a running dev server) keep its own build output
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
   reactStrictMode: true,

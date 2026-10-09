@@ -1,9 +1,13 @@
 import type { CSSProperties } from "react";
 import { ITALIC_ACCENTS, RADIUS_PX, googleFontsHref, type ThemeTokens } from "@/domain/design/tokens";
 import { localeInfo } from "@/domain/doc/constants";
+import type { Tone } from "@/domain/doc/event-types";
+
+/** Professional occasions move a little faster than a wedding; a solemn one moves slower and never bounces. */
+const TONE_PACE: Record<Tone, number> = { celebratory: 1, professional: 0.85, solemn: 1.4 };
 
 /** Design tokens → CSS custom properties. Components read `var(--c-*)`; no colour is ever hard-coded. */
-export function themeStyle(tokens: ThemeTokens, secondaryLocale: string | null): CSSProperties {
+export function themeStyle(tokens: ThemeTokens, secondaryLocale: string | null, tone: Tone = "celebratory"): CSSProperties {
   const c = tokens.colors;
   const ml = secondaryLocale ? localeInfo(secondaryLocale)?.font : null;
   const vars: Record<string, string> = {
@@ -24,7 +28,7 @@ export function themeStyle(tokens: ThemeTokens, secondaryLocale: string | null):
     "--f-script-style": ITALIC_ACCENTS.includes(tokens.fonts.script) ? "italic" : "normal",
     "--f-local": ml ? `"${ml}", "${tokens.fonts.heading}", sans-serif` : `"${tokens.fonts.heading}", sans-serif`,
     "--r": RADIUS_PX[tokens.radius],
-    "--motion": tokens.motion === "calm" ? "0.6" : tokens.motion === "rich" ? "1.25" : "1",
+    "--motion": ((tokens.motion === "calm" ? 0.6 : tokens.motion === "rich" ? 1.25 : 1) * TONE_PACE[tone]).toFixed(2),
   };
   return vars as CSSProperties;
 }

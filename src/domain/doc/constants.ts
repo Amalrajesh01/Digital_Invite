@@ -9,6 +9,8 @@ export const SECTION_TYPES = [
   "gallery", "film", "dresscode", "menu", "rsvp", "guestbook", "music", "quiz", "games", "scavenger",
   "photowall", "guestupload", "wishes", "qrpass", "checkin", "livesched", "liveupdate", "livestream",
   "timecapsule", "memory", "anniversary", "thankyou", "contact",
+  // for occasions that are not about a couple
+  "about", "tribute", "speakers", "agenda", "sponsors", "message", "people", "prayer",
 ] as const;
 export type SectionType = (typeof SECTION_TYPES)[number];
 

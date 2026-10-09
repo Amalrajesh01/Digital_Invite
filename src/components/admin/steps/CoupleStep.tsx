@@ -10,6 +10,8 @@ import { FormCard, Grid, Hint, LText, ListEditor } from "../forms";
 import { MediaField } from "../MediaField";
 import { useDraft } from "../draft";
 import { CelebrationCard, ChatCard } from "./ExperienceSteps";
+import { OccasionEditor } from "./OccasionStep";
+import { subjectKind } from "@/domain/doc/event-types";
 import type { Person } from "@/domain/doc/schema";
 
 function PersonForm({ who }: { who: "bride" | "groom" }) {
@@ -34,7 +36,8 @@ export function CoupleStep() {
   const { doc, update, settings, updateSettings, has, role, weddingId } = useDraft();
   const [slugState, setSlugState] = useState<{ ok: boolean; msg: string } | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const suggestion = normalizeSlugClient(`${doc.couple.bride.name.en ?? ""} and ${doc.couple.groom.name.en ?? ""}`);
+  const isCouple = subjectKind(doc) === "couple";
+  const suggestion = normalizeSlugClient(isCouple ? `${doc.couple.bride.name.en ?? ""} and ${doc.couple.groom.name.en ?? ""}` : doc.occasion.title.en || doc.occasion.honoree.name.en || settings.title);
   const admin = role === "admin";
 
   useEffect(() => {
@@ -51,6 +54,7 @@ export function CoupleStep() {
   }, [settings.slug, weddingId, admin]);
 
   const names = () => {
+    if (!isCouple) return (doc.occasion.title.en || doc.occasion.honoree.name.en || "").trim();
     const a = doc.couple.bride.name.en?.trim();
     const b = doc.couple.groom.name.en?.trim();
     return a && b ? `${a} & ${b}` : "";
@@ -58,14 +62,14 @@ export function CoupleStep() {
 
   return (
     <div className="space-y-6">
-      <FormCard title="The wedding" description="The basics every guest will see first.">
+      <FormCard title={isCouple ? "The wedding" : "The invitation"} description="The basics every guest will see first.">
         <Grid>
-          <TextField label="Invitation title" value={settings.title} onChange={(e) => updateSettings({ title: e.target.value })} onFocus={() => !settings.title && names() && updateSettings({ title: names() })} placeholder="Meenakshi & Aravind" hint="Used in the browser tab, WhatsApp previews and emails." />
-          <TextField label="Wedding date" type="date" value={settings.weddingDate ?? ""} onChange={(e) => updateSettings({ weddingDate: e.target.value || null })} hint="The main day. Countdowns and the ‘live day’ follow this date." />
+          <TextField label="Invitation title" value={settings.title} onChange={(e) => updateSettings({ title: e.target.value })} onFocus={() => !settings.title && names() && updateSettings({ title: names() })} placeholder={isCouple ? "Meenakshi & Aravind" : "Leadership Conclave 2026"} hint="Used in the browser tab, WhatsApp previews and emails." />
+          <TextField label={isCouple ? "Wedding date" : "Date"} type="date" value={settings.weddingDate ?? ""} onChange={(e) => updateSettings({ weddingDate: e.target.value || null })} hint={isCouple ? "The main day. Countdowns and the ‘live day’ follow this date." : "The main day (or the first day). Countdowns follow this date."} />
         </Grid>
         <div>
-          <label className="mb-1.5 block text-[13.5px] font-medium text-ink-2" htmlFor="slug">Wedding link</label>
-          <div className="flex items-stretch overflow-hidden rounded-md border border-rule-strong bg-surface focus-within:border-accent focus-within:shadow-[0_0_0_3px_rgba(122,36,50,.14)]">
+          <label className="mb-1.5 block text-[13.5px] font-medium text-ink-2" htmlFor="slug">{isCouple ? "Wedding link" : "Invitation link"}</label>
+          <div className="flex items-stretch overflow-hidden rounded-md border border-rule-strong bg-surface focus-within:border-accent focus-within:shadow-[0_0_0_3px_rgba(48,86,211,.16)]">
             <span className="grid place-items-center border-r border-rule bg-paper-2 px-3 text-[14px] text-muted">/invite/</span>
             <input id="slug" disabled={!admin} value={settings.slug.startsWith("draft-") ? "" : settings.slug} onChange={(e) => updateSettings({ slug: normalizeSlugClient(e.target.value, true) })} placeholder={suggestion || "anjali-and-sidharth"} className="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-[15px] outline-none disabled:opacity-60" aria-describedby="slug-hint" />
             {slugState && <span className={`grid place-items-center px-3 ${slugState.ok ? "text-ok" : "text-bad"}`} aria-hidden>{slugState.ok ? <Check className="size-4" /> : <X className="size-4" />}</span>}
@@ -90,21 +94,27 @@ export function CoupleStep() {
 
       <CelebrationCard />
 
-      <div className="grid gap-6 lg:grid-cols-2"><PersonForm who="bride" /><PersonForm who="groom" /></div>
+      {isCouple ? (
+        <>
+          <div className="grid gap-6 lg:grid-cols-2"><PersonForm who="bride" /><PersonForm who="groom" /></div>
 
-      <FormCard title="Words on the invitation">
-        <LText label="Opening line" value={doc.couple.invitation} onChange={(v) => update((d) => void (d.couple.invitation = v))} placeholder="Together with their families" />
-        <LText label="Tagline" value={doc.couple.tagline} onChange={(v) => update((d) => void (d.couple.tagline = v))} placeholder="Two hearts, one lamp, a lifetime of light." />
-        <Grid>
-          <LText label="A favourite quote (optional)" multiline value={doc.couple.quote.text} onChange={(v) => update((d) => void (d.couple.quote.text = v))} />
-          <LText label="Quote by" value={doc.couple.quote.author} onChange={(v) => update((d) => void (d.couple.quote.author = v))} />
-        </Grid>
-        <Grid cols={3}>
-          <TextField label="Hashtag" value={doc.couple.hashtag} onChange={(e) => update((d) => void (d.couple.hashtag = e.target.value.replace(/[^\p{L}\p{N}_]/gu, "")))} placeholder="MeenuWedsAravind" />
-          <TextField label="Monogram / seal letters" maxLength={4} value={doc.couple.monogram} onChange={(e) => update((d) => void (d.couple.monogram = e.target.value.toUpperCase()))} hint="Shown on the wax seal. e.g. M or MA" />
-          <SelectField label="Who is named first?" value={doc.couple.order} onChange={(e) => update((d) => void (d.couple.order = e.target.value as never))}><option value="bride-first">Bride first</option><option value="groom-first">Groom first</option></SelectField>
-        </Grid>
-      </FormCard>
+          <FormCard title="Words on the invitation">
+            <LText label="Opening line" value={doc.couple.invitation} onChange={(v) => update((d) => void (d.couple.invitation = v))} placeholder="Together with their families" />
+            <LText label="Tagline" value={doc.couple.tagline} onChange={(v) => update((d) => void (d.couple.tagline = v))} placeholder="Two hearts, one lamp, a lifetime of light." />
+            <Grid>
+              <LText label="A favourite quote (optional)" multiline value={doc.couple.quote.text} onChange={(v) => update((d) => void (d.couple.quote.text = v))} />
+              <LText label="Quote by" value={doc.couple.quote.author} onChange={(v) => update((d) => void (d.couple.quote.author = v))} />
+            </Grid>
+            <Grid cols={3}>
+              <TextField label="Hashtag" value={doc.couple.hashtag} onChange={(e) => update((d) => void (d.couple.hashtag = e.target.value.replace(/[^\p{L}\p{N}_]/gu, "")))} placeholder="MeenuWedsAravind" />
+              <TextField label="Monogram / seal letters" maxLength={4} value={doc.couple.monogram} onChange={(e) => update((d) => void (d.couple.monogram = e.target.value.toUpperCase()))} hint="Shown on the wax seal. e.g. M or MA" />
+              <SelectField label="Who is named first?" value={doc.couple.order} onChange={(e) => update((d) => void (d.couple.order = e.target.value as never))}><option value="bride-first">Bride first</option><option value="groom-first">Groom first</option></SelectField>
+            </Grid>
+          </FormCard>
+        </>
+      ) : (
+        <OccasionEditor />
+      )}
 
       <ChatCard />
 

@@ -70,9 +70,9 @@ function stripUndefined<T extends object>(obj: T): T {
  * may pair an elegant display serif (names, headings) with Inter for supporting text — the wedding-stationery look.
  */
 export const FONT_CHOICES = {
-  heading: ["Cormorant Garamond", "Playfair Display", "Cinzel", "Marcellus", "Bodoni Moda", "DM Serif Display", "Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Outfit", "Poppins", "Work Sans", "Hanken Grotesk"],
-  body: ["Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Work Sans", "Hanken Grotesk", "Mulish", "Karla"],
-  script: ["Cormorant Garamond", "Playfair Display", "Pinyon Script", "Great Vibes", "Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Outfit", "Poppins"],
+  heading: ["Cormorant Garamond", "Playfair Display", "Cinzel", "Marcellus", "Bodoni Moda", "DM Serif Display", "Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Outfit", "Poppins", "Work Sans", "Hanken Grotesk", "Space Grotesk", "Fredoka"],
+  body: ["Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Work Sans", "Hanken Grotesk", "Mulish", "Karla", "Nunito"],
+  script: ["Cormorant Garamond", "Playfair Display", "Bodoni Moda", "Pinyon Script", "Great Vibes", "Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Outfit", "Poppins", "Space Grotesk", "Fredoka"],
 } as const;
 
 /** Display serifs: drive the invitation's typographic details (case, tracking, weights). */
@@ -102,6 +102,9 @@ const WEIGHTS: Record<string, string> = {
   "Hanken Grotesk": "wght@300;400;500;600;700",
   "Mulish": "wght@300;400;500;600;700",
   "Karla": "wght@300;400;500;600;700",
+  "Nunito": "wght@400;500;600;700",
+  "Fredoka": "wght@400;500;600;700",
+  "Space Grotesk": "wght@400;500;600;700",
   "Noto Sans Malayalam": "wght@300;400;500;600;700",
   "Noto Sans Tamil": "wght@300;400;500;600;700",
   "Noto Sans Telugu": "wght@300;400;500;600;700",

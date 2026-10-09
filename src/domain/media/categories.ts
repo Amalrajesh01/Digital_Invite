@@ -1,4 +1,4 @@
-export type MediaCategoryKey = "BRIDE" | "GROOM" | "COUPLE" | "FAMILY" | "GALLERY" | "EVENT" | "VENUE" | "VIDEO" | "MUSIC" | "GUEST_UPLOAD" | "MEMORY" | "OTHER";
+export type MediaCategoryKey = "BRIDE" | "GROOM" | "COUPLE" | "FAMILY" | "GALLERY" | "EVENT" | "VENUE" | "VIDEO" | "MUSIC" | "GUEST_UPLOAD" | "MEMORY" | "PEOPLE" | "OTHER";
 
 export const MEDIA_CATEGORIES: { key: MediaCategoryKey; label: string }[] = [
   { key: "BRIDE", label: "Bride" },
@@ -12,5 +12,6 @@ export const MEDIA_CATEGORIES: { key: MediaCategoryKey; label: string }[] = [
   { key: "MUSIC", label: "Music" },
   { key: "GUEST_UPLOAD", label: "Guest uploads" },
   { key: "MEMORY", label: "Memories" },
+  { key: "PEOPLE", label: "People & speakers" },
   { key: "OTHER", label: "Other" },
 ];

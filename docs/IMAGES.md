@@ -6,7 +6,8 @@ Three kinds of picture appear in this product, and each is handled differently.
    library** (Studio → wedding → Media), never linked from another site.
 2. **The demonstration photographs** — bundled stock photographs in `assets/stock/` (credits and licence in
    `assets/stock/CREDITS.md`). The seed uploads them exactly like a customer's photos.
-3. **Brand and marketing images** for the landing page and social previews.
+3. **The product site's photographs** — the same bundled stock set, served resized by `/stock/[id]` (see below).
+4. **Brand and marketing images** for the landing page and social previews.
 
 Nothing in an invitation is hot-linked, so an invitation can never show a broken remote image. If an upload is
 missing, or fails to load, the `<Photo>` component draws a themed placeholder instead of a grey box.
@@ -40,9 +41,23 @@ upload a portrait photograph (phones) *and* a landscape one (`coupleWide`) of th
 **Photographs, not illustrations.** Use real photographs of real people for the couple, the bride and groom and the
 family. Use illustration only for backgrounds and textures. Always write alt text (Media library → alt).
 
+## The product site's photographs
+
+The public site (`/`, `/templates`, `/categories` …) never links to an image on another site. A page asks for a bundled
+stock photograph by its id with `<SiteImage id="…" ratio="4:5" />`; the browser fetches `/stock/<id>?w=…&r=4:5`, which
+serves a WebP resized to one of a fixed set of widths and cropped to one of a fixed set of ratios **around the
+photograph's focal point**. Alt text and the focal point of every photograph are in
+[`src/domain/imagery/stock.ts`](../src/domain/imagery/stock.ts); the photographer and licence are in
+`assets/stock/CREDITS.md`. Responses are immutable (cached for a year by browsers, nginx or a CDN), and `?og=1` gives
+the 1200 × 630 social card. If a photograph cannot be loaded, the tinted placeholder behind it shows — never a
+broken-image icon. A photograph that depicts a person is a **stand-in** for a fictional name; the site says so.
+
+Adding a photograph: put the JPEG (longest side ≤ 1800 px, 2400 for full-screen heroes) in `assets/stock/`, add its alt
+text and focal point to `stock.ts`, and a credit row to `CREDITS.md` — `npm test` fails if any of the three is missing.
+
 ## Brand & marketing images (landing page / social)
 
-Generate at the sizes below, drop them in `public/brand/` and reference them from `src/app/page.tsx`. Keep the
+Generate at the sizes below, drop them in `public/brand/` and reference them from the product site (`src/app/(site)/`). Keep the
 StackBridge look: deep navy `#0b1b35`, blue `#3056d3` / `#4a6cf7`, cool white `#f5f7fb`.
 
 | Slot | Size | Prompt idea |

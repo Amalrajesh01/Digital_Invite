@@ -108,12 +108,12 @@ export function buildAnanyaDoc(base: InvitationDoc, m: AnanyaMedia): InvitationD
   doc.rsvp = {
     ...doc.rsvp, deadline: "2026-11-25", askMeal: true, askAccommodation: true, askTransport: true, askEventResponses: true, allowCompanions: true,
     pickupLocations: [{ id: newId(), label: L("Maharana Pratap Airport (UDR)") }, { id: newId(), label: L("Udaipur City station") }],
-    whatsappNumber: "919876500000", thankYou: L("Thank you, {name}. We can’t wait to celebrate with you."),
+    whatsappNumber: "", thankYou: L("Thank you, {name}. We can’t wait to celebrate with you."),
   } as never;
-  doc.whatsapp = { number: "919876500000", message: L("Hello! I’m writing about {title}.") };
+  doc.whatsapp = { number: "917356741055", message: L("Hello! I’m writing about {title}.") };
   doc.contacts = [
-    { id: newId(), name: L("Kavya (wedding coordinator)"), role: L("Travel, stay and anything on the day"), phone: "+91 98765 00001" },
-    { id: newId(), name: L("Rohan"), role: L("Music and the baraat"), phone: "+91 98765 00002" },
+    { id: newId(), name: L("Kavya (wedding coordinator)"), role: L("Travel, stay and anything on the day"), phone: "+91 73567 41055" },
+    { id: newId(), name: L("Rohan"), role: L("Music and the baraat"), phone: "+91 73567 41055" },
   ] as never;
   doc.menu = { courses: [], note: {} } as never;
   doc.palette = { colors: [{ id: newId(), hex: "#F6EDD8", name: L("Ivory") }, { id: newId(), hex: "#C9A24B", name: L("Gold") }, { id: newId(), hex: "#A8142F", name: L("Bridal red") }, { id: newId(), hex: "#E9B7A0", name: L("Blush") }], note: L("Ivory and gold for the wedding; jewel tones for the sangeet.") } as never;

@@ -61,6 +61,8 @@
   --color-info-soft: var(--info-soft);
   --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  /* The product site’s headlines (loaded only by the public layout): the same refined serif as the invitations */
+  --font-serif: var(--font-serif-ui), "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius);
   --radius-lg: var(--radius-lg);
@@ -154,7 +156,7 @@ body {
 .field-input:focus-visible {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(122, 36, 50, 0.14);
+  box-shadow: 0 0 0 3px rgba(48, 86, 211, 0.16);
 }
 .field-input[aria-invalid="true"] {
   border-color: var(--bad);
@@ -199,7 +201,7 @@ body {
   color: var(--accent-ink);
 }
 .btn-accent:hover:not(:disabled) {
-  background: #641c29;
+  background: #2447b8;
 }
 .btn-quiet {
   background: transparent;

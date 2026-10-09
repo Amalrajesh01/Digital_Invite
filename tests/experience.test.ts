@@ -161,8 +161,12 @@ describe("templates tell the story in order", () => {
     for (const t of TEMPLATE_SEEDS) expect(TemplateConfig.safeParse(t.config).success, t.slug).toBe(true);
   });
 
-  it("sections run hero → story → beginning → countdown → couple → days → ceremonies → families → gallery → film → RSVP", () => {
-    for (const t of TEMPLATE_SEEDS) {
+  // the traditional Indian wedding templates share one story; the other occasions tell their own (see occasions.test.ts)
+  const traditional = TEMPLATE_SEEDS.filter((t) => !t.config.eventType || ["hindu_wedding", "christian_wedding", "muslim_wedding"].includes(t.config.eventType));
+
+  it("traditional wedding sections run hero → story → beginning → countdown → couple → days → ceremonies → families → gallery → film → RSVP", () => {
+    expect(traditional.length).toBeGreaterThanOrEqual(6);
+    for (const t of traditional) {
       const types = generateSections(t.config, ent).map((s) => s.type);
       const at = (x: string) => types.indexOf(x as never);
       const chain = ["hero", "story", "timeline", "countdown", "couple", "events", "ceremonies", "family", "gallery", "film", "rsvp"];
@@ -170,6 +174,15 @@ describe("templates tell the story in order", () => {
         expect(at(x), `${t.slug}: ${x}`).toBeGreaterThanOrEqual(0);
         if (i) expect(at(x), `${t.slug}: ${chain[i - 1]} before ${x}`).toBeGreaterThan(at(chain[i - 1]));
       });
+    }
+  });
+
+  it("every template, of any occasion, opens with its hero and asks for the reply before the day itself", () => {
+    for (const t of TEMPLATE_SEEDS) {
+      const types = generateSections(t.config, ent).map((s) => s.type);
+      expect(types[0], t.slug).toBe("hero");
+      expect(types, t.slug).toContain("rsvp");
+      if (types.includes("livesched")) expect(types.indexOf("rsvp"), t.slug).toBeLessThan(types.indexOf("livesched"));
     }
   });
 

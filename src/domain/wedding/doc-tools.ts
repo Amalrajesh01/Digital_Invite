@@ -4,6 +4,7 @@ import { generateSections, type TemplateConfig } from "@/domain/design/templates
 import type { Entitlements } from "@/domain/packages/entitlements";
 import { newId } from "@/lib/id";
 import { STARTER_CEREMONIES } from "@/domain/doc/starter-ceremonies";
+import { EVENT_TYPE_INFO, subjectKind } from "@/domain/doc/event-types";
 
 /** Sensible starting content so a freshly generated invitation never looks empty. */
 export function buildInitialDoc(template: TemplateConfig | null, ent: Entitlements, locale: string | null): InvitationDoc {
@@ -79,19 +80,26 @@ export function publishReadiness(input: {
   const err = (code: string, message: string, step?: string) => issues.push({ level: "error", code, message, step });
   const warn = (code: string, message: string, step?: string) => issues.push({ level: "warning", code, message, step });
 
-  if (!(doc.couple.bride.name.en ?? "").trim() || !(doc.couple.groom.name.en ?? "").trim()) err("couple.names", "Add the bride's and groom's names.", "couple");
-  if (!input.weddingDate) err("date", "Choose the wedding date.", "events");
+  const couple = subjectKind(doc) === "couple";
+  const noun = couple ? "wedding" : "occasion";
+  if (couple) {
+    if (!(doc.couple.bride.name.en ?? "").trim() || !(doc.couple.groom.name.en ?? "").trim()) err("couple.names", "Add the bride's and groom's names.", "couple");
+  } else if (!(doc.occasion.title.en ?? "").trim() && !(doc.occasion.honoree.name.en ?? "").trim()) {
+    err("occasion.title", `Add the title of the ${EVENT_TYPE_INFO[doc.eventType].label.toLowerCase()}.`, "couple");
+  }
+  if (!input.weddingDate) err("date", `Choose the date of the ${noun}.`, "events");
   if (doc.events.length === 0) err("events.none", "Add at least one event (for example the ceremony).", "events");
   if (doc.events.length && !doc.events.some((e) => e.isMain) ) warn("events.main", "Mark one event as the main ceremony so the countdown knows where to count to.", "events");
-  if (input.slug.startsWith("draft-")) err("slug", "Choose a wedding link (for example anjali-and-sidharth).", "couple");
+  if (input.slug.startsWith("draft-")) err("slug", couple ? "Choose a wedding link (for example anjali-and-sidharth)." : "Choose an invitation link (for example leadership-conclave-2026).", "couple");
   if (!input.hasTemplate) err("template", "Pick a template.", "template");
   if (!input.hasTheme) err("theme", "Pick a theme.", "theme");
   if (!doc.sections.some((s) => s.enabled)) err("sections", "At least one section must be switched on.", "edit");
   if (doc.events.some((e) => !e.venueId) ) warn("events.venue", "Some events have no venue yet.", "venue");
-  if (!doc.couple.bride.photo && !doc.couple.groom.photo) warn("photos", "Add portraits of the couple — photographs make an invitation feel personal.", "media");
+  if (couple && !doc.couple.bride.photo && !doc.couple.groom.photo) warn("photos", "Add portraits of the couple — photographs make an invitation feel personal.", "media");
+  if (!couple && !doc.images.couple && !doc.occasion.honoree.photo) warn("photos", "Choose the main photograph — it is the first thing guests see.", "media");
   if (input.galleryCount === 0) warn("gallery", "The gallery is empty.", "media");
   if (!input.hasMusic) warn("music", "No background music added.", "music");
-  if (!doc.rsvp.deadline) warn("rsvp.deadline", "Set an RSVP deadline so guests know when to reply.", "events");
+  if (!doc.rsvp.deadline) warn("rsvp.deadline", subjectKind(doc) === "memorial" ? "Say by when guests should let the family know." : "Set an RSVP deadline so guests know when to reply.", "events");
   if (input.secondaryLocale) {
     const cov = translationCoverage(doc, input.secondaryLocale);
     if (cov.missing.length) warn("translations", `${cov.missing.length} of ${cov.total} texts are not yet translated — guests who switch language will see English for those.`, "couple");

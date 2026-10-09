@@ -5,6 +5,7 @@ import type { LocalizedText } from "@/domain/doc/schema";
 import type { ResolvedMedia } from "@/domain/media/service";
 import { canUse } from "@/domain/packages/entitlements";
 import type { FeatureKey } from "@/domain/packages/features";
+import { EVENT_TYPE_INFO } from "@/domain/doc/event-types";
 import { makeTranslator, type StringKey } from "../i18n/strings";
 
 export interface MusicApi {
@@ -202,7 +203,8 @@ export function InvitationProvider({ view, children, initialLocale, onOpenShare 
     document.documentElement.lang = locale;
   }, [locale]);
 
-  const t = useMemo(() => makeTranslator(locale, view.doc.i18n.overrides), [locale, view.doc.i18n.overrides]);
+  const voice = EVENT_TYPE_INFO[view.doc.eventType].voice;
+  const t = useMemo(() => makeTranslator(locale, view.doc.i18n.overrides, voice), [locale, view.doc.i18n.overrides, voice]);
   const L = useCallback(
     (text: LocalizedText | undefined | null) => {
       if (!text) return "";

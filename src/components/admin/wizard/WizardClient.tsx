@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/Button";
 import type { InvitationDoc } from "@/domain/doc/schema";
 import type { FeatureKey, FeatureGroup } from "@/domain/packages/features";
 import { DraftProvider, SaveIndicator, useDraft, type WeddingSettings } from "../draft";
-import { STEPS, stepIndex, type StepKey } from "./steps";
+import { STEPS, stepCopy, stepIndex, type StepKey } from "./steps";
+import { subjectKind } from "@/domain/doc/event-types";
 import { CoupleStep } from "../steps/CoupleStep";
 import { EventsStep } from "../steps/EventsStep";
 import { FamilyStep } from "../steps/FamilyStep";
@@ -47,12 +48,12 @@ function useDone() {
   return useMemo<Record<StepKey, "done" | "todo" | "optional">>(
     () => ({
       package: "done",
-      couple: doc.couple.bride.name.en && doc.couple.groom.name.en && settings.weddingDate && !settings.slug.startsWith("draft-") ? "done" : "todo",
+      couple: (subjectKind(doc) === "couple" ? doc.couple.bride.name.en && doc.couple.groom.name.en : doc.occasion.title.en || doc.occasion.honoree.name.en) && settings.weddingDate && !settings.slug.startsWith("draft-") ? "done" : "todo",
       events: doc.events.length > 0 ? "done" : "todo",
       family: doc.family.members.length > 0 ? "done" : "optional",
       story: doc.story.chapters.length > 0 ? "done" : "optional",
       venue: doc.venues.length > 0 ? "done" : "todo",
-      media: doc.couple.bride.photo || doc.couple.groom.photo ? "done" : "optional",
+      media: doc.couple.bride.photo || doc.couple.groom.photo || doc.images.couple || doc.occasion.honoree.photo ? "done" : "optional",
       music: "optional",
       template: settings.templateId ? "done" : "todo",
       theme: settings.themeId ? "done" : "todo",
@@ -69,18 +70,21 @@ function useDone() {
 
 function Inner(p: WizardProps) {
   const router = useRouter();
-  const { flush, role } = useDraft();
+  const { flush, role, doc } = useDraft();
+  const subject = subjectKind(doc);
   const [pending, start] = useTransition();
   const done = useDone();
   const idx = stepIndex(p.step);
-  const cur = STEPS[idx];
+  const cur = stepCopy(p.step, subject);
   const base = role === "admin" ? `/admin/weddings/${p.weddingId}` : `/client/${p.weddingId}`;
   const go = (k: StepKey) =>
     start(async () => {
       const ok = await flush();
       if (ok) router.push(`${base}/setup/${k}`);
     });
-  const steps = role === "client" ? STEPS.filter((s) => ["events", "family", "story", "venue", "media", "music", "guests", "preview", "publish"].includes(s.key)) : STEPS;
+  const base0 = role === "client" ? STEPS.filter((s) => ["events", "family", "story", "venue", "media", "music", "guests", "preview", "publish"].includes(s.key)) : STEPS;
+  // "Family" is the two families of a wedding; for any other occasion the people live in the Occasion step
+  const steps = base0.filter((s) => subject === "couple" || s.key !== "family").map((s) => stepCopy(s.key, subject));
   const pos = steps.findIndex((s) => s.key === p.step);
   const prev = steps[pos - 1];
   const next = steps[pos + 1];
@@ -108,7 +112,7 @@ function Inner(p: WizardProps) {
 
   return (
     <div className="grid gap-8 lg:grid-cols-[13.5rem_minmax(0,1fr)]">
-      <nav aria-label="Wedding setup steps" className="lg:sticky lg:top-20 lg:self-start">
+      <nav aria-label="Invitation setup steps" className="lg:sticky lg:top-20 lg:self-start">
         <ol className="hidden space-y-0.5 lg:block">
           {steps.map((s) => {
             const active = s.key === p.step;

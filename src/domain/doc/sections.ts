@@ -12,7 +12,7 @@ export interface SectionMeta {
   type: SectionType;
   label: string;
   description: string;
-  group: "Opening" | "Couple" | "Wedding day" | "Travel" | "Guests" | "Interactive" | "Live" | "Memories";
+  group: "Opening" | "Couple" | "Occasion" | "Wedding day" | "Travel" | "Guests" | "Interactive" | "Live" | "Memories";
   /** Feature needed to show this section. `null` = always available. */
   feature: FeatureKey | null;
   /** Lifecycle states in which the section is visible unless the visibility rule overrides it. */
@@ -66,6 +66,15 @@ export const SECTION_META: Record<SectionType, SectionMeta> = {
   anniversary: { type: "anniversary", label: "Anniversary", description: "One year ago today…", group: "Memories", feature: "anniversary_mode", phases: ["DRAFT", "PREVIEW", "ANNIVERSARY"], single: true, variants: v(["reel", "Memory reel"]) },
   thankyou: { type: "thankyou", label: "Thank you", description: "A personal thank-you from the couple.", group: "Memories", feature: "post_event_gallery", phases: AFTER, single: true, variants: v(["letter", "Letter"]) },
   contact: { type: "contact", label: "Contacts", description: "Who to call on the day.", group: "Guests", feature: "invitation", phases: PRE_LIVE, single: true, variants: v(["list", "List"]) },
+  // ── occasions that are not about a couple (every package: they are the heart of a birthday, a conclave or a memorial) ──
+  about: { type: "about", label: "About the occasion", description: "What this is, why it matters, and the facts at a glance.", group: "Occasion", feature: "invitation", phases: ALL, single: true, variants: v(["editorial", "Editorial"], ["facts", "Facts at a glance"], ["statement", "Statement"]) },
+  tribute: { type: "tribute", label: "Tribute", description: "A portrait, the years of a life, and the words of those who loved them.", group: "Occasion", feature: "invitation", phases: ALL, single: true, variants: v(["portrait", "Portrait"]) },
+  speakers: { type: "speakers", label: "Speakers & guests of honour", description: "The people on stage, with their roles and what they will talk about.", group: "Occasion", feature: "invitation", phases: ALL, single: true, variants: v(["grid", "Portrait grid"], ["featured", "Featured keynote"], ["list", "Simple list"]) },
+  agenda: { type: "agenda", label: "Programme / agenda", description: "The day (or days) session by session, with times, speakers and rooms.", group: "Occasion", feature: "invitation", phases: PRE_LIVE, single: true, variants: v(["days", "Day by day"], ["timeline", "Timeline"]) },
+  sponsors: { type: "sponsors", label: "Partners & sponsors", description: "The organisations behind the occasion, by tier.", group: "Occasion", feature: "invitation", phases: ALL, single: true, variants: v(["tiers", "By tier"]) },
+  message: { type: "message", label: "A message", description: "A letter from the host, the organiser or the family.", group: "Occasion", feature: "invitation", phases: ALL, single: true, variants: v(["letter", "Letter"], ["pull", "Pull-quote"]) },
+  people: { type: "people", label: "People", description: "Hosts, organisers, guests of honour — or the family of the person being remembered.", group: "Occasion", feature: "invitation", phases: ALL, single: true, variants: v(["groups", "Grouped list"], ["cards", "Cards"]) },
+  prayer: { type: "prayer", label: "Prayer / reading", description: "A prayer, verse or reading for a memorial or a religious ceremony.", group: "Occasion", feature: "invitation", phases: ALL, single: true, variants: v(["verse", "Verse"]) },
 };
 
 export const SECTION_TYPES_ORDERED = Object.keys(SECTION_META) as SectionType[];

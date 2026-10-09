@@ -11,6 +11,7 @@ const DEFAULT_TONE: Partial<Record<SectionConfig["type"], Tone>> = {
   story: "light", timeline: "tint", countdown: "night", events: "light", ceremonies: "tint", dresscode: "tint", games: "tint", quiz: "tint", scavenger: "tint",
   film: "night", rsvp: "tint", livesched: "night", photowall: "night", liveupdate: "tint", livestream: "night", qrpass: "tint", checkin: "light",
   timecapsule: "night", anniversary: "night", thankyou: "tint", memory: "light", travel: "tint", wishes: "tint", guestupload: "light", gallery: "light",
+  about: "light", tribute: "light", speakers: "tint", agenda: "light", sponsors: "tint", message: "tint", people: "light", prayer: "night",
 };
 
 export function toneFor(section: SectionConfig, flavor: string): Tone {

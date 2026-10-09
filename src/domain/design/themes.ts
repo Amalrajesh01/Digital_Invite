@@ -89,4 +89,94 @@ export const THEME_SEEDS: ThemeSeed[] = [
       radius: "round", button: "solid", card: "flat", divider: "line", decor: "minimal", motion: "standard", grain: false, dark: false,
     },
   },
+  {
+    slug: "cream-noir",
+    name: "Cream & Noir",
+    description: "Warm cream paper, true black ink and one thread of muted gold. Quiet, modern and editorial.",
+    tokens: {
+      colors: { primary: "#1C1A17", secondary: "#3A3732", accent: "#A8884A", background: "#F7F3EC", surface: "#FFFFFF", text: "#1C1A17", muted: "#6B665D", border: "#E2DACB", onPrimary: "#FFFFFF", inverse: "#121110", onInverse: "#F4EFE5" },
+      fonts: { heading: "Cormorant Garamond", body: "Inter", script: "Cormorant Garamond" },
+      radius: "none", button: "solid", card: "flat", divider: "line", decor: "minimal", motion: "calm", grain: false, dark: false,
+    },
+  },
+  {
+    slug: "noir-champagne",
+    name: "Noir & Champagne",
+    description: "Black lacquer and champagne gold under a high-contrast Didone. Glamorous, after-dark, made for a milestone night.",
+    tokens: {
+      colors: { primary: "#D8BE82", secondary: "#B9A06A", accent: "#E6CF9B", background: "#0F0E0D", surface: "#171513", text: "#F0EADD", muted: "#A59E8F", border: "#2B2824", onPrimary: "#14110D", inverse: "#080706", onInverse: "#F0EADD" },
+      fonts: { heading: "Bodoni Moda", body: "Inter", script: "Bodoni Moda" },
+      radius: "none", button: "outline", card: "outlined", divider: "ornament", decor: "minimal", motion: "rich", grain: true, dark: true,
+    },
+  },
+  {
+    slug: "confetti-pop",
+    name: "Confetti Pop",
+    description: "Warm cream with coral, sunshine yellow and a friendly rounded type. Playful for the little ones, tidy enough for the grown-ups.",
+    tokens: {
+      colors: { primary: "#C9431C", secondary: "#2E5EAA", accent: "#E9A41A", background: "#FFF8EE", surface: "#FFFFFF", text: "#2B2A33", muted: "#6C6A78", border: "#F0E1C8", onPrimary: "#FFFFFF", inverse: "#243B6B", onInverse: "#FFF6E5" },
+      fonts: { heading: "Fredoka", body: "Nunito", script: "Fredoka" },
+      radius: "round", button: "pill", card: "raised", divider: "dots", decor: "floral", motion: "rich", grain: false, dark: false,
+    },
+  },
+  {
+    slug: "peony-champagne",
+    name: "Peony & Champagne",
+    description: "Mulberry rose and champagne on blush paper, with a calligraphic hand. Romantic without being sweet.",
+    tokens: {
+      colors: { primary: "#8C4457", secondary: "#5A2E3B", accent: "#C4A07A", background: "#FBF4F0", surface: "#FFFDFB", text: "#35262B", muted: "#7D6A70", border: "#EBD9D4", onPrimary: "#FFFFFF", inverse: "#3B2430", onInverse: "#F8E9E6" },
+      fonts: { heading: "Cormorant Garamond", body: "Inter", script: "Pinyon Script" },
+      radius: "round", button: "pill", card: "flat", divider: "ornament", decor: "floral", motion: "standard", grain: false, dark: false,
+    },
+  },
+  {
+    slug: "silver-jubilee",
+    name: "Silver Jubilee",
+    description: "Slate blue and brushed silver on cool white. Dignified and warm — the colours of twenty-five years.",
+    tokens: {
+      colors: { primary: "#3C4A63", secondary: "#232B3C", accent: "#8791A8", background: "#F6F7F9", surface: "#FFFFFF", text: "#1F2533", muted: "#626B7D", border: "#DDE1E9", onPrimary: "#FFFFFF", inverse: "#1B2231", onInverse: "#EEF1F6" },
+      fonts: { heading: "Playfair Display", body: "Inter", script: "Playfair Display" },
+      radius: "soft", button: "solid", card: "outlined", divider: "ornament", decor: "geometric", motion: "standard", grain: true, dark: false,
+    },
+  },
+  {
+    slug: "boardroom-navy",
+    name: "Boardroom Navy",
+    description: "Deep navy, ivory and a restrained brass. Authoritative and calm — for leadership events, summits and launches.",
+    tokens: {
+      colors: { primary: "#14213D", secondary: "#0E1730", accent: "#B48A3C", background: "#F7F6F2", surface: "#FFFFFF", text: "#101828", muted: "#5B6577", border: "#DDDCD3", onPrimary: "#FFFFFF", inverse: "#0C1428", onInverse: "#F1EFE7" },
+      fonts: { heading: "Playfair Display", body: "Inter", script: "Playfair Display" },
+      radius: "none", button: "solid", card: "outlined", divider: "line", decor: "minimal", motion: "standard", grain: false, dark: false,
+    },
+  },
+  {
+    slug: "signal-dark",
+    name: "Signal",
+    description: "Near-black with electric blue and aqua, set in a geometric grotesque. Built for technology summits and product launches.",
+    tokens: {
+      colors: { primary: "#7C9CFF", secondary: "#5EEAD4", accent: "#5EEAD4", background: "#0A0E1A", surface: "#111827", text: "#E7ECF7", muted: "#9AA6BE", border: "#1E2740", onPrimary: "#0A0E1A", inverse: "#060912", onInverse: "#E7ECF7" },
+      fonts: { heading: "Space Grotesk", body: "Inter", script: "Space Grotesk" },
+      radius: "soft", button: "solid", card: "outlined", divider: "line", decor: "geometric", motion: "standard", grain: false, dark: true,
+    },
+  },
+  {
+    slug: "quiet-light",
+    name: "Quiet Light",
+    description: "Soft stone, slate and warm grey in an unhurried serif. Nothing decorative — only the words and the photographs.",
+    tokens: {
+      colors: { primary: "#4E5A66", secondary: "#2F3840", accent: "#A39A8A", background: "#F4F2EE", surface: "#FBFAF8", text: "#2A2F34", muted: "#6D737A", border: "#DDD9D1", onPrimary: "#FFFFFF", inverse: "#23292F", onInverse: "#EEEBE5" },
+      fonts: { heading: "Cormorant Garamond", body: "Inter", script: "Cormorant Garamond" },
+      radius: "none", button: "outline", card: "flat", divider: "line", decor: "none", motion: "calm", grain: false, dark: false,
+    },
+  },
+  {
+    slug: "soft-dawn",
+    name: "Soft Dawn",
+    description: "Warm ivory, sage and a touch of peach-gold. Tender and unhurried — for welcoming a new little life.",
+    tokens: {
+      colors: { primary: "#5B7A66", secondary: "#3E5547", accent: "#D9A57C", background: "#FBF6EE", surface: "#FFFDF9", text: "#2E3A33", muted: "#6C766F", border: "#E9DFCE", onPrimary: "#FFFFFF", inverse: "#2F4238", onInverse: "#F6EFE3" },
+      fonts: { heading: "Cormorant Garamond", body: "Inter", script: "Cormorant Garamond" },
+      radius: "round", button: "pill", card: "flat", divider: "dots", decor: "floral", motion: "calm", grain: false, dark: false,
+    },
+  },
 ];

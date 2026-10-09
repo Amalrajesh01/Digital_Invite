@@ -265,7 +265,7 @@ export type GamesDoc = z.infer<typeof GamesDoc>;
  * Resolution (with fallbacks) lives in `src/domain/imagery/slots.ts`; this is just where the choices are stored.
  */
 export const ImagesDoc = ObjDefault({
-  couple: MediaId, // the main photograph of the two of them (hero & story fall back to it)
+  couple: MediaId, // the main photograph of the two of them — or, for any other occasion, THE main photograph (hero & story fall back to it)
   coupleWide: MediaId, // optional landscape version of it for desktop screens
   ceremony: MediaId, // the wedding ceremony
   family: MediaId, // the two families together
@@ -316,6 +316,104 @@ export const JourneyDoc = ObjDefault({
   headZoom: ObjDefault({ bride: z.number().min(0.4).max(6).default(1), groom: z.number().min(0.4).max(6).default(1) }),
 });
 export type JourneyDoc = z.infer<typeof JourneyDoc>;
+
+// ── the occasion: everything an invitation says when it is not about a couple ──
+/**
+ * A birthday is about one person, a conclave about an occasion, a memorial about someone being remembered.
+ * Those invitations keep the same document and the same sections; what differs is WHAT IS ABOUT — and that lives here.
+ * Every part is optional and empty by default, so an older document (and every wedding) parses exactly as before.
+ */
+export const EVENT_KINDS = ["session", "keynote", "panel", "workshop", "break", "networking", "ceremony"] as const;
+export type AgendaKind = (typeof EVENT_KINDS)[number];
+
+export const Honoree = ObjDefault({
+  name: L(), // short display name: "Meera", "Thomas Mathew"
+  fullName: L(),
+  role: L(), // "Beloved father, grandfather and teacher"
+  /** "30", "5th", "25 years" — free text, so it can say what the occasion needs. */
+  age: z.string().max(40).default(""),
+  born: IsoDate.default(""),
+  passed: IsoDate.default(""),
+  photo: MediaId,
+  /** One quiet line under the name — "Forever in our hearts". */
+  epitaph: L(),
+});
+
+export const Speaker = z.object({
+  id: z.string(),
+  name: L(),
+  role: L(), // "Chief Executive Officer"
+  org: L(), // "Meridian Group"
+  topic: L(), // what they will talk about
+  bio: L(),
+  photo: MediaId,
+  featured: z.boolean().default(false),
+});
+export type Speaker = z.infer<typeof Speaker>;
+
+export const AgendaItem = z.object({
+  id: z.string(),
+  day: IsoDate.default(""),
+  start: Time.default(""),
+  end: Time.default(""),
+  title: L(),
+  speaker: L(), // free text: "Anita Rao, Dr. Vikram Shah"
+  track: L(), // "Strategy", "Engineering"
+  room: L(),
+  kind: z.enum(EVENT_KINDS).default("session"),
+  description: L(),
+});
+export type AgendaItem = z.infer<typeof AgendaItem>;
+
+export const Sponsor = z.object({
+  id: z.string(),
+  name: L(),
+  tier: L(), // "Principal partner"
+  url: z.string().max(300).default(""),
+  logo: MediaId,
+  blurb: L(),
+});
+export type Sponsor = z.infer<typeof Sponsor>;
+
+export const Highlight = z.object({ id: z.string(), label: L(), value: L(), note: L() });
+export type Highlight = z.infer<typeof Highlight>;
+
+/** A person who belongs to the occasion — family left behind, hosts, organisers, guests of honour. */
+export const OccasionPerson = z.object({ id: z.string(), group: L(), name: L(), relation: L(), note: L(), photo: MediaId });
+export type OccasionPerson = z.infer<typeof OccasionPerson>;
+
+export const OccasionDoc = ObjDefault({
+  /** The headline: "Meera", "Leadership Conclave 2026", "Thomas Mathew". Falls back to the invitation title. */
+  title: L(),
+  /** The line under it: "turns thirty", "Where leaders shape what comes next". */
+  subtitle: L(),
+  /** The small line above it: "You are invited to", "In loving memory of". */
+  invitation: L(),
+  /** "Hosted by …" — shown with the headline and in the footer. */
+  hosts: L(),
+  /** The date as it should read in the hero when it is not a single day: "12 – 13 November 2026". */
+  dateLabel: L(),
+  monogram: z.string().max(4).default(""),
+  honoree: Honoree,
+  about: ObjDefault({
+    eyebrow: L(),
+    title: L(),
+    body: L(), // blank lines separate paragraphs
+    quote: ObjDefault({ text: L(), author: L() }),
+    highlights: z.array(Highlight).default([]),
+  }),
+  speakers: z.array(Speaker).default([]),
+  agenda: z.array(AgendaItem).default([]),
+  sponsors: z.array(Sponsor).default([]),
+  /** A letter: the host's welcome, the family's message, a note from the organiser. */
+  message: ObjDefault({ title: L(), body: L(), from: L(), role: L(), photo: MediaId }),
+  people: z.array(OccasionPerson).default([]),
+  /** Registration / ticket link shown on the programme and the RSVP — optional. */
+  registration: ObjDefault({ label: L(), note: L(), url: z.string().max(400).default("") }),
+  /** A prayer, verse or reading (memorial and religious occasions). */
+  prayer: ObjDefault({ title: L(), text: L(), source: L() }),
+});
+export type OccasionDoc = z.infer<typeof OccasionDoc>;
 
 // ── misc content ───────────────────────────────────────────────────────────
 export const OpeningDoc = ObjDefault({
@@ -380,6 +478,7 @@ export type SectionConfig = z.infer<typeof SectionConfig>;
 export const InvitationDoc = z.object({
   schemaVersion: z.literal(1).default(1),
   eventType: z.enum(EVENT_TYPES).default(DEFAULT_EVENT_TYPE),
+  occasion: OccasionDoc,
   couple: CoupleDoc,
   family: FamilyDoc,
   story: StoryDoc,

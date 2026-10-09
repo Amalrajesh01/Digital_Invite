@@ -3,6 +3,8 @@
  *   npm run db:seed            → everything
  *   SEED_DEMO=false npm run db:seed   → platform data + admin only (production)
  *   SEED_ONLY=ananya-and-arjun npm run db:seed   → add just that showcase to an existing database (skipped if it exists)
+ *   SEED_ONLY=public-demos npm run db:seed       → add every sample invitation shown on the public template gallery
+ *   SEED_DEMO_CLIENTS=false                      → never create the demo client logins (use this in production)
  */
 import { eq } from "drizzle-orm";
 import { closeDb, getDb, schema } from "../src/db/client";
@@ -29,6 +31,17 @@ import { STOCK, stockPhoto } from "./demo/photos";
 import { buildShowcaseDoc, type ShowcaseCfg } from "./demo/showcase";
 import { CHRISTIAN } from "./demo/christian";
 import { MUSLIM } from "./demo/muslim";
+import { ISHA } from "./demo/isha";
+import { TARA } from "./demo/tara";
+import { HELEN } from "./demo/helen";
+import { MEERA } from "./demo/meera";
+import { AARAV } from "./demo/aarav";
+import { AADHYA } from "./demo/aadhya";
+import { CONCLAVE } from "./demo/conclave";
+import { SUMMIT } from "./demo/summit";
+import { THOMAS } from "./demo/thomas";
+import { buildOccasionDoc, type OccasionCfg } from "./demo/occasion";
+import { brand } from "../src/lib/brand";
 import sharp from "sharp";
 
 const L = (en: string, ml?: string): Record<string, string> => (ml ? { en, ml } : { en });
@@ -127,7 +140,7 @@ async function seedWedding(admin: AdminActor, spec: DemoSpec) {
   const [tpl] = await db.select().from(schema.templates).where(eq(schema.templates.slug, spec.template));
   const [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, spec.theme));
   const w = await createWedding(admin, { title: spec.title, slug: spec.slug, packageKey: spec.pkg, customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", secondaryLocale: "ml", weddingDate: DEMO.date });
-  await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com" }).where(eq(schema.weddings.id, w.id));
+  await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com", autoLifecycle: false }).where(eq(schema.weddings.id, w.id));
   const art = (cache ??= await renderArt());
 
   // media — real photographs when the bundled stock is present, the procedural illustrations otherwise
@@ -197,8 +210,8 @@ async function seedWedding(admin: AdminActor, spec: DemoSpec) {
   // people (Signature & Luxury)
   if (spec.pkg !== "ESSENTIAL") await seedPeople(admin, w.id, spec.slug, spec.pkg, gallery, art);
 
-  // client login (Signature & Luxury)
-  if (spec.clientEmail) {
+  // client login (Signature & Luxury) — never in production, where the demo password would be public knowledge
+  if (spec.clientEmail && process.env.SEED_DEMO_CLIENTS !== "false") {
     const c = await assignClientToWedding(admin, { weddingId: w.id, email: spec.clientEmail, name: "Anagha Nair", role: "OWNER" });
     // a client that already exists (re-seeding a demo) keeps the password it was given the first time
     await changePassword(c.id, null, "Demo-Client-123").catch(() => undefined);
@@ -223,7 +236,7 @@ async function seedAnanya(admin: AdminActor) {
   const [tpl] = await db.select().from(schema.templates).where(eq(schema.templates.slug, "cinematic-noir"));
   const [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, "royal-gold"));
   const w = await createWedding(admin, { title: ANANYA.title, slug: ANANYA.slug, packageKey: "LUXURY", customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", secondaryLocale: null, weddingDate: ANANYA.date });
-  await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com" }).where(eq(schema.weddings.id, w.id));
+  await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com", autoLifecycle: false }).where(eq(schema.weddings.id, w.id));
   const assets = new Map<string, string>();
   const need = async (k: string, c: MediaCategory, caption?: Record<string, string>) => {
     const id = await stockAsset(w.id, k, c, assets, caption ? { caption } : {});
@@ -267,7 +280,54 @@ async function seedAnanya(admin: AdminActor) {
   return w.id;
 }
 
-/** English-only LUXURY showcase built from a ShowcaseCfg (Christian and Muslim weddings). */
+/** Uploads the photographs a sample invitation asks for and returns their media ids. */
+async function loadDemoAssets(weddingId: string, slug: string, needs: ShowcaseCfg["needs"], gallery: [string, string][]) {
+  const assets = new Map<string, string>();
+  const ids = new Map<string, string>();
+  for (const [key, stock, category, opts] of needs) {
+    const id = await stockAsset(weddingId, stock, category, assets, { key, focal: opts?.focal });
+    if (!id) throw new Error(`Missing stock photograph assets/stock/${stock}.jpg (needed by ${slug})`);
+    ids.set(key, id);
+  }
+  const galleryIds: string[] = [];
+  for (const [stock, cap] of gallery) {
+    const id = await stockAsset(weddingId, stock, "GALLERY", assets, { caption: { en: cap }, key: `g:${stock}` });
+    if (id) galleryIds.push(id);
+  }
+  return { ids, galleryIds };
+}
+
+/** A few guests who leave a wish, so that the wall of wishes on a sample is not empty. Fictional people, reviewed and approved. */
+async function seedWishes(admin: AdminActor, weddingId: string, slug: string, wishes: [name: string, relationship: string, message: string][]) {
+  const db = await getDb();
+  const groups = await db.select().from(schema.guestGroups).where(eq(schema.guestGroups.weddingId, weddingId));
+  const friends = groups.find((g) => g.key === "friends")?.id ?? null;
+  for (const [name, relationship, body] of wishes) {
+    const guest = await createGuest(admin, weddingId, { name, groupId: friends, relationship, seats: 1 });
+    const ctx = await resolveGuestContext(slug, await ensureInvite(weddingId, guest.id));
+    if (!ctx) continue;
+    const m = await submitMessage(participantFromGuest(ctx), { kind: "WISH", body });
+    await moderateMessage(admin, weddingId, m.id, "APPROVED");
+  }
+}
+
+type Draft = Awaited<ReturnType<typeof getWedding>>["draftDoc"];
+
+/** The common tail of every public sample: gallery, music, draft, wishes, publish. */
+async function finishDemo(admin: AdminActor, weddingId: string, o: { slug: string; track: string; galleryIds: string[]; buildDoc: (base: Draft) => Draft; wishes?: [string, string, string][]; label: string }) {
+  if (o.galleryIds.length) {
+    const album = await saveAlbum(admin, weddingId, { title: { en: "Gallery" }, kind: "OFFICIAL", coverAssetId: o.galleryIds[0] });
+    await addToAlbum(admin, weddingId, album.id, o.galleryIds);
+  }
+  const track = await upload(weddingId, makeAmbientWav(), "ambient.wav", "MUSIC", ["AUDIO"]);
+  await saveTrack(admin, weddingId, { assetId: track.id, title: o.track, artist: "StackBridge Studio (ambient)", isPrimary: true, inPlaylist: true });
+  const cur = await getWedding(admin, weddingId);
+  await saveDraft(admin, weddingId, o.buildDoc(cur.draftDoc));
+  if (o.wishes?.length) await seedWishes(admin, weddingId, o.slug, o.wishes);
+  await publishWedding(admin, weddingId, { label: o.label });
+}
+
+/** English-only showcase built from a ShowcaseCfg (the weddings, the engagement and the anniversary). */
 async function seedShowcase(admin: AdminActor, c: ShowcaseCfg) {
   const db = await getDb();
   const [existing] = await db.select({ id: schema.weddings.id }).from(schema.weddings).where(eq(schema.weddings.slug, c.slug));
@@ -278,29 +338,42 @@ async function seedShowcase(admin: AdminActor, c: ShowcaseCfg) {
   const [tpl] = await db.select().from(schema.templates).where(eq(schema.templates.slug, c.template));
   const [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, c.theme));
   if (!tpl || !thm) throw new Error(`Template "${c.template}" or theme "${c.theme}" is missing — run npm run library:refresh first.`);
-  const w = await createWedding(admin, { title: c.title, slug: c.slug, packageKey: "LUXURY", customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", secondaryLocale: null, weddingDate: c.date });
-  await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com" }).where(eq(schema.weddings.id, w.id));
-  const assets = new Map<string, string>();
-  const ids = new Map<string, string>();
-  for (const [key, stock, category, opts] of c.needs) {
-    const id = await stockAsset(w.id, stock, category, assets, { key, focal: opts?.focal });
-    if (!id) throw new Error(`Missing stock photograph assets/stock/${stock}.jpg`);
-    ids.set(key, id);
+  const pkg = c.package ?? "LUXURY";
+  const w = await createWedding(admin, { title: c.title, slug: c.slug, packageKey: pkg, customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", secondaryLocale: null, weddingDate: c.date });
+  await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com", autoLifecycle: false }).where(eq(schema.weddings.id, w.id));
+  const { ids, galleryIds } = await loadDemoAssets(w.id, c.slug, c.needs, c.gallery);
+  await finishDemo(admin, w.id, {
+    slug: c.slug, track: c.track, galleryIds, wishes: c.wishes, label: "Launch",
+    buildDoc: (base) => {
+      const doc = buildShowcaseDoc(base, c, (k) => ids.get(k));
+      if (c.celebration) doc.opening.celebration = c.celebration;
+      return doc;
+    },
+  });
+  console.log(`  ✔ ${c.slug}  (${pkg})`);
+  return w.id;
+}
+
+/** English-only showcase of an occasion that is not about a couple. */
+async function seedOccasion(admin: AdminActor, c: OccasionCfg) {
+  const db = await getDb();
+  const [existing] = await db.select({ id: schema.weddings.id }).from(schema.weddings).where(eq(schema.weddings.slug, c.slug));
+  if (existing) {
+    console.log(`  • ${c.slug} already exists — skipping`);
+    return existing.id;
   }
-  const gallery: string[] = [];
-  for (const [stock, cap] of c.gallery) {
-    const id = await stockAsset(w.id, stock, "GALLERY", assets, { caption: { en: cap }, key: `g:${stock}` });
-    if (id) gallery.push(id);
-  }
-  const album = await saveAlbum(admin, w.id, { title: { en: "Gallery" }, kind: "OFFICIAL", coverAssetId: gallery[0] });
-  await addToAlbum(admin, w.id, album.id, gallery);
-  const track = await upload(w.id, makeAmbientWav(), "ambient.wav", "MUSIC", ["AUDIO"]);
-  await saveTrack(admin, w.id, { assetId: track.id, title: c.track, artist: "StackBridge Studio (ambient)", isPrimary: true, inPlaylist: true });
-  const cur = await getWedding(admin, w.id);
-  const doc = buildShowcaseDoc(cur.draftDoc, c, (k) => ids.get(k));
-  await saveDraft(admin, w.id, doc);
-  await publishWedding(admin, w.id, { label: "Launch" });
-  console.log(`  ✔ ${c.slug}  (LUXURY)`);
+  const [tpl] = await db.select().from(schema.templates).where(eq(schema.templates.slug, c.template));
+  const [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, c.theme));
+  if (!tpl || !thm) throw new Error(`Template "${c.template}" or theme "${c.theme}" is missing — run npm run library:refresh first.`);
+  const pkg = c.package ?? "LUXURY";
+  const w = await createWedding(admin, { title: c.title, slug: c.slug, packageKey: pkg, customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", secondaryLocale: null, weddingDate: c.date });
+  await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com", autoLifecycle: false }).where(eq(schema.weddings.id, w.id));
+  const { ids, galleryIds } = await loadDemoAssets(w.id, c.slug, c.needs, c.gallery);
+  await finishDemo(admin, w.id, {
+    slug: c.slug, track: c.track, galleryIds, wishes: c.wishes, label: "Launch",
+    buildDoc: (base) => buildOccasionDoc(base, c, (k) => ids.get(k), brand.whatsapp),
+  });
+  console.log(`  ✔ ${c.slug}  (${pkg})`);
   return w.id;
 }
 
@@ -396,6 +469,54 @@ const CLASSIC_DEMOS: Record<string, DemoSpec> = {
   "demo-essential": { slug: "demo-essential", title: DEMO.title, pkg: "ESSENTIAL", template: "minimal-luxury", theme: "rose-gold", full: false },
 };
 
+/** Every sample invitation the public template gallery shows, in the order it is seeded. */
+const PUBLIC_DEMOS: [slug: string, run: (admin: AdminActor) => Promise<string>][] = [
+  [ANANYA.slug, (a) => seedAnanya(a)],
+  [DEMO.slug, (a) => seedWedding(a, CLASSIC_DEMOS[DEMO.slug])],
+  [CHRISTIAN.slug, (a) => seedShowcase(a, CHRISTIAN)],
+  [MUSLIM.slug, (a) => seedShowcase(a, MUSLIM)],
+  [ISHA.slug, (a) => seedShowcase(a, ISHA)],
+  [MEERA.slug, (a) => seedOccasion(a, MEERA)],
+  [AARAV.slug, (a) => seedOccasion(a, AARAV)],
+  [AADHYA.slug, (a) => seedOccasion(a, AADHYA)],
+  [TARA.slug, (a) => seedShowcase(a, TARA)],
+  [HELEN.slug, (a) => seedShowcase(a, HELEN)],
+  [CONCLAVE.slug, (a) => seedOccasion(a, CONCLAVE)],
+  [SUMMIT.slug, (a) => seedOccasion(a, SUMMIT)],
+  [THOMAS.slug, (a) => seedOccasion(a, THOMAS)],
+];
+
+/**
+ * A public sample must never send a visitor to a stranger's phone, and must never drift on to "after the event".
+ * Points the chat and call buttons at Stack Bridge Labs and turns the calendar-driven lifecycle off. Idempotent: a
+ * sample that already says the right thing is not re-published.
+ */
+async function tidyDemo(admin: AdminActor, slug: string) {
+  const db = await getDb();
+  const [w] = await db.select().from(schema.weddings).where(eq(schema.weddings.slug, slug));
+  if (!w) return;
+  if (w.autoLifecycle) await db.update(schema.weddings).set({ autoLifecycle: false }).where(eq(schema.weddings.id, w.id));
+  const cur = await getWedding(admin, w.id);
+  const doc = structuredClone(cur.draftDoc);
+  const before = JSON.stringify(doc);
+  doc.whatsapp.number = brand.whatsapp;
+  if (!(doc.whatsapp.message.en ?? "").includes("sample")) doc.whatsapp.message = { ...doc.whatsapp.message, en: "Hi, I’m looking at the “{title}” sample invitation and would like to know more." };
+  doc.rsvp.whatsappNumber = "";
+  doc.contacts = doc.contacts.map((c) => ({ ...c, phone: "+91 73567 41055" }));
+  if (JSON.stringify(doc) === before) return;
+  await saveDraft(admin, w.id, doc);
+  await publishWedding(admin, w.id, { label: "Sample contact details" });
+  console.log(`  ✔ ${slug}: contact buttons point at ${brand.company}`);
+}
+
+async function seedPublicDemos(admin: AdminActor, only?: string) {
+  for (const [slug, run] of PUBLIC_DEMOS) {
+    if (only && only !== slug) continue;
+    await run(admin);
+    await tidyDemo(admin, slug);
+  }
+}
+
 async function main() {
   if (process.env.NODE_ENV === "production" && (process.env.SEED_ADMIN_PASSWORD ?? "").length < 12) {
     throw new Error("Set SEED_ADMIN_PASSWORD (12+ characters) before seeding a production database.");
@@ -410,11 +531,10 @@ async function main() {
   if (process.env.SEED_DEMO === "false") return;
   if (process.env.SEED_ONLY) {
     const only = process.env.SEED_ONLY;
-    if (only === ANANYA.slug) await seedAnanya(admin);
-    else if (only === CHRISTIAN.slug) await seedShowcase(admin, CHRISTIAN);
-    else if (only === MUSLIM.slug) await seedShowcase(admin, MUSLIM);
+    if (only === "public-demos") await seedPublicDemos(admin);
+    else if (PUBLIC_DEMOS.some(([slug]) => slug === only)) await seedPublicDemos(admin, only);
     else if (CLASSIC_DEMOS[only]) await seedWedding(admin, CLASSIC_DEMOS[only]);
-    else throw new Error(`SEED_ONLY supports "${[ANANYA.slug, CHRISTIAN.slug, MUSLIM.slug, ...Object.keys(CLASSIC_DEMOS)].join('", "')}".`);
+    else throw new Error(`SEED_ONLY supports "public-demos", "${[...PUBLIC_DEMOS.map(([slug]) => slug), ...Object.keys(CLASSIC_DEMOS)].join('", "')}".`);
     console.log(`
 Done. Open ${env.appUrl}/invite/${only}`);
     return;
@@ -429,6 +549,8 @@ Done. Open ${env.appUrl}/invite/${only}`);
   ids.cinematic = await seedWedding(admin, CLASSIC_DEMOS["demo-cinematic"]);
   ids.signature = await seedWedding(admin, CLASSIC_DEMOS["demo-signature"]);
   ids.essential = await seedWedding(admin, CLASSIC_DEMOS["demo-essential"]);
+  console.log("→ Creating the sample invitations of the public template gallery");
+  await seedPublicDemos(admin);
   await seedOrders(ids);
   console.log(`\nDone. Open ${env.appUrl}/invite/${DEMO.slug}`);
   console.log(`Super Admin: ${adminUser.email}  /  ${process.env.SEED_ADMIN_PASSWORD || "ChangeMe-Now-123"}`);

@@ -20,3 +20,14 @@ export const STEPS = [
 export type StepKey = (typeof STEPS)[number]["key"];
 export const stepIndex = (k: string) => STEPS.findIndex((s) => s.key === k);
 export const isStepKey = (k: string): k is StepKey => STEPS.some((s) => s.key === k);
+
+/** The step's title and blurb for this kind of invitation: "Couple" is "Occasion" when the invitation is not about a couple. */
+export function stepCopy(key: StepKey, subject: "couple" | "person" | "occasion" | "memorial"): { key: StepKey; title: string; blurb: string } {
+  const s = STEPS.find((x) => x.key === key)!;
+  if (subject === "couple") return s;
+  if (key === "couple") return { key, title: "Occasion", blurb: "What it is, the date, the invitation link — and everything the invitation says about it." };
+  if (key === "events") return { key, title: s.title, blurb: "Every part of the day — with time, place and notes." };
+  if (key === "story") return { key, title: s.title, blurb: "The moments that led here — shown as a timeline." };
+  if (key === "package") return { key, title: s.title, blurb: "Choose what this invitation includes. Features, dashboards and limits follow from this choice." };
+  return s;
+}

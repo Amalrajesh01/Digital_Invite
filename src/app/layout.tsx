@@ -3,14 +3,16 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import { Toaster } from "sonner";
 import { brand } from "@/lib/brand";
+import { env } from "@/lib/env";
 import "./globals.css";
 
 /** Inter is the house typeface everywhere — studio, site and invitations (Malayalam etc. use Noto Sans). */
 const inter = Inter({ subsets: ["latin"], variable: "--font-ui", display: "swap" });
 
 export const metadata: Metadata = {
-  title: { default: `${brand.name} — premium digital wedding invitations`, template: `%s · ${brand.name}` },
-  description: "Invite. Experience. Remember. Premium digital wedding invitations with RSVP, guest management and lifelong memories — by StackBridge Labs.",
+  title: { default: `${brand.name} — digital invitations for every occasion`, template: `%s · ${brand.name}` },
+  description: "Beautiful digital invitations, crafted for moments that matter — weddings, birthdays, milestones, corporate events and remembrance. By Stack Bridge Labs.",
+  metadataBase: new URL(env.appUrl),
   applicationName: brand.name,
   authors: [{ name: brand.company, url: brand.companyUrl }],
   robots: { index: true, follow: true },

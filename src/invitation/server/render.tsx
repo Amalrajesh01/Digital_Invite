@@ -9,6 +9,7 @@ import { InvitationApp } from "@/invitation/InvitationApp";
 import { brand } from "@/lib/brand";
 import { env } from "@/lib/env";
 import { fmtDate } from "@/invitation/engine/format";
+import { EVENT_TYPE_INFO } from "@/domain/doc/event-types";
 
 export const loadInvite = cache((slug: string, token: string | null, state: string | null = null) =>
   loadPublicInvitation(slug, token, { asStatus: WEDDING_STATUSES.find((x) => x === state) }),
@@ -23,25 +24,28 @@ const REASONS: Record<Exclude<LoadResult extends infer R ? (R extends { ok: fals
 
 export async function inviteMetadata(slug: string, token: string | null, state: string | null = null): Promise<Metadata> {
   const res = await loadInvite(slug, token, state);
-  if (!res.ok) return { title: "Wedding invitation", robots: { index: false, follow: false } };
+  if (!res.ok) return { title: "Invitation", robots: { index: false, follow: false } };
   const { view } = res;
   const loc = view.wedding.defaultLocale;
   const seo = view.doc.seo;
-  const title = seo.title[loc] || seo.title.en || `${view.wedding.title} — Wedding Invitation`;
+  const info = EVENT_TYPE_INFO[view.doc.eventType];
+  const couple = info.subject === "couple";
+  const title = seo.title[loc] || seo.title.en || `${view.wedding.title} — ${couple ? "Wedding Invitation" : "Invitation"}`;
   const main = view.doc.events.find((e) => e.isMain) ?? view.doc.events[0];
   const venue = view.doc.venues.find((v) => v.id === main?.venueId);
   const date = main?.date || view.wedding.weddingDate;
+  const when = `${date ? ` on ${fmtDate(date, "en", "long")}` : ""}${venue ? ` at ${venue.name.en ?? ""}` : ""}`;
   const description =
     seo.description[loc] || seo.description.en ||
-    `Together with our families, we joyfully invite you to celebrate our wedding${date ? ` on ${fmtDate(date, "en", "long")}` : ""}${venue ? ` at ${venue.name.en ?? ""}` : ""}.`;
+    (couple ? `Together with our families, we joyfully invite you to celebrate our wedding${when}.` : `You are invited to ${view.wedding.title}${when}.`);
   const image = view.urls.ogImage ? new URL(view.urls.ogImage, env.appUrl).toString() : undefined;
   return {
     title,
     description,
     metadataBase: new URL(env.appUrl),
     alternates: { canonical: view.urls.canonical },
-    // A personalised link must never be indexed or cached by search engines.
-    robots: token || view.mode === "preview" ? { index: false, follow: false } : { index: true, follow: true },
+    // A personalised link must never be indexed or cached by search engines; neither should a sample invitation of ours.
+    robots: token || view.mode === "preview" || view.wedding.isDemo ? { index: false, follow: false } : { index: true, follow: true },
     openGraph: { type: "website", title, description, url: view.urls.canonical, siteName: view.wedding.title, images: image ? [{ url: image, width: 1200, height: 630 }] : undefined, locale: "en_IN" },
     twitter: { card: image ? "summary_large_image" : "summary", title, description, images: image ? [image] : undefined },
   };

@@ -6,41 +6,46 @@ import { ChevronUp } from "lucide-react";
 import { useInvitation } from "../engine/context";
 import { fmtDate } from "../engine/format";
 import { distanceKm } from "../engine/format";
+import { useSubject, type Subject } from "../engine/subject";
 
 type State = "closed" | "opening" | "leaving" | "gone";
 const DURATION: Record<string, number> = { envelope: 3000, seal: 1500, cinematic: 250, swipe: 350, curtain: 1600, none: 0 };
 
-export function useCoupleNames() {
-  const { view, L, t } = useInvitation();
-  const c = view.doc.couple;
-  const bride = L(c.bride.name) || "Bride";
-  const groom = L(c.groom.name) || "Groom";
-  const [a, b] = c.order === "groom-first" ? [groom, bride] : [bride, groom];
-  const [ia, ib] = c.order === "groom-first" ? [c.groom.name.en ?? groom, c.bride.name.en ?? bride] : [c.bride.name.en ?? bride, c.groom.name.en ?? groom];
-  const initials = c.monogram || `${(ia ?? "").trim().charAt(0)}${(ib ?? "").trim().charAt(0)}`.toUpperCase();
-  return { a, b, initials, joined: `${a} ${t("invite.and")} ${b}`, ia: (ia ?? "").trim().charAt(0).toUpperCase(), ib: (ib ?? "").trim().charAt(0).toUpperCase() };
-}
-
 function GateMonogram() {
-  const { ia, ib } = useCoupleNames();
+  const s = useSubject();
+  if (!s.isCouple) {
+    return (
+      <svg viewBox="0 0 160 70" className="h-20 w-auto" aria-hidden>
+        <text x="80" y="56" textAnchor="middle" fontSize="60" className="mono-stroke" style={{ fontFamily: "var(--f-heading)" }}>{s.initials}</text>
+      </svg>
+    );
+  }
   return (
     <svg viewBox="0 0 160 70" className="h-20 w-auto" aria-hidden>
-      <text x="8" y="56" fontSize="64" className="mono-stroke" style={{ fontFamily: "var(--f-heading)" }}>{ia}</text>
+      <text x="8" y="56" fontSize="64" className="mono-stroke" style={{ fontFamily: "var(--f-heading)" }}>{s.ia}</text>
       <text x="64" y="46" fontSize="30" style={{ fontFamily: "var(--f-script)", fill: "var(--c-on-inverse)", opacity: 0.85 }}>&amp;</text>
-      <text x="92" y="56" fontSize="64" className="mono-stroke" style={{ fontFamily: "var(--f-heading)", animationDelay: "0.6s, 2.6s" }}>{ib}</text>
+      <text x="92" y="56" fontSize="64" className="mono-stroke" style={{ fontFamily: "var(--f-heading)", animationDelay: "0.6s, 2.6s" }}>{s.ib}</text>
     </svg>
   );
 }
 
-/** The wax stamp: bride, groom and the wedding date pressed into the seal. */
-function SealFace({ names, date, sealText }: { names: { a: string; b: string }; date: string; sealText?: string }) {
+/** The wax stamp: bride, groom and the date pressed into the seal — or, for any other occasion, its monogram and the date. */
+function SealFace({ subject, date, sealText }: { subject: Subject; date: string; sealText?: string }) {
   const parts = date ? date.split("-").map(Number) : [];
   const short = parts.length === 3 ? `${String(parts[2]).padStart(2, "0")} · ${String(parts[1]).padStart(2, "0")} · ${parts[0]}` : sealText ?? "";
+  if (!subject.isCouple) {
+    return (
+      <div className="disc">
+        <span className="wax-name wax-mono">{sealText || subject.initials}</span>
+        {short && <span className="wax-date">{short}</span>}
+      </div>
+    );
+  }
   return (
     <div className="disc">
-      <span className="wax-name">{names.a}</span>
+      <span className="wax-name">{subject.a}</span>
       <span className="wax-amp">&amp;</span>
-      <span className="wax-name">{names.b}</span>
+      <span className="wax-name">{subject.b}</span>
       {short && <span className="wax-date">{short}</span>}
     </div>
   );
@@ -107,7 +112,7 @@ export function Gate({ skip }: { skip?: boolean }) {
   const [state, setState] = useState<State>(variant === "none" || skip ? "gone" : "closed");
   const [seqDone, setSeqDone] = useState(false);
   const primary = useRef<HTMLButtonElement>(null);
-  const names = useCoupleNames();
+  const names = useSubject();
   const guest = view.guest;
   const key = `inv-entered-${slug}`;
   const wantsMusic = music.ready;
@@ -221,19 +226,28 @@ export function Gate({ skip }: { skip?: boolean }) {
           <div className="env" data-open={isOpening} role="button" tabIndex={0} aria-label={t("gate.tapToOpen")} onClick={() => open(wantsMusic)} onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), open(wantsMusic))}>
             <div className="env-back" />
             <div className="env-card">
-              <div>
-                <p className="inv-eyebrow" style={{ fontSize: "0.6rem", color: "var(--c-primary)" }}>{t("invite.together")}</p>
-                <p className="mt-2 text-2xl" style={{ fontFamily: "var(--f-heading)" }}>{names.a}</p>
-                <p className="inv-script my-0.5 text-3xl text-[var(--c-accent)]">&amp;</p>
-                <p className="text-2xl" style={{ fontFamily: "var(--f-heading)" }}>{names.b}</p>
-                {mainDate && <p className="mt-3 text-[0.7rem] tracking-[0.3em] opacity-70">{fmtDate(mainDate, locale, "long")}</p>}
-              </div>
+              {names.isCouple ? (
+                <div>
+                  <p className="inv-eyebrow" style={{ fontSize: "0.6rem", color: "var(--c-primary)" }}>{t("invite.together")}</p>
+                  <p className="mt-2 text-2xl" style={{ fontFamily: "var(--f-heading)" }}>{names.a}</p>
+                  <p className="inv-script my-0.5 text-3xl text-[var(--c-accent)]">&amp;</p>
+                  <p className="text-2xl" style={{ fontFamily: "var(--f-heading)" }}>{names.b}</p>
+                  {mainDate && <p className="mt-3 text-[0.7rem] tracking-[0.3em] opacity-70">{fmtDate(mainDate, locale, "long")}</p>}
+                </div>
+              ) : (
+                <div className="px-1">
+                  <p className="inv-eyebrow" style={{ fontSize: "0.6rem", color: "var(--c-primary)" }}>{names.invitation || t("gate.cardLine")}</p>
+                  <p className="mt-2.5 leading-[1.08]" style={{ fontFamily: "var(--f-heading)", fontSize: names.a.length > 26 ? "1.3rem" : names.a.length > 14 ? "1.6rem" : "2.1rem", textWrap: "balance" }}>{names.a}</p>
+                  {names.subtitle && <p className="inv-script mt-1.5 text-[1.05rem] text-[var(--c-accent)]">{names.subtitle}</p>}
+                  {mainDate && <p className="mt-3 text-[0.7rem] tracking-[0.3em] opacity-70">{fmtDate(mainDate, locale, "long")}</p>}
+                </div>
+              )}
             </div>
             <div className="env-pocket" />
             <div className="env-flap"><div className="face front" /><div className="face back" /></div>
             <div className="wax" aria-hidden>
-              <div className="wax-half l"><SealFace names={names} date={mainDate} sealText={op.sealText} /></div>
-              <div className="wax-half r"><SealFace names={names} date={mainDate} sealText={op.sealText} /></div>
+              <div className="wax-half l"><SealFace subject={names} date={mainDate} sealText={op.sealText} /></div>
+              <div className="wax-half r"><SealFace subject={names} date={mainDate} sealText={op.sealText} /></div>
             </div>
           </div>
           {wantsMusic && !isOpening && <p className="gate-hint">{t("gate.tapToOpen")}</p>}
@@ -255,7 +269,7 @@ export function Gate({ skip }: { skip?: boolean }) {
             <div className="seal-half l"><div className="disc">{op.sealText || names.initials}</div></div>
             <div className="seal-half r"><div className="disc">{op.sealText || names.initials}</div></div>
           </div>
-          <h1 className="gate-names">{names.a} <span className="amp">{t("invite.and")}</span> {names.b}</h1>
+          <h1 className="gate-names">{names.a}{names.isCouple && <> <span className="amp">{t("invite.and")}</span> {names.b}</>}</h1>
           {seatsText && <p className="gate-hint">{seatsText}</p>}
           {Actions}
         </div>
@@ -268,7 +282,7 @@ export function Gate({ skip }: { skip?: boolean }) {
             <p className="cine-line l1 inv-eyebrow !text-[var(--c-accent)]" style={seqDone ? { animation: "none", opacity: 1, transform: "none" } : undefined}>{invited}</p>
             {greeting && <p className="cine-line l1 gate-dear" style={seqDone ? { animation: "none", opacity: 1, transform: "none" } : undefined}>{greeting}</p>}
             <h1 className="cine-line l2 gate-names" style={{ fontSize: "clamp(2.6rem, 12vw, 5rem)", ...(seqDone ? { animation: "none", opacity: 1, transform: "none" } : {}) }}>
-              {names.a}<span className="amp"> {t("invite.and")} </span>{names.b}
+              {names.a}{names.isCouple && <><span className="amp"> {t("invite.and")} </span>{names.b}</>}
             </h1>
             {mainDate && (
               <div className="cine-line l3" style={seqDone ? { animation: "none", opacity: 1, transform: "none" } : undefined}>
@@ -283,7 +297,7 @@ export function Gate({ skip }: { skip?: boolean }) {
       {variant === "swipe" && (
         <div className="gate-inner">
           {Header}
-          <h1 className="gate-names">{names.a} <span className="amp">{t("invite.and")}</span> {names.b}</h1>
+          <h1 className="gate-names">{names.a}{names.isCouple && <> <span className="amp">{t("invite.and")}</span> {names.b}</>}</h1>
           {mainDate && <RollingDate date={mainDate} active={isOpening} locale={locale} />}
           {seatsText && <p className="gate-hint">{seatsText}</p>}
           <div className="swipe-handle" role="button" tabIndex={0} aria-label={t("gate.enter")} onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), open(wantsMusic))}>
@@ -301,7 +315,7 @@ export function Gate({ skip }: { skip?: boolean }) {
           <div className="curtain r" data-open={isOpening} />
           <div className="gate-inner" style={{ position: "relative", zIndex: 5, opacity: isOpening ? 0 : 1, transition: "opacity .5s" }}>
             {Header}
-            <h1 className="gate-names">{names.a} <span className="amp">{t("invite.and")}</span> {names.b}</h1>
+            <h1 className="gate-names">{names.a}{names.isCouple && <> <span className="amp">{t("invite.and")}</span> {names.b}</>}</h1>
             {seatsText && <p className="gate-hint">{seatsText}</p>}
             {Actions}
           </div>

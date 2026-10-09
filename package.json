@@ -18,7 +18,8 @@
     "setup": "npm run db:migrate && npm run db:seed",
     "docs:features": "tsx scripts/docs-features.ts",
     "storage:sync": "tsx scripts/storage-sync.ts",
-    "library:refresh": "tsx scripts/library-refresh.ts"
+    "library:refresh": "tsx scripts/library-refresh.ts",
+    "demo:drop": "tsx scripts/dev/drop-demo.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

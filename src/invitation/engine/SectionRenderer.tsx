@@ -45,6 +45,14 @@ const REGISTRY: Record<SectionType, React.ComponentType<{ section: SectionConfig
   anniversary: dynamic(() => import("../sections/MemorySections").then((m) => m.AnniversarySection)),
   thankyou: dynamic(() => import("../sections/SmallSections").then((m) => m.ThankYouSection)),
   contact: dynamic(() => import("../sections/SmallSections").then((m) => m.ContactSection)),
+  about: dynamic(() => import("../sections/OccasionSections").then((m) => m.AboutSection)),
+  tribute: dynamic(() => import("../sections/OccasionSections").then((m) => m.TributeSection)),
+  speakers: dynamic(() => import("../sections/OccasionSections").then((m) => m.SpeakersSection)),
+  agenda: dynamic(() => import("../sections/OccasionSections").then((m) => m.AgendaSection)),
+  sponsors: dynamic(() => import("../sections/OccasionSections").then((m) => m.SponsorsSection)),
+  message: dynamic(() => import("../sections/OccasionSections").then((m) => m.MessageSection)),
+  people: dynamic(() => import("../sections/OccasionSections").then((m) => m.PeopleSection)),
+  prayer: dynamic(() => import("../sections/OccasionSections").then((m) => m.PrayerSection)),
 };
 
 export function getVisitorId(): string {

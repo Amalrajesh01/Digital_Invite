@@ -8,7 +8,7 @@ import { rateLimit } from "@/domain/platform/rate-limit";
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
-const CATEGORIES = ["BRIDE", "GROOM", "COUPLE", "FAMILY", "GALLERY", "EVENT", "VENUE", "VIDEO", "MUSIC", "GUEST_UPLOAD", "MEMORY", "OTHER"] as const;
+const CATEGORIES = ["BRIDE", "GROOM", "COUPLE", "FAMILY", "GALLERY", "EVENT", "VENUE", "VIDEO", "MUSIC", "GUEST_UPLOAD", "MEMORY", "PEOPLE", "OTHER"] as const;
 const Meta = z.object({ weddingId: z.string().uuid(), category: z.enum(CATEGORIES), albumId: z.string().uuid().optional(), replaceId: z.string().uuid().optional(), durationSec: z.coerce.number().optional() });
 
 /**

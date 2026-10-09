@@ -236,14 +236,14 @@ export function buildDemoDoc(base: InvitationDoc, m: DemoMedia, opts: { full: bo
       { id: newId(), label: L("Kottayam Railway Station", "കോട്ടയം റെയിൽവേ സ്റ്റേഷൻ") },
       { id: newId(), label: L("Ernakulam Junction", "എറണാകുളം ജംഗ്ഷൻ") },
     ],
-    whatsappNumber: "919846000000",
+    whatsappNumber: "",
     thankYou: L("Thank you, {name}. We can’t wait to celebrate with you.", "നന്ദി, {name}. നിങ്ങളോടൊപ്പം ആഘോഷിക്കാൻ ഞങ്ങൾ കാത്തിരിക്കുന്നു."),
   } as never;
 
   doc.contacts = [
-    { id: newId(), name: L("Anagha (wedding coordinator)", "അനഘ (വെഡ്ഡിംഗ് കോർഡിനേറ്റർ)"), role: L("Travel, stay & anything on the day", "യാത്ര, താമസം, ആ ദിവസത്തെ എന്തും"), phone: "+91 98460 00001" },
-    { id: newId(), name: L("Sri Gopalakrishnan Nair", "ശ്രീ ഗോപാലകൃഷ്ണൻ നായർ"), role: L("Father of the bride", "വധുവിന്റെ പിതാവ്"), phone: "+91 98460 00002" },
-    { id: newId(), name: L("Adithya", "ആദിത്യ"), role: L("Reception & music", "റിസപ്ഷനും സംഗീതവും"), phone: "+91 98460 00003" },
+    { id: newId(), name: L("Anagha (wedding coordinator)", "അനഘ (വെഡ്ഡിംഗ് കോർഡിനേറ്റർ)"), role: L("Travel, stay & anything on the day", "യാത്ര, താമസം, ആ ദിവസത്തെ എന്തും"), phone: "+91 73567 41055" },
+    { id: newId(), name: L("Sri Gopalakrishnan Nair", "ശ്രീ ഗോപാലകൃഷ്ണൻ നായർ"), role: L("Father of the bride", "വധുവിന്റെ പിതാവ്"), phone: "+91 73567 41055" },
+    { id: newId(), name: L("Adithya", "ആദിത്യ"), role: L("Reception & music", "റിസപ്ഷനും സംഗീതവും"), phone: "+91 73567 41055" },
   ] as never;
 
   doc.guestGreetings = {
@@ -314,7 +314,7 @@ export function buildDemoDoc(base: InvitationDoc, m: DemoMedia, opts: { full: bo
       { id: newId(), name: L("Griha Pravesham", "ഗൃഹപ്രവേശം"), when: L("Evening, the new home", "സന്ധ്യയ്ക്ക്, പുതിയ വീട്ടിൽ"), description: L("The bride steps into her new home carrying a lit lamp — light entering light.", "വധു തെളിഞ്ഞ വിളക്കുമായി പുതിയ വീട്ടിലേക്ക് കടക്കുന്നു — വെളിച്ചത്തിലേക്ക് വെളിച്ചം."), glyph: "lamp" },
     ],
   } as never;
-  doc.whatsapp = { number: "919846000000", message: L("Hello! I’m writing about {title}.", "നമസ്കാരം! {title} സംബന്ധിച്ചാണ് ഞാൻ എഴുതുന്നത്.") };
+  doc.whatsapp = { number: "917356741055", message: L("Hello! I’m writing about {title}.", "നമസ്കാരം! {title} സംബന്ധിച്ചാണ് ഞാൻ എഴുതുന്നത്.") };
   doc.film = { url: "", video: undefined, poster: undefined, title: {}, caption: {} };
 
   // section content: friendly headings, and the story reads as chapters of the timeline instead of twice

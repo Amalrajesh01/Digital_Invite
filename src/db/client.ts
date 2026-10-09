@@ -33,7 +33,8 @@ async function connect(): Promise<Db> {
   const { PGlite } = await import("@electric-sql/pglite");
   const { drizzle } = await import("drizzle-orm/pglite");
   const inMemory = url === "memory://";
-  const dir = inMemory ? undefined : path.resolve(process.cwd(), ".data", "pg");
+  // PGLITE_DIR lets a second copy of the app (a QA server, a one-off script) use its own embedded database
+  const dir = inMemory ? undefined : path.resolve(/*turbopackIgnore: true*/ process.cwd(), process.env.PGLITE_DIR || path.join(".data", "pg"));
   if (dir) {
     const fs = await import("node:fs");
     fs.mkdirSync(path.dirname(dir), { recursive: true });

@@ -44,6 +44,8 @@ export interface InvitationView {
     secondaryLabel: string | null;
     status: WeddingStatus;
     storedStatus: WeddingStatus;
+    /** A portfolio sample made by us (not a customer's invitation): shown with a "sample" note and never archived as real. */
+    isDemo: boolean;
     yearsTogether: number;
     nextAnniversary: string | null;
   };
@@ -150,6 +152,7 @@ async function assemble(opts: { snap: Snapshot; guest: GuestContext | null; mode
       secondaryLabel: localeInfo(meta.secondaryLocale)?.native ?? null,
       status,
       storedStatus: wedding.status,
+      isDemo: !!wedding.isDemo,
       yearsTogether: yearsTogether(meta.weddingDate, meta.timezone),
       nextAnniversary: nextAnniversary(meta.weddingDate, meta.timezone),
     },

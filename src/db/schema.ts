@@ -290,7 +290,7 @@ export const mediaAssets = pgTable(
     id: pk(),
     weddingId: weddingRef(),
     category: text("category")
-      .$type<"BRIDE" | "GROOM" | "COUPLE" | "FAMILY" | "GALLERY" | "EVENT" | "VENUE" | "VIDEO" | "MUSIC" | "GUEST_UPLOAD" | "MEMORY" | "OTHER">()
+      .$type<"BRIDE" | "GROOM" | "COUPLE" | "FAMILY" | "GALLERY" | "EVENT" | "VENUE" | "VIDEO" | "MUSIC" | "GUEST_UPLOAD" | "MEMORY" | "PEOPLE" | "OTHER">()
       .notNull()
       .default("OTHER"),
     kind: text("kind").$type<"IMAGE" | "VIDEO" | "AUDIO">().notNull(),
