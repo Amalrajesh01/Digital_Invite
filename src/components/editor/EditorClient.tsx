@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { OPENINGS, OPENING_LABELS } from "@/domain/doc/constants";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { ArrowLeft, ExternalLink, Redo2, Undo2, Rocket, Save } from "lucide-react";
@@ -58,7 +59,7 @@ function DesignPanel({ templates, themes }: { templates: TemplateCard[]; themes:
       <div>
         <h2 className="display mb-3 text-[28px]">Opening</h2>
         <SelectField label="How the invitation opens" value={doc.opening.variant} onChange={(e) => update((d) => void (d.opening.variant = e.target.value as never))}>
-          <option value="envelope">Envelope</option><option value="seal">Wax seal</option><option value="cinematic">Cinematic title sequence</option><option value="swipe">Swipe up</option><option value="curtain">Curtains</option><option value="none">No opening</option>
+          {OPENINGS.map((o) => <option key={o} value={o}>{OPENING_LABELS[o]}</option>)}
         </SelectField>
         <div className="mt-4 grid gap-4"><TextField label="Seal letters" maxLength={4} value={doc.opening.sealText} onChange={(e) => update((d) => void (d.opening.sealText = e.target.value.toUpperCase()))} hint="Shown on the wax seal / envelope." />
           <LText label="Line above the names" value={doc.opening.invitedLine} onChange={(v) => update((d) => void (d.opening.invitedLine = v))} placeholder="You are invited to the wedding of" /></div>

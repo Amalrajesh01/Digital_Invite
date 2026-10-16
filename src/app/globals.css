@@ -372,3 +372,40 @@ dialog.drawer[open] {
   .no-print { display: none !important; }
   body { background: #fff; }
 }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   The public product site (`.site`) — warm paper and deep ink instead of the studio's cool grey,
+   marigold and rose as the two warm accents. Scoped here so the dashboards are untouched.
+   ────────────────────────────────────────────────────────────────────────── */
+.site {
+  --paper: #fbf7f0;
+  --paper-2: #f3ebdd;
+  --rule: #e9e0cf;
+  --rule-strong: #d9ccb5;
+  --ink: #17141f;
+  --ink-2: #2c2837;
+  --muted: #6d6860;
+  --marigold: #e4a032;
+  --marigold-soft: #fdf0d6;
+  --rose: #b6324f;
+  --rose-soft: #fbe8ec;
+  --night: #120f1c;
+  background: #fff;
+  color: var(--ink);
+  font-size: 16px;
+}
+.site .btn { border-radius: 999px; font-weight: 600; }
+.site .btn-lg { min-height: 54px; padding: 1rem 1.7rem; font-size: 16.5px; }
+.site .btn-accent { box-shadow: 0 10px 24px -14px color-mix(in srgb, var(--accent) 80%, transparent); }
+.site .btn-quiet { background: #fff; }
+.site .eyebrow { color: var(--accent); }
+.site :where(h1, h2, h3) { text-wrap: balance; }
+.site .rule-marigold { background: linear-gradient(90deg, var(--marigold), color-mix(in srgb, var(--marigold) 20%, transparent)); height: 3px; width: 3.2rem; border-radius: 2px; }
+@media (prefers-reduced-motion: reduce) { .site * { scroll-behavior: auto !important; } }
+@theme inline {
+  --color-marigold: var(--marigold);
+  --color-marigold-soft: var(--marigold-soft);
+  --color-rose: var(--rose);
+  --color-rose-soft: var(--rose-soft);
+  --color-night: var(--night);
+}

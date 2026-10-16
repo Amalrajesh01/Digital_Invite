@@ -249,6 +249,16 @@ export const STOCK: Record<string, StockInfo> = {
   "yJFk7YwxDbA": { alt: "A pair of reading glasses resting on an open book on white linen", focal: { x: 50, y: 45 } },
   "heNLI144X7Y": { alt: "Open books scattered across a table with reading glasses and a small plant", focal: { x: 50, y: 50 } },
   "4KkTFccuZ0M": { alt: "A rose garden with a white pergola and benches in warm light", focal: { x: 50, y: 55 } },
+
+  // ── housewarming, puja and festival (Wikimedia Commons, CC BY / CC BY-SA — see CREDITS.md) ──────────────
+  "wc-145089568": { alt: "Three women in bright silk saris smile as they turn the grinding stones during the Gruha Pravesham rituals in a new home", focal: { x: 55, y: 35 } },
+  "wc-146118873": { alt: "A sacred fire burning in a brick fire pit ringed with red flowers during a Gruhapravesham homam", focal: { x: 50, y: 30 } },
+  "wc-133359284": { alt: "A woman in a white and red sari bends to light oil lamps around a huge painted rangoli, seen from above at night", focal: { x: 50, y: 50 } },
+  "wc-97312069": { alt: "Rows of small clay lamps glowing on a doorstep for Diwali", focal: { x: 50, y: 55 } },
+  "wc-145136685": { alt: "Priests lift lamps in clouds of golden smoke during the evening Ganga Aarti at Varanasi", focal: { x: 50, y: 45 } },
+  "wc-162739830": { alt: "A priest raises a brass lamp above a crowd during the Ganga Aarti on Dev Deepawali", focal: { x: 50, y: 40 } },
+  "wc-152617626": { alt: "An Onam sadya served on a banana leaf, with rice, parippu, pickles, banana chips and payasam", focal: { x: 50, y: 50 } },
+  "wc-40896574": { alt: "A Kerala Onam sadya laid out on a banana leaf", focal: { x: 50, y: 50 } },
 };
 
 export function stockInfo(id: string): StockInfo | undefined {

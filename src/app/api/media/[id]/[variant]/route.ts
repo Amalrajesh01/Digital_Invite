@@ -5,6 +5,7 @@ import { getCurrentActor } from "@/lib/session";
 import { isMemberOf } from "@/domain/auth/access";
 import { capsuleAssetIsPublic } from "@/domain/memory/service";
 import { PUBLIC_STATUSES } from "@/domain/doc/constants";
+import { isGiftWedding, verifyGiftViewToken } from "@/domain/gifts/service";
 
 export const dynamic = "force-dynamic";
 
@@ -39,6 +40,13 @@ export async function GET(req: Request, ctx: { params: Promise<{ id: string; var
     allowed = await capsuleAssetIsPublic(a.id);
     isPublic = allowed;
   }
+  // A gift being made may be seen, before it is published, by its maker's signed preview — and only that.
+  if (!allowed && verifyGiftViewToken(a.weddingId, new URL(req.url).searchParams.get("g"))) {
+    allowed = true;
+    isPublic = false;
+  }
+  // Photographs in a gift are never cached by shared caches, even once published.
+  if (isPublic && (await isGiftWedding(a.weddingId))) isPublic = false;
   if (!allowed) {
     const actor = await getCurrentActor();
     allowed = !!actor && isMemberOf(actor, a.weddingId);
@@ -65,7 +73,7 @@ export async function GET(req: Request, ctx: { params: Promise<{ id: string; var
     "X-Content-Type-Options": "nosniff",
     "Accept-Ranges": "bytes",
     "Content-Disposition": "inline",
-    "Cache-Control": isPublic ? "public, max-age=31536000, immutable" : "private, no-store",
+    "Cache-Control": isPublic ? "public, max-age=31536000, immutable" : allowed && weddingLive ? "private, max-age=3600" : "private, no-store",
     "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; sandbox",
   };
   if (obj.range) {

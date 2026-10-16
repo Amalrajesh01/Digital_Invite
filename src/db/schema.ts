@@ -731,3 +731,78 @@ export const rateLimits = pgTable("rate_limits", {
   windowStart: ts("window_start").notNull(),
   count: integer("count").notNull().default(0),
 });
+
+// ── growth: how people find the site, what they ask, and the gifts they make ─────────────────────────
+/**
+ * One row per thing a visitor does on the public product site (a page, a template opened, a button tapped).
+ * Privacy as for invitations: a random per-browser id, no IP address, no fingerprint, no personal details in `props`.
+ */
+export const siteEvents = pgTable(
+  "site_events",
+  {
+    id: pk(),
+    at: ts("at").defaultNow().notNull(),
+    visitorId: text("visitor_id").notNull(),
+    /** page_view · design_view · preview_open · cta_click · enquiry_start · enquiry_sent · whatsapp_click · gift_start · gift_step · gift_saved · gift_sent */
+    type: text("type").notNull(),
+    path: text("path").notNull().default(""),
+    /** What it was about — a template slug, an occasion, a step number. */
+    ref: text("ref").notNull().default(""),
+    device: text("device").notNull().default(""),
+    /** utm_source, or the host of the page they came from. */
+    source: text("source").notNull().default(""),
+  },
+  (t) => [index("site_events_at_idx").on(t.at), index("site_events_type_idx").on(t.type, t.at)],
+);
+
+/** Someone who asked us to make something. The studio works them from NEW to WON (and links the order when they pay). */
+export const leads = pgTable(
+  "leads",
+  {
+    id: pk(),
+    kind: text("kind").$type<"ENQUIRY" | "GIFT">().notNull().default("ENQUIRY"),
+    name: text("name").notNull().default(""),
+    phone: text("phone").notNull().default(""),
+    email: text("email").notNull().default(""),
+    /** The occasion category slug, e.g. "wedding" or "for-my-love". */
+    occasion: text("occasion").notNull().default(""),
+    templateSlug: text("template_slug").notNull().default(""),
+    eventDate: text("event_date"),
+    message: text("message").notNull().default(""),
+    status: text("status").$type<"NEW" | "CONTACTED" | "QUOTED" | "WON" | "LOST">().notNull().default("NEW"),
+    source: text("source").notNull().default(""),
+    visitorId: text("visitor_id").notNull().default(""),
+    weddingId: uuid("wedding_id").references(() => weddings.id, { onDelete: "set null" }),
+    orderId: uuid("order_id").references(() => orders.id, { onDelete: "set null" }),
+    notes: text("notes").notNull().default(""),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [index("leads_status_idx").on(t.status, t.createdAt)],
+);
+
+/**
+ * A “For My Love” gift made on the public site. Its content lives in an ordinary wedding row (so media, publishing and
+ * versions all work); this table holds what only a gift has: the secret that lets its maker edit it, who to talk to, and
+ * when an unsent gift is deleted.
+ */
+export const gifts = pgTable(
+  "gifts",
+  {
+    id: pk(),
+    weddingId: uuid("wedding_id").notNull().references(() => weddings.id, { onDelete: "cascade" }),
+    /** SHA-256 of the edit secret. The secret itself exists only in the maker's own link. */
+    editTokenHash: text("edit_token_hash").notNull(),
+    state: text("state").$type<"DRAFT" | "SUBMITTED" | "LIVE" | "PAUSED">().notNull().default("DRAFT"),
+    contactName: text("contact_name").notNull().default(""),
+    contactPhone: text("contact_phone").notNull().default(""),
+    contactEmail: text("contact_email").notNull().default(""),
+    submittedAt: ts("submitted_at"),
+    publishedAt: ts("published_at"),
+    /** A gift nobody sends to us is deleted, with its photographs, after this. */
+    expiresAt: ts("expires_at"),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [uniqueIndex("gifts_wedding_uq").on(t.weddingId), index("gifts_state_idx").on(t.state)],
+);

@@ -241,3 +241,30 @@ export async function loadTemplatePreview(opts: { templateId?: string | null; th
   else if (opts.overrides) snap.meta.tokens = mergeTokens(snap.meta.tokens, opts.overrides);
   return assemble({ snap, guest: null, mode: "preview", asStatus: opts.state ?? "PUBLISHED", previewAsGuest: true, entitlements: ent });
 }
+
+/**
+ * A template shown with its sample content — the public gallery’s preview. The design (sections, opening, direction, colours) comes
+ * straight from the template specification in code, so a preview is always the design that ships; the words and photographs come
+ * from the template’s sample invitation. Only sample invitations are ever used as content.
+ */
+export async function loadSpecPreview(slug: string, opts: { state?: WeddingStatus; demoSlug?: string } = {}): Promise<InvitationView | null> {
+  const { TEMPLATE_SEEDS, generateSections } = await import("@/domain/design/templates");
+  const { THEME_SEEDS } = await import("@/domain/design/themes");
+  const { resolveEntitlements } = await import("@/domain/packages/entitlements");
+  const { defaultFeaturesFor } = await import("@/domain/packages/features");
+  const seed = TEMPLATE_SEEDS.find((t) => t.slug === slug);
+  if (!seed) return null;
+  const wedding = await getWeddingBySlug(opts.demoSlug ?? seed.config.demo ?? "meenakshi-and-aravind");
+  if (!wedding?.isDemo) return null;
+  const snap = await loadPublishedSnapshot(wedding);
+  if (!snap) return null;
+  const ent = resolveEntitlements("LUXURY", defaultFeaturesFor("LUXURY"));
+  if (seed.config.eventType) snap.doc.eventType = seed.config.eventType;
+  const old = new Map(snap.doc.sections.map((x) => [x.type, x]));
+  snap.doc.sections = generateSections(seed.config, ent).map((x) => ({ ...x, content: old.get(x.type)?.content ?? {} }));
+  snap.doc.opening.variant = seed.config.opening;
+  snap.meta.flavor = seed.config.flavor;
+  const theme = THEME_SEEDS.find((t) => t.slug === seed.config.suggestedTheme);
+  if (theme) snap.meta.tokens = theme.tokens;
+  return assemble({ snap, guest: null, mode: "preview", asStatus: opts.state ?? "PUBLISHED", previewAsGuest: true, entitlements: ent });
+}

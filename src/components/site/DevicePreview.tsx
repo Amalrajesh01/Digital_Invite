@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ExternalLink, Monitor, RotateCcw, Smartphone } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { track } from "./SiteTracker";
 
 type Device = "phone" | "desktop";
 const SIZE: Record<Device, { w: number; h: number }> = { phone: { w: 390, h: 800 }, desktop: { w: 1280, h: 800 } };
@@ -13,7 +14,7 @@ const BAR = 34; // the desktop frame’s browser bar
  * screen (an invitation carries real JavaScript), shows the photograph meanwhile, and is scaled — never squeezed — so the
  * design inside always lays out at a true phone or desktop width.
  */
-export function DevicePreview({ src, title, cover }: { src: string; title: string; cover: React.ReactNode }) {
+export function DevicePreview({ src, title, cover, trackRef }: { src: string; title: string; cover: React.ReactNode; trackRef?: string }) {
   const [device, setDevice] = useState<Device>("phone");
   const [near, setNear] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -58,7 +59,7 @@ export function DevicePreview({ src, title, cover }: { src: string; title: strin
           ))}
         </div>
         <div className="flex items-center gap-2">
-          <button type="button" onClick={() => { setRound((n) => n + 1); setLoaded(false); }} className="btn btn-ghost btn-sm"><RotateCcw className="size-4" aria-hidden /> Replay opening</button>
+          <button type="button" onClick={() => { setRound((n) => n + 1); setLoaded(false); }} className="btn btn-ghost btn-sm"><RotateCcw className="size-4" aria-hidden /> See the opening again</button>
           <a href={src} target="_blank" rel="noopener noreferrer" className="btn btn-quiet btn-sm"><ExternalLink className="size-4" aria-hidden /> Open full screen</a>
         </div>
       </div>
@@ -79,7 +80,7 @@ export function DevicePreview({ src, title, cover }: { src: string; title: strin
                 src={url}
                 title={title}
                 loading="lazy"
-                onLoad={() => setLoaded(true)}
+                onLoad={() => { setLoaded(true); if (trackRef) track("preview_open", trackRef); }}
                 className="absolute left-0 top-0 border-0 bg-white"
                 style={{ width: w, height: h, transform: `scale(${scale})`, transformOrigin: "top left" }}
                 allow="autoplay"
@@ -88,7 +89,7 @@ export function DevicePreview({ src, title, cover }: { src: string; title: strin
           </div>
         </div>
       </div>
-      <p className="mt-4 text-center text-[13.5px] text-muted">A real, published invitation with fictional names. Tap the envelope to open it.</p>
+      <p className="mt-4 text-center text-[13.5px] text-muted">This is the real design, filled with sample details. Tap it to open it, just as your guests will.</p>
     </div>
   );
 }

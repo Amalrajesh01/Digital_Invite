@@ -80,6 +80,17 @@ export function publishReadiness(input: {
   const err = (code: string, message: string, step?: string) => issues.push({ level: "error", code, message, step });
   const warn = (code: string, message: string, step?: string) => issues.push({ level: "warning", code, message, step });
 
+  // A love gift has its own, much shorter list: who it is for, and something to say.
+  if (doc.eventType === "love_gift") {
+    const love = doc.love;
+    const has = (t: Record<string, string>) => Object.values(t).some((v) => (v ?? "").trim());
+    if (!love.to.trim()) err("love.to", "Add the name of the person it is for.", "names");
+    if (!love.from.trim() && love.signAs !== "anonymous") err("love.from", "Add your name, or choose to sign as “someone who loves you”.", "names");
+    if (!has(love.letter) && !has(love.apology.owning) && !love.memories.length) err("love.words", "Write at least a few words — a message, a memory or an apology.", "message");
+    if (!love.photos.length && !love.memories.some((m) => m.photo)) warn("love.photos", "Add a photograph or two — they make it yours.", "photos");
+    return issues;
+  }
+
   const couple = subjectKind(doc) === "couple";
   const noun = couple ? "wedding" : "occasion";
   if (couple) {

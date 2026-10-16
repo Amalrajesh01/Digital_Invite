@@ -1,4 +1,5 @@
 import type { ThemeTokens } from "./tokens";
+import { EXTRA_THEMES } from "./themes-extra";
 
 export interface ThemeSeed {
   slug: string;
@@ -8,7 +9,7 @@ export interface ThemeSeed {
 }
 
 /** Built-in themes. Super Admin can duplicate and edit these from the Themes library. */
-export const THEME_SEEDS: ThemeSeed[] = [
+const CORE_THEMES: ThemeSeed[] = [
   {
     slug: "royal-gold",
     name: "Royal Gold",
@@ -180,3 +181,5 @@ export const THEME_SEEDS: ThemeSeed[] = [
     },
   },
 ];
+
+export const THEME_SEEDS: ThemeSeed[] = [...CORE_THEMES, ...EXTRA_THEMES];

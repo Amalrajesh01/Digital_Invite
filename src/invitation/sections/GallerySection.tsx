@@ -134,6 +134,27 @@ export default function GallerySection({ section }: { section: SectionConfig }) 
 
       {variant === "editorial" ? (
         <Spreads items={shown} onOpen={setOpen} />
+      ) : variant === "polaroid" ? (
+        <ul className="snaps">
+          {shown.map((it, i) => (
+            <Reveal as="li" key={it.id} delay={(i % 3) * 80} className="snap" >
+              <button type="button" onClick={() => setOpen(i)} aria-label={`${t("gallery.open")}${L(it.alt) ? `: ${L(it.alt)}` : ""}`} className="snap-card" style={{ "--tilt": `${[-3.2, 2.4, -1.4, 3, -2.2, 1.6][i % 6]}deg` } as React.CSSProperties}>
+                <img src={it.url} srcSet={it.srcSet} sizes="(max-width: 768px) 46vw, 24vw" alt={L(it.alt)} width={it.width} height={it.height} loading="lazy" decoding="async" />
+                <span className="snap-cap">{L(it.caption)}</span>
+                <i className="tape" aria-hidden />
+              </button>
+            </Reveal>
+          ))}
+        </ul>
+      ) : variant === "filmstrip" ? (
+        <div className="filmstrip" tabIndex={0} aria-label={t("gallery.title")}>
+          {shown.map((it, i) => (
+            <button key={it.id} type="button" className="film-frame" onClick={() => setOpen(i)} aria-label={`${t("gallery.open")}${L(it.alt) ? `: ${L(it.alt)}` : ""}`}>
+              <img src={it.url} srcSet={it.srcSet} sizes="(max-width: 768px) 70vw, 420px" alt={L(it.alt)} loading="lazy" decoding="async" />
+              <span className="film-no inv-num" aria-hidden>{String(i + 1).padStart(2, "0")}</span>
+            </button>
+          ))}
+        </div>
       ) : variant === "carousel" ? (
         <div className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 md:mx-0 md:px-0" tabIndex={0} aria-label={t("gallery.title")}>
           {shown.map((it, i) => (<div key={it.id} className="w-[82vw] shrink-0 snap-center md:w-[34rem]"><Thumb item={it} onOpen={() => setOpen(i)} className="aspect-[4/5] md:aspect-[4/3]" sizes="(max-width: 768px) 82vw, 544px" /></div>))}

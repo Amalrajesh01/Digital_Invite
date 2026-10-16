@@ -1,0 +1,69 @@
+import type { TemplateFlavor } from "./templates";
+
+/**
+ * The five visual directions every occasion is offered in. A direction is not a colour scheme: it decides how an
+ * invitation is composed (see `src/invitation/styles/directions.css`) — how a chapter starts, what separates sections,
+ * the shape of a card, how things arrive. The template then chooses its own opening, hero, section flow and palette.
+ *
+ * `editorial` is the original magazine look, kept for invitations that already use it.
+ */
+export interface Direction {
+  key: TemplateFlavor;
+  /** The name a customer sees. */
+  label: string;
+  /** One line a customer can understand at once. */
+  promise: string;
+  /** For the template specification and the studio. */
+  typography: string;
+  animation: string;
+  mobile: string;
+  accessibility: string;
+}
+
+export const DIRECTIONS: Record<TemplateFlavor, Direction> = {
+  royal: {
+    key: "royal", label: "Royal Tradition", promise: "Rich colour, ornament and ceremony — rooted in Indian celebration.",
+    typography: "A display serif for names, small widely-spaced capitals for labels; script only for the ampersand.",
+    animation: "Slow, symmetrical reveals; ornament lines draw in; lamp-light, doors and petals. Nothing bounces.",
+    mobile: "Centred single column; the arch or gateway photograph is sized to the screen so faces are never cropped.",
+    accessibility: "High-contrast ivory/ink pairs; ornament is decorative-only and hidden from screen readers; every opening can be skipped.",
+  },
+  minimal: {
+    key: "minimal", label: "Modern Minimal", promise: "Clean, quiet and exact — nothing that does not earn its place.",
+    typography: "One serif or grotesque at large sizes, hairline rules, numbered sections in small tracked figures.",
+    animation: "Crisp, short fades and line-draws; no decorative motion.",
+    mobile: "Left-aligned type on a strict grid; the photograph is a full-width band; numerals scale to the viewport.",
+    accessibility: "Largest text of all five directions; colour never carries meaning alone; generous tap targets.",
+  },
+  cinematic: {
+    key: "cinematic", label: "Cinematic Story", promise: "Full-screen photographs and a story told in chapters.",
+    typography: "Wide-tracked capitals over photographs, outlined chapter numerals, a serif for the lines of the story.",
+    animation: "Slow Ken-Burns on the opening photograph, weighty easing, letterbox bars; kept short so it never feels like a loading screen.",
+    mobile: "Photograph-first; text sits in the lower third away from faces; chapter numerals shrink but stay legible.",
+    accessibility: "A scrim guarantees text contrast on any photograph; motion stops completely for reduced-motion users.",
+  },
+  floral: {
+    key: "floral", label: "Floral & Romantic", promise: "Soft colour, hand-drawn leaves and a gentle hand.",
+    typography: "A calligraphic script for headings and names, a quiet serif for reading text.",
+    animation: "Very soft easing; petals drift once; a flower unfolds on opening.",
+    mobile: "Oval or arched photograph centred over soft colour; sprigs sit in the corners and never cover text.",
+    accessibility: "Script is used for headings only, never for dates, times or addresses; decorative leaves are aria-hidden.",
+  },
+  playful: {
+    key: "playful", label: "Playful & Interactive", promise: "Stickers, snapshots and a little surprise at every turn.",
+    typography: "A chunky rounded display face, bold labels, hard-edged sticker shadows.",
+    animation: "Springy overshoot easing, balloons to pop, a ticket to tear; always one tap, never a precise gesture.",
+    mobile: "Stacked paper sheets with rounded tops; big thumb-sized buttons; snapshots overlap but stay readable.",
+    accessibility: "Every playful opening is a single large tap target with a plain-button alternative; no timed or precise interactions.",
+  },
+  editorial: {
+    key: "editorial", label: "Editorial", promise: "A magazine layout — large photographs, generous white space.",
+    typography: "An oversized serif headline with clean supporting text.",
+    animation: "Gentle fades and mask reveals.",
+    mobile: "Single column with photographs at full width.",
+    accessibility: "Standard contrast and tap targets.",
+  },
+};
+
+/** The five a customer can choose between, in the order they are shown everywhere. */
+export const DIRECTION_ORDER = ["royal", "minimal", "cinematic", "floral", "playful"] as const;

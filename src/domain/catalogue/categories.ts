@@ -7,7 +7,7 @@ import { CATEGORY_SLUGS, type CategorySlug, type EventType } from "@/domain/doc/
  * same document, with the sections, wording and mood of its occasion (see `EVENT_TYPE_INFO`). A category with no sample
  * invitation yet is shown honestly as "designed on request" and kept out of search results until it has one.
  */
-export type CategoryGroup = "Weddings & couples" | "Family celebrations" | "Faith & culture" | "Corporate events" | "Remembrance";
+export type CategoryGroup = "For my love" | "Weddings & couples" | "Family celebrations" | "Faith & culture" | "Corporate events" | "Remembrance";
 
 export interface CategoryDef {
   slug: CategorySlug;
@@ -27,12 +27,32 @@ export interface CategoryDef {
   cover?: string;
   /** Event types a sample invitation may have to be listed under this category. */
   eventTypes: EventType[];
+  /** An occasion without designs of its own offers the five of this one (the wording changes; the designs are the same engine). */
+  family?: CategorySlug;
 }
 
 const NO_APP = { q: "Do my guests need an app or an account?", a: "No. Guests open a link on their phone — or scan a QR code — and the invitation opens in the browser. Nothing to install and nothing to remember." };
 const CHANGE = { q: "Can I change details after sharing the link?", a: "Yes. Every change is published to the same link, so a new time or venue reaches everyone at once. Each publish is saved as a version you can go back to." };
 
 export const CATEGORIES: CategoryDef[] = [
+  {
+    slug: "for-my-love", name: "For My Love", group: "For my love", cover: "WHNWkO1lBKU",
+    blurb: "A private digital gift for someone you love — a letter, a surprise, an apology, a story.",
+    title: "Love Gifts: Birthday Surprises, Anniversaries & Apologies",
+    seoDescription: "Make a private digital gift for the person you love: a birthday surprise, an anniversary story, a love letter or a sincere apology — with your own photographs and words.",
+    intro: [
+      "Some things are too personal for a card. A For My Love gift is a private page made for one person: your words, your photographs, a song if you like — opened by a link only they have.",
+      "Choose how it should unfold: a story told in chapters, a letter that opens like an envelope, a small surprise with a big finish, a gentle apology, or a celebration of your special day. You see it first, and it stays private.",
+    ],
+    includes: ["A private link only you and they have", "Your own photographs and words, in any language", "Five ways to open it, each different", "A song of your own, which never plays by itself", "An optional way for them to reply — never required", "Pause or delete it, with every photograph, whenever you like"],
+    faq: [
+      { q: "Who can see my gift?", a: "Only people who have the link. It is not listed anywhere, search engines are told to ignore it, and the link cannot be guessed. You can pause it at any time, and it stops working immediately." },
+      { q: "What happens to my photographs?", a: "They are used only inside your gift and stored privately. You can delete any photograph — or the whole gift — whenever you like. A gift you start but never send to us is deleted after 14 days." },
+      { q: "Can I write in Malayalam or another language?", a: "Yes. Write in whichever language you speak at home; the gift keeps your words exactly as you wrote them." },
+      { q: "Does the person have to reply?", a: "Never. A reply button appears only if you switch it on, and even then it is a quiet link at the very end. The apology gift asks for nothing at all." },
+    ],
+    eventTypes: ["love_gift"],
+  },
   {
     slug: "wedding", name: "Wedding", group: "Weddings & couples", cover: "2oQy4GAGxbk",
     blurb: "Hindu, Kerala, Christian, Muslim and modern — an invitation that opens like an envelope.",
@@ -99,7 +119,7 @@ export const CATEGORIES: CategoryDef[] = [
     eventTypes: ["anniversary"],
   },
   {
-    slug: "baby-shower", name: "Baby shower", group: "Family celebrations", cover: "ybvTwLSBtSY",
+    slug: "baby-shower", name: "Baby shower", group: "Family celebrations", family: "naming-ceremony", cover: "ybvTwLSBtSY",
     blurb: "A soft, gentle invitation for welcoming a little one.",
     title: "Baby Shower Invitation Templates",
     seoDescription: "Digital baby shower invitations, designed on request: a soft design with the plan for the day, directions, an RSVP and a wall of good wishes.",
@@ -128,7 +148,7 @@ export const CATEGORIES: CategoryDef[] = [
     eventTypes: ["naming_ceremony"],
   },
   {
-    slug: "housewarming", name: "Housewarming", group: "Family celebrations",
+    slug: "housewarming", name: "Housewarming", group: "Family celebrations", cover: "wc-145089568",
     blurb: "Invite everyone to bless the new home.",
     title: "Housewarming Invitation Templates",
     seoDescription: "Digital housewarming invitations, designed on request: the blessing of the home, a tour, lunch, directions and an RSVP — shared in one link.",
@@ -141,7 +161,7 @@ export const CATEGORIES: CategoryDef[] = [
     eventTypes: ["housewarming"],
   },
   {
-    slug: "graduation", name: "Graduation", group: "Family celebrations",
+    slug: "graduation", name: "Graduation", group: "Family celebrations", family: "birthday",
     blurb: "Celebrate the degree with the people who got you there.",
     title: "Graduation Invitation Templates",
     seoDescription: "Digital graduation invitations, designed on request: the ceremony, the photographs, the celebration lunch, directions and an RSVP.",
@@ -154,7 +174,7 @@ export const CATEGORIES: CategoryDef[] = [
     eventTypes: ["graduation"],
   },
   {
-    slug: "retirement", name: "Retirement", group: "Family celebrations",
+    slug: "retirement", name: "Retirement", group: "Family celebrations", family: "birthday",
     blurb: "A farewell worth keeping — with tributes from colleagues and friends.",
     title: "Retirement Party Invitation Templates",
     seoDescription: "Digital retirement party invitations, designed on request: the evening, tributes, dinner, directions and an RSVP — and a wall for colleagues’ messages.",
@@ -167,7 +187,7 @@ export const CATEGORIES: CategoryDef[] = [
     eventTypes: ["retirement"],
   },
   {
-    slug: "reunion", name: "Reunion", group: "Family celebrations",
+    slug: "reunion", name: "Reunion", group: "Family celebrations", family: "birthday",
     blurb: "Bring everyone back together — class, family or friends.",
     title: "Reunion Invitation Templates",
     seoDescription: "Digital reunion invitations, designed on request: a family or class reunion with the plan for the weekend, travel help, an RSVP and a shared photo wall.",
@@ -180,7 +200,7 @@ export const CATEGORIES: CategoryDef[] = [
     eventTypes: ["reunion"],
   },
   {
-    slug: "private-party", name: "Private party", group: "Family celebrations", cover: "vRa4PuRCW18",
+    slug: "private-party", name: "Private party", group: "Family celebrations", family: "birthday", cover: "vRa4PuRCW18",
     blurb: "Dinner, a rooftop, a long table — invite the right people.",
     title: "Private Party Invitation Templates",
     seoDescription: "Digital private party invitations, designed on request: a dress code, the plan for the night, directions and an RSVP — shared only with the people you choose.",
@@ -193,7 +213,7 @@ export const CATEGORIES: CategoryDef[] = [
     eventTypes: ["private_party"],
   },
   {
-    slug: "religious", name: "Religious ceremony", group: "Faith & culture", cover: "WciKbLIFGxc",
+    slug: "religious", name: "Religious ceremony", group: "Faith & culture", cover: "wc-146118873",
     blurb: "Prayers and rites, explained so that every guest can follow.",
     title: "Religious Ceremony Invitation Templates",
     seoDescription: "Digital invitations for religious ceremonies, designed on request: the rites explained, the schedule, directions, an RSVP and a wall of blessings.",
@@ -206,7 +226,7 @@ export const CATEGORIES: CategoryDef[] = [
     eventTypes: ["religious_ceremony"],
   },
   {
-    slug: "cultural", name: "Cultural event", group: "Faith & culture", cover: "UX3-_dGbCzk",
+    slug: "cultural", name: "Cultural event", group: "Faith & culture", family: "religious", cover: "UX3-_dGbCzk",
     blurb: "Performances, exhibitions and community evenings.",
     title: "Cultural Event Invitation Templates",
     seoDescription: "Digital invitations for cultural events, designed on request: the programme, the performers, the venue and a simple RSVP.",
@@ -219,7 +239,7 @@ export const CATEGORIES: CategoryDef[] = [
     eventTypes: ["cultural_event"],
   },
   {
-    slug: "festival", name: "Festival", group: "Faith & culture", cover: "zNY2lVIRh7M",
+    slug: "festival", name: "Festival", group: "Faith & culture", family: "religious", cover: "zNY2lVIRh7M",
     blurb: "Open the festival with a lamp and a link.",
     title: "Festival Invitation Templates",
     seoDescription: "Digital festival invitations, designed on request: the lighting of the lamp, the cultural programme, the feast, directions and an RSVP.",
@@ -248,7 +268,7 @@ export const CATEGORIES: CategoryDef[] = [
     eventTypes: ["corporate_event", "conclave", "conference", "product_launch"],
   },
   {
-    slug: "conclave", name: "Conclave", group: "Corporate events", cover: "gofAFBM6Q7Y",
+    slug: "conclave", name: "Conclave", group: "Corporate events", family: "corporate", cover: "gofAFBM6Q7Y",
     blurb: "A two-day, invitation-only gathering of senior leaders.",
     title: "Conclave Invitation Templates",
     seoDescription: "Digital conclave invitations: speakers, a day-by-day programme, partners by tier, registration and travel help — a sample of a two-day leadership conclave.",
@@ -274,7 +294,7 @@ export const CATEGORIES: CategoryDef[] = [
     eventTypes: ["conference"],
   },
   {
-    slug: "product-launch", name: "Product launch", group: "Corporate events",
+    slug: "product-launch", name: "Product launch", group: "Corporate events", family: "corporate",
     blurb: "A launch evening, with the demo, the team and a simple RSVP.",
     title: "Product Launch Invitation Templates",
     seoDescription: "Digital product launch invitations, designed on request: the story, the demo, the team, the venue and registration — shared in one link.",
@@ -307,4 +327,4 @@ export const CATEGORIES: CategoryDef[] = [
 const BY_SLUG = new Map(CATEGORIES.map((c) => [c.slug, c]));
 export const categoryBySlug = (slug: string): CategoryDef | undefined => BY_SLUG.get(slug as CategorySlug);
 export const isCategorySlug = (s: string): s is CategorySlug => (CATEGORY_SLUGS as readonly string[]).includes(s);
-export const CATEGORY_GROUPS: CategoryGroup[] = ["Weddings & couples", "Family celebrations", "Faith & culture", "Corporate events", "Remembrance"];
+export const CATEGORY_GROUPS: CategoryGroup[] = ["For my love", "Weddings & couples", "Family celebrations", "Faith & culture", "Corporate events", "Remembrance"];

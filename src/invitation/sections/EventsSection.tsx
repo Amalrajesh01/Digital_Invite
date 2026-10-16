@@ -160,6 +160,28 @@ function EditorialRow({ e, i }: { e: WeddingEvent; i: number }) {
   );
 }
 
+/** The days as a plain list of big dates: numerals on the left, what and where on the right. Quick to read, nothing spare. */
+function DateRow({ e, i }: { e: WeddingEvent; i: number }) {
+  const p = useEventParts(e);
+  const { t } = useInvitation();
+  return (
+    <Reveal as="li" delay={i * 70} className="evrow">
+      <div className="evrow-date" aria-label={p.long}>
+        <span className="evrow-day inv-num">{p.day}</span>
+        <span className="evrow-month">{p.month} {p.year}</span>
+      </div>
+      <div className="evrow-body">
+        {e.isMain && <p className="inv-eyebrow !text-[var(--c-accent)]">{t("events.main")}</p>}
+        <h3 className="inv-h3">{p.L(e.name)}</h3>
+        {p.time && <p className="inv-num evrow-time">{p.weekday} · {p.time}</p>}
+        {p.where && <p className="inv-muted mt-1">{p.where}</p>}
+        <Details e={e} />
+        <Actions e={e} />
+      </div>
+    </Reveal>
+  );
+}
+
 export default function EventsSection({ section }: { section: SectionConfig }) {
   const { view } = useInvitation();
   const copy = useCopy(section, { title: "events.title" });
@@ -170,6 +192,8 @@ export default function EventsSection({ section }: { section: SectionConfig }) {
       <SectionHead eyebrow={copy.eyebrow} title={copy.title || undefined} intro={copy.intro} className="!mb-12" />
       {section.variant === "timeline" ? (
         <DayTimeline events={events} />
+      ) : section.variant === "rows" ? (
+        <ol className="evrows">{events.map((e, i) => (<DateRow key={e.id} e={e} i={i} />))}</ol>
       ) : section.variant === "editorial" ? (
         <div className="stages">{events.map((e, i) => (<EditorialRow key={e.id} e={e} i={i} />))}</div>
       ) : (

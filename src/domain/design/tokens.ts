@@ -70,15 +70,15 @@ function stripUndefined<T extends object>(obj: T): T {
  * may pair an elegant display serif (names, headings) with Inter for supporting text — the wedding-stationery look.
  */
 export const FONT_CHOICES = {
-  heading: ["Cormorant Garamond", "Playfair Display", "Cinzel", "Marcellus", "Bodoni Moda", "DM Serif Display", "Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Outfit", "Poppins", "Work Sans", "Hanken Grotesk", "Space Grotesk", "Fredoka"],
+  heading: ["Cormorant Garamond", "Playfair Display", "Cinzel", "Marcellus", "Bodoni Moda", "DM Serif Display", "Fraunces", "Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Outfit", "Poppins", "Work Sans", "Hanken Grotesk", "Space Grotesk", "Fredoka", "Baloo 2"],
   body: ["Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Work Sans", "Hanken Grotesk", "Mulish", "Karla", "Nunito"],
-  script: ["Cormorant Garamond", "Playfair Display", "Bodoni Moda", "Pinyon Script", "Great Vibes", "Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Outfit", "Poppins", "Space Grotesk", "Fredoka"],
+  script: ["Cormorant Garamond", "Playfair Display", "Bodoni Moda", "Fraunces", "Pinyon Script", "Great Vibes", "Parisienne", "Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Outfit", "Poppins", "Space Grotesk", "Fredoka", "Baloo 2"],
 } as const;
 
 /** Display serifs: drive the invitation's typographic details (case, tracking, weights). */
-export const SERIF_FONTS: readonly string[] = ["Cormorant Garamond", "Playfair Display", "Cinzel", "Marcellus", "Bodoni Moda", "DM Serif Display"];
+export const SERIF_FONTS: readonly string[] = ["Cormorant Garamond", "Playfair Display", "Cinzel", "Marcellus", "Bodoni Moda", "DM Serif Display", "Fraunces"];
 /** Accent fonts that have a true italic; everything else is shown upright (a synthesised slant looks cheap). */
-export const ITALIC_ACCENTS: readonly string[] = ["Cormorant Garamond", "Playfair Display", "DM Serif Display", "Bodoni Moda"];
+export const ITALIC_ACCENTS: readonly string[] = ["Cormorant Garamond", "Playfair Display", "DM Serif Display", "Bodoni Moda", "Fraunces"];
 export const isSerif = (family: string) => SERIF_FONTS.includes(family);
 
 export const RADIUS_PX: Record<ThemeTokens["radius"], string> = { none: "0px", soft: "4px", round: "14px", pill: "999px" };
@@ -91,6 +91,9 @@ const WEIGHTS: Record<string, string> = {
   "Bodoni Moda": "ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400;1,6..96,500",
   "DM Serif Display": "ital@0;1",
   "Pinyon Script": "",
+  "Parisienne": "",
+  "Fraunces": "ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500",
+  "Baloo 2": "wght@400;500;600;700;800",
   "Great Vibes": "",
   "Inter": "opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800",
   "Manrope": "wght@300;400;500;600;700",

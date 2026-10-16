@@ -25,6 +25,8 @@ export const EVENT_TYPES = [
   "corporate_event", "conclave", "conference", "product_launch",
   // remembrance
   "funeral", "memorial",
+  // a personal gift
+  "love_gift",
 ] as const;
 export type EventType = (typeof EVENT_TYPES)[number];
 export const DEFAULT_EVENT_TYPE: EventType = "hindu_wedding";
@@ -38,12 +40,12 @@ export type SubjectKind = "couple" | "person" | "occasion" | "memorial";
 /** The mood of the occasion. `solemn` removes celebration effects and slows every movement down. */
 export type Tone = "celebratory" | "professional" | "solemn";
 /** Which set of fixed interface wording applies (see `EVENT_VOICES` in the interface strings). */
-export type Voice = "wedding" | "engagement" | "anniversary" | "birthday" | "celebration" | "ceremony" | "professional" | "memorial";
+export type Voice = "wedding" | "engagement" | "anniversary" | "birthday" | "celebration" | "ceremony" | "professional" | "memorial" | "love";
 
 /** The categories the public site groups its templates by (`/templates/<slug>`). */
 export const CATEGORY_SLUGS = [
   "wedding", "engagement", "birthday", "anniversary", "baby-shower", "naming-ceremony", "housewarming", "graduation", "retirement", "reunion", "private-party",
-  "religious", "cultural", "festival", "corporate", "conclave", "conference", "product-launch", "funeral",
+  "religious", "cultural", "festival", "corporate", "conclave", "conference", "product-launch", "funeral", "for-my-love",
 ] as const;
 export type CategorySlug = (typeof CATEGORY_SLUGS)[number];
 
@@ -100,6 +102,7 @@ export const EVENT_TYPE_INFO: Record<EventType, EventTypeInfo> = {
   product_launch: { label: "Product launch", category: "product-launch", subject: "occasion", tone: "professional", voice: "professional", celebration: "none", couple: false, figures: "western", phrase: "generic", confetti: [], cta: "Create Event Invitation", enquiry: "a product launch invitation" },
 
   funeral: { label: "Funeral service", category: "funeral", subject: "memorial", tone: "solemn", voice: "memorial", celebration: "none", couple: false, figures: "western", phrase: "generic", confetti: [], cta: "Talk to Our Team", enquiry: "a memorial invitation" },
+  love_gift: { label: "Love gift", category: "for-my-love", subject: "occasion", tone: "celebratory", voice: "love", celebration: "none", couple: false, figures: "western", phrase: "generic", confetti: [], cta: "Make My Own Love Gift", enquiry: "a love gift" },
   memorial: { label: "Memorial / prayer meeting", category: "funeral", subject: "memorial", tone: "solemn", voice: "memorial", celebration: "none", couple: false, figures: "western", phrase: "generic", confetti: [], cta: "Talk to Our Team", enquiry: "a memorial invitation" },
 };
 

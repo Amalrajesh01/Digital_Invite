@@ -142,6 +142,66 @@ export const DEMOS: DemoDef[] = [
     description: "Warm ivory, sage and a touch of peach. An arched portrait of the little one, the rituals of the day explained in a few warm lines, a note from the grandparents and a table laid for lunch.",
     highlights: ["An arched portrait of the newborn", "The lamp, the whispered name and the first blessings explained", "A note from the grandparents", "A wall of blessings for the little one"], bestFor: ["Naming ceremonies", "Baby welcomes and blessings", "Family gatherings at home"], languages: ["English"], when: "14 March 2027", where: "Thrissur",
   },
+  {
+    slug: "nandini-and-vikram", name: "Nandini & Vikram", title: "Garden Wedding", eventType: "wedding", template: "garden-romance", theme: "sage-blossom", styles: ["Romantic", "Modern & minimal"],
+    cover: "xXHyI3ZRByo", coverFocal: { x: 50, y: 55 }, strip: ["NNNRQgsQXpE", "SHFOaVaVe2A", "IjdzkDxKjc4", "csK5XPO87lI"],
+    tagline: "Two gardeners, one very long walk — in the hills of Coorg.", description: "A garden wedding over two days: an oval portrait among leaves, a sapling planted before the ceremony and a long table under lanterns.",
+    highlights: ["A flower blooms to open the invitation", "Saplings, garlands and the seven steps explained", "An illustrated map to the garden", "A carousel of garden photographs"], bestFor: ["Garden, resort and lawn weddings", "Daytime ceremonies"], languages: ["English"], when: "10 April 2027", where: "Coorg",
+  },
+  {
+    slug: "riya-and-sameer", name: "Riya & Sameer", title: "Sangeet-Night Wedding", eventType: "wedding", template: "sangeet-night", theme: "festive-pop", styles: ["Playful"],
+    cover: "d9RsO9BHFVQ", coverFocal: { x: 50, y: 40 }, strip: ["OzyvCE9a60M", "M8YKi58QKrM", "gG5MoExhMnU", "J03oQgePJog"],
+    tagline: "Two families, two cuisines, one very loud dance floor.", description: "A wedding that begins as a party: a ticket to tear, a table of snapshots, a quiz about the couple and a ceremony that borrows from both families.",
+    highlights: ["Tear the ticket to open", "Quiz, games and a photo scavenger hunt", "A ceremony that explains both families' customs", "Polaroid-style photo gallery"], bestFor: ["Sangeet and mehendi nights", "Interfaith and modern weddings"], languages: ["English"], when: "22 May 2027", where: "Bengaluru",
+  },
+  {
+    slug: "nair-griha-pravesh", name: "Ananda Nilayam", title: "Griha Pravesh (Housewarming)", eventType: "housewarming", template: "griha-pravesh", theme: "kasavu", styles: ["Traditional"],
+    cover: "wc-145089568", coverFocal: { x: 55, y: 35 }, strip: ["wc-146118873", "WciKbLIFGxc", "zNY2lVIRh7M", "wc-152617626"],
+    tagline: "Open the door to the new home — with every ritual explained.", description: "A traditional housewarming in Kochi: the homam, the first step across the threshold, the milk boiled until it overflows and the first meal.",
+    highlights: ["Doors that open onto the new home", "Each ritual explained for guests who are new to it", "One-tap directions and parking", "A wall of good wishes"], bestFor: ["Griha Pravesh and house blessings", "Families with rituals to explain"], languages: ["English"], when: "28 March 2027", where: "Kochi",
+  },
+  {
+    slug: "satyanarayana-puja", name: "Sri Satyanarayana Puja", title: "Puja", eventType: "religious_ceremony", template: "sacred-lamp", theme: "saffron-deep", styles: ["Traditional"],
+    cover: "wc-146118873", coverFocal: { x: 50, y: 30 }, strip: ["wc-145136685", "zNY2lVIRh7M", "df6Z3DPPw5U", "wc-40896574"],
+    tagline: "A morning of prayer at the family home, with every rite explained.", description: "A devotional invitation for a family puja: the sankalpam, the katha, the aarti and lunch, with the prayer set out in full.",
+    highlights: ["Light the lamp to open", "Every rite explained, one by one", "The prayer to be said together", "Directions and parking"], bestFor: ["Pujas and homams", "Temple and community functions"], languages: ["English"], when: "17 January 2027", where: "Chennai",
+  },
+  {
+    slug: "onam-celebration", name: "Onam at Green Meadows", title: "Community Festival", eventType: "festival", template: "festival-lights", theme: "midnight-marigold", styles: ["Luxury", "Traditional"],
+    cover: "wc-145136685", coverFocal: { x: 50, y: 45 }, strip: ["wc-133359284", "wc-152617626", "UX3-_dGbCzk", "wc-162739830"],
+    tagline: "Pookalam, sadya and a very long tug-of-war.", description: "A residents' association festival: the day's programme from the first flower to the last lamp, with the traditions explained for newcomers.",
+    highlights: ["A film strip of festival pictures", "A newcomer's guide to Onam traditions", "Supporters and partners listed", "Register and bring a dish"], bestFor: ["Residents' associations", "Community and cultural festivals"], languages: ["English"], when: "12 December 2026", where: "Bengaluru",
+  },
+  {
+    slug: "love-our-story", name: "Our Story — sample", title: "Love Gift: Our Story", eventType: "love_gift", template: "our-story", theme: "love-noir", styles: ["Romantic"],
+    cover: "pLDDrRkLMWY", strip: ["QoBHQuiu9N0", "TLBDWV7RRYI", "AD3k4pko7wo", "WHNWkO1lBKU"],
+    tagline: "The story of two people, told in chapters.", description: "A sample proposal told as a short film: a full-screen photograph for each memory, and a letter that ends with a question.",
+    highlights: ["A chapter for every memory", "Full-screen photographs", "A letter at the end", "Nothing to answer"], bestFor: ["A proposal", "A special memory"], languages: ["English"], when: "Private gift", where: "A link only they have",
+  },
+  {
+    slug: "love-letter", name: "A Letter to You — sample", title: "Love Gift: A Letter to You", eventType: "love_gift", template: "letter-to-you", theme: "love-rose", styles: ["Romantic"],
+    cover: "WHNWkO1lBKU", strip: ["nBFagEIwy0o", "NNNRQgsQXpE", "AD3k4pko7wo", "pLDDrRkLMWY"],
+    tagline: "A sealed envelope and a letter that unfolds.", description: "A sample Valentine's letter: a wax seal to open, paragraphs that appear as you read, and photographs tucked in between.",
+    highlights: ["A seal to open", "Paragraph by paragraph", "Photographs tucked in", "Quiet and simple"], bestFor: ["Valentine's Day", "A message that is only yours"], languages: ["English"], when: "Private gift", where: "A link only they have",
+  },
+  {
+    slug: "love-surprise", name: "Little Surprise — sample", title: "Love Gift: Little Surprise", eventType: "love_gift", template: "little-surprise", theme: "love-sorbet", styles: ["Playful"],
+    cover: "UJynGW4gF-I", strip: ["K2JtyCVdeuQ", "ch4Fc1cGTq4", "xXHyI3ZRByo", "1dzXfvALJxs"],
+    tagline: "A gift to open, with small surprises behind it.", description: "A sample birthday surprise: a wrapped gift, then one small surprise at a time, with a big finish and a skip button always in reach.",
+    highlights: ["A gift to open", "One easy tap per surprise", "Skip to the end any time", "Confetti on the last one only"], bestFor: ["A birthday", "Someone who loves surprises"], languages: ["English"], when: "Private gift", where: "A link only they have",
+  },
+  {
+    slug: "love-sorry", name: "I’m Sorry, My Love — sample", title: "Love Gift: I’m Sorry, My Love", eventType: "love_gift", template: "im-sorry-my-love", theme: "love-mist", styles: ["Solemn"],
+    cover: "IjdzkDxKjc4", strip: ["IjdzkDxKjc4", "NNNRQgsQXpE", "TLBDWV7RRYI", "QoBHQuiu9N0"],
+    tagline: "A sincere apology, offered gently and never demanded.", description: "A sample apology that asks for nothing: read now or later, plain words, how it must have felt, and what the sender would like to do.",
+    highlights: ["‘Not right now’ is always fine", "Plain, honest words", "No effects, no pressure", "A reply only if the sender allows it"], bestFor: ["After an argument", "Reconnecting gently"], languages: ["English"], when: "Private gift", where: "A link only they have",
+  },
+  {
+    slug: "love-special-day", name: "Our Special Day — sample", title: "Love Gift: Our Special Day", eventType: "love_gift", template: "our-special-day", theme: "love-rose", styles: ["Romantic"],
+    cover: "cRyUjYf6VBQ", strip: ["OmLrFODvPII", "xXHyI3ZRByo", "WHNWkO1lBKU", "nBFagEIwy0o"],
+    tagline: "A date, a countdown and the story of your years.", description: "A sample anniversary: a live countdown, the years together, a timeline of memories and a celebration at the end.",
+    highlights: ["A live countdown", "Years together, counted", "A timeline of memories", "A burst of celebration"], bestFor: ["Anniversaries", "Milestone birthdays"], languages: ["English"], when: "Private gift", where: "A link only they have",
+  },
 ];
 
 // ── lookups ─────────────────────────────────────────────────────────────────

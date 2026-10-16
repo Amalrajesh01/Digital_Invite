@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/invitation/sections/heroes.css"
+        ],
+        "createdAt": "2026-10-15T23:12:37.289Z",
+        "reason": "Photo-filled numeral (background-clip:text with the customer's photograph); gradient is only the no-photo fallback. Decided by the design brief: image-led hero compositions."
+      }
+    ]
+  }
+}

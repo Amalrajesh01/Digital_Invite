@@ -666,6 +666,7 @@ type Strings = Partial<Record<StringKey, string>>;
  */
 export const EVENT_VOICES: Record<Voice, Strings> = {
   wedding: {},
+  love: { "gate.invitedTo": "Something for you", "gate.cardLine": "Something for you" },
   engagement: {
     "gate.invitedTo": "You are invited to the engagement of",
     "footer.closing": "Soon, forever.",

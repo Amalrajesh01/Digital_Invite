@@ -26,6 +26,11 @@ export async function inviteMetadata(slug: string, token: string | null, state: 
   const res = await loadInvite(slug, token, state);
   if (!res.ok) return { title: "Invitation", robots: { index: false, follow: false } };
   const { view } = res;
+  // A love gift is private: no names, no photograph in the link preview, and never indexed or archived.
+  if (view.doc.eventType === "love_gift") {
+    const title = view.wedding.isDemo ? "A sample love gift" : "A gift for you";
+    return { title, description: "Someone made this for you.", metadataBase: new URL(env.appUrl), robots: { index: false, follow: false, noarchive: true, nosnippet: true }, referrer: "no-referrer", openGraph: { type: "website", title, description: "Someone made this for you.", siteName: brand.name }, twitter: { card: "summary", title } };
+  }
   const loc = view.wedding.defaultLocale;
   const seo = view.doc.seo;
   const info = EVENT_TYPE_INFO[view.doc.eventType];

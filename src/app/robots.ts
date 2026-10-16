@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       { userAgent: AI_CRAWLERS, disallow: "/" },
-      { userAgent: "*", allow: "/", disallow: ["/preview/", "/admin/", "/client/", "/editor/", "/api/", "/invite/", "/wall/", "/login"] },
+      { userAgent: "*", allow: "/", disallow: ["/preview/", "/admin/", "/client/", "/editor/", "/api/", "/invite/", "/wall/", "/login", "/for-my-love/make", "/for-my-love/gift/", "/for-my-love/preview/", "/start/thanks"] },
     ],
     sitemap: absoluteUrl("/sitemap.xml"),
     host: absoluteUrl("/"),

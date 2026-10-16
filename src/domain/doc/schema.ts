@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { SECTION_TYPES, WEDDING_STATUSES } from "./constants";
+import { OPENINGS, SECTION_TYPES, WEDDING_STATUSES } from "./constants";
 import { DEFAULT_EVENT_TYPE, EVENT_TYPES } from "./event-types";
+import { LOVE_EXPERIENCES, LOVE_MOODS, LOVE_OCCASIONS } from "@/domain/love/constants";
 
 /**
  * The Invitation Document — everything an invitation *says*, independent of who is looking at it.
@@ -417,7 +418,7 @@ export type OccasionDoc = z.infer<typeof OccasionDoc>;
 
 // ── misc content ───────────────────────────────────────────────────────────
 export const OpeningDoc = ObjDefault({
-  variant: z.enum(["none", "envelope", "seal", "cinematic", "swipe", "curtain"]).default("envelope"),
+  variant: z.enum(OPENINGS).default("envelope"),
   sealText: z.string().max(4).default(""),
   dateReveal: z.boolean().default(true),
   showInitials: z.boolean().default(true),
@@ -474,11 +475,50 @@ export const SectionConfig = z.object({
 });
 export type SectionConfig = z.infer<typeof SectionConfig>;
 
+// ── a love gift: a personal message, not an invitation ─────────────────────
+/**
+ * Everything a "For My Love" gift says. The sender writes it in whichever language they like (stored under that
+ * language's key), so it is `LocalizedText`; the experience shows whatever exists. Every part is optional and empty
+ * by default, so every other kind of invitation parses exactly as before.
+ */
+export const LoveDoc = ObjDefault({
+  experience: z.enum(LOVE_EXPERIENCES).default("letter"),
+  occasion: z.enum(LOVE_OCCASIONS).default("just_because"),
+  mood: z.enum(LOVE_MOODS).default("romantic"),
+  /** Who it is from, who it is for, and the pet name they like. */
+  from: z.string().max(60).default(""),
+  to: z.string().max(60).default(""),
+  nickname: z.string().max(40).default(""),
+  /** How the recipient is addressed, and how the sender signs. */
+  addressAs: z.enum(["name", "nickname", "both"]).default("name"),
+  signAs: z.enum(["name", "initial", "anonymous"]).default("name"),
+  /** The date that matters (birthday, anniversary, the day it began) and an optional name for it. */
+  date: IsoDate.default(""),
+  dateLabel: L(),
+  /** The language the sender wrote in — decides the typeface only. */
+  language: z.string().max(5).default("en"),
+  /** The big line at the start; empty = a sensible one for the occasion. */
+  headline: L(),
+  letter: L(), // blank lines separate paragraphs
+  apology: ObjDefault({ owning: L(), feelings: L(), promise: L() }),
+  reasons: z.array(L()).max(12).default([]),
+  memories: z
+    .array(z.object({ id: z.string(), title: L(), body: L(), when: z.string().max(40).default(""), photo: MediaId }))
+    .max(12)
+    .default([]),
+  photos: z.array(z.string()).max(12).default([]),
+  closing: L(),
+  /** Optional: let them answer. Off by default — nothing is ever asked of the person who receives it. */
+  reply: ObjDefault({ enabled: z.boolean().default(false), whatsapp: z.string().max(24).default("") }),
+});
+export type LoveDoc = z.infer<typeof LoveDoc>;
+
 // ── the document ───────────────────────────────────────────────────────────
 export const InvitationDoc = z.object({
   schemaVersion: z.literal(1).default(1),
   eventType: z.enum(EVENT_TYPES).default(DEFAULT_EVENT_TYPE),
   occasion: OccasionDoc,
+  love: LoveDoc,
   couple: CoupleDoc,
   family: FamilyDoc,
   story: StoryDoc,

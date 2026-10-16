@@ -37,6 +37,12 @@ import { HELEN } from "./demo/helen";
 import { MEERA } from "./demo/meera";
 import { AARAV } from "./demo/aarav";
 import { AADHYA } from "./demo/aadhya";
+import { NANDINI } from "./demo/nandini";
+import { RIYA } from "./demo/riya";
+import { NAIR } from "./demo/nair";
+import { PUJA } from "./demo/puja";
+import { ONAM } from "./demo/onam";
+import { LOVE_DEMOS, buildLoveDoc, type LoveCfg } from "./demo/love";
 import { CONCLAVE } from "./demo/conclave";
 import { SUMMIT } from "./demo/summit";
 import { THOMAS } from "./demo/thomas";
@@ -377,6 +383,25 @@ async function seedOccasion(admin: AdminActor, c: OccasionCfg) {
   return w.id;
 }
 
+/** A sample love gift: the same pipeline as any invitation, with the love document in place of sections. */
+async function seedLove(admin: AdminActor, c: LoveCfg) {
+  const db = await getDb();
+  const [existing] = await db.select({ id: schema.weddings.id }).from(schema.weddings).where(eq(schema.weddings.slug, c.slug));
+  if (existing) {
+    console.log(`  • ${c.slug} already exists — skipping`);
+    return existing.id;
+  }
+  const [tpl] = await db.select().from(schema.templates).where(eq(schema.templates.slug, c.template));
+  const [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, c.theme));
+  if (!tpl || !thm) throw new Error(`Template "${c.template}" or theme "${c.theme}" is missing — run npm run library:refresh first.`);
+  const w = await createWedding(admin, { title: c.title, slug: c.slug, packageKey: "ESSENTIAL", customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", secondaryLocale: null, weddingDate: c.date });
+  await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com", autoLifecycle: false }).where(eq(schema.weddings.id, w.id));
+  const { ids } = await loadDemoAssets(w.id, c.slug, c.needs, []);
+  await finishDemo(admin, w.id, { slug: c.slug, track: c.track, galleryIds: [], label: "Launch", buildDoc: (base) => buildLoveDoc(base, c, (k) => ids.get(k)) });
+  console.log(`  ✔ ${c.slug}  (love gift sample)`);
+  return w.id;
+}
+
 async function seedPeople(admin: AdminActor, weddingId: string, slug: string, pkg: PackageKey, gallery: DemoMedia["gallery"], art: NonNullable<typeof cache>) {
   const db = await getDb();
   const groups = await db.select().from(schema.guestGroups).where(eq(schema.guestGroups.weddingId, weddingId));
@@ -484,6 +509,12 @@ const PUBLIC_DEMOS: [slug: string, run: (admin: AdminActor) => Promise<string>][
   [CONCLAVE.slug, (a) => seedOccasion(a, CONCLAVE)],
   [SUMMIT.slug, (a) => seedOccasion(a, SUMMIT)],
   [THOMAS.slug, (a) => seedOccasion(a, THOMAS)],
+  [NANDINI.slug, (a) => seedShowcase(a, NANDINI)],
+  [RIYA.slug, (a) => seedShowcase(a, RIYA)],
+  [NAIR.slug, (a) => seedOccasion(a, NAIR)],
+  [PUJA.slug, (a) => seedOccasion(a, PUJA)],
+  [ONAM.slug, (a) => seedOccasion(a, ONAM)],
+  ...LOVE_DEMOS.map((c): [string, (a: AdminActor) => Promise<string>] => [c.slug, (a) => seedLove(a, c)]),
 ];
 
 /**

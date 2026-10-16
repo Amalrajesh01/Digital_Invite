@@ -34,7 +34,7 @@ export interface ShowcaseCfg {
   contacts: [name: string, role: string, phone: string][];
   palette: { colors: [hex: string, name: string][]; note: string };
   dressAvoid: string;
-  opening: { variant: "none" | "envelope" | "seal" | "cinematic" | "swipe" | "curtain"; sealText: string; invited: string };
+  opening: { variant: InvitationDoc["opening"]["variant"]; sealText: string; invited: string };
   thankYou: { message: string; signature: string; photo: string };
   seo: { title: string; description: string; og: string };
   needs: Need[];

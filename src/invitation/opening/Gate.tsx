@@ -1,5 +1,6 @@
 "use client";
 import "./gate.css";
+import "./scenes.css";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { ChevronUp } from "lucide-react";
@@ -7,9 +8,10 @@ import { useInvitation } from "../engine/context";
 import { fmtDate } from "../engine/format";
 import { distanceKm } from "../engine/format";
 import { useSubject, type Subject } from "../engine/subject";
+import { BalloonsArt, BloomArt, DoorsArt, LampArt } from "./scenes";
 
 type State = "closed" | "opening" | "leaving" | "gone";
-const DURATION: Record<string, number> = { envelope: 3000, seal: 1500, cinematic: 250, swipe: 350, curtain: 1600, none: 0 };
+const DURATION: Record<string, number> = { envelope: 3000, seal: 1500, cinematic: 250, swipe: 350, curtain: 1600, lamp: 2000, doors: 1900, balloons: 1100, ticket: 1500, bloom: 1900, none: 0 };
 
 function GateMonogram() {
   const s = useSubject();
@@ -106,9 +108,8 @@ function LocationHint() {
 export function Gate({ skip }: { skip?: boolean }) {
   const { view, t, L, music, setEntered, reducedMotion, slug, locale, has } = useInvitation();
   const op = view.doc.opening;
-  // Every invitation opens with the same realistic wax-sealed envelope; "none" still skips the opening entirely.
-  // (The older seal / cinematic / swipe / curtain scenes below are kept but are no longer selected.)
-  const variant = (op.variant === "none" ? "none" : "envelope") as typeof op.variant;
+  // The design chooses how its invitation opens (envelope, lamp, doors, ticket …); "none" skips the opening entirely.
+  const variant = op.variant;
   const [state, setState] = useState<State>(variant === "none" || skip ? "gone" : "closed");
   const [seqDone, setSeqDone] = useState(false);
   const primary = useRef<HTMLButtonElement>(null);
@@ -206,6 +207,7 @@ export function Gate({ skip }: { skip?: boolean }) {
   return (
     <motion.div
       className="gate"
+      data-variant={variant}
       data-state={state}
       role="dialog"
       aria-modal="true"
@@ -320,6 +322,76 @@ export function Gate({ skip }: { skip?: boolean }) {
             {Actions}
           </div>
         </>
+      )}
+      {variant === "lamp" && (
+        <div className="gate-inner">
+          {Header}
+          <h1 className="gate-names">{names.a}{names.isCouple && <> <span className="amp">{t("invite.and")}</span> {names.b}</>}</h1>
+          <div className="lamp" data-open={isOpening} role="button" tabIndex={0} aria-label={t("gate.tapToOpen")} onClick={() => open(wantsMusic)} onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), open(wantsMusic))}>
+            <span className="lamp-glow" aria-hidden />
+            <LampArt />
+          </div>
+          {seatsText && <p className="gate-hint">{seatsText}</p>}
+          {Actions}
+        </div>
+      )}
+
+      {variant === "doors" && (
+        <div className="gate-inner">
+          <p className="inv-eyebrow !text-[var(--c-accent)]">{invited}</p>
+          {greeting && <p className="gate-dear">{greeting}</p>}
+          <h1 className="gate-names">{names.a}{names.isCouple && <> <span className="amp">{t("invite.and")}</span> {names.b}</>}</h1>
+          <div className="doors" data-open={isOpening} role="button" tabIndex={0} aria-label={t("gate.tapToOpen")} onClick={() => open(wantsMusic)} onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), open(wantsMusic))}>
+            <DoorsArt />
+          </div>
+          {seatsText && <p className="gate-hint">{seatsText}</p>}
+          {Actions}
+        </div>
+      )}
+
+      {variant === "balloons" && (
+        <div className="gate-inner">
+          {Header}
+          <h1 className="gate-names">{names.a}{names.isCouple && <> <span className="amp">{t("invite.and")}</span> {names.b}</>}</h1>
+          <div className="balloons-wrap" data-open={isOpening} role="button" tabIndex={0} aria-label={t("gate.tapToOpen")} onClick={() => open(wantsMusic)} onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), open(wantsMusic))}>
+            <BalloonsArt />
+          </div>
+          {seatsText && <p className="gate-hint">{seatsText}</p>}
+          {Actions}
+        </div>
+      )}
+
+      {variant === "ticket" && (
+        <div className="gate-inner">
+          <p className="inv-eyebrow !text-[var(--c-accent)]">{invited}</p>
+          {greeting && <p className="gate-dear">{greeting}</p>}
+          <div className="ticket" data-open={isOpening} role="button" tabIndex={0} aria-label={t("gate.tapToOpen")} onClick={() => open(wantsMusic)} onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), open(wantsMusic))}>
+            <div className="ticket-main">
+              <p className="ticket-line">{names.isCouple ? t("invite.together") : names.invitation || t("gate.cardLine")}</p>
+              <p className="ticket-names">{names.a}{names.isCouple && <><span className="amp"> {t("invite.and")} </span>{names.b}</>}</p>
+              {names.subtitle && <p className="ticket-sub">{names.subtitle}</p>}
+              {mainDate && <p className="ticket-date">{fmtDate(mainDate, locale, "long")}</p>}
+            </div>
+            <div className="ticket-stub" aria-hidden>
+              <span className="ticket-no">{mainDate ? mainDate.slice(8, 10) : names.initials}</span>
+              <span className="ticket-bars" />
+            </div>
+          </div>
+          {seatsText && <p className="gate-hint">{seatsText}</p>}
+          {Actions}
+        </div>
+      )}
+
+      {variant === "bloom" && (
+        <div className="gate-inner">
+          {Header}
+          <div className="bloom" data-open={isOpening} role="button" tabIndex={0} aria-label={t("gate.tapToOpen")} onClick={() => open(wantsMusic)} onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), open(wantsMusic))}>
+            <BloomArt />
+          </div>
+          <h1 className="gate-names">{names.a}{names.isCouple && <> <span className="amp">{t("invite.and")}</span> {names.b}</>}</h1>
+          {seatsText && <p className="gate-hint">{seatsText}</p>}
+          {Actions}
+        </div>
       )}
     </motion.div>
   );

@@ -14,6 +14,14 @@ export const SECTION_TYPES = [
 ] as const;
 export type SectionType = (typeof SECTION_TYPES)[number];
 
+/** How an invitation opens. Each is a different little scene, so two designs never begin the same way. */
+export const OPENINGS = ["none", "envelope", "seal", "cinematic", "swipe", "curtain", "lamp", "doors", "balloons", "ticket", "bloom"] as const;
+export type OpeningVariant = (typeof OPENINGS)[number];
+export const OPENING_LABELS: Record<OpeningVariant, string> = {
+  none: "No opening", envelope: "Wax-sealed envelope", seal: "Wax seal", cinematic: "Film title sequence", swipe: "Swipe up",
+  curtain: "Curtains part", lamp: "Light the lamp", doors: "Doors open", balloons: "Pop the balloons", ticket: "Tear the ticket", bloom: "A flower blooms",
+};
+
 export const DEFAULT_GROUPS = [
   { key: "bride-family", name: "Bride's family", kind: "BRIDE_FAMILY" },
   { key: "groom-family", name: "Groom's family", kind: "GROOM_FAMILY" },

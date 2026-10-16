@@ -127,4 +127,5 @@ export const STARTER_CEREMONIES: Record<EventType, Starter[]> = {
     { name: "Tributes", glyph: "flower", description: "Those who loved them share a few words." },
     { name: "Refreshments", glyph: "bowl", description: "Tea and light refreshments for everyone who comes." },
   ],
+  love_gift: [],
 };

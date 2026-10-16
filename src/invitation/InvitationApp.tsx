@@ -4,6 +4,9 @@ import "./sections/sections.css";
 import "./sections/cinematic.css";
 import "./sections/spreads.css";
 import "./sections/occasion.css";
+import "./styles/directions.css";
+import "./sections/variants.css";
+import "./sections/heroes.css";
 import { useEffect, useState } from "react";
 import type { InvitationView } from "@/domain/wedding/public";
 import { brand } from "@/lib/brand";
@@ -20,6 +23,7 @@ import { ChatCta } from "./engine/Chat";
 import { isSerif } from "@/domain/design/tokens";
 import { EVENT_TYPE_INFO, journeyEnabled } from "@/domain/doc/event-types";
 import { enquiryLink } from "@/lib/whatsapp";
+import { LoveApp } from "./love/LoveApp";
 
 /**
  * The signature under every invitation: a quiet line of attribution and one honest invitation of our own —
@@ -123,6 +127,14 @@ function Inner({ skipGate }: { skipGate?: boolean }) {
 
 export function InvitationApp({ view, initialLocale, skipGate }: { view: InvitationView; initialLocale: string; skipGate?: boolean }) {
   const [shareOpen, setShareOpen] = useState(false);
+  // A love gift is a different kind of page: its own five experiences, no sections, no share sheet and no visit counting.
+  if (view.doc.eventType === "love_gift") {
+    return (
+      <InvitationProvider view={view} initialLocale={initialLocale} onOpenShare={() => undefined}>
+        <LoveApp autoOpen={skipGate} />
+      </InvitationProvider>
+    );
+  }
   return (
     <InvitationProvider view={view} initialLocale={initialLocale} onOpenShare={() => setShareOpen(true)}>
       <Inner skipGate={skipGate} />

@@ -6,15 +6,15 @@ import { SiteImage } from "@/components/site/SiteImage";
 
 export const metadata = pageMetadata({
   path: "/how-it-works",
-  title: "How it works — from a link you like to a link you share",
-  description: "Choose a template, share your details on WhatsApp, approve a private preview and publish. Five simple steps to a digital invitation your guests will keep.",
+  title: "How it works — from a design you like to a link you share",
+  description: "Choose a design, send us your details on WhatsApp, approve a private preview and share. Five simple steps to a digital invitation your guests will keep.",
   image: "1dzXfvALJxs",
 });
 
 const DETAIL = [
-  { img: "ch4Fc1cGTq4", more: ["Every sample on the site is a real, published invitation — open it on your phone, tap the envelope, scroll to the end.", "You do not have to match the sample: the colours, the order of the sections and every word can change."] },
+  { img: "ch4Fc1cGTq4", more: ["Every design on the site opens like a real invitation — try it on your phone, tap to open, scroll to the end.", "You do not have to match the sample: the colours, the order of the pages and every word can change."] },
   { img: "AD3k4pko7wo", more: ["We ask for the names, the date, the place and a few photographs — and anything you want guests to know: dress code, parking, a ritual to explain.", "WhatsApp is the easiest way to send it; a form works too."] },
-  { img: "1dzXfvALJxs", more: ["We write the layout, set your photographs, and — if you want — the local language in a typeface made for the script.", "You see a private preview, with your names on it, before anything is shared. Ask for as many changes as you need."] },
+  { img: "1dzXfvALJxs", more: ["We set your photographs and your words, and — if you want — your family's language in a typeface made for its letters.", "You see a private preview, with your names on it, before anything is shared. Ask for as many changes as you need."] },
   { img: "dYgv-1JnPTA", more: ["When you approve, the invitation goes live on its own link — a short one you choose.", "Share it on WhatsApp, in a group, by message, or as a QR code on a printed card. Guests need no app."] },
   { img: "OmLrFODvPII", more: ["Replies arrive in one place, with meals, stay and travel needs counted for you. Wishes and photographs appear when you approve them.", "Afterwards the same link becomes a gallery, a guestbook and a keepsake."] },
 ] as const;
@@ -22,9 +22,9 @@ const DETAIL = [
 export default function HowItWorksPage() {
   return (
     <>
-      <section className="bg-[linear-gradient(180deg,#fbfaf7,#ffffff)] pb-4 pt-14 sm:pt-20">
+      <section className="bg-[linear-gradient(180deg,#fbf7f0,#ffffff)] pb-4 pt-14 sm:pt-20">
         <Wrap>
-          <Heading as="h1" eyebrow="How it works" title="From a link you like to a link you share." lede="You do not need to design anything. Choose, tell us the details, and we do the rest — with you in the loop at every step." />
+          <Heading as="h1" eyebrow="How it works" title="From a design you like to a link you share." lede="You do not need to design anything. Choose, tell us the details, and we do the rest — and you see it first." />
         </Wrap>
       </section>
       <Section tone="white" className="!pt-10">
@@ -46,7 +46,7 @@ export default function HowItWorksPage() {
           ))}
         </ol>
       </Section>
-      <FinalCta title="Ready when you are." body="Message us the occasion and the date. We reply personally, and we will tell you honestly whether it is possible." message={WA.general} primary={{ href: "/templates", label: "Browse templates" }} />
+      <FinalCta title="Ready when you are." body="Message us the occasion and the date. We reply personally, and we will tell you honestly whether it is possible." message={WA.general} primary={{ href: "/templates", label: "Choose Your Design" }} />
       <JsonLd data={breadcrumbLd([{ name: "Home", path: "/" }, { name: "How it works", path: "/how-it-works" }])} />
     </>
   );

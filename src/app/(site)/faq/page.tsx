@@ -14,9 +14,9 @@ export const metadata = pageMetadata({
 export default function FaqPage() {
   return (
     <>
-      <section className="bg-[linear-gradient(180deg,#fbfaf7,#ffffff)] pb-4 pt-14 sm:pt-20">
+      <section className="bg-[linear-gradient(180deg,#fbf7f0,#ffffff)] pb-4 pt-14 sm:pt-20">
         <Wrap>
-          <Heading as="h1" eyebrow="FAQ" title="Questions, answered plainly." lede="If yours is not here, message us on WhatsApp — a person replies." />
+          <Heading as="h1" eyebrow="FAQ" title="Help and questions." lede="If yours is not here, message us on WhatsApp — a person replies." />
         </Wrap>
       </section>
       <Section tone="white" className="!pt-10">
@@ -29,7 +29,7 @@ export default function FaqPage() {
           ))}
         </div>
       </Section>
-      <FinalCta title="Still wondering?" body="Ask us anything. We reply personally, usually the same day." message={WA.general} primary={{ href: "/templates", label: "Browse templates" }} />
+      <FinalCta title="Still wondering?" body="Ask us anything. A real person at Stack Bridge Labs replies." message={WA.general} primary={{ href: "/templates", label: "Choose Your Design" }} />
       <JsonLd data={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "FAQ", path: "/faq" }]), faqLd(FAQ_ALL)]} />
     </>
   );

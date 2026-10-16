@@ -14,7 +14,7 @@ import { EVENT_TYPE_INFO, toneOf } from "@/domain/doc/event-types";
 import { ChevronDown } from "lucide-react";
 
 /** Smoothly scrolls to whatever section follows the hero (it need not be a particular one). */
-function goNext(e: React.MouseEvent) {
+export function goNext(e: React.MouseEvent) {
   const next = document.getElementById("s-hero")?.parentElement?.nextElementSibling;
   if (!next) return;
   e.preventDefault();
@@ -24,7 +24,7 @@ function goNext(e: React.MouseEvent) {
 /** "short" names get the big display size; a long headline ("Leadership Conclave 2026") is set smaller so it stays on 2–3 lines. */
 const lengthOf = (s: string) => (s.length <= 13 ? "short" : s.length <= 26 ? "medium" : "long");
 
-function useHeroData(section: SectionConfig) {
+export function useHeroData(section: SectionConfig) {
   const { view, L, t, locale, entered } = useInvitation();
   const names = useSubject();
   const doc = view.doc;
@@ -51,10 +51,10 @@ function useHeroData(section: SectionConfig) {
   };
 }
 
-type HeroData = ReturnType<typeof useHeroData>;
+export type HeroData = ReturnType<typeof useHeroData>;
 
 /** The headline: one name, or two joined by an ampersand — never a stray "&" for an occasion that has no couple. */
-function Title({ h, nameClass, andClass, delayA = 350, delayB = 560, as = "span" }: { h: HeroData; nameClass: string; andClass: string; delayA?: number; delayB?: number; as?: "span" | "div" }) {
+export function Title({ h, nameClass, andClass, delayA = 350, delayB = 560, as = "span" }: { h: HeroData; nameClass: string; andClass: string; delayA?: number; delayB?: number; as?: "span" | "div" }) {
   const { t } = useInvitation();
   return (
     <>
@@ -69,7 +69,7 @@ function Title({ h, nameClass, andClass, delayA = 350, delayB = 560, as = "span"
   );
 }
 
-function MiniCountdown({ target, className }: { target: Date | null; className?: string }) {
+export function MiniCountdown({ target, className }: { target: Date | null; className?: string }) {
   const { t } = useInvitation();
   const c = useCountdown(target);
   if (!c) return <span className={className}>&nbsp;</span>;
@@ -81,7 +81,7 @@ function MiniCountdown({ target, className }: { target: Date | null; className?:
   );
 }
 
-function ScrollCue({ light }: { light?: boolean }) {
+export function ScrollCue({ light }: { light?: boolean }) {
   const { t } = useInvitation();
   return (
     <a href="#main" onClick={goNext} aria-label={t("invite.scroll")} className={cn("mx-auto mt-10 flex flex-col items-center gap-2 text-[0.68rem] uppercase tracking-[0.3em] no-underline opacity-70 transition-opacity hover:opacity-100", light ? "text-white" : "text-[var(--c-primary)]")}>
@@ -267,7 +267,7 @@ function Centered({ section }: { section: SectionConfig }) {
   );
 }
 
-export default function HeroSection({ section }: { section: SectionConfig }) {
+export default function ClassicHero({ section }: { section: SectionConfig }) {
   switch (section.variant) {
     case "fullbleed": return <FullBleed section={section} />;
     case "split": return <Split section={section} />;

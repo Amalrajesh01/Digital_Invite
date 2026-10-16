@@ -237,3 +237,23 @@ from the table above). "Used for" names the sample invitation, or the product si
 | `zx0Xt9u1ekw` | Ana Curcan | Aadhya’s naming ceremony |
 | `zy6p2ibONaQ` | Zulfugar Karimov | Tara & Nikhil |
 | `zyguVcuzeGM` | Eightpression | Anna & Joseph, product site |
+
+## Wikimedia Commons photographs (housewarming, puja and festival)
+
+Unsplash does not allow automated downloads, so these were fetched from [Wikimedia Commons](https://commons.wikimedia.org) with
+`scripts/dev/commons.mjs`, which accepts only CC0, public-domain, CC BY and CC BY-SA files. They are resized copies (longest side
+1800 px). **CC BY-SA 4.0 requires the credit below and that the resized copy stays under the same licence** — please keep this table
+when you republish them. Click the file name for the original, its author and the licence text.
+
+| Photo id | Author | Licence and original |
+|---|---|---|
+| `wc-40896574` | Anila Sudish | CC BY-SA 4.0 — [Onam Special Kerala Sadya....JPG](https://commons.wikimedia.org/wiki/File:Onam_Special_Kerala_Sadya....JPG) |
+| `wc-97312069` | Alokjain19883105 | CC BY-SA 4.0 — [Diwali Diyas 2.jpg](https://commons.wikimedia.org/wiki/File:Diwali_Diyas_2.jpg) |
+| `wc-133359284` | AjoyDutta1997 (cropped by Aristeas) | CC BY-SA 4.0 — [Woman lighting the candles for the Festival of Lights in India (cropped).jpg](https://commons.wikimedia.org/wiki/File:Woman_lighting_the_candles_for_the_Festival_of_Lights_in_India_(cropped).jpg) |
+| `wc-145089568` | Indukoori | CC BY-SA 4.0 — [Gruha Pravesham Rituals in Andhra with rice grinding in Thiragali.jpg](https://commons.wikimedia.org/wiki/File:Gruha_Pravesham_Rituals_in_Andhra_with_rice_grinding_in_Thiragali.jpg) |
+| `wc-145136685` | Vimalinarc | CC BY-SA 4.0 — [Ganga Aarti at Varanasi in the evening.jpg](https://commons.wikimedia.org/wiki/File:Ganga_Aarti_at_Varanasi_in_the_evening.jpg) |
+| `wc-146118873` | Dd6629 | CC BY-SA 4.0 — [Gruhapravesham homam.jpg](https://commons.wikimedia.org/wiki/File:Gruhapravesham_homam.jpg) |
+| `wc-152617626` | Vis M | CC BY-SA 4.0 — [Onam Sadya 2024.jpg](https://commons.wikimedia.org/wiki/File:Onam_Sadya_2024.jpg) |
+| `wc-162739830` | Goutam1962 | CC BY-SA 4.0 — [Ganga Aarti at Varanasi During Dev deepawali 37.jpg](https://commons.wikimedia.org/wiki/File:Ganga_Aarti_at_Varanasi_During_Dev_deepawali_37.jpg) |
+
+Several demonstration invitations also use the Unsplash photographs above as stand-ins; none of the sample invitations is a real family's.

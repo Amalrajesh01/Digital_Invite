@@ -12,7 +12,7 @@ import { SECTION_META } from "@/domain/doc/sections";
  * JavaScript of Luxury-only sections such as games, QR pass or the live photo wall.
  */
 const REGISTRY: Record<SectionType, React.ComponentType<{ section: SectionConfig }>> = {
-  hero: dynamic(() => import("../sections/HeroSection")),
+  hero: dynamic(() => import("../sections/HeroVariants")),
   countdown: dynamic(() => import("../sections/CountdownSection")),
   couple: dynamic(() => import("../sections/CoupleSection")),
   story: dynamic(() => import("../sections/StorySection")),

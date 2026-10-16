@@ -21,16 +21,16 @@ const STYLES = {
  * A button that opens WhatsApp on Stack Bridge Labs’ number with a message that already says what the visitor is
  * interested in. Always opens in a new tab; carries no tracking of its own.
  */
-export function WaButton({ message, children, variant = "solid", size = "lg", className }: { message?: string; children: React.ReactNode; variant?: keyof typeof STYLES; size?: "sm" | "lg"; className?: string }) {
+export function WaButton({ message, children, variant = "solid", size = "lg", className, trackRef = "whatsapp" }: { message?: string; children: React.ReactNode; variant?: keyof typeof STYLES; size?: "sm" | "lg"; className?: string; trackRef?: string }) {
   return (
-    <a href={waLink(message)} target="_blank" rel="noopener noreferrer" className={cn("btn font-semibold", size === "lg" ? "btn-lg" : "btn-sm", STYLES[variant], className)}>
+    <a href={waLink(message)} target="_blank" rel="noopener noreferrer" data-track="whatsapp_click" data-ref={trackRef} className={cn("btn font-semibold", size === "lg" ? "btn-lg" : "btn-sm", STYLES[variant], className)}>
       <WaIcon /> {children}
     </a>
   );
 }
 
 /** A primary / secondary link button in the product-site style. */
-export function SiteButton({ href, children, variant = "accent", size = "lg", className }: { href: string; children: React.ReactNode; variant?: "accent" | "quiet" | "light" | "ink"; size?: "sm" | "lg"; className?: string }) {
+export function SiteButton({ href, children, variant = "accent", size = "lg", className, ...rest }: { href: string; children: React.ReactNode; variant?: "accent" | "quiet" | "light" | "ink"; size?: "sm" | "lg"; className?: string } & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href" | "className" | "children">) {
   const style = {
     accent: "btn-accent",
     quiet: "btn-quiet",
@@ -38,7 +38,7 @@ export function SiteButton({ href, children, variant = "accent", size = "lg", cl
     light: "bg-white text-ink hover:bg-white/90 border-transparent",
   }[variant];
   return (
-    <Link href={href} className={cn("btn", size === "lg" ? "btn-lg" : "btn-sm", style, className)}>
+    <Link href={href} className={cn("btn", size === "lg" ? "btn-lg" : "btn-sm", style, className)} {...rest}>
       {children}
     </Link>
   );

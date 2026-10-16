@@ -169,16 +169,16 @@ describe("templates tell the story in order", () => {
     for (const t of traditional) {
       const types = generateSections(t.config, ent).map((s) => s.type);
       const at = (x: string) => types.indexOf(x as never);
-      const chain = ["hero", "story", "timeline", "countdown", "couple", "events", "ceremonies", "family", "gallery", "film", "rsvp"];
-      chain.forEach((x, i) => {
-        expect(at(x), `${t.slug}: ${x}`).toBeGreaterThanOrEqual(0);
-        if (i) expect(at(x), `${t.slug}: ${chain[i - 1]} before ${x}`).toBeGreaterThan(at(chain[i - 1]));
-      });
+      // every design keeps these pages; each tells them in its own order, but the days always come before the rituals and the reply
+      for (const x of ["hero", "story", "timeline", "countdown", "couple", "events", "ceremonies", "family", "gallery", "film", "rsvp"]) expect(at(x), `${t.slug}: ${x}`).toBeGreaterThanOrEqual(0);
+      const order = ["hero", "events", "ceremonies", "rsvp"];
+      order.forEach((x, i) => { if (i) expect(at(x), `${t.slug}: ${order[i - 1]} before ${x}`).toBeGreaterThan(at(order[i - 1])); });
     }
   });
 
   it("every template, of any occasion, opens with its hero and asks for the reply before the day itself", () => {
-    for (const t of TEMPLATE_SEEDS) {
+    // (a love gift is a whole page of its own, with no sections)
+    for (const t of TEMPLATE_SEEDS.filter((x) => !x.config.experience)) {
       const types = generateSections(t.config, ent).map((s) => s.type);
       expect(types[0], t.slug).toBe("hero");
       expect(types, t.slug).toContain("rsvp");
@@ -186,10 +186,10 @@ describe("templates tell the story in order", () => {
     }
   });
 
-  it("the royal and cinematic templates open on the full-screen photograph", () => {
-    for (const slug of ["royal-heritage", "cinematic-noir"]) {
+  it("the royal and cinematic wedding templates open on a hero of their own: a carved gateway, a film frame", () => {
+    for (const [slug, hero] of [["royal-heritage", "gateway"], ["cinematic-noir", "reel"]]) {
       const t = TEMPLATE_SEEDS.find((x) => x.slug === slug)!;
-      expect(generateSections(t.config, ent).find((s) => s.type === "hero")?.variant).toBe("fullbleed");
+      expect(generateSections(t.config, ent).find((s) => s.type === "hero")?.variant).toBe(hero);
     }
   });
 });

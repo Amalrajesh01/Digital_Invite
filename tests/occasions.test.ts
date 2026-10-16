@@ -47,6 +47,13 @@ import { CHRISTIAN } from "../scripts/demo/christian";
 import { MUSLIM } from "../scripts/demo/muslim";
 import { ANANYA } from "../scripts/demo/ananya";
 import { DEMO } from "../scripts/demo/content";
+import { NANDINI } from "../scripts/demo/nandini";
+import { RIYA } from "../scripts/demo/riya";
+import { NAIR } from "../scripts/demo/nair";
+import { PUJA } from "../scripts/demo/puja";
+import { ONAM } from "../scripts/demo/onam";
+import { LOVE_DEMOS, buildLoveDoc } from "../scripts/demo/love";
+import { SITE_TEMPLATES } from "@/domain/catalogue/templates";
 import { bootstrap, makeWedding } from "./helpers";
 import type { AdminActor } from "@/domain/auth/access";
 
@@ -206,7 +213,9 @@ describe("publishing an invitation that is not about a couple", () => {
       const doc = buildInitialDoc(t.config, LUXURY, null);
       expect(InvitationDoc.safeParse(doc).success, t.slug).toBe(true);
       expect(doc.eventType, t.slug).toBe(t.config.eventType ?? "hindu_wedding");
-      expect(doc.sections.length, t.slug).toBeGreaterThan(3);
+      // a love gift is one whole page rendered by its experience, so it has no sections
+      if (t.config.experience) expect(doc.sections, t.slug).toEqual([]);
+      else expect(doc.sections.length, t.slug).toBeGreaterThan(3);
     }
   });
 });
@@ -220,7 +229,7 @@ describe("the template and theme library", () => {
       if (t.config.demo) expect(demoBySlug(t.config.demo), `${t.slug} → demo ${t.config.demo}`).toBeDefined();
       const types = t.config.sections.map((s) => s.type);
       expect(new Set(types).size, `${t.slug} lists a section twice`).toBe(types.length);
-      expect(types, t.slug).toContain("hero");
+      if (!t.config.experience) expect(types, t.slug).toContain("hero");
       for (const s of t.config.sections) expect(SECTION_META[s.type].variants.map((v) => v.key), `${t.slug}/${s.type}`).toContain(s.variant);
     }
   });
@@ -247,6 +256,7 @@ describe("the sample invitations and the shop window agree", () => {
   const CONFIGS: { cfg: ShowcaseCfg | OccasionCfg; kind: "couple" | "occasion" }[] = [
     { cfg: ISHA, kind: "couple" }, { cfg: TARA, kind: "couple" }, { cfg: HELEN, kind: "couple" }, { cfg: CHRISTIAN, kind: "couple" }, { cfg: MUSLIM, kind: "couple" },
     { cfg: MEERA, kind: "occasion" }, { cfg: AARAV, kind: "occasion" }, { cfg: AADHYA, kind: "occasion" }, { cfg: CONCLAVE, kind: "occasion" }, { cfg: SUMMIT, kind: "occasion" }, { cfg: THOMAS, kind: "occasion" },
+    { cfg: NANDINI, kind: "couple" }, { cfg: RIYA, kind: "couple" }, { cfg: NAIR, kind: "occasion" }, { cfg: PUJA, kind: "occasion" }, { cfg: ONAM, kind: "occasion" },
   ];
   const build = (c: (typeof CONFIGS)[number]) => {
     const tpl = TEMPLATE_SEEDS.find((t) => t.slug === c.cfg.template)!;
@@ -259,6 +269,7 @@ describe("the sample invitations and the shop window agree", () => {
       [ANANYA.slug, { template: "cinematic-noir", theme: "royal-gold", eventType: "hindu_wedding" }],
       [DEMO.slug, { template: "royal-heritage", theme: "kasavu", eventType: "hindu_wedding" }],
       ...CONFIGS.map((c) => [c.cfg.slug, { template: c.cfg.template, theme: c.cfg.theme, eventType: c.cfg.eventType }] as const),
+      ...LOVE_DEMOS.map((c) => [c.slug, { template: c.template, theme: c.theme, eventType: "love_gift" }] as const),
     ]);
     expect(DEMOS.map((d) => d.slug).sort()).toEqual([...seeded.keys()].sort());
     for (const d of DEMOS) {
@@ -341,19 +352,35 @@ describe("the sample invitations and the shop window agree", () => {
   });
 });
 
+describe("the love gift samples", () => {
+  it("are valid documents with their own experience, and say nothing that needs an answer", () => {
+    for (const c of LOVE_DEMOS) {
+      const tpl = TEMPLATE_SEEDS.find((t) => t.slug === c.template)!;
+      expect(tpl.config.experience, c.slug).toBe(c.experience);
+      const doc = InvitationDoc.parse(buildLoveDoc(buildInitialDoc(tpl.config, LUXURY, null), c, media));
+      expect(doc.eventType).toBe("love_gift");
+      expect(doc.sections).toEqual([]);
+      expect(doc.love.experience, c.slug).toBe(c.experience);
+      expect(doc.love.reply.enabled, `${c.slug}: a reply is off unless its sender turns it on`).toBe(false);
+      expect(doc.love.photos.length, c.slug).toBeGreaterThan(0);
+    }
+  });
+});
+
 describe("the public catalogue", () => {
   it("files every sample under its own occasion and lists it wherever a wider category covers it", () => {
     for (const d of DEMOS) {
       expect(demosIn(primaryCategory(d)).map((x) => x.slug), d.slug).toContain(d.slug);
       expect(d.styles.length, d.slug).toBeGreaterThan(0);
       expect(d.highlights.length, d.slug).toBeGreaterThanOrEqual(3);
-      expect(sectionLabels(d).length, d.slug).toBeGreaterThan(5);
+      if (d.eventType !== "love_gift") expect(sectionLabels(d).length, d.slug).toBeGreaterThan(5);
     }
     expect(demosIn("corporate").map((d) => d.slug)).toEqual(expect.arrayContaining(["leadership-conclave-2026", "tech-summit-2026"]));
     expect(demosIn("conclave").map((d) => d.slug)).toEqual(["leadership-conclave-2026"]);
     expect(demosIn("funeral").map((d) => d.slug)).toEqual(["thomas-mathew-memorial"]);
     expect(demosIn("birthday").map((d) => d.slug).sort()).toEqual(["aarav-turns-three", "meera-turns-thirty"]);
-    expect(demosIn("housewarming")).toEqual([]);
+    expect(demosIn("housewarming").map((d) => d.slug)).toEqual(["nair-griha-pravesh"]);
+    expect(demosIn("for-my-love")).toHaveLength(5);
   });
 
   it("covers the ten required designs and keeps their distinct looks distinct", () => {
@@ -393,13 +420,16 @@ describe("the WhatsApp links", () => {
 });
 
 describe("the product site’s routes", () => {
-  it("lists every public page and only the occasions that have a sample", () => {
+  it("lists every public page, every occasion and every design", () => {
     const urls = sitemap().map((s) => s.url);
     for (const p of ["/", "/templates", "/categories", "/pricing", "/how-it-works", "/faq"]) expect(urls).toContain(absoluteUrl(p));
     expect(urls).toContain(absoluteUrl("/templates/wedding"));
-    expect(urls).toContain(absoluteUrl("/templates/wedding/isha-and-daniel"));
-    expect(urls).not.toContain(absoluteUrl("/templates/housewarming"));
-    expect(urls.filter((u) => /\/templates\/[^/]+\/[^/]+$/.test(u))).toHaveLength(DEMOS.length);
+    expect(urls).toContain(absoluteUrl("/templates/wedding/modern-minimal"));
+    expect(urls).toContain(absoluteUrl("/templates/housewarming"));
+    expect(urls).toContain(absoluteUrl("/for-my-love"));
+    expect(urls.filter((u) => /\/templates\/[^/]+\/[^/]+$/.test(u))).toHaveLength(SITE_TEMPLATES.length);
+    // a gift's own pages are never listed
+    expect(urls.some((u) => u.includes("/for-my-love/gift") || u.includes("/for-my-love/make") || u.includes("/invite/"))).toBe(false);
     expect(new Set(urls).size).toBe(urls.length);
   });
 

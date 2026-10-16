@@ -68,6 +68,7 @@ export const HELEN: ShowcaseCfg = {
     ["Sister Mary Joseph", "Friend of the family", "May the next twenty-five be as full of light as the first. God bless you both."],
   ],
   extra(doc) {
+    doc.occasion.honoree.age = "25"; // the jubilee numeral of the “Silver Jubilee” hero
     sectionCopy(doc, "timeline", { eyebrow: "A quarter century", title: "In five moments" });
     sectionCopy(doc, "story", { eyebrow: "The story so far", title: "Helen & George" });
     sectionCopy(doc, "message", { eyebrow: "From their children" });
