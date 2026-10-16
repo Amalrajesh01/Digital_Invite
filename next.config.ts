@@ -24,6 +24,8 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   // PGlite (embedded Postgres for zero-setup development) and sharp are native/wasm packages.
   serverExternalPackages: ["@electric-sql/pglite", "sharp", "postgres"],
+  // /stock/<id> reads its photograph by a computed name, which file tracing cannot see: ship them with that route on serverless hosts
+  outputFileTracingIncludes: { "/stock/*": ["./assets/stock/*.jpg"] },
   experimental: {
     serverActions: { bodySizeLimit: "4mb" },
   },
