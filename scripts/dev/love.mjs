@@ -1,7 +1,9 @@
 // QA captures of the five "For My Love" experiences.   npx tsx scripts/dev/love.mjs [slug|all] [--out=.shots/love] [--w=390 --h=844]
+// With --thumbs it also writes public/templates/<slug>.webp (the gallery picture) from the screen after the first tap.
 // For each: the start screen, the screen after the first tap, then a few screens further down (or further through, for the surprise).
 import { chromium } from "playwright";
 import { mkdirSync } from "node:fs";
+import sharp from "sharp";
 
 const args = process.argv.slice(2);
 const target = args.find((a) => !a.startsWith("--")) ?? "all";
@@ -20,6 +22,7 @@ for (const s of LOVE_SPECS.filter((x) => target === "all" || x.slug === target))
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message.slice(0, 200)));
   await page.goto(`${base}/preview/t/${s.slug}`, { waitUntil: "networkidle", timeout: 90000 }).catch(() => {});
+  await page.addStyleTag({ content: "nextjs-portal, [data-nextjs-toast], [data-next-badge-root] { display: none !important; }" }).catch(() => {});
   await page.waitForTimeout(2600);
   await page.screenshot({ path: `${out}/${s.slug}-0-start.png` });
   const click = async (sel, name) => page.locator(sel).first().click({ timeout: 4000, force: true }).catch(() => errors.push(`no ${name}`));
@@ -29,6 +32,7 @@ for (const s of LOVE_SPECS.filter((x) => target === "all" || x.slug === target))
   if (s.experience === "sorry") await click(".lq-ask .inv-btn", "read now");
   await page.waitForTimeout(s.experience === "letter" ? 3200 : 2200);
   await page.screenshot({ path: `${out}/${s.slug}-1-open.png` });
+  if (args.includes("--thumbs")) { mkdirSync("public/templates", { recursive: true }); await sharp(await page.screenshot({ type: "png" })).resize({ width: 540 }).webp({ quality: 78 }).toFile(`public/templates/${s.slug}.webp`); }
   if (s.experience === "surprise") {
     for (let i = 2; i <= 5; i++) { await click(".lsu-next", "next"); await page.waitForTimeout(1300); await page.screenshot({ path: `${out}/${s.slug}-${i}-step.png` }); }
     await click(".lsu-sub-nav .lv-quiet:last-child", "skip"); await page.waitForTimeout(1800); await page.screenshot({ path: `${out}/${s.slug}-6-end.png` });

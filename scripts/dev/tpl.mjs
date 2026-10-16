@@ -29,6 +29,7 @@ for (const s of specs) {
   page.on("pageerror", (e) => errors.push(e.message.slice(0, 200)));
   const wantGate = args.includes("--gate");
   await page.goto(`${base}/preview/t/${s.slug}${wantGate ? "" : "?gate=0"}`, { waitUntil: "networkidle", timeout: 90000 }).catch(() => {});
+  await page.addStyleTag({ content: "nextjs-portal, [data-nextjs-toast], [data-next-badge-root] { display: none !important; }" }).catch(() => {});
   await page.waitForTimeout(wantGate ? 1500 : 3200);
   if (wantGate) {
     await page.screenshot({ path: `${out}/${s.slug}-gate.png` });

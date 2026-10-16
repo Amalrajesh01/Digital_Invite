@@ -274,7 +274,7 @@ export function GiftBuilder({ priceText }: { priceText: string | null }) {
         return (
           <div className="grid gap-9">
             <div>
-              <h3 className="text-[19px] font-semibold text-ink">How should it feel?</h3>
+              <h3 className="text-[19px] font-semibold text-ink">Pick its colours</h3>
               <div className="mt-3 flex flex-wrap gap-2.5">
                 {LOVE_MOODS.map((m) => {
                   const c = THEME_SEEDS.find((t) => t.slug === MOOD_THEME[m])?.tokens.colors;
