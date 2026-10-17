@@ -184,7 +184,7 @@ export async function renderWorkspace(section: string, ctx: WsCtx): Promise<Reac
       return (
         <>
           {head}
-          <SettingsForm weddingId={weddingId} isAdmin={ctx.role === "admin"} status={w.status} initial={{ contactEmail: w.contactEmail ?? "", contactPhone: w.contactPhone ?? "", accessMode: w.accessMode, autoLifecycle: w.autoLifecycle, timezone: w.timezone, secondaryLocale: w.secondaryLocale }} />
+          <SettingsForm weddingId={weddingId} isAdmin={ctx.role === "admin"} status={w.status} initial={{ contactEmail: w.contactEmail ?? "", contactPhone: w.contactPhone ?? "", accessMode: w.accessMode, autoLifecycle: w.autoLifecycle, timezone: w.timezone }} />
           <div className="mt-8"><PasswordForm /></div>
           {ctx.role === "admin" && <p className="mt-6 text-[14px] text-muted">Package, features, template and theme are managed in the <Link className="underline" href={`${base}/setup/package`}>setup steps</Link>.</p>}
         </>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Check, X } from "lucide-react";
+import { ArrowRight, Check, Heart, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 import type { SiteTemplate } from "@/domain/catalogue/templates";
 import type { CategoryDef } from "@/domain/catalogue/categories";
@@ -83,11 +83,11 @@ const PACKAGE_COPY: Record<string, { who: string; gets: string[]; without: strin
   ESSENTIAL: {
     who: "A simple, beautiful invitation for one family, shared as a link on WhatsApp.",
     gets: ["The full design, with its opening animation", "Your story, events and a countdown", "Venue, map and parking", "Photo gallery and background music", "RSVP form and one-tap WhatsApp sharing", "Menu, colours and ritual guide"],
-    without: ["A personal link for each guest", "Guest list and replies dashboard", "A wishes wall and guest photos", "Switching to a second language"],
+    without: ["A personal link for each guest", "Guest list and replies dashboard", "A wishes wall and guest photos"],
   },
   SIGNATURE: {
     who: "A celebration where every guest matters — their name, their reply, their wishes.",
-    gets: ["Everything in Essential", "A personal link with each guest’s name", "Guest list, replies dashboard and reminders", "English and your family’s language, one tap apart", "Wishes wall, guest photos and video wishes", "Stay and transport requests", "Photos, wishes and memories that stay online for life"],
+    gets: ["Everything in Essential", "A personal link with each guest’s name", "Guest list, replies dashboard and reminders", "Wishes wall, guest photos and video wishes", "Stay and transport requests", "Photos, wishes and memories that stay online for life"],
     without: ["QR guest pass and check-in", "Live updates and photo wall on the day", "Games, time capsule and voice wishes"],
   },
   LUXURY: {
@@ -96,6 +96,24 @@ const PACKAGE_COPY: Record<string, { who: string; gets: string[]; without: strin
     without: [],
   },
 };
+
+/** The entry-level product: a For My Love gift, one price for all five styles. */
+export function LovePriceCard({ price }: { price: string }) {
+  return (
+    <div className="flex flex-col gap-6 rounded-2xl border border-[#e7b9c4] bg-[#fff5f7] p-7 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+      <div className="max-w-xl">
+        <p className="eyebrow !text-[#b4304f]"><Heart className="mr-1.5 inline size-3.5 fill-current" aria-hidden />Start here · For My Love</p>
+        <h3 className="mt-2 font-serif text-[34px] font-medium leading-tight text-ink">A private gift for one person</h3>
+        <p className="mt-2 text-[16px] leading-relaxed text-ink-2/85">A birthday surprise, a letter, your story or an honest apology. All five styles, one simple price, on a link only you and they have.</p>
+      </div>
+      <div className="shrink-0 sm:text-right">
+        <p className="font-serif text-[52px] font-medium leading-none text-ink tnum">{price}</p>
+        <p className="mt-1 text-[13.5px] text-muted">one-time, for each gift</p>
+        <Link href="/for-my-love/make" data-track="cta_click" data-ref="pricing-love" className="btn btn-accent btn-lg mt-4">Make a gift <ArrowRight className="size-4" aria-hidden /></Link>
+      </div>
+    </div>
+  );
+}
 
 export function PackageCards({ packages, compact }: { packages: PublicPackage[]; compact?: boolean }) {
   return (

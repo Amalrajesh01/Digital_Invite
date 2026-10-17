@@ -51,9 +51,9 @@ export const TARA: ShowcaseCfg = {
   thankYou: { message: "Thank you for the blessings, the henna, the rings and the sweets. We are glad you were there.\n\nWith love,", signature: "Tara & Nikhil", photo: "hero" },
   seo: { title: "Tara & Nikhil — Engagement Invitation", description: "A romantic engagement invitation with the ring ceremony explained. A sample design by Invites by Stack Bridge Labs.", og: "hero" },
   needs: [
-    ["hero", "1dzXfvALJxs", "COUPLE", { focal: { x: 49, y: 40 } }],
-    ["bride", "1dzXfvALJxs", "BRIDE", { focal: { x: 51, y: 35 } }],
-    ["groom", "1dzXfvALJxs", "GROOM", { focal: { x: 57.5, y: 20 } }],
+    ["hero", "ykcXm_u84sg", "COUPLE", { focal: { x: 50, y: 30 } }],
+    ["bride", "ykcXm_u84sg", "BRIDE", { focal: { x: 64, y: 31 } }],
+    ["groom", "ykcXm_u84sg", "GROOM", { focal: { x: 32, y: 29 } }],
     ["story", "AD3k4pko7wo", "COUPLE", { focal: { x: 45, y: 28 } }],
     ["mehendi", "K2JtyCVdeuQ", "EVENT"],
     ["rings", "OmLrFODvPII", "EVENT"],

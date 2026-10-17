@@ -12,7 +12,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
     title: "Getting started",
     items: [
       { q: "How does it work?", a: "Pick a design you like. Send us the details — names, date, place and a few photographs — on WhatsApp or in a short form. We put it all into the design and send you a private preview. When you are happy, we publish it on its own link, ready to share on WhatsApp." },
-      { q: "Do I have to design anything myself?", a: "No. You choose a design and tell us what to say. We set the layout and your photographs, and we handle the languages. You only say yes." },
+      { q: "Do I have to design anything myself?", a: "No. You choose a design and tell us what to say. We set the layout and your photographs. You only say yes." },
       { q: "How long does it take?", a: "It depends on how quickly we receive your details and photographs. Tell us your date when you message us, and we will say honestly whether it can be ready in time." },
       { q: "Which occasions do you make invitations for?", a: "Weddings (Hindu, Kerala, Christian, Muslim and modern), engagements, birthdays, anniversaries, housewarmings, naming ceremonies, pujas and festivals, corporate events and conferences, and funeral or memorial services. For something else, just ask — the same designs adapt." },
       { q: "What if my occasion is not on the list?", a: "Message us on WhatsApp and describe it. The designs are flexible: a new occasion is a new arrangement of pages, colours and words." },
@@ -24,7 +24,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
     items: [
       { q: "Do my guests need an app or an account?", a: "No. They open a link on their phone, or scan a QR code, and the invitation opens in the browser. Nothing to install and nothing to remember." },
       { q: "Will it work for elders and older phones?", a: "Yes. The letters are large and clear, the pages are light, and nothing needs a fast connection. People who prefer less movement on screen get a calmer version automatically." },
-      { q: "Can the invitation be in my family’s language?", a: "Yes. You can write the invitation in the language your family speaks. With the Signature and Luxury packages, guests can also switch between English and that language with one tap. Malayalam is fully supported; other languages work with your own wording." },
+      { q: "Can the invitation be in my family’s language?", a: "Yes. You can write the invitation in the language your family speaks, including Malayalam. Each invitation is in one language, exactly as you write it." },
       { q: "Who sees what?", a: "You decide. A link can be open to everyone or personal for each guest, some events can be shown only to the guests you choose, and photographs and wishes appear only after you approve them." },
       { q: "Is our guests’ information safe?", a: "Phone numbers and private notes never reach a guest’s phone, personal links cannot be guessed, and our visitor counting never records who someone is." },
     ],
@@ -50,7 +50,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
   {
     title: "Pricing and support",
     items: [
-      { q: "What does it cost?", a: "There are three packages — Essential, Signature and Luxury — priced per invitation, one-time, in Indian rupees. The current prices are on the Pricing page. If you want something larger, such as a conference, tell us and we will quote it." },
+      { q: "What does it cost?", a: "A For My Love gift is one simple price for all five styles. Wedding and event invitations come in three packages — Essential, Signature and Luxury — priced per invitation, one-time, in Indian rupees. The current prices are on the Pricing page. If you want something larger, such as a conference, tell us and we will quote it." },
       { q: "Can I try a design before I order?", a: "Yes. Every design on the site opens like a real invitation, with sample details. A design becomes yours when you order it and we set it with your details. You always see the private preview before anyone else." },
       { q: "How do I pay?", a: "We confirm the details and the package with you on WhatsApp, and you pay us directly. There is nothing to pay on this website." },
       { q: "Who do I talk to?", a: "A person at Stack Bridge Labs. Message us on WhatsApp and we reply personally." },

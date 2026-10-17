@@ -46,7 +46,6 @@ export async function makeWedding(
     templateId,
     themeId,
     weddingDate: opts.date ?? "2099-12-12",
-    secondaryLocale: opts.secondary ?? null,
   });
   const full = await getWedding(admin, w.id);
   const doc = structuredClone(full.draftDoc);

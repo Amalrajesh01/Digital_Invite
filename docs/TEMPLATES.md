@@ -14,7 +14,7 @@ Every occasion offers **five designs that differ in the ways a guest can see** �
 | **Floral & Romantic** | Soft colour, hand-drawn leaves and a gentle hand. | A calligraphic script for headings and names, a quiet serif for reading text. | Very soft easing; petals drift once; a flower unfolds on opening. | Oval or arched photograph centred over soft colour; sprigs sit in the corners and never cover text. | Script is used for headings only, never for dates, times or addresses; decorative leaves are aria-hidden. |
 | **Playful & Interactive** | Stickers, snapshots and a little surprise at every turn. | A chunky rounded display face, bold labels, hard-edged sticker shadows. | Springy overshoot easing, balloons to pop, a ticket to tear; always one tap, never a precise gesture. | Stacked paper sheets with rounded tops; big thumb-sized buttons; snapshots overlap but stay readable. | Every playful opening is a single large tap target with a plain-button alternative; no timed or precise interactions. |
 
-Package compatibility is the same for every design: all three packages can use all of them. The package decides which *pages* appear (see [FEATURES.md](FEATURES.md)); for example Essential omits guest management, the wishes wall and the live-day pages, which every design includes from Signature and Luxury upwards. Languages: every design supports English and Malayalam interface wording in full, and the invitation's own words in any language the studio adds.
+Package compatibility is the same for every design: all three packages can use all of them. The package decides which *pages* appear (see [FEATURES.md](FEATURES.md)); for example Essential omits guest management, the wishes wall and the live-day pages, which every design includes from Signature and Luxury upwards. Language: each invitation is written in one language, in whatever language the customer writes it.
 
 ## Wedding
 
@@ -34,9 +34,9 @@ Package compatibility is the same for every design: all three packages can use a
 | **Section layout** | Hero → Our story → The beginning (timeline) → Countdown → The couple → Events → Live stream → Ceremonies → Family → Dress code & palette → Wedding menu → Venue & map → Travel & stay → Gallery → Wedding film → Couple playlist → How well do you know us? → Games → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
 | **Image strategy** | One tall portrait in a carved arch; ceremony photographs as large editorial spreads. |
 | **Animation strategy** | Slow and symmetrical: the flame flickers, ornament lines draw in, petals fall once. |
-| **Interactive features** | Tap to light the lamp; Ritual explainers that open on tap; Add each event to your calendar; English and Malayalam in one tap |
+| **Interactive features** | Tap to light the lamp; Ritual explainers that open on tap; Add each event to your calendar |
 | **Mobile behaviour** | Centred single column; the arch or gateway photograph is sized to the screen so faces are never cropped. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (17 pages need Signature or Luxury) |
 | **Accessibility** | High-contrast ivory/ink pairs; ornament is decorative-only and hidden from screen readers; every opening can be skipped. |
 | **Sample content** | `meenakshi-and-aravind` |
@@ -59,7 +59,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Short, crisp fades and drawn lines. No decorative motion at all. |
 | **Interactive features** | Tap the seal to open; Travel tabs: hotels, directions, things to do; Add to calendar |
 | **Mobile behaviour** | Left-aligned type on a strict grid; the photograph is a full-width band; numerals scale to the viewport. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (14 pages need Signature or Luxury) |
 | **Accessibility** | Largest text of all five directions; colour never carries meaning alone; generous tap targets. |
 | **Sample content** | `isha-and-daniel` |
@@ -82,7 +82,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Weighty, slow easing; a short title sequence (tap to skip); letterbox bars frame the page. |
 | **Interactive features** | Tap to skip the title sequence; Swipe through the film strip; Watch the wedding film |
 | **Mobile behaviour** | Photograph-first; text sits in the lower third away from faces; chapter numerals shrink but stay legible. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (14 pages need Signature or Luxury) |
 | **Accessibility** | A scrim guarantees text contrast on any photograph; motion stops completely for reduced-motion users. |
 | **Sample content** | `ananya-and-arjun` |
@@ -105,7 +105,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Very soft easing; petals drift down once; the flower opens petal by petal. |
 | **Interactive features** | Tap the bud to bloom; Illustrated venue map; Slide through the garden carousel |
 | **Mobile behaviour** | Oval or arched photograph centred over soft colour; sprigs sit in the corners and never cover text. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Script is used for headings only, never for dates, times or addresses; decorative leaves are aria-hidden. |
 | **Sample content** | `nandini-and-vikram` |
@@ -128,7 +128,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Springy overshoot; the ticket stub falls away; cards pop in with a small tilt. |
 | **Interactive features** | Tear the ticket to open; Quiz: how well do you know us?; Games and a photo scavenger hunt on the day |
 | **Mobile behaviour** | Stacked paper sheets with rounded tops; big thumb-sized buttons; snapshots overlap but stay readable. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (16 pages need Signature or Luxury) |
 | **Accessibility** | Every playful opening is a single large tap target with a plain-button alternative; no timed or precise interactions. |
 | **Sample content** | `riya-and-sameer` |
@@ -151,7 +151,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Soft confetti as the invitation opens; slow, symmetrical reveals. |
 | **Interactive features** | Tap the wax seal to open; Church service explained step by step |
 | **Mobile behaviour** | Centred single column; the arch or gateway photograph is sized to the screen so faces are never cropped. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (14 pages need Signature or Luxury) |
 | **Accessibility** | High-contrast ivory/ink pairs; ornament is decorative-only and hidden from screen readers; every opening can be skipped. |
 | **Sample content** | `anna-and-joseph` |
@@ -174,7 +174,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Curtains part slowly; soft confetti in emerald and gold. |
 | **Interactive features** | Tap to open the curtains; Traditions explained for guests who are new to them |
 | **Mobile behaviour** | Centred single column; the arch or gateway photograph is sized to the screen so faces are never cropped. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (14 pages need Signature or Luxury) |
 | **Accessibility** | High-contrast ivory/ink pairs; ornament is decorative-only and hidden from screen readers; every opening can be skipped. |
 | **Sample content** | `zainab-and-imran` |
@@ -199,7 +199,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Slow and symmetrical; the lamp flame flickers; ornament lines draw in. |
 | **Interactive features** | Tap to light the lamp; Rituals explained one by one; Add to calendar |
 | **Mobile behaviour** | Centred single column; the arch or gateway photograph is sized to the screen so faces are never cropped. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | High-contrast ivory/ink pairs; ornament is decorative-only and hidden from screen readers; every opening can be skipped. |
 | **Sample content** | `tara-and-nikhil` |
@@ -222,7 +222,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Soft and slow; the two small figures walk towards each other as you scroll. |
 | **Interactive features** | Tap the bud to bloom; The couple walks together as you scroll; Slide through the gallery |
 | **Mobile behaviour** | Oval or arched photograph centred over soft colour; sprigs sit in the corners and never cover text. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Script is used for headings only, never for dates, times or addresses; decorative leaves are aria-hidden. |
 | **Sample content** | `tara-and-nikhil` |
@@ -245,7 +245,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Slow zoom on the opening photograph; weighty fades between chapters. |
 | **Interactive features** | Tap to skip the title cards; Swipe through the film strip |
 | **Mobile behaviour** | Photograph-first; text sits in the lower third away from faces; chapter numerals shrink but stay legible. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | A scrim guarantees text contrast on any photograph; motion stops completely for reduced-motion users. |
 | **Sample content** | `tara-and-nikhil` |
@@ -268,7 +268,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Springy overshoot; balloons burst into confetti; cards pop in with a small tilt. |
 | **Interactive features** | Tap to pop the balloons; Quiz: how well do you know us?; Polaroid gallery |
 | **Mobile behaviour** | Stacked paper sheets with rounded tops; big thumb-sized buttons; snapshots overlap but stay readable. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (14 pages need Signature or Luxury) |
 | **Accessibility** | Every playful opening is a single large tap target with a plain-button alternative; no timed or precise interactions. |
 | **Sample content** | `tara-and-nikhil` |
@@ -291,7 +291,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Crisp, short fades. Nothing decorative moves. |
 | **Interactive features** | Tap the seal to open; Add to calendar |
 | **Mobile behaviour** | Left-aligned type on a strict grid; the photograph is a full-width band; numerals scale to the viewport. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Largest text of all five directions; colour never carries meaning alone; generous tap targets. |
 | **Sample content** | `tara-and-nikhil` |
@@ -316,7 +316,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Slow, weighty fades; the ticket stub tears away. |
 | **Interactive features** | Tear the ticket to open; Dress code visual guide; Wall of wishes |
 | **Mobile behaviour** | Photograph-first; text sits in the lower third away from faces; chapter numerals shrink but stay legible. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | A scrim guarantees text contrast on any photograph; motion stops completely for reduced-motion users. |
 | **Sample content** | `meera-turns-thirty` |
@@ -339,7 +339,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Springy overshoot; the balloons burst into confetti; sticker cards pop in. |
 | **Interactive features** | Tap to pop the balloons; Add to calendar; Wall of birthday wishes |
 | **Mobile behaviour** | Stacked paper sheets with rounded tops; big thumb-sized buttons; snapshots overlap but stay readable. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Every playful opening is a single large tap target with a plain-button alternative; no timed or precise interactions. |
 | **Sample content** | `aarav-turns-three` |
@@ -362,7 +362,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Crisp and short; the number draws in. |
 | **Interactive features** | Tap the seal to open; Add to calendar |
 | **Mobile behaviour** | Left-aligned type on a strict grid; the photograph is a full-width band; numerals scale to the viewport. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Largest text of all five directions; colour never carries meaning alone; generous tap targets. |
 | **Sample content** | `meera-turns-thirty` |
@@ -385,7 +385,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Very soft; petals drift down once; the flower opens petal by petal. |
 | **Interactive features** | Tap the bud to bloom; Slide through the carousel |
 | **Mobile behaviour** | Oval or arched photograph centred over soft colour; sprigs sit in the corners and never cover text. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Script is used for headings only, never for dates, times or addresses; decorative leaves are aria-hidden. |
 | **Sample content** | `meera-turns-thirty` |
@@ -408,7 +408,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Slow, symmetrical; curtains part; ornament lines draw in. |
 | **Interactive features** | Tap to open the curtains; Dress code guide; Wall of wishes |
 | **Mobile behaviour** | Centred single column; the arch or gateway photograph is sized to the screen so faces are never cropped. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | High-contrast ivory/ink pairs; ornament is decorative-only and hidden from screen readers; every opening can be skipped. |
 | **Sample content** | `meera-turns-thirty` |
@@ -433,7 +433,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Crisp and calm; the number draws in. |
 | **Interactive features** | Tap the seal to open; A letter from the children; Wall of wishes |
 | **Mobile behaviour** | Left-aligned type on a strict grid; the photograph is a full-width band; numerals scale to the viewport. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Largest text of all five directions; colour never carries meaning alone; generous tap targets. |
 | **Sample content** | `helen-and-george` |
@@ -456,7 +456,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Slow, symmetrical; the doors open in three dimensions; the lamps flicker. |
 | **Interactive features** | Tap to open the doors; A letter from the children; Wall of wishes |
 | **Mobile behaviour** | Centred single column; the arch or gateway photograph is sized to the screen so faces are never cropped. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | High-contrast ivory/ink pairs; ornament is decorative-only and hidden from screen readers; every opening can be skipped. |
 | **Sample content** | `helen-and-george` |
@@ -479,7 +479,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Slow zoom; weighty fades; letterbox bars. |
 | **Interactive features** | Tap to skip the title cards; Swipe through the film strip; Wall of wishes |
 | **Mobile behaviour** | Photograph-first; text sits in the lower third away from faces; chapter numerals shrink but stay legible. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | A scrim guarantees text contrast on any photograph; motion stops completely for reduced-motion users. |
 | **Sample content** | `helen-and-george` |
@@ -502,7 +502,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Very soft; petals drift once; the flower opens petal by petal. |
 | **Interactive features** | Tap the bud to bloom; Slide through the carousel; Wall of wishes |
 | **Mobile behaviour** | Oval or arched photograph centred over soft colour; sprigs sit in the corners and never cover text. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Script is used for headings only, never for dates, times or addresses; decorative leaves are aria-hidden. |
 | **Sample content** | `helen-and-george` |
@@ -525,7 +525,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Springy overshoot; the ticket stub falls away. |
 | **Interactive features** | Tear the ticket to open; Polaroid gallery; Wall of wishes |
 | **Mobile behaviour** | Stacked paper sheets with rounded tops; big thumb-sized buttons; snapshots overlap but stay readable. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Every playful opening is a single large tap target with a plain-button alternative; no timed or precise interactions. |
 | **Sample content** | `helen-and-george` |
@@ -550,7 +550,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Slow and symmetrical; the lamp flame flickers. |
 | **Interactive features** | Tap to light the lamp; Rituals explained one by one; Wall of blessings |
 | **Mobile behaviour** | Centred single column; the arch or gateway photograph is sized to the screen so faces are never cropped. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | High-contrast ivory/ink pairs; ornament is decorative-only and hidden from screen readers; every opening can be skipped. |
 | **Sample content** | `aadhya-naming-ceremony` |
@@ -573,7 +573,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Very soft; petals drift once; the flower opens petal by petal. |
 | **Interactive features** | Tap the bud to bloom; Rituals explained; Wall of blessings |
 | **Mobile behaviour** | Oval or arched photograph centred over soft colour; sprigs sit in the corners and never cover text. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Script is used for headings only, never for dates, times or addresses; decorative leaves are aria-hidden. |
 | **Sample content** | `aadhya-naming-ceremony` |
@@ -596,7 +596,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Springy overshoot; balloons burst into confetti; cards pop in. |
 | **Interactive features** | Tap to pop the balloons; Polaroid gallery; Wall of blessings |
 | **Mobile behaviour** | Stacked paper sheets with rounded tops; big thumb-sized buttons; snapshots overlap but stay readable. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Every playful opening is a single large tap target with a plain-button alternative; no timed or precise interactions. |
 | **Sample content** | `aadhya-naming-ceremony` |
@@ -619,7 +619,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Slow zoom and slow fades — the calmest cinematic opening of all. |
 | **Interactive features** | Tap to skip the title cards; Swipe through the film strip; Wall of blessings |
 | **Mobile behaviour** | Photograph-first; text sits in the lower third away from faces; chapter numerals shrink but stay legible. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | A scrim guarantees text contrast on any photograph; motion stops completely for reduced-motion users. |
 | **Sample content** | `aadhya-naming-ceremony` |
@@ -642,7 +642,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Crisp, short fades; nothing decorative moves. |
 | **Interactive features** | Tap the seal to open; One-tap directions |
 | **Mobile behaviour** | Left-aligned type on a strict grid; the photograph is a full-width band; numerals scale to the viewport. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Largest text of all five directions; colour never carries meaning alone; generous tap targets. |
 | **Sample content** | `aadhya-naming-ceremony` |
@@ -667,7 +667,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Slow and symmetrical; the doors open in three dimensions; lamps flicker. |
 | **Interactive features** | Tap to open the doors; Rituals explained one by one; Directions with one tap |
 | **Mobile behaviour** | Centred single column; the arch or gateway photograph is sized to the screen so faces are never cropped. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (14 pages need Signature or Luxury) |
 | **Accessibility** | High-contrast ivory/ink pairs; ornament is decorative-only and hidden from screen readers; every opening can be skipped. |
 | **Sample content** | `nair-griha-pravesh` |
@@ -690,7 +690,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Crisp, short fades; nothing decorative moves. |
 | **Interactive features** | Tap the seal to open; One-tap directions |
 | **Mobile behaviour** | Left-aligned type on a strict grid; the photograph is a full-width band; numerals scale to the viewport. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Largest text of all five directions; colour never carries meaning alone; generous tap targets. |
 | **Sample content** | `nair-griha-pravesh` |
@@ -713,7 +713,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Slow zoom; weighty fades; letterbox bars. |
 | **Interactive features** | Tap to skip the title cards; Swipe through the film strip; One-tap directions |
 | **Mobile behaviour** | Photograph-first; text sits in the lower third away from faces; chapter numerals shrink but stay legible. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | A scrim guarantees text contrast on any photograph; motion stops completely for reduced-motion users. |
 | **Sample content** | `nair-griha-pravesh` |
@@ -736,7 +736,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Very soft; petals drift once; the flower opens petal by petal. |
 | **Interactive features** | Tap the bud to bloom; Illustrated map to the door; Slide through the carousel |
 | **Mobile behaviour** | Oval or arched photograph centred over soft colour; sprigs sit in the corners and never cover text. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Script is used for headings only, never for dates, times or addresses; decorative leaves are aria-hidden. |
 | **Sample content** | `nair-griha-pravesh` |
@@ -759,7 +759,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Springy overshoot; the ticket stub falls away; cards pop in. |
 | **Interactive features** | Tear the ticket to open; Polaroid gallery; One-tap directions |
 | **Mobile behaviour** | Stacked paper sheets with rounded tops; big thumb-sized buttons; snapshots overlap but stay readable. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Every playful opening is a single large tap target with a plain-button alternative; no timed or precise interactions. |
 | **Sample content** | `nair-griha-pravesh` |
@@ -784,7 +784,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Slow and symmetrical; the lamp flickers; ornament lines draw in. |
 | **Interactive features** | Tap to light the lamp; The prayer read in full; One-tap directions |
 | **Mobile behaviour** | Centred single column; the arch or gateway photograph is sized to the screen so faces are never cropped. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | High-contrast ivory/ink pairs; ornament is decorative-only and hidden from screen readers; every opening can be skipped. |
 | **Sample content** | `satyanarayana-puja` |
@@ -807,7 +807,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Crisp, short fades; nothing decorative moves. |
 | **Interactive features** | Tap the seal to open; One-tap directions |
 | **Mobile behaviour** | Left-aligned type on a strict grid; the photograph is a full-width band; numerals scale to the viewport. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Largest text of all five directions; colour never carries meaning alone; generous tap targets. |
 | **Sample content** | `satyanarayana-puja` |
@@ -830,7 +830,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Slow zoom; weighty fades; letterbox bars. |
 | **Interactive features** | Tap to skip the title cards; Swipe through the film strip; One-tap directions |
 | **Mobile behaviour** | Photograph-first; text sits in the lower third away from faces; chapter numerals shrink but stay legible. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | A scrim guarantees text contrast on any photograph; motion stops completely for reduced-motion users. |
 | **Sample content** | `onam-celebration` |
@@ -853,7 +853,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Very soft; petals drift once; the flower opens petal by petal. |
 | **Interactive features** | Tap the bud to bloom; Illustrated map; Slide through the carousel |
 | **Mobile behaviour** | Oval or arched photograph centred over soft colour; sprigs sit in the corners and never cover text. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Script is used for headings only, never for dates, times or addresses; decorative leaves are aria-hidden. |
 | **Sample content** | `satyanarayana-puja` |
@@ -876,7 +876,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Springy overshoot; balloons burst into confetti. |
 | **Interactive features** | Tap to pop the balloons; Polaroid gallery; Partners and supporters |
 | **Mobile behaviour** | Stacked paper sheets with rounded tops; big thumb-sized buttons; snapshots overlap but stay readable. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Every playful opening is a single large tap target with a plain-button alternative; no timed or precise interactions. |
 | **Sample content** | `onam-celebration` |
@@ -901,7 +901,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Crisp, quick fades; the pass tears away. |
 | **Interactive features** | Tear the pass to enter; Register in one tap; Add each session to your calendar |
 | **Mobile behaviour** | Left-aligned type on a strict grid; the photograph is a full-width band; numerals scale to the viewport. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Largest text of all five directions; colour never carries meaning alone; generous tap targets. |
 | **Sample content** | `leadership-conclave-2026` |
@@ -924,7 +924,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Slow, symmetrical; curtains part; ornament lines draw in. |
 | **Interactive features** | Tap to open the curtains; Dress code guide; Register in one tap |
 | **Mobile behaviour** | Centred single column; the arch or gateway photograph is sized to the screen so faces are never cropped. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (12 pages need Signature or Luxury) |
 | **Accessibility** | High-contrast ivory/ink pairs; ornament is decorative-only and hidden from screen readers; every opening can be skipped. |
 | **Sample content** | `leadership-conclave-2026` |
@@ -947,7 +947,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Slow zoom; weighty fades; letterbox bars; quick chapter reveals. |
 | **Interactive features** | Tap to skip the title cards; Register in one tap; Add sessions to your calendar |
 | **Mobile behaviour** | Photograph-first; text sits in the lower third away from faces; chapter numerals shrink but stay legible. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (12 pages need Signature or Luxury) |
 | **Accessibility** | A scrim guarantees text contrast on any photograph; motion stops completely for reduced-motion users. |
 | **Sample content** | `leadership-conclave-2026` |
@@ -970,7 +970,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Very soft; petals drift once; the flower opens petal by petal. |
 | **Interactive features** | Tap the bud to bloom; Travel planner; Register in one tap |
 | **Mobile behaviour** | Oval or arched photograph centred over soft colour; sprigs sit in the corners and never cover text. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Script is used for headings only, never for dates, times or addresses; decorative leaves are aria-hidden. |
 | **Sample content** | `leadership-conclave-2026` |
@@ -993,7 +993,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Springy overshoot; balloons burst into confetti. |
 | **Interactive features** | Tap to pop the balloons; Polaroid gallery; Register in one tap |
 | **Mobile behaviour** | Stacked paper sheets with rounded tops; big thumb-sized buttons; snapshots overlap but stay readable. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (12 pages need Signature or Luxury) |
 | **Accessibility** | Every playful opening is a single large tap target with a plain-button alternative; no timed or precise interactions. |
 | **Sample content** | `leadership-conclave-2026` |
@@ -1018,7 +1018,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Short title sequence; weighty fades; quick chapter reveals. |
 | **Interactive features** | Tap to skip the title cards; Tracks and rooms at a glance; Register in one tap |
 | **Mobile behaviour** | Photograph-first; text sits in the lower third away from faces; chapter numerals shrink but stay legible. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | A scrim guarantees text contrast on any photograph; motion stops completely for reduced-motion users. |
 | **Sample content** | `tech-summit-2026` |
@@ -1041,7 +1041,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Crisp, quick fades; the pass tears away. |
 | **Interactive features** | Tear the pass to enter; Register in one tap; Add sessions to your calendar |
 | **Mobile behaviour** | Left-aligned type on a strict grid; the photograph is a full-width band; numerals scale to the viewport. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Largest text of all five directions; colour never carries meaning alone; generous tap targets. |
 | **Sample content** | `tech-summit-2026` |
@@ -1064,7 +1064,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Slow, symmetrical; curtains part; ornament lines draw in. |
 | **Interactive features** | Tap to open the curtains; Featured keynote; Register in one tap |
 | **Mobile behaviour** | Centred single column; the arch or gateway photograph is sized to the screen so faces are never cropped. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | High-contrast ivory/ink pairs; ornament is decorative-only and hidden from screen readers; every opening can be skipped. |
 | **Sample content** | `tech-summit-2026` |
@@ -1087,7 +1087,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Very soft; petals drift once; the flower opens petal by petal. |
 | **Interactive features** | Tap the bud to bloom; Travel planner; Register in one tap |
 | **Mobile behaviour** | Oval or arched photograph centred over soft colour; sprigs sit in the corners and never cover text. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Script is used for headings only, never for dates, times or addresses; decorative leaves are aria-hidden. |
 | **Sample content** | `tech-summit-2026` |
@@ -1110,7 +1110,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | Springy overshoot; balloons burst into confetti. |
 | **Interactive features** | Tap to pop the balloons; Polaroid gallery; Register in one tap |
 | **Mobile behaviour** | Stacked paper sheets with rounded tops; big thumb-sized buttons; snapshots overlap but stay readable. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (12 pages need Signature or Luxury) |
 | **Accessibility** | Every playful opening is a single large tap target with a plain-button alternative; no timed or precise interactions. |
 | **Sample content** | `tech-summit-2026` |
@@ -1135,7 +1135,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | No celebration effects; everything moves 40% slower. |
 | **Interactive features** | Open the envelope; Directions with one tap; Leave a tribute |
 | **Mobile behaviour** | Left-aligned type on a strict grid; the photograph is a full-width band; numerals scale to the viewport. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (4 pages need Signature or Luxury) |
 | **Accessibility** | Largest text of all five directions; colour never carries meaning alone; generous tap targets. |
 | **Sample content** | `thomas-mathew-memorial` |
@@ -1158,7 +1158,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | No celebration effects; slow reveals; the lamp flickers. |
 | **Interactive features** | Tap to light the lamp; The prayer read in full; Leave a tribute |
 | **Mobile behaviour** | Centred single column; the arch or gateway photograph is sized to the screen so faces are never cropped. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (4 pages need Signature or Luxury) |
 | **Accessibility** | High-contrast ivory/ink pairs; ornament is decorative-only and hidden from screen readers; every opening can be skipped. |
 | **Sample content** | `thomas-mathew-memorial` |
@@ -1181,7 +1181,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | No celebration effects; very slow zoom and fades. |
 | **Interactive features** | Tap to skip the title cards; Swipe through the film strip; Leave a tribute |
 | **Mobile behaviour** | Photograph-first; text sits in the lower third away from faces; chapter numerals shrink but stay legible. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (4 pages need Signature or Luxury) |
 | **Accessibility** | A scrim guarantees text contrast on any photograph; motion stops completely for reduced-motion users. |
 | **Sample content** | `thomas-mathew-memorial` |
@@ -1204,7 +1204,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | No celebration effects; the flower opens slowly; no falling petals. |
 | **Interactive features** | Tap the bud to open; Illustrated map; Leave a tribute |
 | **Mobile behaviour** | Oval or arched photograph centred over soft colour; sprigs sit in the corners and never cover text. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (4 pages need Signature or Luxury) |
 | **Accessibility** | Script is used for headings only, never for dates, times or addresses; decorative leaves are aria-hidden. |
 | **Sample content** | `thomas-mathew-memorial` |
@@ -1227,7 +1227,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Animation strategy** | No celebration effects and no opening scene; very gentle fades. |
 | **Interactive features** | Leave a tribute; Share a voice or video message; Directions with one tap |
 | **Mobile behaviour** | Single column with photographs at full width. |
-| **Languages** | English and Malayalam in full; the invitation's own words in any language |
+| **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (4 pages need Signature or Luxury) |
 | **Accessibility** | Standard contrast and tap targets. |
 | **Sample content** | `thomas-mathew-memorial` |

@@ -9,7 +9,7 @@ export const metadata = pageMetadata({
   path: "/categories",
   title: "Invitations for every occasion",
   description: "Digital invitations and love gifts for weddings, engagements, birthdays, anniversaries, housewarmings, naming ceremonies, pujas and festivals, corporate events, conferences and memorials.",
-  image: "1dzXfvALJxs",
+  image: "ykcXm_u84sg",
 });
 
 export default function CategoriesPage() {

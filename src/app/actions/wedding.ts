@@ -39,7 +39,6 @@ export const createWeddingAction = async (input: { packageKey: string; title?: s
       customerClass: input.customerClass as never,
       templateId: tpl?.id ?? null,
       themeId: thm?.id ?? null,
-      secondaryLocale: "ml",
     });
     revalidate(w.id);
     return { id: w.id };

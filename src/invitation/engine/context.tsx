@@ -174,7 +174,7 @@ function useMusic(view: InvitationView): MusicApi {
 
 export function InvitationProvider({ view, children, initialLocale, onOpenShare }: { view: InvitationView; children: React.ReactNode; initialLocale: string; onOpenShare: () => void }) {
   const secondary = view.wedding.secondaryLocale;
-  const multilingual = !!secondary && view.entitlements.features.includes("multilingual");
+  const multilingual = !!secondary; // always false now: the server sends no second language
   const [locale, setLocaleState] = useState(() => (multilingual && (initialLocale === secondary || initialLocale === view.wedding.defaultLocale) ? initialLocale : view.wedding.defaultLocale));
   const [reducedMotion, setReducedMotion] = useState(false);
   const [gateOpen, setGateOpen] = useState(false);

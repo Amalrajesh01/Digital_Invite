@@ -6,11 +6,12 @@ import { WA } from "@/lib/whatsapp";
 import { pageMetadata } from "@/lib/seo";
 import { categoryBySlug } from "@/domain/catalogue/categories";
 import { SITE_TEMPLATES, siteTemplateBySlug, templatesIn } from "@/domain/catalogue/templates";
-import { loadPublicPackages } from "@/domain/catalogue/pricing";
+import { inr, loadPublicPackages } from "@/domain/catalogue/pricing";
+import { giftPriceText } from "@/domain/gifts/pricing";
 import { FallbackImg } from "@/components/site/FallbackImg";
 import { SiteButton, WaButton } from "@/components/site/WaButton";
 import { FiveWays, type WayGroup } from "@/components/site/FiveWays";
-import { CategoryCard, FaqList, FinalCta, HOW_IT_WORKS, Heading, PackageCards, Section, Steps, Wrap } from "@/components/site/blocks";
+import { CategoryCard, FaqList, FinalCta, HOW_IT_WORKS, Heading, LovePriceCard, PackageCards, Section, Steps, Wrap } from "@/components/site/blocks";
 import { FAQ_HOME } from "@/domain/catalogue/faq";
 import { JsonLd, faqLd } from "@/lib/jsonld";
 
@@ -41,7 +42,7 @@ const WAYS_LINE: Record<string, string> = {
 
 const WHAT_GUESTS_GET = [
   { icon: MailOpen, title: "Opens like an envelope", body: "A little scene opens first — a lamp, a door, a flower — then the invitation. No app, no download." },
-  { icon: Globe2, title: "In your family’s language", body: "Write in English, Malayalam or any language you speak. Guests can switch with one tap." },
+  { icon: Globe2, title: "In your family’s language", body: "Write it in English, Malayalam or any language you speak." },
   { icon: CalendarCheck, title: "Replies in seconds", body: "Yes, no or maybe — with food choices and a ride from the station — counted for you." },
   { icon: MapPin, title: "Everything about the day", body: "Each event with its time and place, a map, parking and directions. No one has to message you to ask." },
   { icon: Images, title: "Wishes and photographs", body: "Guests leave wishes and share photographs, which appear once you approve them." },
@@ -172,7 +173,8 @@ export default async function Home() {
 
       {/* ── pricing ──────────────────────────────────────────────────── */}
       <Section tone="paper" id="pricing">
-        <Heading eyebrow="Pricing" title="One-time, per invitation. No surprises." lede="Every package is the same beautiful design. You choose how much happens around it." />
+        <Heading eyebrow="Pricing" title="One-time, per invitation. No surprises." lede={`A personal gift is ${giftPriceText()}. Wedding and event invitations start at ${inr(Math.min(...packages.map((p) => p.priceMin)))}. Every package is the same beautiful design — you choose how much happens around it.`} />
+        <div className="mt-10"><LovePriceCard price={giftPriceText()} /></div>
         <PackageCards packages={packages} compact />
         <p className="mt-8 text-[15px] text-muted">Prices are in Indian rupees. <Link href="/pricing" className="text-accent underline underline-offset-4">See exactly what each package includes</Link>, or tell us about a larger event and we will quote it.</p>
       </Section>

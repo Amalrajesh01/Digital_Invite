@@ -60,18 +60,18 @@ export const CATEGORIES: CategoryDef[] = [
     seoDescription: "Digital wedding invitations that open like an envelope: Hindu, Kerala, Christian, Muslim and modern minimal designs with RSVP, venue maps and a memory book.",
     intro: [
       "A wedding invitation your guests open like an envelope, reply to in seconds and keep for a lifetime. Choose a design made for your traditions — Hindu, Kerala, Christian, Muslim, or quietly modern — and we set it with your story, your ceremonies and your photographs.",
-      "Every template tells the day in the order your guests will live it: the opening, the couple, how it began, the countdown, each ceremony with its time and place, the venue and directions, and the reply. In English and, if you like, your family’s language.",
+      "Every template tells the day in the order your guests will live it: the opening, the couple, how it began, the countdown, each ceremony with its time and place, the venue and directions, and the reply. In the language you write it in.",
     ],
     includes: ["A wax-sealed envelope opening with your names and date", "Your story, a timeline of how it began and a live countdown", "Every ceremony and event with time, place, dress code and ritual explainers", "Venue, map, parking, hotels and travel directions", "RSVP with meal, stay and travel requests", "Wishes, guest photos and a keepsake memory book after the day"],
     faq: [
-      { q: "Can the invitation be in two languages?", a: "Yes. Guests switch between English and a local language such as Malayalam with one tap. You provide both versions of each text, and we set the local language in a typeface made for its script." },
+      { q: "Can I write the invitation in Malayalam or another language?", a: "Yes. Write it in whichever language you speak at home. Each invitation is in one language, exactly as you write it." },
       NO_APP,
       CHANGE,
     ],
     eventTypes: ["hindu_wedding", "christian_wedding", "muslim_wedding", "wedding", "reception"],
   },
   {
-    slug: "engagement", name: "Engagement", group: "Weddings & couples", cover: "1dzXfvALJxs",
+    slug: "engagement", name: "Engagement", group: "Weddings & couples", cover: "ykcXm_u84sg",
     blurb: "A romantic invitation with the ring ceremony explained and a story told in moments.",
     title: "Engagement Invitation Templates",
     seoDescription: "Romantic digital engagement invitations: an arched portrait, the proposal story, the ring ceremony explained, RSVP and directions — shared in one link.",
@@ -148,7 +148,7 @@ export const CATEGORIES: CategoryDef[] = [
     eventTypes: ["naming_ceremony"],
   },
   {
-    slug: "housewarming", name: "Housewarming", group: "Family celebrations", cover: "wc-145089568",
+    slug: "housewarming", name: "Housewarming", group: "Family celebrations", cover: "Zx9In5UiU0w",
     blurb: "Invite everyone to bless the new home.",
     title: "Housewarming Invitation Templates",
     seoDescription: "Digital housewarming invitations, designed on request: the blessing of the home, a tour, lunch, directions and an RSVP — shared in one link.",

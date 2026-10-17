@@ -59,7 +59,6 @@ export const FEATURES = {
   couple_extras: { label: "Then vs now, memory cards & quiz", description: "Then/now slider, memory cards, personality cards and a quiz about the hosts.", group: "Invitation", tier: "SIGNATURE" },
   travel_info: { label: "Travel & hotel information", description: "Hotel recommendations, airport & railway directions.", group: "Travel & Venue", tier: "SIGNATURE" },
   games_basic: { label: "Trivia & bingo", description: "How well do you know us, party bingo.", group: "Games", tier: "SIGNATURE" },
-  multilingual: { label: "Local language switch", description: "Guests can switch the invitation to the local language.", group: "Invitation", tier: "SIGNATURE" },
   post_event_gallery: { label: "Post-event gallery", description: "Official photos and guest photos after the event.", group: "Memories", tier: "SIGNATURE" },
   lifetime_memories: { label: "Lifetime memory access", description: "Photo albums, wishes and memories stay online for life.", group: "Memories", tier: "SIGNATURE" },
 

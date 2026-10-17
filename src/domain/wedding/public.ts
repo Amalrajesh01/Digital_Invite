@@ -1,4 +1,4 @@
-import { getEntitlements } from "@/domain/packages/service";
+﻿import { getEntitlements } from "@/domain/packages/service";
 import { canUse, type Entitlements } from "@/domain/packages/entitlements";
 import type { InvitationDoc, SectionConfig } from "@/domain/doc/schema";
 import type { WeddingStatus } from "@/domain/doc/constants";
@@ -15,7 +15,6 @@ import { effectiveStatus, nextAnniversary, yearsTogether } from "./lifecycle";
 import { loadDraftSnapshot, loadPublishedSnapshot, getWeddingBySlug, getWeddingRow, type Snapshot } from "./snapshot";
 import { filterDocForGuest, visibleSections } from "./view";
 import { env } from "@/lib/env";
-import { localeInfo } from "@/domain/doc/constants";
 import { SECTION_META } from "@/domain/doc/sections";
 import { tx } from "@/domain/doc/schema";
 import { resolveSlot } from "@/domain/imagery/slots";
@@ -90,7 +89,7 @@ async function assemble(opts: { snap: Snapshot; guest: GuestContext | null; mode
   const { wedding, meta } = snap;
   const ent = opts.entitlements ?? (await getEntitlements(wedding.id));
   const status = opts.asStatus ?? effectiveStatus(wedding);
-  const locales = [meta.defaultLocale, ...(meta.secondaryLocale ? [meta.secondaryLocale] : [])];
+  const locales = [meta.defaultLocale]; // one language per invitation
   const advanced = canUse(ent, "advanced_greetings");
   const enforceVis = canUse(ent, "event_visibility");
 
@@ -148,8 +147,8 @@ async function assemble(opts: { snap: Snapshot; guest: GuestContext | null; mode
       weddingDate: meta.weddingDate,
       timezone: meta.timezone,
       defaultLocale: meta.defaultLocale,
-      secondaryLocale: canUse(ent, "multilingual") ? meta.secondaryLocale : null,
-      secondaryLabel: localeInfo(meta.secondaryLocale)?.native ?? null,
+      secondaryLocale: null, // one language per invitation; older snapshots may still carry a second one, which guests are no longer offered
+      secondaryLabel: null,
       status,
       storedStatus: wedding.status,
       isDemo: !!wedding.isDemo,
@@ -243,9 +242,9 @@ export async function loadTemplatePreview(opts: { templateId?: string | null; th
 }
 
 /**
- * A template shown with its sample content — the public gallery’s preview. The design (sections, opening, direction, colours) comes
+ * A template shown with its sample content â€” the public galleryâ€™s preview. The design (sections, opening, direction, colours) comes
  * straight from the template specification in code, so a preview is always the design that ships; the words and photographs come
- * from the template’s sample invitation. Only sample invitations are ever used as content.
+ * from the templateâ€™s sample invitation. Only sample invitations are ever used as content.
  */
 export async function loadSpecPreview(slug: string, opts: { state?: WeddingStatus; demoSlug?: string } = {}): Promise<InvitationView | null> {
   const { TEMPLATE_SEEDS, generateSections } = await import("@/domain/design/templates");

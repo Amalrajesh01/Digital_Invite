@@ -1,9 +1,10 @@
 /**
- * What a love gift costs, if the studio has set it. The gift is sold outside the three invitation packages, so its
- * price is a single setting (GIFT_PRICE_INR); when it is not set the site says the price is shared on WhatsApp
- * rather than inventing one.
+ * What a love gift costs: one price for every one of the five styles — the studio's entry-level product. It is sold outside
+ * the three wedding packages, so it is a single number here rather than a package row. GIFT_PRICE_INR overrides it.
  */
-export function giftPriceText(): string | null {
+export const GIFT_PRICE_DEFAULT_INR = 499;
+
+export function giftPriceText(): string {
   const n = Number(process.env.GIFT_PRICE_INR);
-  return Number.isFinite(n) && n > 0 ? `₹${n.toLocaleString("en-IN")}` : null;
+  return `₹${(Number.isFinite(n) && n > 0 ? n : GIFT_PRICE_DEFAULT_INR).toLocaleString("en-IN")}`;
 }

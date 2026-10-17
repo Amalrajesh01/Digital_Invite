@@ -47,7 +47,6 @@ export interface CreateWeddingInput {
   templateId?: string | null;
   themeId?: string | null;
   defaultLocale?: string;
-  secondaryLocale?: string | null;
   weddingDate?: string | null;
 }
 
@@ -71,7 +70,7 @@ export async function createWedding(actor: Actor | null, input: CreateWeddingInp
   // Entitlements for a wedding that does not exist yet = the package defaults.
   const { resolveEntitlements } = await import("@/domain/packages/entitlements");
   const ent = resolveEntitlements(input.packageKey, pkg.features, []);
-  const doc = buildInitialDoc(tConfig?.success ? tConfig.data : null, ent, input.secondaryLocale ?? null);
+  const doc = buildInitialDoc(tConfig?.success ? tConfig.data : null, ent, null);
 
   const customerClass: CustomerClass = input.customerClass ?? (`PAID_${input.packageKey}` as CustomerClass);
 
@@ -85,7 +84,6 @@ export async function createWedding(actor: Actor | null, input: CreateWeddingInp
       templateId,
       themeId: input.themeId ?? null,
       defaultLocale: input.defaultLocale ?? "en",
-      secondaryLocale: input.secondaryLocale ?? null,
       weddingDate: input.weddingDate ?? null,
       draftDoc: doc,
       createdBy: admin.userId,
@@ -185,7 +183,6 @@ export interface SettingsPatch {
   weddingDate?: string | null;
   timezone?: string;
   defaultLocale?: string;
-  secondaryLocale?: string | null;
   accessMode?: "PUBLIC" | "PERSONALIZED_ONLY";
   autoLifecycle?: boolean;
   contactEmail?: string | null;
@@ -224,7 +221,6 @@ export async function updateWeddingSettings(actor: Actor | null, id: string, pat
   }
   if (patch.timezone) set.timezone = patch.timezone;
   if (patch.defaultLocale) set.defaultLocale = patch.defaultLocale;
-  if (patch.secondaryLocale !== undefined) set.secondaryLocale = patch.secondaryLocale || null;
   if (patch.accessMode) set.accessMode = patch.accessMode;
   if (patch.autoLifecycle !== undefined) set.autoLifecycle = patch.autoLifecycle;
   if (patch.contactEmail !== undefined) set.contactEmail = patch.contactEmail || null;
@@ -312,7 +308,6 @@ export async function duplicateWedding(actor: Actor | null, id: string, input: {
     templateId: src.templateId,
     themeId: src.themeId,
     defaultLocale: src.defaultLocale,
-    secondaryLocale: src.secondaryLocale,
   });
   const doc = structuredClone(src.draftDoc) as InvitationDoc;
   // Strip anything that identifies the source couple's private media.

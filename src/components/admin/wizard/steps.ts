@@ -1,6 +1,6 @@
 export const STEPS = [
   { key: "package", title: "Package", blurb: "Choose what this couple receives. Features, dashboards and limits follow from this choice." },
-  { key: "couple", title: "Couple", blurb: "Names, wedding date, the wedding link and the language of the invitation." },
+  { key: "couple", title: "Couple", blurb: "Names, wedding date and the wedding link." },
   { key: "events", title: "Events", blurb: "Every ceremony and celebration — with time, place, dress code and rituals." },
   { key: "family", title: "Family", blurb: "The families and the wedding party." },
   { key: "story", title: "Story", blurb: "How they met and the moments that led here." },

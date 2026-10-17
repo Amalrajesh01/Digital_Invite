@@ -74,7 +74,7 @@ export const LOVE_DEMOS: LoveCfg[] = [
     ],
     letter: "Today is all about you. I wanted to give you something you could keep, so I made you this.\n\nThank you for being the kindest, silliest and most reliable person I know. Now go and eat cake.",
     closing: "Love you, birthday boy!", photos: ["p1", "p2", "p3", "p4", "p5"],
-    needs: [["p1", "K2JtyCVdeuQ", "COUPLE"], ["p2", "UJynGW4gF-I", "COUPLE"], ["p3", "ch4Fc1cGTq4", "COUPLE"], ["p4", "xXHyI3ZRByo", "COUPLE"], ["p5", "1dzXfvALJxs", "COUPLE", { focal: { x: 48, y: 45 } }]],
+    needs: [["p1", "K2JtyCVdeuQ", "COUPLE"], ["p2", "UJynGW4gF-I", "COUPLE"], ["p3", "ch4Fc1cGTq4", "COUPLE"], ["p4", "xXHyI3ZRByo", "COUPLE"], ["p5", "ykcXm_u84sg", "COUPLE", { focal: { x: 50, y: 30 } }]],
   },
   {
     slug: "love-sorry", title: "I’m Sorry, My Love — sample", template: "im-sorry-my-love", theme: "love-mist", track: "Still Water (ambient)", date: "2027-01-20",

@@ -1,5 +1,5 @@
 // Template QA and gallery thumbnails.
-//   node scripts/dev/tpl.mjs <slug|all|category:<slug>> [--out=.shots/tpl] [--thumbs] [--gate] [--scroll=0.25,0.55] [--w=390 --h=844]
+//   npx tsx scripts/dev/tpl.mjs <slug|all|category:<slug>> [--out=.shots/tpl] [--thumbs] [--gate] [--scroll=0.25,0.55] [--w=390 --h=844]
 // For each template it opens /preview/t/<slug> like a visitor on a phone and writes
 //   <slug>-gate.png (the opening, with --gate)   <slug>-hero.png (the first screen)   <slug>-sNN.png (screens down the page, with --scroll)
 // With --thumbs it instead writes public/templates/<slug>.webp — the picture the gallery shows for the template.

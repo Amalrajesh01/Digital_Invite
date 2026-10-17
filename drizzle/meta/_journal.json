@@ -15,6 +15,20 @@
       "when": 1792108609916,
       "tag": "0001_dapper_senator_kelly",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792248364159,
+      "tag": "0002_essential_from_999",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792248712320,
+      "tag": "0003_one_language_per_invitation",
+      "breakpoints": true
     }
   ]
 }

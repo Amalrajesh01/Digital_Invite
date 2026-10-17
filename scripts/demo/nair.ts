@@ -47,7 +47,7 @@ export const NAIR: OccasionCfg = {
   thankYou: { message: "Thank you for filling our home on its very first day. It has never looked so full.\n\nWith love,", signature: "Anand & Divya", photo: "hero" },
   seo: { title: "Griha Pravesh — Housewarming Invitation", description: "A traditional housewarming invitation with the rituals explained. A sample design by Invites by Stack Bridge Labs.", og: "hero" },
   needs: [
-    ["hero", "wc-145089568", "COUPLE", { focal: { x: 55, y: 35 } }],
+    ["hero", "Zx9In5UiU0w", "COUPLE", { focal: { x: 55, y: 42 } }],
     ["venue", "csK5XPO87lI", "VENUE"],
     ["homam", "wc-146118873", "EVENT", { focal: { x: 50, y: 30 } }],
     ["rituals", "WciKbLIFGxc", "EVENT"],

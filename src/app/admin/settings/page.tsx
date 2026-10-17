@@ -3,7 +3,6 @@ import { eq, sql } from "drizzle-orm";
 import { requireAdminPage } from "@/lib/session";
 import { getDb, schema } from "@/db/client";
 import { env } from "@/lib/env";
-import { LOCALES } from "@/domain/doc/constants";
 import { PageHeader, Section } from "@/components/ui/Bits";
 import { Chip } from "@/components/ui/Chip";
 import { PasswordForm } from "@/components/workspace/PasswordForm";
@@ -34,9 +33,6 @@ export default async function SettingsPage() {
             </li>
           ))}
         </ul>
-      </Section>
-      <Section title="Local language">
-        <p className="max-w-2xl text-[14.5px] text-ink-2">The language guests can switch to is chosen per wedding, when you create it (in the wizard’s language step). Available now: {LOCALES.map((l) => `${l.label} (${l.native})`).join(", ")}. English is always included.</p>
       </Section>
       <Section title="Portfolio weddings"><p className="text-[14.5px] text-ink-2">{free} of your first 5 customers are marked <span className="font-medium">free · portfolio</span>. Change a wedding’s class in its settings.</p></Section>
       <Section title="Your account">

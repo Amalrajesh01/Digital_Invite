@@ -33,6 +33,7 @@ export function SiteHeader() {
   }, [open]);
   const active = (href: string) => path === href || path.startsWith(`${href}/`);
   return (
+    <>
     <header className="sticky top-0 z-40 border-b border-rule/70 bg-white/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-[76rem] items-center justify-between gap-6 px-5 sm:px-8">
         <Link href="/" aria-label={`${brand.name} — home`} className="shrink-0">
@@ -56,8 +57,10 @@ export function SiteHeader() {
           {open ? <X className="size-5" /> : <Menu className="size-5" />}
         </button>
       </div>
+    </header>
+      {/* a sibling of the header on purpose: a backdrop-blurred parent makes `fixed` children size against the header, not the screen */}
       {open && (
-        <div id="mobile-nav" className="fixed inset-x-0 bottom-0 top-16 z-30 overflow-y-auto bg-white px-5 pb-10 pt-4 lg:hidden">
+        <div id="mobile-nav" className="fixed inset-x-0 bottom-0 top-16 z-50 overflow-y-auto bg-white px-5 pb-10 pt-4 lg:hidden">
           <nav aria-label="Mobile" className="grid gap-1">
             {[{ href: "/", label: "Home" }, ...NAV].map((n) => (
               <Link key={n.href} href={n.href} aria-current={active(n.href) || (n.href === "/" && path === "/") ? "page" : undefined} className={cn("flex items-center gap-2 rounded-xl px-3 py-3.5 text-[19px] font-medium", (n.href === "/" ? path === "/" : active(n.href)) ? "bg-accent-soft text-accent" : "text-ink", "love" in n && "love" in n && (n as { love?: boolean }).love && "text-rose")}>
@@ -74,6 +77,6 @@ export function SiteHeader() {
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 }

@@ -474,7 +474,7 @@ describe("pricing on the public site and for the company site", () => {
   it("shows the live packages — three of them, with the prices Super Admin set", async () => {
     const packages = await loadPublicPackages();
     expect(packages.map((p) => p.key)).toEqual(["ESSENTIAL", "SIGNATURE", "LUXURY"]);
-    expect(packages[0].priceMin).toBe(1999);
+    expect(packages[0].priceMin).toBe(999);
     expect(packages[2].priceMax).toBe(10000);
     for (const p of packages) expect(p.features.length).toBeGreaterThan(5);
   });

@@ -60,10 +60,10 @@ export const DEMOS: DemoDef[] = [
   {
     slug: "meenakshi-and-aravind", name: "Meenakshi & Aravind", title: "Kerala Traditional Wedding", eventType: "hindu_wedding", template: "royal-heritage", theme: "kasavu", styles: ["Traditional", "Luxury"],
     cover: "Zx9In5UiU0w", coverFocal: { x: 55, y: 58 }, strip: ["UX3-_dGbCzk", "rjgFxE3eARQ", "VJP7K4uihUA", "b9xLrj7w2AY"],
-    tagline: "Kasavu, a lamp and the backwaters — in English and Malayalam.",
-    description: "Our flagship: a Kerala Hindu wedding in cream, gold and forest green. Every heading and button switches to Malayalam with one tap, and the guests can play, reply and share photographs on the day.",
-    highlights: ["English and Malayalam at one tap, in a typeface made for the script", "Games, a quiz and a live photo wall for the wedding day", "A QR guest pass and live schedule", "A time capsule and anniversary memories afterwards"],
-    bestFor: ["Kerala weddings", "Families whose elders read Malayalam", "Weddings with a lively wedding-day programme"], languages: ["English", "Malayalam"], when: "24 January 2027", where: "Kumarakom",
+    tagline: "Kasavu, a lamp and the backwaters.",
+    description: "Our flagship: a Kerala Hindu wedding in cream, gold and forest green. Guests can play, reply and share photographs on the day.",
+    highlights: ["Games, a quiz and a live photo wall for the wedding day", "A QR guest pass and live schedule", "A time capsule and anniversary memories afterwards"],
+    bestFor: ["Kerala weddings", "Weddings with a lively wedding-day programme"], languages: ["English"], when: "24 January 2027", where: "Kumarakom",
   },
   {
     slug: "meera-turns-thirty", name: "Meera turns thirty", title: "Luxury Birthday — 30th", eventType: "birthday", template: "gala-night", theme: "noir-champagne", styles: ["Luxury", "Modern & minimal"],
@@ -83,7 +83,7 @@ export const DEMOS: DemoDef[] = [
   },
   {
     slug: "tara-and-nikhil", name: "Tara & Nikhil", title: "Engagement", eventType: "engagement", template: "romance", theme: "peony-champagne", styles: ["Romantic", "Traditional"],
-    cover: "1dzXfvALJxs", coverFocal: { x: 49, y: 40 }, strip: ["AD3k4pko7wo", "K2JtyCVdeuQ", "OmLrFODvPII", "WHNWkO1lBKU"],
+    cover: "ykcXm_u84sg", coverFocal: { x: 50, y: 30 }, strip: ["AD3k4pko7wo", "K2JtyCVdeuQ", "OmLrFODvPII", "WHNWkO1lBKU"],
     tagline: "A wrong turn, a cup of tea and a very good question.",
     description: "A romantic engagement invitation: an arched portrait, the story of how they met, the ring ceremony explained step by step and the two of them walking towards each other as you scroll.",
     highlights: ["The couple walking towards each other as you scroll", "The ring ceremony explained, step by step", "A mehendi evening, ceremony and lunch as separate events", "A blush, champagne and mulberry dress palette"],
@@ -156,7 +156,7 @@ export const DEMOS: DemoDef[] = [
   },
   {
     slug: "nair-griha-pravesh", name: "Ananda Nilayam", title: "Griha Pravesh (Housewarming)", eventType: "housewarming", template: "griha-pravesh", theme: "kasavu", styles: ["Traditional"],
-    cover: "wc-145089568", coverFocal: { x: 55, y: 35 }, strip: ["wc-146118873", "WciKbLIFGxc", "zNY2lVIRh7M", "wc-152617626"],
+    cover: "Zx9In5UiU0w", coverFocal: { x: 55, y: 42 }, strip: ["wc-146118873", "WciKbLIFGxc", "zNY2lVIRh7M", "wc-152617626"],
     tagline: "Open the door to the new home — with every ritual explained.", description: "A traditional housewarming in Kochi: the homam, the first step across the threshold, the milk boiled until it overflows and the first meal.",
     highlights: ["Doors that open onto the new home", "Each ritual explained for guests who are new to it", "One-tap directions and parking", "A wall of good wishes"], bestFor: ["Griha Pravesh and house blessings", "Families with rituals to explain"], languages: ["English"], when: "28 March 2027", where: "Kochi",
   },
@@ -186,7 +186,7 @@ export const DEMOS: DemoDef[] = [
   },
   {
     slug: "love-surprise", name: "Little Surprise — sample", title: "Love Gift: Little Surprise", eventType: "love_gift", template: "little-surprise", theme: "love-sorbet", styles: ["Playful"],
-    cover: "UJynGW4gF-I", strip: ["K2JtyCVdeuQ", "ch4Fc1cGTq4", "xXHyI3ZRByo", "1dzXfvALJxs"],
+    cover: "UJynGW4gF-I", strip: ["K2JtyCVdeuQ", "ch4Fc1cGTq4", "xXHyI3ZRByo", "ykcXm_u84sg"],
     tagline: "A gift to open, with small surprises behind it.", description: "A sample birthday surprise: a wrapped gift, then one small surprise at a time, with a big finish and a skip button always in reach.",
     highlights: ["A gift to open", "One easy tap per surprise", "Skip to the end any time", "Confetti on the last one only"], bestFor: ["A birthday", "Someone who loves surprises"], languages: ["English"], when: "Private gift", where: "A link only they have",
   },

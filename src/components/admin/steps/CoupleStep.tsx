@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, X } from "lucide-react";
 import { TextField, SelectField, TextArea } from "@/components/ui/Field";
-import { LOCALES } from "@/domain/doc/constants";
 import { normalizeSlugClient } from "@/lib/slug";
 import { newId } from "@/lib/id";
 import { checkSlugAction } from "@/app/actions/wedding";
@@ -80,16 +79,11 @@ export function CoupleStep() {
           </p>
         </div>
         <Grid>
-          <SelectField label="Local language (optional)" value={settings.secondaryLocale ?? ""} disabled={!admin} onChange={(e) => updateSettings({ secondaryLocale: e.target.value || null })} hint="Guests get an English ⇄ local-language switch. You then write each text in both languages below.">
-            <option value="">English only</option>
-            {LOCALES.map((l) => (<option key={l.code} value={l.code}>{l.label} — {l.native}</option>))}
-          </SelectField>
           <SelectField label="Who can open the invitation?" value={settings.accessMode} disabled={!admin} onChange={(e) => updateSettings({ accessMode: e.target.value as never })} hint="Private invitations need each guest’s personal link.">
             <option value="PUBLIC">Anyone with the link</option>
             <option value="PERSONALIZED_ONLY" disabled={!has("personalized_urls")}>Only guests with a personal link{!has("personalized_urls") ? " (Signature+)" : ""}</option>
           </SelectField>
         </Grid>
-        {settings.secondaryLocale && <Hint>Every text box below now has an English side and a {LOCALES.find((l) => l.code === settings.secondaryLocale)?.label} side. Fill both; anything left empty falls back to English.</Hint>}
       </FormCard>
 
       <CelebrationCard />

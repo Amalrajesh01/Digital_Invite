@@ -8,13 +8,13 @@ export const metadata = pageMetadata({
   path: "/how-it-works",
   title: "How it works — from a design you like to a link you share",
   description: "Choose a design, send us your details on WhatsApp, approve a private preview and share. Five simple steps to a digital invitation your guests will keep.",
-  image: "1dzXfvALJxs",
+  image: "ykcXm_u84sg",
 });
 
 const DETAIL = [
   { img: "ch4Fc1cGTq4", more: ["Every design on the site opens like a real invitation — try it on your phone, tap to open, scroll to the end.", "You do not have to match the sample: the colours, the order of the pages and every word can change."] },
   { img: "AD3k4pko7wo", more: ["We ask for the names, the date, the place and a few photographs — and anything you want guests to know: dress code, parking, a ritual to explain.", "WhatsApp is the easiest way to send it; a form works too."] },
-  { img: "1dzXfvALJxs", more: ["We set your photographs and your words, and — if you want — your family's language in a typeface made for its letters.", "You see a private preview, with your names on it, before anything is shared. Ask for as many changes as you need."] },
+  { img: "ykcXm_u84sg", more: ["We set your photographs and your words, in the language you write them.", "You see a private preview, with your names on it, before anything is shared. Ask for as many changes as you need."] },
   { img: "dYgv-1JnPTA", more: ["When you approve, the invitation goes live on its own link — a short one you choose.", "Share it on WhatsApp, in a group, by message, or as a QR code on a printed card. Guests need no app."] },
   { img: "OmLrFODvPII", more: ["Replies arrive in one place, with meals, stay and travel needs counted for you. Wishes and photographs appear when you approve them.", "Afterwards the same link becomes a gallery, a guestbook and a keepsake."] },
 ] as const;

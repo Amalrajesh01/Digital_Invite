@@ -18,7 +18,7 @@ export const PACKAGE_DEFAULTS: PackageDefaults[] = [
     name: "Essential",
     tagline: "Beautiful Premium Digital Wedding Invitation",
     blurb: "A stunning invitation that opens like a keepsake: story, events, venue, gallery, music and RSVP.",
-    priceMin: 1999,
+    priceMin: 999,
     priceMax: 2499,
     hasClientDashboard: false,
     sortOrder: 0,

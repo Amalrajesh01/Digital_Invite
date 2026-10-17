@@ -57,7 +57,7 @@ export const TEMPLATE_SPECS: TemplateSpec[] = [
     target: ["Traditional Hindu and Kerala weddings", "Families with rituals to explain to guests", "Multi-day celebrations"],
     images: "One tall portrait in a carved arch; ceremony photographs as large editorial spreads.",
     motion: "Slow and symmetrical: the flame flickers, ornament lines draw in, petals fall once.",
-    interactions: ["Tap to light the lamp", "Ritual explainers that open on tap", "Add each event to your calendar", "English and Malayalam in one tap"],
+    interactions: ["Tap to light the lamp", "Ritual explainers that open on tap", "Add each event to your calendar"],
     flow: [["story", { variant: "chapters" }], ["timeline", { variant: "vertical" }], ["countdown", { variant: "classic" }], ["couple", { variant: "arch" }], ["events", { variant: "editorial" }], ...LIVE,
       ["ceremonies", { variant: "editorial" }], ["family", { variant: "editorial" }], ["dresscode", { variant: "visual" }], "menu", ["venue", { variant: "classic" }], ["travel", { variant: "tabs" }], ["gallery", { variant: "editorial" }], "film", "music", "quiz", "games", "scavenger",
       ["rsvp", { variant: "classic" }], ["guestbook", { variant: "wall" }], ...AFTER, "contact"],

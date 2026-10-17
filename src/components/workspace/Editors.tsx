@@ -14,7 +14,6 @@ import { MediaField } from "@/components/admin/MediaField";
 import { useDraft } from "@/components/admin/draft";
 import { MediaLibrary } from "@/components/media/MediaLibrary";
 import type { LocalizedText } from "@/domain/doc/schema";
-import { LOCALES } from "@/domain/doc/constants";
 import { capsuleDashboardAction, deleteAnniversaryAction, hideCapsuleItemAction, listMessagesAction, saveAnniversaryAction, saveMemoryBookAction, unlockCapsuleAction } from "@/app/actions/participation";
 import { rollbackAction, checkpointAction, saveSettingsAction, setStatusAction, versionsAction } from "@/app/actions/wedding";
 
@@ -115,13 +114,13 @@ export function AnniversaryEditor({ weddingId, entries }: { weddingId: string; e
 }
 
 // ── settings ────────────────────────────────────────────────────────────────
-export function SettingsForm({ weddingId, isAdmin, initial, status }: { weddingId: string; isAdmin: boolean; initial: { contactEmail: string; contactPhone: string; accessMode: "PUBLIC" | "PERSONALIZED_ONLY"; autoLifecycle: boolean; timezone: string; secondaryLocale: string | null }; status: string }) {
+export function SettingsForm({ weddingId, isAdmin, initial, status }: { weddingId: string; isAdmin: boolean; initial: { contactEmail: string; contactPhone: string; accessMode: "PUBLIC" | "PERSONALIZED_ONLY"; autoLifecycle: boolean; timezone: string }; status: string }) {
   const router = useRouter();
   const [v, setV] = useState(initial);
   const [pending, start] = useTransition();
   const [st, setSt] = useState(status);
   const save = () => start(async () => {
-    const r = await saveSettingsAction(weddingId, isAdmin ? { contactEmail: v.contactEmail, contactPhone: v.contactPhone, accessMode: v.accessMode, autoLifecycle: v.autoLifecycle, timezone: v.timezone, secondaryLocale: v.secondaryLocale } : { contactEmail: v.contactEmail, contactPhone: v.contactPhone });
+    const r = await saveSettingsAction(weddingId, isAdmin ? { contactEmail: v.contactEmail, contactPhone: v.contactPhone, accessMode: v.accessMode, autoLifecycle: v.autoLifecycle, timezone: v.timezone } : { contactEmail: v.contactEmail, contactPhone: v.contactPhone });
     if (r.ok) { toast.success("Settings saved"); router.refresh(); } else toast.error(r.error.message);
   });
   return (
@@ -135,7 +134,6 @@ export function SettingsForm({ weddingId, isAdmin, initial, status }: { weddingI
             <SelectField label="Who can open it?" value={v.accessMode} onChange={(e) => setV({ ...v, accessMode: e.target.value as never })}><option value="PUBLIC">Anyone with the link</option><option value="PERSONALIZED_ONLY">Only guests with a personal link</option></SelectField>
             <SelectField label="Time zone" value={v.timezone} onChange={(e) => setV({ ...v, timezone: e.target.value })}>{["Asia/Kolkata", "Asia/Dubai", "Asia/Singapore", "Europe/London", "America/New_York", "America/Los_Angeles", "Australia/Sydney"].map((z) => (<option key={z}>{z}</option>))}</SelectField>
           </Grid>
-          <SelectField label="Local language" value={v.secondaryLocale ?? ""} onChange={(e) => setV({ ...v, secondaryLocale: e.target.value || null })}><option value="">English only</option>{LOCALES.map((l) => (<option key={l.code} value={l.code}>{l.label} — {l.native}</option>))}</SelectField>
           <Switch label="Follow the wedding date automatically" hint="The invitation switches to “Welcome to our celebration” on the day, “Thank you” afterwards, then memories and anniversaries." checked={v.autoLifecycle} onChange={(x) => setV({ ...v, autoLifecycle: x })} />
           {!v.autoLifecycle && (
             <SelectField label="Show the invitation as" value={st} onChange={(e) => start(async () => { const r = await setStatusAction(weddingId, e.target.value); if (r.ok) { setSt(e.target.value); toast.success("State changed"); router.refresh(); } else toast.error(r.error.message); })}>

@@ -5,12 +5,13 @@ import { WA } from "@/lib/whatsapp";
 import { FEATURES, type FeatureGroup, type FeatureKey } from "@/domain/packages/features";
 import { loadPublicPackages, priceText } from "@/domain/catalogue/pricing";
 import { FAQ_GROUPS } from "@/domain/catalogue/faq";
-import { FaqList, FinalCta, Heading, PackageCards, Section, Wrap } from "@/components/site/blocks";
+import { FaqList, FinalCta, Heading, LovePriceCard, PackageCards, Section, Wrap } from "@/components/site/blocks";
+import { giftPriceText } from "@/domain/gifts/pricing";
 
 export const metadata = pageMetadata({
   path: "/pricing",
-  title: "Pricing — three packages, paid once",
-  description: "Essential, Signature and Luxury digital invitation packages, priced per invitation, one-time, in Indian rupees. See exactly what each includes.",
+  title: "Pricing — gifts from ₹499, weddings from ₹999",
+  description: "A For My Love gift is ₹499. Wedding and event invitations start at ₹999 with Essential, then Signature and Luxury — one-time, in Indian rupees. See exactly what each includes.",
   image: "ch4Fc1cGTq4",
 });
 export const dynamic = "force-dynamic";
@@ -30,6 +31,8 @@ export default async function PricingPage() {
         </Wrap>
       </section>
       <Section tone="white" className="!pt-6">
+        <LovePriceCard price={giftPriceText()} />
+        <p className="mt-12 text-[15px] font-semibold text-ink">Wedding and event invitations</p>
         <PackageCards packages={packages} />
         <p className="mt-8 max-w-3xl text-[15px] leading-relaxed text-muted">What costs extra: anything outside these lists — for example your own web address for the invitation, or a large event with registration, speakers and partners. Tell us what you need and we will quote it before you decide. Love gifts are priced separately; ask us on WhatsApp.</p>
       </Section>

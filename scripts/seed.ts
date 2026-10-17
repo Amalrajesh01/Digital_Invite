@@ -145,7 +145,7 @@ async function seedWedding(admin: AdminActor, spec: DemoSpec) {
   }
   const [tpl] = await db.select().from(schema.templates).where(eq(schema.templates.slug, spec.template));
   const [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, spec.theme));
-  const w = await createWedding(admin, { title: spec.title, slug: spec.slug, packageKey: spec.pkg, customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", secondaryLocale: "ml", weddingDate: DEMO.date });
+  const w = await createWedding(admin, { title: spec.title, slug: spec.slug, packageKey: spec.pkg, customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", weddingDate: DEMO.date });
   await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com", autoLifecycle: false }).where(eq(schema.weddings.id, w.id));
   const art = (cache ??= await renderArt());
 
@@ -241,7 +241,7 @@ async function seedAnanya(admin: AdminActor) {
   }
   const [tpl] = await db.select().from(schema.templates).where(eq(schema.templates.slug, "cinematic-noir"));
   const [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, "royal-gold"));
-  const w = await createWedding(admin, { title: ANANYA.title, slug: ANANYA.slug, packageKey: "LUXURY", customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", secondaryLocale: null, weddingDate: ANANYA.date });
+  const w = await createWedding(admin, { title: ANANYA.title, slug: ANANYA.slug, packageKey: "LUXURY", customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", weddingDate: ANANYA.date });
   await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com", autoLifecycle: false }).where(eq(schema.weddings.id, w.id));
   const assets = new Map<string, string>();
   const need = async (k: string, c: MediaCategory, caption?: Record<string, string>) => {
@@ -345,7 +345,7 @@ async function seedShowcase(admin: AdminActor, c: ShowcaseCfg) {
   const [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, c.theme));
   if (!tpl || !thm) throw new Error(`Template "${c.template}" or theme "${c.theme}" is missing — run npm run library:refresh first.`);
   const pkg = c.package ?? "LUXURY";
-  const w = await createWedding(admin, { title: c.title, slug: c.slug, packageKey: pkg, customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", secondaryLocale: null, weddingDate: c.date });
+  const w = await createWedding(admin, { title: c.title, slug: c.slug, packageKey: pkg, customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", weddingDate: c.date });
   await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com", autoLifecycle: false }).where(eq(schema.weddings.id, w.id));
   const { ids, galleryIds } = await loadDemoAssets(w.id, c.slug, c.needs, c.gallery);
   await finishDemo(admin, w.id, {
@@ -372,7 +372,7 @@ async function seedOccasion(admin: AdminActor, c: OccasionCfg) {
   const [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, c.theme));
   if (!tpl || !thm) throw new Error(`Template "${c.template}" or theme "${c.theme}" is missing — run npm run library:refresh first.`);
   const pkg = c.package ?? "LUXURY";
-  const w = await createWedding(admin, { title: c.title, slug: c.slug, packageKey: pkg, customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", secondaryLocale: null, weddingDate: c.date });
+  const w = await createWedding(admin, { title: c.title, slug: c.slug, packageKey: pkg, customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", weddingDate: c.date });
   await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com", autoLifecycle: false }).where(eq(schema.weddings.id, w.id));
   const { ids, galleryIds } = await loadDemoAssets(w.id, c.slug, c.needs, c.gallery);
   await finishDemo(admin, w.id, {
@@ -394,7 +394,7 @@ async function seedLove(admin: AdminActor, c: LoveCfg) {
   const [tpl] = await db.select().from(schema.templates).where(eq(schema.templates.slug, c.template));
   const [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, c.theme));
   if (!tpl || !thm) throw new Error(`Template "${c.template}" or theme "${c.theme}" is missing — run npm run library:refresh first.`);
-  const w = await createWedding(admin, { title: c.title, slug: c.slug, packageKey: "ESSENTIAL", customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", secondaryLocale: null, weddingDate: c.date });
+  const w = await createWedding(admin, { title: c.title, slug: c.slug, packageKey: "ESSENTIAL", customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", weddingDate: c.date });
   await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com", autoLifecycle: false }).where(eq(schema.weddings.id, w.id));
   const { ids } = await loadDemoAssets(w.id, c.slug, c.needs, []);
   await finishDemo(admin, w.id, { slug: c.slug, track: c.track, galleryIds: [], label: "Launch", buildDoc: (base) => buildLoveDoc(base, c, (k) => ids.get(k)) });

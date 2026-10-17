@@ -81,7 +81,7 @@ export default async function TemplatePage({ params }: Props) {
                 <div className="flex items-start justify-between gap-4"><dt className="text-muted">Style</dt><dd className="text-right font-medium">{t.styleLabel}</dd></div>
                 <div className="flex items-start justify-between gap-4"><dt className="text-muted">Opens with</dt><dd className="text-right font-medium">{t.openingLabel}</dd></div>
                 <div className="flex items-center justify-between gap-4"><dt className="text-muted">Colours</dt><dd className="flex items-center gap-2.5 font-medium">{t.theme.name} <Swatches colors={t.theme.colors} /></dd></div>
-                <div className="flex items-start justify-between gap-4"><dt className="text-muted">Languages</dt><dd className="text-right font-medium">English and Malayalam, and your own words in any language</dd></div>
+                <div className="flex items-start justify-between gap-4"><dt className="text-muted">Languages</dt><dd className="text-right font-medium">Your own words, in any language</dd></div>
               </dl>
               <p className="mt-6 text-[14.5px] font-semibold text-ink">Best for</p>
               <ul className="mt-2 space-y-1.5 text-[15px] text-ink-2/85">{t.target.map((b) => (<li key={b} className="flex gap-2.5"><Check className="mt-1 size-4 shrink-0 text-accent" aria-hidden />{b}</li>))}</ul>
