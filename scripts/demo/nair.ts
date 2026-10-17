@@ -20,7 +20,7 @@ export const NAIR: OccasionCfg = {
   },
   images: { couple: "hero" },
   venues: [
-    { key: "home", name: "Ananda Nilayam", address: "Ananda Nilayam, Temple Road, Kakkanad, Kochi, Kerala 682030", city: "Kochi", lat: 10.0159, lng: 76.3419, mapUrl: "https://www.google.com/maps/search/?api=1&query=Kakkanad+Kochi", photo: "venue", airport: "Cochin International Airport (COK) is 28 km away, about 50 minutes by car.", railway: "Ernakulam North is 10 km away, about 30 minutes.", road: "From Infopark Phase 1, take the second left after the petrol pump; Palm Grove is the cream building with the coconut palms at its gate.", parking: "Visitor parking in the basement; please give your name to the security desk." },
+    { key: "home", name: "Ananda Nilayam", address: "Ananda Nilayam, Temple Road, Kakkanad, Kochi, Kerala 682030", city: "Kochi", lat: 10.0159, lng: 76.3419, mapUrl: "https://www.google.com/maps/search/?api=1&query=Kakkanad+Kochi", photo: "venue", airport: "Cochin International Airport (COK) is 28 km away, about 50 minutes by car.", railway: "Ernakulam North is 10 km away, about 30 minutes.", road: "From Infopark Phase 1, take the second left after the petrol pump; Palm Grove is the cream building with the coconut palms at its gate.", parking: "Park along the lane in front of the house; the gate will be open all morning." },
   ],
   events: [
     { name: "Ganapathi homam", date: "2027-03-28", start: "06:30", end: "08:00", venue: "home", description: "The fire ritual that clears the way for a new beginning. Only the families need attend.", dress: "Traditional", colors: ["#FBF8EF", "#C2A04C", "#1F4D3A"], photo: "homam" },
