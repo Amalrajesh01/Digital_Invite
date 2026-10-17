@@ -2,7 +2,6 @@ import { createHash, createHmac, randomBytes, randomInt, timingSafeEqual } from 
 import { and, asc, eq, lt, sql } from "drizzle-orm";
 import { getDb, schema } from "@/db/client";
 import { env } from "@/lib/env";
-import { storage } from "@/lib/storage";
 import { brand } from "@/lib/brand";
 import { conflict, forbidden, invalid, notFound } from "@/lib/errors";
 import { rateLimit } from "@/domain/platform/rate-limit";
@@ -11,7 +10,7 @@ import type { Actor } from "@/domain/auth/access";
 import { emptyDoc, LoveDoc, type InvitationDoc } from "@/domain/doc/schema";
 import { ensureDesignLibrary } from "@/domain/design/service";
 import { ingestFile, deleteMedia, toResolved, type ResolvedMedia } from "@/domain/media/service";
-import { publishWedding } from "@/domain/wedding/service";
+import { publishWedding, purgeWedding } from "@/domain/wedding/service";
 import { loadPreviewInvitation } from "@/domain/wedding/public";
 import { LOVE_EXPERIENCE_INFO, MOOD_THEME, OCCASION_INFO, type LoveOccasion } from "@/domain/love/constants";
 
@@ -260,17 +259,7 @@ export async function setGiftLive(giftId: string, token: string, action: "pause"
 
 /** Removes every trace: photographs from storage, then the invitation row (which takes the gift, the tracks and the versions with it). */
 export async function purgeGiftWedding(weddingId: string) {
-  const db = await getDb();
-  const assets = await db.select().from(schema.mediaAssets).where(eq(schema.mediaAssets.weddingId, weddingId));
-  const keys = new Set<string>();
-  for (const a of assets) {
-    keys.add(a.storageKey);
-    const variants = (a.metadata as { variants?: Record<string, { key: string }> }).variants;
-    if (variants) for (const v of Object.values(variants)) keys.add(v.key);
-  }
-  await Promise.allSettled([...keys].map((k) => storage().delete(k)));
-  await db.update(schema.leads).set({ weddingId: null }).where(eq(schema.leads.weddingId, weddingId));
-  await db.delete(schema.weddings).where(eq(schema.weddings.id, weddingId));
+  await purgeWedding(weddingId);
 }
 
 export async function deleteGift(giftId: string, token: string) {

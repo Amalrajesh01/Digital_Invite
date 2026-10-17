@@ -10,6 +10,7 @@ import { type PackageKey, PACKAGE_RANK } from "@/domain/packages/features";
 import { type ThemeTokens, ThemeTokens as ThemeTokensSchema, mergeTokens } from "@/domain/design/tokens";
 import { TemplateConfig } from "@/domain/design/templates";
 import { logError } from "@/domain/platform/logging";
+import { storage } from "@/lib/storage";
 import { buildInitialDoc, publishReadiness } from "./doc-tools";
 import { effectiveStatus } from "./lifecycle";
 import type { CustomerClass } from "@/domain/packages/catalog";
@@ -326,6 +327,31 @@ export async function duplicateWedding(actor: Actor | null, id: string, input: {
   await db.update(schema.weddings).set({ draftDoc: doc, themeOverrides: src.themeOverrides }).where(eq(schema.weddings.id, clone.id));
   await audit(admin, "wedding.duplicated", { weddingId: clone.id, entityType: "wedding", entityId: clone.id, metadata: { from: id } });
   return clone;
+}
+
+/** Removes every trace of an invitation: its photographs and files from storage, then the row, which takes the guests, replies, wishes, versions and tracks with it. No authorisation here. */
+export async function purgeWedding(weddingId: string) {
+  const db = await getDb();
+  const assets = await db.select().from(schema.mediaAssets).where(eq(schema.mediaAssets.weddingId, weddingId));
+  const keys = new Set<string>();
+  for (const a of assets) {
+    keys.add(a.storageKey);
+    const variants = (a.metadata as { variants?: Record<string, { key: string }> }).variants;
+    if (variants) for (const v of Object.values(variants)) keys.add(v.key);
+  }
+  await Promise.allSettled([...keys].map((k) => storage().delete(k)));
+  await db.delete(schema.weddings).where(eq(schema.weddings.id, weddingId));
+}
+
+/** Deletes an invitation for good. Owner only, and the caller must repeat its name, so a slip of the finger cannot do it. Orders and enquiries stay, unlinked. */
+export async function deleteWedding(actor: Actor | null, id: string, confirmName: string) {
+  const admin = requireAdmin(actor);
+  const db = await getDb();
+  const [w] = await db.select({ id: schema.weddings.id, title: schema.weddings.title, slug: schema.weddings.slug }).from(schema.weddings).where(eq(schema.weddings.id, id));
+  if (!w) throw notFound("We could not find that wedding.");
+  if (confirmName.trim() !== (w.title || w.slug).trim()) throw invalid("Type the invitation’s name exactly to confirm.");
+  await purgeWedding(id);
+  await audit(admin, "wedding.deleted", { entityType: "wedding", entityId: id, metadata: { title: w.title, slug: w.slug } });
 }
 
 // ── publishing & versions ──────────────────────────────────────────────────

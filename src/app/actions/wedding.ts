@@ -4,7 +4,7 @@ import { z } from "zod";
 import { act } from "@/lib/act";
 import { requireAdmin, requireWeddingAccess } from "@/domain/auth/access";
 import {
-  archiveWedding, createCheckpoint, createWedding, duplicateWedding, getReadiness, listVersions, publishWedding, restoreWedding, rollbackToVersion, saveDraft, setWeddingStatus,
+  archiveWedding, deleteWedding, createCheckpoint, createWedding, duplicateWedding, getReadiness, listVersions, publishWedding, restoreWedding, rollbackToVersion, saveDraft, setWeddingStatus,
   unpublishWedding, updateWeddingSettings, isSlugAvailable, normalizeSlug, slugProblem, type SettingsPatch,
 } from "@/domain/wedding/service";
 import { PACKAGE_KEYS, isFeatureKey } from "@/domain/packages/features";
@@ -72,6 +72,7 @@ export const publishAction = async (weddingId: string, label?: string) =>
 
 export const unpublishAction = async (weddingId: string) => act(async (a) => (await unpublishWedding(a, weddingId), revalidate(weddingId), true), { weddingId });
 export const archiveAction = async (weddingId: string) => act(async (a) => (await archiveWedding(a, weddingId), revalidate(weddingId), true), { weddingId });
+export const deleteWeddingAction = async (weddingId: string, confirmName: string) => act(async (a) => (await deleteWedding(a, weddingId, confirmName), revalidate(), true), { weddingId });
 export const restoreAction = async (weddingId: string) => act(async (a) => (await restoreWedding(a, weddingId), revalidate(weddingId), true), { weddingId });
 export const setStatusAction = async (weddingId: string, status: string) => act(async (a) => (await setWeddingStatus(a, weddingId, z.enum(WEDDING_STATUSES).parse(status)), revalidate(weddingId), true), { weddingId });
 

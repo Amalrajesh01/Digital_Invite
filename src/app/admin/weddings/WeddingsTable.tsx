@@ -13,7 +13,7 @@ import { Sheet } from "@/components/ui/Sheet";
 import { Button } from "@/components/ui/Button";
 import { Checkbox, TextField, TextArea } from "@/components/ui/Field";
 import { cn } from "@/lib/cn";
-import { archiveAction, duplicateAction, publishAction, restoreAction, unpublishAction } from "@/app/actions/wedding";
+import { archiveAction, deleteWeddingAction, duplicateAction, publishAction, restoreAction, unpublishAction } from "@/app/actions/wedding";
 import { saveAsTemplateAction } from "@/app/actions/admin";
 
 interface Row {
@@ -49,6 +49,8 @@ export function WeddingsTable({ rows }: { rows: Row[] }) {
   const [tpl, setTpl] = useState<Row | null>(null);
   const [tplName, setTplName] = useState("");
   const [tplNote, setTplNote] = useState("");
+  const [del, setDel] = useState<Row | null>(null);
+  const [delName, setDelName] = useState("");
   const [pending, start] = useTransition();
 
   const list = useMemo(() => {
@@ -115,6 +117,7 @@ export function WeddingsTable({ rows }: { rows: Row[] }) {
                           ...(w.status !== "DRAFT" ? [{ label: "Unpublish…", onSelect: async () => { if (await ask({ title: "Take it offline?", message: "Guests will see a “not live yet” page. Nothing is deleted.", confirmLabel: "Unpublish", tone: "danger" as const })) run(() => unpublishAction(w.id), "Unpublished"); } }] : []),
                           { label: "Duplicate…", onSelect: () => { setDup(w); setDupTitle(`${w.title} (copy)`); setKeepPhotos(false); } },
                           { label: "Save as template…", onSelect: () => { setTpl(w); setTplName(`${w.title} — template`); setTplNote(""); } },
+                          { label: "Delete permanently…", tone: "danger" as const, divider: true, onSelect: () => { setDel(w); setDelName(""); } },
                           { label: "Version history & rollback", href: `/admin/weddings/${w.id}/versions` },
                           w.archivedAt
                             ? { label: "Restore", divider: true, onSelect: () => run(() => restoreAction(w.id), "Restored") }
@@ -136,6 +139,16 @@ export function WeddingsTable({ rows }: { rows: Row[] }) {
           <TextField label="Title for the copy" value={dupTitle} onChange={(e) => setDupTitle(e.target.value)} />
           <Checkbox checked={keepPhotos} onChange={setKeepPhotos} label="Keep the photographs too" />
         </div>
+      </Sheet>
+
+      <Sheet open={!!del} onClose={() => setDel(null)} title="Delete this invitation?" description="This cannot be undone. Its link stops working at once, and its guests, replies, wishes, versions and every photograph are removed for good. Orders and enquiries stay, unlinked. If you only want it off your list, use Archive instead."
+        footer={<><Button variant="quiet" onClick={() => setDel(null)}>Cancel</Button><Button variant="danger" loading={pending} disabled={!del || delName.trim() !== (del.title || del.slug).trim()} onClick={() => del && start(async () => { const r = await deleteWeddingAction(del.id, delName); if (r.ok) { toast.success("Deleted"); setDel(null); router.refresh(); } else toast.error(r.error.message); })}>Delete for good</Button></>}>
+        {del && (
+          <div className="grid gap-4">
+            <p className="rounded-lg bg-paper-2 px-3 py-2 text-[14px]"><span className="text-muted">Invitation:</span> <span className="font-medium">{del.title || del.slug}</span> <span className="text-muted">· /invite/{del.slug}</span></p>
+            <TextField label="Type its name to confirm" value={delName} onChange={(e) => setDelName(e.target.value)} hint="Type the name shown above exactly." autoComplete="off" />
+          </div>
+        )}
       </Sheet>
 
       <Sheet open={!!tpl} onClose={() => setTpl(null)} title="Save as template" description="Keeps this invitation's sections, layouts, opening and colours as a new template, not its words or photographs. It starts as a draft: make it available in Studio → Templates when you are happy with it."

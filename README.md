@@ -191,6 +191,8 @@ a page. The catalogue itself — categories, samples, FAQ — is plain data in `
 3. **Weddings → ⋯ → Save as template…** keeps its sections, layouts, opening and colours as a new **draft** template (its words and photographs are not kept; its preview shows the sample it came from).
 4. **Studio → Templates → Make available** puts it in the template choice for new weddings.
 
+5. **Weddings → ⋯ → Delete permanently…** removes an invitation for good: it asks you to type its name, then deletes the invitation, its guests, replies, wishes, versions and every stored photograph (owner only; orders and enquiries stay, unlinked; an audit entry is kept). **Archive…** is the reversible alternative: it only takes the invitation offline and off the list.
+
 Invitations are served by the app itself at `/invite/<slug>` (and on a custom domain from **Studio → Domains**); publishing is instant and needs no redeploy. A redeploy is only for changes to the code.
 
 ## For My Love
