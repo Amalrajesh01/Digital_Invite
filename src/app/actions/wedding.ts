@@ -75,7 +75,7 @@ export const archiveAction = async (weddingId: string) => act(async (a) => (awai
 export const restoreAction = async (weddingId: string) => act(async (a) => (await restoreWedding(a, weddingId), revalidate(weddingId), true), { weddingId });
 export const setStatusAction = async (weddingId: string, status: string) => act(async (a) => (await setWeddingStatus(a, weddingId, z.enum(WEDDING_STATUSES).parse(status)), revalidate(weddingId), true), { weddingId });
 
-export const duplicateAction = async (weddingId: string, input: { title: string; slug?: string }) =>
+export const duplicateAction = async (weddingId: string, input: { title: string; slug?: string; keepMedia?: boolean }) =>
   act(async (a) => {
     const w = await duplicateWedding(a, weddingId, input);
     revalidate();

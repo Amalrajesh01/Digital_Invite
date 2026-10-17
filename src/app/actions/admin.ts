@@ -4,7 +4,7 @@ import { z } from "zod";
 import { act } from "@/lib/act";
 import { requireAdmin } from "@/domain/auth/access";
 import { createMagicLink, setUserDisabled } from "@/domain/auth/service";
-import { duplicateTemplate, duplicateTheme, saveTemplate, saveTheme, setTemplateStatus, setThemeStatus, getTemplate, getTheme } from "@/domain/design/service";
+import { duplicateTemplate, duplicateTheme, saveWeddingAsTemplate, saveTemplate, saveTheme, setTemplateStatus, setThemeStatus, getTemplate, getTheme } from "@/domain/design/service";
 import { processDue } from "@/domain/notify/service";
 import { env } from "@/lib/env";
 
@@ -22,6 +22,7 @@ export const userLoginLinkAction = async (userId: string) =>
 export const setTemplateStatusAction = async (id: string, status: string) => act(async (a) => (await setTemplateStatus(a, id, Status.parse(status)), refresh(), true), { area: "design" });
 export const setThemeStatusAction = async (id: string, status: string) => act(async (a) => (await setThemeStatus(a, id, Status.parse(status)), refresh(), true), { area: "design" });
 export const duplicateTemplateAction = async (id: string) => act(async (a) => { const r = await duplicateTemplate(a, id); refresh(); return r.id; }, { area: "design" });
+export const saveAsTemplateAction = async (weddingId: string, name: string, description: string) => act(async (a) => { const r = await saveWeddingAsTemplate(a, weddingId, { name, description }); refresh(); return r.id; }, { area: "design" });
 export const duplicateThemeAction = async (id: string) => act(async (a) => { const r = await duplicateTheme(a, id); refresh(); return r.id; }, { area: "design" });
 
 export const renameTemplateAction = async (id: string, name: string, description: string) =>

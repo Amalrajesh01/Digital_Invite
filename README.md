@@ -183,6 +183,15 @@ the memorial (24 Oct 2026) have 2026 dates — change them in the studio when th
 Prices on every page come from the package rows Super Admin edits (`src/domain/catalogue/pricing.ts`); there is no price in
 a page. The catalogue itself — categories, samples, FAQ — is plain data in `src/domain/catalogue/`.
 
+## Make a new design in the Studio (no code)
+
+1. **Weddings → ⋯ → Duplicate…** on any invitation, including a sample. The copy keeps the template, theme, sections and wording as a new draft (photographs only if you tick *Keep the photographs too*). A copy of a sample is a paid customer's invitation, never another free portfolio one.
+2. Change it in **Edit invitation** (the visual editor): sections, layouts, opening, colours, wording.
+3. **Weddings → ⋯ → Save as template…** keeps its sections, layouts, opening and colours as a new **draft** template (its words and photographs are not kept; its preview shows the sample it came from).
+4. **Studio → Templates → Make available** puts it in the template choice for new weddings.
+
+Invitations are served by the app itself at `/invite/<slug>` (and on a custom domain from **Studio → Domains**); publishing is instant and needs no redeploy. A redeploy is only for changes to the code.
+
 ## For My Love
 
 A private gift for one person — a birthday, an anniversary, an apology, a proposal, "just because". Five experiences (Our Story,

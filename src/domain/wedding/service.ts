@@ -304,7 +304,8 @@ export async function duplicateWedding(actor: Actor | null, id: string, input: {
     title: input.title,
     slug: input.slug,
     packageKey: src.packageKey,
-    customerClass: src.customerClass,
+    // a copy of a sample is a customer's invitation, not another free portfolio piece
+    customerClass: src.isDemo ? (`PAID_${src.packageKey}` as CustomerClass) : src.customerClass,
     templateId: src.templateId,
     themeId: src.themeId,
     defaultLocale: src.defaultLocale,

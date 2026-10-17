@@ -7,6 +7,7 @@ import { audit } from "@/domain/audit/audit";
 import { TEMPLATE_SEEDS, TemplateConfig } from "./templates";
 import { THEME_SEEDS } from "./themes";
 import { ThemeTokens } from "./tokens";
+import type { InvitationDoc } from "@/domain/doc/schema";
 
 type Status = "DRAFT" | "PUBLISHED" | "ARCHIVED";
 
@@ -169,6 +170,40 @@ export async function duplicateTemplate(actor: Actor | null, id: string) {
     supportedPackages: src.supportedPackages,
     status: "DRAFT",
     config: src.config,
+  });
+}
+
+/**
+ * Turns a finished invitation into a new draft template: its sections and layouts, its opening and its colours, never its
+ * words or photographs. This is how a template is edited and kept as a new one: duplicate a sample, change it in the visual
+ * editor, then save it here.
+ */
+export async function saveWeddingAsTemplate(actor: Actor | null, weddingId: string, input: { name: string; description?: string }) {
+  const admin = requireAdmin(actor);
+  const name = input.name.trim();
+  if (!name) throw invalid("Give the template a name.");
+  const db = await getDb();
+  const [w] = await db.select().from(schema.weddings).where(eq(schema.weddings.id, weddingId));
+  if (!w) throw notFound("We could not find that wedding.");
+  const doc = w.draftDoc as InvitationDoc;
+  if (doc.eventType === "love_gift") throw invalid("A love gift cannot be saved as a template.");
+  const [tpl] = w.templateId ? await db.select().from(schema.templates).where(eq(schema.templates.id, w.templateId)) : [];
+  const [theme] = w.themeId ? await db.select({ slug: schema.themes.slug }).from(schema.themes).where(eq(schema.themes.id, w.themeId)) : [];
+  const base = tpl ? TemplateConfig.safeParse(tpl.config) : null;
+  return saveTemplate(admin, {
+    name,
+    description: input.description?.trim() || `Saved from “${w.title}”.`,
+    supportedPackages: tpl?.supportedPackages,
+    status: "DRAFT",
+    config: {
+      flavor: base?.success ? base.data.flavor : "minimal",
+      opening: doc.opening.variant,
+      suggestedTheme: theme?.slug,
+      eventType: doc.eventType,
+      // the preview of the new template shows the words of the sample it came from
+      demo: w.isDemo ? w.slug : base?.success ? base.data.demo : undefined,
+      sections: [...doc.sections].sort((a, b) => a.order - b.order).map((s) => ({ type: s.type, variant: s.variant, enabled: s.enabled, settings: s.settings ?? {} })),
+    },
   });
 }
 

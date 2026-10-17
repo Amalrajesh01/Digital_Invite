@@ -11,9 +11,10 @@ import { useConfirm } from "@/components/ui/Confirm";
 import { Menu } from "@/components/ui/Menu";
 import { Sheet } from "@/components/ui/Sheet";
 import { Button } from "@/components/ui/Button";
-import { TextField } from "@/components/ui/Field";
+import { Checkbox, TextField, TextArea } from "@/components/ui/Field";
 import { cn } from "@/lib/cn";
 import { archiveAction, duplicateAction, publishAction, restoreAction, unpublishAction } from "@/app/actions/wedding";
+import { saveAsTemplateAction } from "@/app/actions/admin";
 
 interface Row {
   id: string; slug: string; title: string; packageKey: string; customerClass: string; status: string; effective: string; weddingDate: string | null;
@@ -44,6 +45,10 @@ export function WeddingsTable({ rows }: { rows: Row[] }) {
   const [archived, setArchived] = useState(false);
   const [dup, setDup] = useState<Row | null>(null);
   const [dupTitle, setDupTitle] = useState("");
+  const [keepPhotos, setKeepPhotos] = useState(false);
+  const [tpl, setTpl] = useState<Row | null>(null);
+  const [tplName, setTplName] = useState("");
+  const [tplNote, setTplNote] = useState("");
   const [pending, start] = useTransition();
 
   const list = useMemo(() => {
@@ -108,7 +113,8 @@ export function WeddingsTable({ rows }: { rows: Row[] }) {
                           ...(w.publishedAt && !["DRAFT", "PREVIEW"].includes(w.status) ? [{ label: "View live invitation", href: `/invite/${w.slug}` }] : []),
                           { label: w.status === "DRAFT" || w.status === "PREVIEW" ? "Publish…" : "Publish latest changes…", divider: true, onSelect: async () => { if (await ask({ title: "Publish this invitation?", message: `Guests will see the current draft of ${w.title || "this wedding"} at /invite/${w.slug}. You can roll back any time.`, confirmLabel: "Publish" })) run(() => publishAction(w.id), "Published"); } },
                           ...(w.status !== "DRAFT" ? [{ label: "Unpublish…", onSelect: async () => { if (await ask({ title: "Take it offline?", message: "Guests will see a “not live yet” page. Nothing is deleted.", confirmLabel: "Unpublish", tone: "danger" as const })) run(() => unpublishAction(w.id), "Unpublished"); } }] : []),
-                          { label: "Duplicate…", onSelect: () => { setDup(w); setDupTitle(`${w.title} (copy)`); } },
+                          { label: "Duplicate…", onSelect: () => { setDup(w); setDupTitle(`${w.title} (copy)`); setKeepPhotos(false); } },
+                          { label: "Save as template…", onSelect: () => { setTpl(w); setTplName(`${w.title} — template`); setTplNote(""); } },
                           { label: "Version history & rollback", href: `/admin/weddings/${w.id}/versions` },
                           w.archivedAt
                             ? { label: "Restore", divider: true, onSelect: () => run(() => restoreAction(w.id), "Restored") }
@@ -124,9 +130,20 @@ export function WeddingsTable({ rows }: { rows: Row[] }) {
         </div>
       )}
 
-      <Sheet open={!!dup} onClose={() => setDup(null)} title="Duplicate wedding" description="Copies the template, theme, sections and content. Guests, wishes and guest uploads are never copied."
-        footer={<><Button variant="quiet" onClick={() => setDup(null)}>Cancel</Button><Button loading={pending} onClick={() => dup && start(async () => { const r = await duplicateAction(dup.id, { title: dupTitle }); if (r.ok) { toast.success("Duplicated"); setDup(null); router.push(`/admin/weddings/${r.data.id}`); } else toast.error(r.error.message); })}>Duplicate</Button></>}>
-        <TextField label="Title for the copy" value={dupTitle} onChange={(e) => setDupTitle(e.target.value)} />
+      <Sheet open={!!dup} onClose={() => setDup(null)} title="Duplicate wedding" description="Copies the template, theme, sections and wording, as a new draft you can edit. Guests, wishes and guest uploads are never copied."
+        footer={<><Button variant="quiet" onClick={() => setDup(null)}>Cancel</Button><Button loading={pending} onClick={() => dup && start(async () => { const r = await duplicateAction(dup.id, { title: dupTitle, keepMedia: keepPhotos }); if (r.ok) { toast.success("Duplicated"); setDup(null); router.push(`/admin/weddings/${r.data.id}`); } else toast.error(r.error.message); })}>Duplicate</Button></>}>
+        <div className="grid gap-4">
+          <TextField label="Title for the copy" value={dupTitle} onChange={(e) => setDupTitle(e.target.value)} />
+          <Checkbox checked={keepPhotos} onChange={setKeepPhotos} label="Keep the photographs too" />
+        </div>
+      </Sheet>
+
+      <Sheet open={!!tpl} onClose={() => setTpl(null)} title="Save as template" description="Keeps this invitation's sections, layouts, opening and colours as a new template, not its words or photographs. It starts as a draft: make it available in Studio → Templates when you are happy with it."
+        footer={<><Button variant="quiet" onClick={() => setTpl(null)}>Cancel</Button><Button loading={pending} disabled={!tplName.trim()} onClick={() => tpl && start(async () => { const r = await saveAsTemplateAction(tpl.id, tplName, tplNote); if (r.ok) { toast.success("Saved as a draft template"); setTpl(null); router.push("/admin/templates"); } else toast.error(r.error.message); })}>Save template</Button></>}>
+        <div className="grid gap-4">
+          <TextField label="Template name" value={tplName} onChange={(e) => setTplName(e.target.value)} required />
+          <TextArea label="What is it like? (optional)" value={tplNote} onChange={(e) => setTplNote(e.target.value)} />
+        </div>
       </Sheet>
     </>
   );
