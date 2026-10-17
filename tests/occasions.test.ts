@@ -38,6 +38,9 @@ import { ISHA } from "../scripts/demo/isha";
 import { TARA } from "../scripts/demo/tara";
 import { HELEN } from "../scripts/demo/helen";
 import { MEERA } from "../scripts/demo/meera";
+import { IRA } from "../scripts/demo/ira";
+import { KABIR } from "../scripts/demo/kabir";
+import { TWINS } from "../scripts/demo/twins";
 import { AARAV } from "../scripts/demo/aarav";
 import { AADHYA } from "../scripts/demo/aadhya";
 import { CONCLAVE } from "../scripts/demo/conclave";
@@ -255,7 +258,7 @@ describe("the template and theme library", () => {
 describe("the sample invitations and the shop window agree", () => {
   const CONFIGS: { cfg: ShowcaseCfg | OccasionCfg; kind: "couple" | "occasion" }[] = [
     { cfg: ISHA, kind: "couple" }, { cfg: TARA, kind: "couple" }, { cfg: HELEN, kind: "couple" }, { cfg: CHRISTIAN, kind: "couple" }, { cfg: MUSLIM, kind: "couple" },
-    { cfg: MEERA, kind: "occasion" }, { cfg: AARAV, kind: "occasion" }, { cfg: AADHYA, kind: "occasion" }, { cfg: CONCLAVE, kind: "occasion" }, { cfg: SUMMIT, kind: "occasion" }, { cfg: THOMAS, kind: "occasion" },
+    { cfg: MEERA, kind: "occasion" }, { cfg: IRA, kind: "occasion" }, { cfg: KABIR, kind: "occasion" }, { cfg: TWINS, kind: "occasion" }, { cfg: AARAV, kind: "occasion" }, { cfg: AADHYA, kind: "occasion" }, { cfg: CONCLAVE, kind: "occasion" }, { cfg: SUMMIT, kind: "occasion" }, { cfg: THOMAS, kind: "occasion" },
     { cfg: NANDINI, kind: "couple" }, { cfg: RIYA, kind: "couple" }, { cfg: NAIR, kind: "occasion" }, { cfg: PUJA, kind: "occasion" }, { cfg: ONAM, kind: "occasion" },
   ];
   const build = (c: (typeof CONFIGS)[number]) => {
@@ -378,13 +381,13 @@ describe("the public catalogue", () => {
     expect(demosIn("corporate").map((d) => d.slug)).toEqual(expect.arrayContaining(["leadership-conclave-2026", "tech-summit-2026"]));
     expect(demosIn("conclave").map((d) => d.slug)).toEqual(["leadership-conclave-2026"]);
     expect(demosIn("funeral").map((d) => d.slug)).toEqual(["thomas-mathew-memorial"]);
-    expect(demosIn("birthday").map((d) => d.slug).sort()).toEqual(["aarav-turns-three", "meera-turns-thirty"]);
+    expect(demosIn("birthday").map((d) => d.slug).sort()).toEqual(["aarav-turns-three", "anaya-and-arnav-turn-five", "ira-turns-one", "kabir-turns-ten", "meera-turns-twenty-five"]);
     expect(demosIn("housewarming").map((d) => d.slug)).toEqual(["nair-griha-pravesh"]);
     expect(demosIn("for-my-love")).toHaveLength(5);
   });
 
   it("covers the ten required designs and keeps their distinct looks distinct", () => {
-    const wanted = ["ananya-and-arjun", "isha-and-daniel", "meenakshi-and-aravind", "meera-turns-thirty", "aarav-turns-three", "tara-and-nikhil", "helen-and-george", "leadership-conclave-2026", "tech-summit-2026", "thomas-mathew-memorial"];
+    const wanted = ["ananya-and-arjun", "isha-and-daniel", "meenakshi-and-aravind", "meera-turns-twenty-five", "aarav-turns-three", "tara-and-nikhil", "helen-and-george", "leadership-conclave-2026", "tech-summit-2026", "thomas-mathew-memorial"];
     expect(DEMOS.map((d) => d.slug).slice(0, 10)).toEqual(wanted);
     expect(new Set(DEMOS.map((d) => d.template)).size).toBeGreaterThanOrEqual(10); // the samples are not one template re-coloured
     expect(new Set(DEMOS.map((d) => d.theme)).size).toBeGreaterThanOrEqual(10);

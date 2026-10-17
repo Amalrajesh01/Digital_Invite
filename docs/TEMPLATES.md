@@ -305,7 +305,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Template ID** | `gala-night` |
 | **Occasion** | Birthday (starts as: birthday) |
 | **Creative concept** | An admit-one ticket opens onto a full-screen portrait: black lacquer, champagne and a night laid out hour by hour. |
-| **Target customer** | Milestone birthdays — 25, 30, 40, 50; Rooftop and restaurant parties; Hosts who want a dress code taken seriously |
+| **Target customer** | Birthdays in your twenties — 21st, 25th, 30th; Rooftop and restaurant parties; Hosts who want a dress code taken seriously |
 | **Visual style** | Cinematic Story |
 | **Colour palette** | Noir & Champagne — paper #0F0E0D, ink #F0EADD, main #D8BE82, accent #E6CF9B, night #080706 |
 | **Typography** | Bodoni Moda for names and headings, Inter for reading text |
@@ -319,7 +319,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | A scrim guarantees text contrast on any photograph; motion stops completely for reduced-motion users. |
-| **Sample content** | `meera-turns-thirty` |
+| **Sample content** | `meera-turns-twenty-five` |
 
 ### Little Celebration
 
@@ -328,7 +328,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Template ID** | `little-celebration` |
 | **Occasion** | Birthday (starts as: kids birthday) |
 | **Creative concept** | Balloons to pop, snapshots on a table and the party plan at a glance — made for parents as much as for children. |
-| **Target customer** | Birthdays for ages 1 to 12; Themed parties — dinosaurs, space, jungle; Parents tired of “what time does it end?” |
+| **Target customer** | Birthdays for ages 2 to 6; Themed parties — dinosaurs, space, jungle; Parents tired of “what time does it end?” |
 | **Visual style** | Playful & Interactive |
 | **Colour palette** | Confetti Pop — paper #FFF8EE, ink #2B2A33, main #C9431C, accent #E9A41A, night #243B6B |
 | **Typography** | Fredoka for names and headings, Nunito for reading text |
@@ -349,9 +349,9 @@ Package compatibility is the same for every design: all three packages can use a
 | | |
 |---|---|
 | **Template ID** | `milestone` |
-| **Occasion** | Birthday (starts as: birthday) |
+| **Occasion** | Birthday (starts as: kids birthday) |
 | **Creative concept** | The age, huge, with the birthday portrait inside it; then a clean, numbered invitation in black ink and one line of lime. |
-| **Target customer** | Milestone birthdays; Design-minded hosts; Adults who want something modern, not a card |
+| **Target customer** | Tenth, thirteenth and sixteenth birthdays; Children who have outgrown cartoons; Parents who want something modern, not a card |
 | **Visual style** | Modern Minimal |
 | **Colour palette** | Lime & Ink — paper #F5F5EF, ink #111111, main #111111, accent #B7E82F, night #0B0B0B |
 | **Typography** | Space Grotesk for names and headings, Inter for reading text |
@@ -365,16 +365,16 @@ Package compatibility is the same for every design: all three packages can use a
 | **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Largest text of all five directions; colour never carries meaning alone; generous tap targets. |
-| **Sample content** | `meera-turns-thirty` |
+| **Sample content** | `kabir-turns-ten` |
 
 ### Garden Party
 
 | | |
 |---|---|
 | **Template ID** | `garden-party` |
-| **Occasion** | Birthday (starts as: birthday) |
+| **Occasion** | Birthday (starts as: kids birthday) |
 | **Creative concept** | An oval portrait among leaves, a bud that blooms to open, and a lunch under the trees. |
-| **Target customer** | Daytime birthdays and brunches; Garden and terrace parties; Hosts who love flowers |
+| **Target customer** | First birthdays; Daytime garden and terrace parties; Hosts who love flowers |
 | **Visual style** | Floral & Romantic |
 | **Colour palette** | Peach Garden — paper #FFF5EF, ink #3A2528, main #D2706A, accent #F0B27A, night #4A2A2E |
 | **Typography** | Cormorant Garamond for names and headings, Inter for reading text, Parisienne for flourishes |
@@ -388,16 +388,16 @@ Package compatibility is the same for every design: all three packages can use a
 | **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Script is used for headings only, never for dates, times or addresses; decorative leaves are aria-hidden. |
-| **Sample content** | `meera-turns-thirty` |
+| **Sample content** | `ira-turns-one` |
 
 ### Royal Celebration
 
 | | |
 |---|---|
 | **Template ID** | `royal-celebration` |
-| **Occasion** | Birthday (starts as: birthday) |
-| **Creative concept** | Curtains part on an arched portrait in plum and antique gold: a formal, festive birthday for a grand occasion. |
-| **Target customer** | Big family birthdays — 50th, 60th, 75th; Formal dinners and banquet halls; Hosts who want ceremony and ornament |
+| **Occasion** | Birthday (starts as: kids birthday) |
+| **Creative concept** | Curtains part on an arched portrait in plum and antique gold: a royal court for a birthday that two children share. |
+| **Target customer** | Twins and siblings sharing a party; Little princes-and-princesses parties; Hosts who want ceremony and ornament |
 | **Visual style** | Royal Tradition |
 | **Colour palette** | Plum & Gold — paper #FBF3E9, ink #2D1626, main #5C1F4A, accent #C99A3B, night #2A0F24 |
 | **Typography** | Playfair Display for names and headings, Inter for reading text, Pinyon Script for flourishes |
@@ -411,7 +411,7 @@ Package compatibility is the same for every design: all three packages can use a
 | **Languages** | One language per invitation: the customer's own words, in any language |
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | High-contrast ivory/ink pairs; ornament is decorative-only and hidden from screen readers; every opening can be skipped. |
-| **Sample content** | `meera-turns-thirty` |
+| **Sample content** | `anaya-and-arnav-turn-five` |
 
 ## Anniversary
 

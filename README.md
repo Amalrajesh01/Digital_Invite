@@ -150,7 +150,7 @@ Thirteen published demonstration invitations, each from its own template and the
 | 01 | `ananya-and-arjun` | Cinematic · Royal Gold | Luxury Hindu wedding |
 | 02 | `isha-and-daniel` | Modern Minimal · Cream & Noir | Modern minimal wedding |
 | 03 | `meenakshi-and-aravind` | Royal Heritage · Kasavu | Kerala traditional wedding |
-| 04 | `meera-turns-thirty` | Gala Night · Noir & Champagne | Luxury 30th birthday |
+| 04 | `meera-turns-twenty-five` | Gala Night · Noir & Champagne | Luxury 25th birthday |
 | 05 | `aarav-turns-three` | Little Celebration · Confetti Pop | Children’s birthday |
 | 06 | `tara-and-nikhil` | Romance · Peony & Champagne | Engagement |
 | 07 | `helen-and-george` | Silver Jubilee · Silver Jubilee | 25th anniversary |
@@ -158,8 +158,9 @@ Thirteen published demonstration invitations, each from its own template and the
 | 09 | `tech-summit-2026` | Summit · Signal | Technology summit |
 | 10 | `thomas-mathew-memorial` | Remembrance · Quiet Light | Funeral & memorial |
 | 11–13 | `anna-and-joseph`, `zainab-and-imran`, `aadhya-naming-ceremony` | Chapel Romance · Nikah Noor · Blessing | Christian wedding, nikah, naming ceremony |
+| — | `ira-turns-one`, `kabir-turns-ten`, `anaya-and-arnav-turn-five` | Garden Party · Big Number · Royal Celebration | First birthday, tenth birthday, twins’ birthday (the five birthday designs are: 1st, 3rd, 10th, twins, and a woman in her twenties) |
 
-`SEED_ONLY=public-demos npm run db:seed` creates (or skips) all thirteen; each one’s content is a short config in
+`SEED_ONLY=public-demos npm run db:seed` creates (or skips) every sample; each one’s content is a short config in
 `scripts/demo/`. Samples are marked `isDemo`, have the calendar-driven lifecycle switched off (they stay “published”),
 send their chat and call buttons to Stack Bridge Labs rather than to a private number, carry a “sample invitation” note in
 the footer and are never indexed. **Dated samples age:** the conclave (19–20 Nov 2026), the summit (10–11 Dec 2026) and

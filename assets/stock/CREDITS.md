@@ -75,7 +75,6 @@ from the table above). "Used for" names the sample invitation, or the product si
 | `0QL68R5wGRU` | Ahmad Syarif Maulana | Spare |
 | `0keyorgl820` | Vitaly Gariev | Helen & George, product site |
 | `1cc4TpwK2fE` | Chuttersnap | Isha & Daniel |
-| `1dzXfvALJxs` | Babi Putu | Tara & Nikhil, product site |
 | `1iuFKizvxQo` | Nader Ayman | Zainab & Imran, product site |
 | `21NahBnXWxI` | Tasnim Chowdhury | Zainab & Imran |
 | `2K1CdpU5ABo` | Litoon Dev | Tech Summit 2026, product site |
@@ -257,3 +256,4 @@ when you republish them. Click the file name for the original, its author and th
 | `wc-162739830` | Goutam1962 | CC BY-SA 4.0 — [Ganga Aarti at Varanasi During Dev deepawali 37.jpg](https://commons.wikimedia.org/wiki/File:Ganga_Aarti_at_Varanasi_During_Dev_deepawali_37.jpg) |
 
 Several demonstration invitations also use the Unsplash photographs above as stand-ins; none of the sample invitations is a real family's.
+| `wc-23392362` | Destination8infinity | CC BY-SA 3.0 — [Dakshina-Chitra-Kerala-House.JPG](https://commons.wikimedia.org/wiki/File:Dakshina-Chitra-Kerala-House.JPG) |

@@ -35,6 +35,9 @@ import { ISHA } from "./demo/isha";
 import { TARA } from "./demo/tara";
 import { HELEN } from "./demo/helen";
 import { MEERA } from "./demo/meera";
+import { IRA } from "./demo/ira";
+import { KABIR } from "./demo/kabir";
+import { TWINS } from "./demo/twins";
 import { AARAV } from "./demo/aarav";
 import { AADHYA } from "./demo/aadhya";
 import { NANDINI } from "./demo/nandini";
@@ -502,6 +505,9 @@ const PUBLIC_DEMOS: [slug: string, run: (admin: AdminActor) => Promise<string>][
   [MUSLIM.slug, (a) => seedShowcase(a, MUSLIM)],
   [ISHA.slug, (a) => seedShowcase(a, ISHA)],
   [MEERA.slug, (a) => seedOccasion(a, MEERA)],
+  [IRA.slug, (a) => seedOccasion(a, IRA)],
+  [KABIR.slug, (a) => seedOccasion(a, KABIR)],
+  [TWINS.slug, (a) => seedOccasion(a, TWINS)],
   [AARAV.slug, (a) => seedOccasion(a, AARAV)],
   [AADHYA.slug, (a) => seedOccasion(a, AADHYA)],
   [TARA.slug, (a) => seedShowcase(a, TARA)],

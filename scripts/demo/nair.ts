@@ -47,7 +47,7 @@ export const NAIR: OccasionCfg = {
   thankYou: { message: "Thank you for filling our home on its very first day. It has never looked so full.\n\nWith love,", signature: "Anand & Divya", photo: "hero" },
   seo: { title: "Griha Pravesh — Housewarming Invitation", description: "A traditional housewarming invitation with the rituals explained. A sample design by Invites by Stack Bridge Labs.", og: "hero" },
   needs: [
-    ["hero", "Zx9In5UiU0w", "COUPLE", { focal: { x: 55, y: 42 } }],
+    ["hero", "wc-23392362", "COUPLE", { focal: { x: 36, y: 55 } }],
     ["venue", "csK5XPO87lI", "VENUE"],
     ["homam", "wc-146118873", "EVENT", { focal: { x: 50, y: 30 } }],
     ["rituals", "WciKbLIFGxc", "EVENT"],
@@ -57,7 +57,7 @@ export const NAIR: OccasionCfg = {
   ],
   gallery: [
     ["wc-145089568", "Grinding the first batter in the new kitchen"], ["wc-146118873", "The homam fire, ringed with flowers"], ["zNY2lVIRh7M", "The lamp for the threshold"], ["WciKbLIFGxc", "Sweets and kumkum for the puja"],
-    ["VJP7K4uihUA", "Family, in cream and gold"], ["SiMzEeMrX2E", "Father and child, garlanded"], ["wc-152617626", "The sadya, ready"], ["df6Z3DPPw5U", "A single lamp"],
+    ["VJP7K4uihUA", "Family, in cream and gold"], ["y0OAmd_COUM", "Three generations under one roof"], ["73OJLcahQHg", "The family album, ready for new pages"], ["SiMzEeMrX2E", "Father and child, garlanded"], ["wc-152617626", "The sadya, ready"], ["df6Z3DPPw5U", "A single lamp"],
   ],
   wishes: [
     ["Radhika Pillai", "Neighbour", "A home is only a house until someone laughs in the kitchen. Congratulations, both of you."],

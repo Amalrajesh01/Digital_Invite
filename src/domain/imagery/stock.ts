@@ -177,7 +177,6 @@ export const STOCK: Record<string, StockInfo> = {
 
   // ── engagement ───────────────────────────────────────────────────────
   "AD3k4pko7wo": { alt: "A couple in a close embrace, foreheads touching, lit from behind by a warm golden sun", focal: { x: 45, y: 28 } },
-  "1dzXfvALJxs": { alt: "An Indian couple embracing in a eucalyptus grove, she in a blue saree with a red border, he in a navy kurta", focal: { x: 48, y: 45 } },
   "K2JtyCVdeuQ": { alt: "Two joined hands decorated with henna and flower bracelets, the groom in a lavender kurta behind", focal: { x: 50, y: 60 } },
   "OmLrFODvPII": { alt: "A man slipping a gold ring onto his fiancée’s finger", focal: { x: 50, y: 45 } },
   "zy6p2ibONaQ": { alt: "Two hands side by side, each wearing a ring, resting on a white lace dress", focal: { x: 50, y: 45 } },
@@ -251,6 +250,7 @@ export const STOCK: Record<string, StockInfo> = {
   "4KkTFccuZ0M": { alt: "A rose garden with a white pergola and benches in warm light", focal: { x: 50, y: 55 } },
 
   // ── housewarming, puja and festival (Wikimedia Commons, CC BY / CC BY-SA — see CREDITS.md) ──────────────
+  "wc-23392362": { alt: "A traditional Kerala house with white walls and layered red-tiled roofs, seen from a red-earth garden", focal: { x: 36, y: 55 } },
   "wc-145089568": { alt: "Three women in bright silk saris smile as they turn the grinding stones during the Gruha Pravesham rituals in a new home", focal: { x: 55, y: 35 } },
   "wc-146118873": { alt: "A sacred fire burning in a brick fire pit ringed with red flowers during a Gruhapravesham homam", focal: { x: 50, y: 30 } },
   "wc-133359284": { alt: "A woman in a white and red sari bends to light oil lamps around a huge painted rangoli, seen from above at night", focal: { x: 50, y: 50 } },

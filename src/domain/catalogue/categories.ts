@@ -148,7 +148,7 @@ export const CATEGORIES: CategoryDef[] = [
     eventTypes: ["naming_ceremony"],
   },
   {
-    slug: "housewarming", name: "Housewarming", group: "Family celebrations", cover: "Zx9In5UiU0w",
+    slug: "housewarming", name: "Housewarming", group: "Family celebrations", cover: "wc-23392362",
     blurb: "Invite everyone to bless the new home.",
     title: "Housewarming Invitation Templates",
     seoDescription: "Digital housewarming invitations, designed on request: the blessing of the home, a tour, lunch, directions and an RSVP — shared in one link.",

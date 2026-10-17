@@ -42,14 +42,14 @@ export const AARAV: OccasionCfg = {
   thankYou: { message: "Thank you for roaring with us! Aarav is still wearing his explorer badge to bed.\n\nWith love,", signature: "Aarav, Divya & Anand", photo: "hero" },
   seo: { title: "Aarav turns three — Birthday Invitation", description: "A dinosaur-themed children’s birthday invitation with party details at a glance. A sample design by Invites by Stack Bridge Labs.", og: "hero" },
   needs: [
-    ["hero", "iG98pmgWJMU", "COUPLE", { focal: { x: 52, y: 55 } }],
+    ["hero", "qojqVPsfAiE", "COUPLE", { focal: { x: 40, y: 50 } }],
     ["balloons", "Hli3R6LKibo", "EVENT"],
-    ["bubbles", "qojqVPsfAiE", "EVENT"],
+    ["bubbles", "Wdb27cW27do", "EVENT"],
     ["cake", "As8zq82LBpw", "EVENT"],
     ["cupcakes", "zURPcpLoKA4", "EVENT"],
   ],
   gallery: [
-    ["iG98pmgWJMU", "Roar! Two little dinosaurs"], ["yxZjTv30tl8", "The tiniest dinosaurs"], ["Wdb27cW27do", "Bubbles, as far as you can run"], ["vrkSVpOwchk", "All the balloons"],
+    ["qojqVPsfAiE", "Roar! A dinosaur on the loose"], ["yxZjTv30tl8", "The tiniest dinosaurs"], ["Wdb27cW27do", "Bubbles, as far as you can run"], ["vrkSVpOwchk", "All the balloons"],
     ["As8zq82LBpw", "Everyone helps blow out the candles"], ["PhuGmoubvo8", "A very serious bubble"], ["JatNzrnc078", "The plush dinosaur gang"], ["cK6ixOQx1fI", "The wish"], ["zURPcpLoKA4", "Cupcakes, for after the cake"],
   ],
   wishes: [
