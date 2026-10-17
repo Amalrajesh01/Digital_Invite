@@ -57,8 +57,9 @@ export function AlbumsPanel({ weddingId, advanced }: { weddingId: string; advanc
   };
 
   if (!albums) return <p className="py-8 text-muted">Loading albums…</p>;
+  // container queries: this panel sits in the wide Media page and in the narrow editor column, so it follows its own width, not the screen
   return (
-    <div className="grid gap-6 lg:grid-cols-[16rem_1fr]">
+    <div className="@container"><div className="grid gap-6 @3xl:grid-cols-[16rem_1fr]">
       <aside>
         <ul className="space-y-1">
           {albums.map((a) => (
@@ -73,7 +74,7 @@ export function AlbumsPanel({ weddingId, advanced }: { weddingId: string; advanc
           <EmptyState title="Create your first album" body="Albums group photographs on the invitation — for example ‘Pre-wedding’, ‘Haldi’ or ‘The families’." />
         ) : (
           <div className="space-y-5">
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid gap-4 @xl:grid-cols-2">
               <LText label="Album title" value={album.title} onChange={(v) => setAlbums((s) => s!.map((x) => (x.id === album.id ? { ...x, title: v } : x)))} />
               <div className="space-y-3">
                 <SelectField label="Type" value={album.kind} onChange={(e) => call(() => saveAlbumAction(weddingId, { id: album.id, title: album.title, kind: e.target.value as never }))} hint={!advanced ? "Guest, live and memory galleries are Luxury features." : undefined}>
@@ -119,6 +120,6 @@ export function AlbumsPanel({ weddingId, advanced }: { weddingId: string; advanc
       <Sheet open={creating} onClose={() => setCreating(false)} title="New album" footer={<><Button variant="quiet" onClick={() => setCreating(false)}>Cancel</Button><Button loading={pending} disabled={!draftTitle.en?.trim()} onClick={() => start(async () => { const r = await saveAlbumAction(weddingId, { title: draftTitle }); if (r.ok) { setCreating(false); setSel(r.data); await load(); } else toast.error(r.error.message); })}>Create album</Button></>}>
         <LText label="Album title" value={draftTitle} onChange={setDraftTitle} placeholder="Pre-wedding stories" />
       </Sheet>
-    </div>
+    </div></div>
   );
 }

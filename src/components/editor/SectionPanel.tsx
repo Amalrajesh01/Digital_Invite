@@ -11,6 +11,7 @@ import type { LocalizedText, SectionConfig } from "@/domain/doc/schema";
 import { CoupleStep } from "@/components/admin/steps/CoupleStep";
 import { EventsStep } from "@/components/admin/steps/EventsStep";
 import { FamilyStep } from "@/components/admin/steps/FamilyStep";
+import { AlbumsPanel } from "@/components/media/AlbumsPanel";
 import { StoryStep } from "@/components/admin/steps/StoryStep";
 import { CeremoniesEditor, FilmEditor } from "@/components/admin/steps/ExperienceSteps";
 import { assignSlot, ownSlotValue } from "@/domain/imagery/slots";
@@ -55,7 +56,17 @@ export function SectionPanel({ section, tab, weddingId }: { section: SectionConf
       case "events": case "countdown": case "livesched": case "dresscode": case "menu": return <EventsStep />;
       case "venue": case "travel": return <VenueStep />;
       case "rsvp": return <RsvpSetupStep guestCount={0} />;
-      case "gallery": case "photowall": case "memory": return <div className="space-y-4"><p className="text-[14px] text-muted">Organise photographs and albums in the media library.</p><MediaLibrary weddingId={weddingId} /></div>;
+      case "gallery": return (
+        <div className="space-y-6">
+          <p className="text-[14px] text-muted">Choose which photographs appear in the gallery, their order and their captions. Taking one out here keeps it in your library.</p>
+          <AlbumsPanel weddingId={weddingId} advanced={has("advanced_gallery")} />
+          <details className="rounded-lg border border-rule-strong p-3">
+            <summary className="cursor-pointer text-[14px] font-medium">All photographs and uploads</summary>
+            <div className="mt-3"><MediaLibrary weddingId={weddingId} /></div>
+          </details>
+        </div>
+      );
+      case "photowall": case "memory": return <div className="space-y-4"><p className="text-[14px] text-muted">Organise photographs and albums in the media library.</p><MediaLibrary weddingId={weddingId} /></div>;
       case "games": case "quiz": case "scavenger": return <GamesSetup />;
       default: return <Hint>This section has no separate content to edit. Use the ‘Section’ tab for its wording and layout.<br /><Link className="underline" href={`/admin/weddings/${weddingId}/setup/couple`}>Open the full setup wizard</Link></Hint>;
     }
