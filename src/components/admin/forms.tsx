@@ -84,7 +84,8 @@ export function FormCard({ title, description, children, actions, className }: {
 }
 
 export function Grid({ cols = 2, children, className }: { cols?: 1 | 2 | 3; children: React.ReactNode; className?: string }) {
-  return <div className={cn("grid gap-4", cols === 2 && "sm:grid-cols-2", cols === 3 && "sm:grid-cols-3", className)}>{children}</div>;
+  // container queries: the same form sits in the wide wizard and in the narrow editor column, so columns follow the form's own width
+  return <div className="@container"><div className={cn("grid gap-4", cols === 2 && "@md:grid-cols-2", cols === 3 && "@lg:grid-cols-3", className)}>{children}</div></div>;
 }
 
 interface ListProps<T> {

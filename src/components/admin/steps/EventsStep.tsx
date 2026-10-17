@@ -1,19 +1,47 @@
 "use client";
 import Link from "next/link";
 import { Plus, X } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 import { TextField, Switch, Checkbox, SelectField } from "@/components/ui/Field";
 import { newId } from "@/lib/id";
-import type { WeddingEvent } from "@/domain/doc/schema";
+import type { Venue, WeddingEvent } from "@/domain/doc/schema";
 import { FormCard, Grid, Hint, LText, ListEditor } from "../forms";
 import { MediaField } from "../MediaField";
 import { useDraft } from "../draft";
 import { CeremoniesEditor } from "./ExperienceSteps";
+import { blankVenue } from "./VenueStep";
 import { fmtDate } from "@/invitation/engine/format";
 
 const blank = (order: number): WeddingEvent => ({
   id: newId(), name: {}, date: "", startTime: "", endTime: "", venueId: undefined, description: {}, dressCode: {}, dressColors: [], notes: {}, photo: undefined, mapUrl: "",
   visibility: { mode: "EVERYONE", groups: [] }, ritual: { title: {}, body: {} }, isMain: false, order,
 });
+
+/** Type a venue's name and address right where the event is edited, or add a new one. A venue is shared by every event held there. */
+function VenueQuick({ venueId, onPick }: { venueId?: string; onPick: (id: string) => void }) {
+  const { doc, update } = useDraft();
+  const v = doc.venues.find((x) => x.id === venueId);
+  const set = (p: Partial<Venue>) => update((d) => { const x = d.venues.find((y) => y.id === venueId); if (x) Object.assign(x, p); });
+  const add = () => { const nv = blankVenue(); update((d) => void d.venues.push(nv)); onPick(nv.id); };
+  return (
+    <div className="space-y-3 rounded-md border border-dashed border-rule-strong p-3">
+      {v ? (
+        <>
+          <p className="text-[13px] text-muted">Venue details. Every event held here uses them. Directions, parking and hotels are in the Venue section.</p>
+          <LText label="Venue name" value={v.name} onChange={(x) => set({ name: x })} placeholder="The Lotus Pavilion" />
+          <LText label="Address" multiline value={v.address} onChange={(x) => set({ address: x })} />
+          <Grid>
+            <LText label="City" value={v.city} onChange={(x) => set({ city: x })} />
+            <TextField label="Google Maps link (optional)" value={v.mapUrl} onChange={(ev) => set({ mapUrl: ev.target.value })} placeholder="https://maps.app.goo.gl/…" />
+          </Grid>
+        </>
+      ) : (
+        <p className="text-[13px] text-muted">No venue chosen yet. Add one to type its name and address.</p>
+      )}
+      <Button size="sm" variant="quiet" icon={<Plus className="size-4" />} onClick={add}>Add a new venue</Button>
+    </div>
+  );
+}
 
 export function EventsStep() {
   const { doc, update, has, groups, settings, updateSettings } = useDraft();
@@ -40,12 +68,13 @@ export function EventsStep() {
                 <TextField label="Ends" type="time" value={e.endTime} onChange={(ev) => up({ endTime: ev.target.value })} />
               </Grid>
               <Grid>
-                <SelectField label="Venue" value={e.venueId ?? ""} onChange={(ev) => up({ venueId: ev.target.value || undefined })} hint={venues.length ? undefined : "Add venues in the Venue step first."}>
+                <SelectField label="Venue" value={e.venueId ?? ""} onChange={(ev) => up({ venueId: ev.target.value || undefined })} hint={venues.length ? "Pick a venue, or add a new one below." : "No venue yet: add one below."}>
                   <option value="">Not decided yet</option>
                   {venues.map((v) => (<option key={v.id} value={v.id}>{v.name.en || "Unnamed venue"}</option>))}
                 </SelectField>
                 <div className="flex items-end pb-2"><Switch label="This is the main ceremony" hint="The countdown and calendar focus on this event." checked={e.isMain} onChange={(v) => update((d) => void d.events.forEach((x) => (x.isMain = x.id === e.id ? v : false)))} /></div>
               </Grid>
+              <VenueQuick venueId={e.venueId} onPick={(id) => up({ venueId: id })} />
               <LText label="What happens" multiline value={e.description} onChange={(v) => up({ description: v })} />
               <Grid>
                 <LText label="Dress code" value={e.dressCode} onChange={(v) => up({ dressCode: v })} placeholder="Kasavu — cream & gold" />

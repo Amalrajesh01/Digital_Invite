@@ -7,7 +7,7 @@ import { FormCard, Grid, Hint, LText, ListEditor } from "../forms";
 import { MediaField } from "../MediaField";
 import { useDraft } from "../draft";
 
-const blank = (): Venue =>
+export const blankVenue = (): Venue =>
   ({ id: newId(), name: {}, address: {}, city: {}, mapUrl: "", parking: { info: {}, mapUrl: "" }, directions: { airport: {}, railway: {}, road: {} }, landmarkMap: { pins: [] }, hotels: [], nearby: [], shuttle: { info: {}, schedule: [] }, guide: [] }) as Venue;
 
 function PinBoard({ v, up }: { v: Venue; up: (p: Partial<Venue>) => void }) {
@@ -45,7 +45,7 @@ export function VenueStep() {
           onChange={(items) => update((d) => void (d.venues = items))}
           keyOf={(v) => v.id}
           title={(v) => [v.name.en, v.city.en].filter(Boolean).join(", ")}
-          make={blank}
+          make={blankVenue}
           addLabel="Add a venue"
           defaultOpen
           empty="Add the main venue to begin."
