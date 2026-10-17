@@ -3,7 +3,7 @@ import Link from "next/link";
 import { OPENINGS, OPENING_LABELS } from "@/domain/doc/constants";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
-import { ArrowLeft, ExternalLink, Redo2, Undo2, Rocket, Save } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink, Eye, EyeOff, Redo2, Undo2, Rocket, Save, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/Button";
@@ -21,7 +21,10 @@ import type { ResolvedMedia } from "@/domain/media/service";
 import type { MediaRow } from "@/app/actions/media";
 import { checkpointAction, publishAction, regenerateSectionsAction } from "@/app/actions/wedding";
 import { SectionList } from "./SectionList";
-import { SectionPanel } from "./SectionPanel";
+import { HAS_CONTENT, SectionPanel } from "./SectionPanel";
+import { sampleHits, samplePhotosUsed } from "./sample-check";
+import { Sheet } from "@/components/ui/Sheet";
+import { SECTION_META } from "@/domain/doc/sections";
 import type { PreviewPatch } from "@/invitation/PreviewFrame";
 
 export interface EditorProps {
@@ -36,6 +39,10 @@ export interface EditorProps {
   templates: TemplateCard[];
   themes: ThemeCard[];
   media: MediaRow[];
+  /** True right after “Create and start editing”: shows a short guide above the editor. */
+  welcome?: boolean;
+  /** What is still the template's sample (null when the invitation did not start from one). */
+  sample?: { template: string; tokens: string[]; photos: string[] } | null;
 }
 
 const toResolved = (m: MediaRow): ResolvedMedia => ({ id: m.id, kind: m.kind, mime: "", url: m.url, srcSet: m.srcSet, width: m.width, height: m.height, blur: m.blur, alt: m.alt, caption: m.caption, focal: m.focal });
@@ -74,12 +81,14 @@ function DesignPanel({ templates, themes }: { templates: TemplateCard[]; themes:
   );
 }
 
-function Editor({ title, slug, published, templates, themes }: Pick<EditorProps, "title" | "slug" | "published" | "templates" | "themes">) {
-  const { weddingId, doc, settings, media, undo, redo, canUndo, canRedo, flush, saveState } = useDraft();
+function Editor({ title, slug, published, templates, themes, welcome, sample }: Pick<EditorProps, "title" | "slug" | "published" | "templates" | "themes" | "welcome" | "sample">) {
+  const { weddingId, doc, settings, media, undo, redo, canUndo, canRedo, flush, saveState, update, has } = useDraft();
   const ask = useConfirm();
   const router = useRouter();
   const [selected, setSelected] = useState<string | null>(doc.sections.find((s) => s.type === "hero")?.id ?? doc.sections[0]?.id ?? null);
-  const [tab, setTab] = useState<"section" | "content" | "design">("section");
+  const [tab, setTab] = useState<"section" | "content" | "design">("content");
+  const [guide, setGuide] = useState(!!welcome);
+  const [checking, setChecking] = useState(false);
   const [device, setDevice] = useState<Device>("mobile");
   const [state, setState] = useState("PUBLISHED");
   const [guest, setGuest] = useState(false);
@@ -96,6 +105,21 @@ function Editor({ title, slug, published, templates, themes }: Pick<EditorProps,
   const flavor = templates.find((t) => t.id === settings.templateId)?.flavor;
   const mediaMap = useMemo(() => Object.fromEntries(Object.values(media).map((m) => [m.id, toResolved(m)])), [media]);
   const section = doc.sections.find((s) => s.id === selected) ?? null;
+  // a section with nothing to fill in opens on its layout instead of an empty “Words & photos”
+  const effTab = tab === "content" && section && !HAS_CONTENT.has(section.type) ? "section" : tab;
+
+  // what is still the sample, live as the person replaces it
+  const hits = useMemo(() => sampleHits(doc, sample?.tokens ?? []), [doc, sample]);
+  const photosLeft = useMemo(() => samplePhotosUsed(doc, sample?.photos ?? []), [doc, sample]);
+  const left = hits.length + photosLeft.length;
+
+  // walk the invitation one section at a time
+  const sorted = useMemo(() => [...doc.sections].sort((a, b) => a.order - b.order), [doc.sections]);
+  const walkable = (s: (typeof sorted)[number]) => s.enabled && !(SECTION_META[s.type].feature && !has(SECTION_META[s.type].feature!));
+  const at = sorted.findIndex((s) => s.id === selected);
+  const nextId = sorted.slice(at + 1).find(walkable)?.id;
+  const prevId = sorted.slice(0, Math.max(at, 0)).reverse().find(walkable)?.id;
+  const toggleHidden = () => section && update((d) => { const x = d.sections.find((y) => y.id === section.id); if (x) x.enabled = !x.enabled; });
 
   // Push every edit into the live preview (debounced).
   useEffect(() => {
@@ -110,14 +134,14 @@ function Editor({ title, slug, published, templates, themes }: Pick<EditorProps,
     if (m.type === "sbl:ready") setReady((n) => n + 1);
     if (m.type === "sbl:select" && typeof m.sectionId === "string") {
       setSelected(m.sectionId);
-      setTab("section");
+      setTab((t) => (t === "design" ? "content" : t));
       setPane("edit");
     }
   }, []);
 
   const select = (id: string) => {
     setSelected(id);
-    setTab((t) => (t === "design" ? "section" : t));
+    setTab((t) => (t === "design" ? "content" : t));
     frame.current?.post({ type: "sbl:focus", sectionId: id });
     setPane("edit");
   };
@@ -134,7 +158,8 @@ function Editor({ title, slug, published, templates, themes }: Pick<EditorProps,
 
   const publish = async () => {
     if (!(await flush())) return toast.error("Fix the save problem first.");
-    if (!(await ask({ title: published ? "Publish your changes?" : "Publish this invitation?", message: `Guests will see this version at /invite/${slug}. You can roll back from Versions at any time.`, confirmLabel: "Publish" }))) return;
+    const leftover = left ? ` Heads up: ${left} thing${left === 1 ? " is" : "s are"} still the template’s sample — open “Still the sample” to check.` : "";
+    if (!(await ask({ title: published ? "Publish your changes?" : "Publish this invitation?", message: `Guests will see this version at /invite/${slug}. You can roll back from Versions at any time.${leftover}`, confirmLabel: "Publish" }))) return;
     start(async () => { const r = await publishAction(weddingId); if (r.ok) { toast.success(`Published — version ${r.data.version}`); router.refresh(); } else toast.error(r.error.message); });
   };
 
@@ -153,11 +178,20 @@ function Editor({ title, slug, published, templates, themes }: Pick<EditorProps,
         <label className="hidden cursor-pointer items-center gap-2 text-[13.5px] 2xl:flex"><input type="checkbox" className="size-4 accent-[var(--accent)]" checked={guest} onChange={(e) => setGuest(e.target.checked)} />As a personal guest</label>
         {settings.secondaryLocale && <Segmented label="Language" value={lang} onChange={setLang} options={[{ value: settings.defaultLocale, label: settings.defaultLocale.toUpperCase() }, { value: settings.secondaryLocale, label: settings.secondaryLocale.toUpperCase() }]} />}
         <div className="ml-auto flex items-center gap-2">
+          {sample && <button type="button" onClick={() => setChecking(true)} className={cn("btn btn-sm", left ? "btn-quiet" : "btn-ghost")} title="What is still the template’s sample"><Sparkles className="size-4" aria-hidden />{left ? `Still the sample: ${left}` : "Sample replaced"}</button>}
           <a className="btn btn-quiet btn-sm hidden 2xl:inline-flex" href={`/preview/${weddingId}`} target="_blank" rel="noopener noreferrer"><ExternalLink className="size-4" />Full preview</a>
           <Button size="sm" variant="quiet" icon={<Save className="size-4" />} onClick={() => start(async () => { await flush(); const r = await checkpointAction(weddingId, "Editor checkpoint"); if (r.ok) toast.success("Checkpoint saved"); else toast.error(r.error.message); })}>Checkpoint</Button>
           <Button size="sm" variant="accent" loading={pending} icon={<Rocket className="size-4" />} onClick={() => void publish()}>{published ? "Publish changes" : "Publish"}</Button>
         </div>
       </header>
+
+      {guide && (
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-accent/30 bg-accent-soft px-4 py-2.5 text-[13.5px]" role="status">
+          <p className="min-w-0 flex-1"><strong className="font-semibold">Make it theirs.</strong> This is the template’s sample. Go through the sections one by one: change the words, replace the photographs, add or remove list items. Hide or move any section on the left.</p>
+          {sample && <button type="button" className="btn btn-quiet btn-sm" onClick={() => setChecking(true)}>See what is left</button>}
+          <button type="button" className="btn btn-ghost btn-sm" onClick={() => setGuide(false)}>Got it</button>
+        </div>
+      )}
 
       <div className="flex border-b border-rule bg-paper-2/50 lg:hidden" role="tablist">{(["sections", "preview", "edit"] as const).map((p) => (<button key={p} role="tab" aria-selected={pane === p} onClick={() => setPane(p)} className={cn("min-h-11 flex-1 text-[14px] font-medium capitalize", pane === p ? "border-b-2 border-accent text-ink" : "text-muted")}>{p === "edit" ? "Edit" : p}</button>))}</div>
 
@@ -169,13 +203,52 @@ function Editor({ title, slug, published, templates, themes }: Pick<EditorProps,
           <DevicePreview ref={frame} src={src} device={device} onMessage={onMessage} />
         </main>
         <aside className={cn("flex min-h-0 flex-col border-l border-rule bg-paper lg:flex", pane === "edit" ? "flex" : "hidden")}>
-          <div role="tablist" className="flex border-b border-rule px-2">{(["section", "content", "design"] as const).map((t) => (<button key={t} role="tab" aria-selected={tab === t} onClick={() => setTab(t)} className={cn("relative min-h-11 flex-1 text-[14px] capitalize", tab === t ? "font-medium text-ink" : "text-muted hover:text-ink")}>{t === "design" ? "Design & page" : t === "section" ? "This section" : "Content"}{tab === t && <span aria-hidden className="absolute inset-x-2 -bottom-px h-[2px] bg-accent" />}</button>))}</div>
+          <div role="tablist" className="flex border-b border-rule px-2">{(["section", "content", "design"] as const).map((t) => (<button key={t} role="tab" aria-selected={effTab === t} onClick={() => setTab(t)} className={cn("relative min-h-11 flex-1 text-[14px] capitalize", tab === t ? "font-medium text-ink" : "text-muted hover:text-ink")}>{t === "design" ? "Design & page" : t === "section" ? "Layout & wording" : "Words & photos"}{tab === t && <span aria-hidden className="absolute inset-x-2 -bottom-px h-[2px] bg-accent" />}</button>))}</div>
           <div className="min-h-0 flex-1 overflow-y-auto p-4">
-            {tab === "design" ? <DesignPanel templates={templates} themes={themes} /> : section ? <SectionPanel key={section.id + tab} section={section} tab={tab} weddingId={weddingId} /> : <p className="py-10 text-center text-muted">Choose a section on the left, or click one in the preview.</p>}
+            {effTab === "design" ? <DesignPanel templates={templates} themes={themes} /> : section ? <SectionPanel key={section.id + effTab} section={section} tab={effTab} weddingId={weddingId} /> : <p className="py-10 text-center text-muted">Choose a section on the left, or click one in the preview.</p>}
           </div>
+          {section && effTab !== "design" && (
+            <div className="flex items-center gap-2 border-t border-rule bg-paper-2/50 px-3 py-2.5">
+              <Button size="sm" variant="quiet" disabled={!prevId} onClick={() => prevId && select(prevId)}><ArrowLeft className="size-4" aria-hidden />Previous</Button>
+              <button type="button" onClick={toggleHidden} aria-pressed={!section.enabled} className="btn btn-ghost btn-sm mx-auto" title={section.enabled ? "Guests will not see this section" : "Guests will see this section again"}>{section.enabled ? <><EyeOff className="size-4" aria-hidden />Hide this section</> : <><Eye className="size-4" aria-hidden />Show this section</>}</button>
+              <Button size="sm" variant="accent" disabled={!nextId} onClick={() => nextId && select(nextId)}>Next<ArrowRight className="size-4" aria-hidden /></Button>
+            </div>
+          )}
           {saveState === "error" && <p role="alert" className="border-t border-bad bg-bad-soft px-4 py-2 text-[13px] text-bad">Your latest change is not saved yet — check your connection. We will keep trying.</p>}
         </aside>
       </div>
+      <Sheet open={checking} onClose={() => setChecking(false)} title="Still the sample" description={sample ? `Words and photographs that still come from the “${sample.template}” sample. Replace them before you publish.` : ""}>
+        {left === 0 ? <p className="text-[15px] text-muted">Everything from the sample has been replaced. Photographs added to the gallery are checked in the Media library.</p> : (
+          <div className="space-y-6">
+            {hits.length > 0 && (
+              <div>
+                <h3 className="eyebrow mb-2">Words ({hits.length})</h3>
+                <ul className="divide-y divide-rule rounded-lg border border-rule-strong">
+                  {hits.map((h) => (
+                    <li key={h.token} className="px-3.5 py-3">
+                      <p className="text-[14.5px] font-medium text-ink">“{h.token.length > 70 ? `${h.token.slice(0, 70)}…` : h.token}”</p>
+                      <p className="mt-1 flex flex-wrap gap-1.5 text-[12.5px]">
+                        {h.areas.map((a) => {
+                          const target = a.sectionType ? doc.sections.find((s) => s.type === a.sectionType) : undefined;
+                          return target
+                            ? <button key={a.label} type="button" className="rounded-full border border-rule-strong px-2.5 py-0.5 text-accent hover:border-accent" onClick={() => { setChecking(false); select(target.id); setTab("content"); }}>{a.label}</button>
+                            : <span key={a.label} className="rounded-full border border-rule px-2.5 py-0.5 text-muted">{a.label}</span>;
+                        })}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {photosLeft.length > 0 && (
+              <div>
+                <h3 className="eyebrow mb-2">Photographs ({photosLeft.length})</h3>
+                <p className="text-[14px] text-ink-2">{photosLeft.length} photograph{photosLeft.length === 1 ? " is" : "s are"} still the sample’s. Open the section it is in and use “Replace” on the photograph. Gallery photographs are replaced in the Media library.</p>
+              </div>
+            )}
+          </div>
+        )}
+      </Sheet>
     </div>
   );
 }
@@ -184,7 +257,7 @@ export function EditorClient(p: EditorProps) {
   return (
     <ConfirmProvider>
       <DraftProvider weddingId={p.weddingId} role="admin" initialDoc={p.doc} initialSettings={p.settings} features={p.features} groups={p.groups} initialMedia={p.media}>
-        <Editor title={p.title} slug={p.slug} published={p.published} templates={p.templates} themes={p.themes} />
+        <Editor title={p.title} slug={p.slug} published={p.published} templates={p.templates} themes={p.themes} welcome={p.welcome} sample={p.sample} />
       </DraftProvider>
     </ConfirmProvider>
   );

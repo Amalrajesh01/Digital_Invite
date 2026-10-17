@@ -1,6 +1,7 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { createFromTemplate } from "@/domain/wedding/from-template";
 import { act } from "@/lib/act";
 import { requireAdmin, requireWeddingAccess } from "@/domain/auth/access";
 import {
@@ -43,6 +44,13 @@ export const createWeddingAction = async (input: { packageKey: string; title?: s
     revalidate(w.id);
     return { id: w.id };
   });
+
+export const createFromTemplateAction = async (input: { templateId: string; packageKey: string; title: string; nameA?: string; nameB?: string; date: string }) =>
+  act(async (a) => {
+    const r = await createFromTemplate(a, { ...input, packageKey: z.enum(PACKAGE_KEYS).parse(input.packageKey) });
+    revalidate(r.id);
+    return { id: r.id, fromSample: r.fromSample };
+  }, { area: "wedding" });
 
 export const saveDraftAction = async (weddingId: string, doc: unknown) => act((a) => saveDraft(a, weddingId, doc), { area: "draft", weddingId });
 

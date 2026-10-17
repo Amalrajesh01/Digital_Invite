@@ -26,6 +26,7 @@ export function PreviewShield({ mark }: { mark: string }) {
     };
   }, []);
 
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='360' height='220'><text x='20' y='120' transform='rotate(-24 180 110)' font-family='sans-serif' font-size='15' fill='rgba(255,255,255,0.20)' stroke='rgba(0,0,0,0.12)' stroke-width='0.4'>${mark}</text></svg>`;
+  // Deliberately faint and small: a person scrolling past cannot read it, but the stamp is still in every screenshot and shows up when the contrast is raised.
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='300' height='170'><text x='14' y='96' transform='rotate(-24 150 85)' font-family='sans-serif' font-size='9' letter-spacing='0.6' fill='rgba(255,255,255,0.05)' stroke='rgba(0,0,0,0.035)' stroke-width='0.3'>${mark}</text></svg>`;
   return <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 2147483000, pointerEvents: "none", backgroundImage: `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)}")` }} />;
 }

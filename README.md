@@ -184,6 +184,20 @@ the memorial (24 Oct 2026) have 2026 dates — change them in the studio when th
 Prices on every page come from the package rows Super Admin edits (`src/domain/catalogue/pricing.ts`); there is no price in
 a page. The catalogue itself — categories, samples, FAQ — is plain data in `src/domain/catalogue/`.
 
+## Creating an invitation (super admin)
+
+The quick way, and the normal one:
+
+1. **Weddings → New invitation** shows every design as a picture, filterable by occasion. Pick one.
+2. Enter the names, the date and the package, then **Create and start editing**. You get the template's **sample, complete**: every word, list and photograph, with the names and every date already swapped for this customer's (all dates move by the same number of days). The sample's photographs are copied into this invitation's own library and flagged as sample; its contact buttons (which point at Stack Bridge Labs) are not copied.
+3. The visual editor opens on **Words & photos**. Go section by section with **Previous / Next**: change the words, replace photographs, and **add, remove or reorder list items** (a chapter, a moment, a family member: template has five, customer needs seven). **Hide this section** with one click (or the eye on the left), drag the handle to move it, **Add** for a section the template did not include.
+4. **Still the sample: N** (top bar) lists the sample's words that remain (parents' names, venue, family …) with a button to open the right section, and the photographs still in use. Publish warns if any are left.
+5. **Publish**.
+
+The walking bride and groom at the bottom take their own close-up photographs: *The couple → Words & photos → The occasion → Show the walking bride and groom → Bride's / Groom's head photo* (empty = they wear the portraits).
+
+The long way (package first, then every step of the setup wizard) is still there: **New invitation → Full setup instead**.
+
 ## Make a new design in the Studio (no code)
 
 1. **Weddings → ⋯ → Duplicate…** on any invitation, including a sample. The copy keeps the template, theme, sections and wording as a new draft (photographs only if you tick *Keep the photographs too*). A copy of a sample is a paid customer's invitation, never another free portfolio one.

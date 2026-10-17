@@ -16,8 +16,9 @@ function headFrom(m: ResolvedMedia | undefined, tilt: number, zoom: number): Hea
 export function useHeads(): { bride?: HeadPhoto; groom?: HeadPhoto } {
   const { view, media } = useInvitation();
   const z = view.doc.journey.headZoom;
-  const bride = headFrom(media(view.doc.couple.bride.photo), 4, z.bride);
-  const groom = headFrom(media(view.doc.couple.groom.photo), -4, z.groom);
+  const j = view.doc.journey;
+  const bride = headFrom(media(j.brideHead ?? view.doc.couple.bride.photo), 4, z.bride);
+  const groom = headFrom(media(j.groomHead ?? view.doc.couple.groom.photo), -4, z.groom);
   return bride && groom ? { bride, groom } : {};
 }
 

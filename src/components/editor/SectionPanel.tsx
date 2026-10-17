@@ -31,6 +31,9 @@ const TOGGLES: Partial<Record<SectionConfig["type"], { key: string; label: strin
 const PHASES = WEDDING_STATUSES.filter((s) => s !== "DRAFT" && s !== "PREVIEW");
 const PHASE_LABEL: Record<string, string> = { PUBLISHED: "Before the wedding", LIVE_EVENT: "On the wedding day", POST_EVENT: "Just after (thank-you)", MEMORY: "Memories", ANNIVERSARY: "Anniversary" };
 
+/** Sections whose “Words & photos” tab has real content to edit; the others only have layout and wording. */
+export const HAS_CONTENT = new Set<string>(["hero", "couple", "story", "timeline", "ceremonies", "film", "family", "events", "countdown", "livesched", "dresscode", "menu", "venue", "travel", "rsvp", "gallery", "photowall", "memory", "games", "quiz", "scavenger"]);
+
 export function SectionPanel({ section, tab, weddingId }: { section: SectionConfig; tab: "section" | "content"; weddingId: string }) {
   const { update, has, groups, doc } = useDraft();
   const meta = SECTION_META[section.type];
