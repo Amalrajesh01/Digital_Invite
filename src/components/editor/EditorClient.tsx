@@ -228,6 +228,7 @@ function Editor({ title, slug, published, templates, themes, welcome, sample }: 
                       <p className="mt-1 flex flex-wrap gap-1.5 text-[12.5px]">
                         {h.areas.map((a) => {
                           const target = a.sectionType ? doc.sections.find((s) => s.type === a.sectionType) : undefined;
+                          if (a.share) return <button key={a.label} type="button" className="rounded-full border border-rule-strong px-2.5 py-0.5 text-accent hover:border-accent" onClick={() => { setChecking(false); select(SHARE); }}>{a.label}</button>;
                           return target
                             ? <button key={a.label} type="button" className="rounded-full border border-rule-strong px-2.5 py-0.5 text-accent hover:border-accent" onClick={() => { setChecking(false); select(target.id); setTab("content"); }}>{a.label}</button>
                             : <span key={a.label} className="rounded-full border border-rule px-2.5 py-0.5 text-muted">{a.label}</span>;
