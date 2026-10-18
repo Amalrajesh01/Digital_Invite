@@ -680,6 +680,42 @@ export const notifications = pgTable(
   (t) => [index("notifications_wedding_idx").on(t.weddingId, t.createdAt), index("notifications_user_idx").on(t.userId)],
 );
 
+/**
+ * How this platform sends email, set once by the owner in Settings (a Gmail account with an app password works). One row,
+ * id "main". The password is stored encrypted with a key derived from APP_SECRET and is never sent back to the browser.
+ */
+export const emailSettings = pgTable("email_settings", {
+  id: text("id").primaryKey().default("main"),
+  host: text("host").notNull(),
+  port: integer("port").notNull().default(465),
+  /** true = connect over SSL (port 465); false = start plain and upgrade with STARTTLS (port 587), never sending the password in clear. */
+  secure: boolean("secure").notNull().default(true),
+  username: text("username").notNull(),
+  passwordEnc: text("password_enc").notNull(),
+  fromName: text("from_name").notNull().default(""),
+  fromEmail: text("from_email").notNull(),
+  lastTestAt: ts("last_test_at"),
+  lastTestStatus: text("last_test_status").$type<"OK" | "ERROR">(),
+  lastTestMessage: text("last_test_message").notNull().default(""),
+  updatedAt: updatedAt(),
+});
+
+/**
+ * The daily PDF report an invitation without a client dashboard (Essential) emails to its owner at 6 pm India time.
+ * One row per wedding: who gets it, whether the daily send is on, and how the last send went.
+ */
+export const weddingReports = pgTable("wedding_reports", {
+  weddingId: uuid("wedding_id").primaryKey().references(() => weddings.id, { onDelete: "cascade" }),
+  /** Comma-separated email addresses. */
+  recipients: text("recipients").notNull().default(""),
+  enabled: boolean("enabled").notNull().default(true),
+  lastSentAt: ts("last_sent_at"),
+  lastStatus: text("last_status").$type<"OK" | "ERROR">(),
+  lastMessage: text("last_message").notNull().default(""),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
+});
+
 export const auditLogs = pgTable(
   "audit_logs",
   {
@@ -786,21 +822,6 @@ export const leads = pgTable(
  * versions all work); this table holds what only a gift has: the secret that lets its maker edit it, who to talk to, and
  * when an unsent gift is deleted.
  */
-/**
- * The daily Google Sheet an invitation without a client dashboard (Essential) hands to its client. One row per wedding;
- * the credentials are never here: a robot Google account is configured once on the server and each sheet is shared with it.
- */
-export const weddingSheets = pgTable("wedding_sheets", {
-  weddingId: uuid("wedding_id").primaryKey().references(() => weddings.id, { onDelete: "cascade" }),
-  spreadsheetId: text("spreadsheet_id").notNull(),
-  enabled: boolean("enabled").notNull().default(true),
-  lastSyncAt: ts("last_sync_at"),
-  lastStatus: text("last_status").$type<"OK" | "ERROR">(),
-  lastMessage: text("last_message").notNull().default(""),
-  createdAt: createdAt(),
-  updatedAt: updatedAt(),
-});
-
 export const gifts = pgTable(
   "gifts",
   {

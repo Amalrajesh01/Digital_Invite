@@ -1,3 +1,4 @@
+import type { Transporter } from "nodemailer";
 import sharp from "sharp";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db/client";
@@ -77,4 +78,11 @@ export async function pngBuffer(w = 300, h = 200, color = { r: 180, g: 120, b: 6
 export async function setStatusDirect(weddingId: string, status: "DRAFT" | "PUBLISHED" | "LIVE_EVENT" | "POST_EVENT" | "MEMORY" | "ANNIVERSARY", extra: Partial<typeof schema.weddings.$inferInsert> = {}) {
   const db = await getDb();
   await db.update(schema.weddings).set({ status, autoLifecycle: false, ...extra }).where(eq(schema.weddings.id, weddingId));
+}
+
+/** A pretend mail server connection: records what was sent, or fails the way nodemailer does. */
+export function fakeTransport(fail?: { code: string; message?: string }) {
+  const sent: { from: string; to: string[]; subject: string; text: string; html?: string; attachments?: { filename: string; content: Buffer; contentType: string }[] }[] = [];
+  const t = { sendMail: async (m: (typeof sent)[number]) => { if (fail) throw Object.assign(new Error(fail.message ?? "failed"), { code: fail.code }); sent.push(m); return {}; } } as unknown as Transporter;
+  return { t, sent };
 }

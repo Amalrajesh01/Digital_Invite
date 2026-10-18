@@ -8,7 +8,7 @@ import { effectiveStatus } from "@/domain/wedding/lifecycle";
 import { PackageChip, StatusChip } from "@/components/ui/Chip";
 import { WorkspaceTabs } from "@/components/workspace/WorkspaceTabs";
 import { ADMIN_EXTRA, hrefFor, itemsFor } from "@/lib/workspace";
-import { sheetEligible } from "@/domain/sheets/service";
+import { reportEligible } from "@/domain/reports/service";
 import { getDb, schema } from "@/db/client";
 import { and, eq, sql } from "drizzle-orm";
 
@@ -31,7 +31,7 @@ export default async function WeddingLayout({ children, params }: { children: Re
     { href: `${base}/setup/couple`, label: "Setup" },
     { href: `${base}/edit`, label: "Visual editor" },
     ...itemsFor("admin", ent).filter((i) => !["", "invitation", "events"].includes(i.slug)).map((i) => ({ href: hrefFor(base, i.slug, "admin"), label: i.label, locked: i.locked, badge: i.slug === "wishes" ? pending || undefined : undefined })),
-    ...ADMIN_EXTRA.filter((i) => i.slug !== "sheet" || sheetEligible(ent)).map((i) => ({ href: `${base}/${i.slug}`, label: i.label })),
+    ...ADMIN_EXTRA.filter((i) => i.slug !== "report" || reportEligible(ent)).map((i) => ({ href: `${base}/${i.slug}`, label: i.label })),
   ];
   const eff = effectiveStatus(w);
   return (

@@ -6,6 +6,8 @@ import { env } from "@/lib/env";
 import { PageHeader, Section } from "@/components/ui/Bits";
 import { Chip } from "@/components/ui/Chip";
 import { PasswordForm } from "@/components/workspace/PasswordForm";
+import { EmailSettingsForm } from "@/components/workspace/EmailSettingsForm";
+import { getEmailSettings } from "@/domain/mail/settings";
 
 export const metadata: Metadata = { title: "Settings" };
 export const dynamic = "force-dynamic";
@@ -15,11 +17,12 @@ export default async function SettingsPage() {
   const db = await getDb();
   const [{ free }] = await db.select({ free: sql<number>`count(*)::int` }).from(schema.weddings).where(eq(schema.weddings.customerClass, "FREE_PORTFOLIO"));
   const usingLocalDb = !env.databaseUrl;
+  const mail = await getEmailSettings(admin);
   const rows: { label: string; value: string; ok: boolean; help?: string }[] = [
     { label: "Public address", value: env.appUrl, ok: env.isProd ? env.appUrl.startsWith("https://") && !env.appUrl.includes("localhost") : true, help: "Attach a domain with HTTPS and set APP_URL to it — links, QR codes and WhatsApp previews use this address." },
     { label: "Database", value: usingLocalDb ? "Built-in local database" : "PostgreSQL (Supabase or similar)", ok: env.isProd ? !usingLocalDb : true, help: "Set DATABASE_URL to a hosted Postgres for production." },
     { label: "Photo & video storage", value: env.storageDriver === "s3" ? `Object storage · ${env.s3.bucket || "bucket not set"}` : "This server’s disk (back up the storage folder)", ok: true, help: "" },
-    { label: "Email", value: env.resendKey ? "Resend connected" : "Not connected — emails are kept in the outbox", ok: !!env.resendKey, help: "Add RESEND_API_KEY to send invitations and client sign-in emails." },
+    { label: "Email", value: mail.saved ? `Sending from ${mail.fromEmail} through ${mail.host}` : env.resendKey ? "Resend connected" : "Not connected — emails are kept in the outbox", ok: mail.saved || !!env.resendKey, help: "Add your mail account in the Email section below to send daily reports and sign-in emails." },
   ];
   return (
     <>
@@ -34,6 +37,7 @@ export default async function SettingsPage() {
           ))}
         </ul>
       </Section>
+      <Section title="Email"><EmailSettingsForm view={{ ...mail, lastTestAt: mail.lastTestAt?.toISOString() ?? null }} defaultTestTo={admin.email} /></Section>
       <Section title="Portfolio weddings"><p className="text-[14.5px] text-ink-2">{free} of your first 5 customers are marked <span className="font-medium">free · portfolio</span>. Change a wedding’s class in its settings.</p></Section>
       <Section title="Your account">
         <p className="mb-5 text-[14.5px] text-ink-2">Signed in as <span className="font-medium">{admin.email}</span>.</p>

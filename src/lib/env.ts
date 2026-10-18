@@ -35,20 +35,6 @@ export const env = {
   get resendKey() {
     return process.env.RESEND_API_KEY || "";
   },
-  /**
-   * The Google "service account" key used to write the daily sheets: the JSON file Google gives you, pasted as one line or as base64.
-   * Null until it is set; the Daily sheet tab then explains what to do.
-   */
-  get googleServiceAccount(): { client_email: string; private_key: string } | null {
-    const raw = (process.env.GOOGLE_SERVICE_ACCOUNT_JSON || "").trim();
-    if (!raw) return null;
-    try {
-      const j = JSON.parse(raw.startsWith("{") ? raw : Buffer.from(raw, "base64").toString("utf8")) as { client_email?: string; private_key?: string };
-      return j.client_email && j.private_key ? { client_email: j.client_email, private_key: j.private_key.replace(/\\n/g, "\n") } : null;
-    } catch {
-      return null;
-    }
-  },
   /** Shared secret for /api/cron (Vercel Cron sends it as a Bearer token). */
   get cronSecret() {
     return process.env.CRON_SECRET || "";

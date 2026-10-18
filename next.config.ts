@@ -23,9 +23,15 @@ const nextConfig: NextConfig = {
   productionBrowserSourceMaps: false,
   reactStrictMode: true,
   // PGlite (embedded Postgres for zero-setup development) and sharp are native/wasm packages.
-  serverExternalPackages: ["@electric-sql/pglite", "sharp", "postgres"],
+  serverExternalPackages: ["@electric-sql/pglite", "sharp", "postgres", "pdfkit", "nodemailer"],
   // /stock/<id> reads its photograph by a computed name, which file tracing cannot see: ship them with that route on serverless hosts
-  outputFileTracingIncludes: { "/stock/*": ["./assets/stock/*.jpg"] },
+  outputFileTracingIncludes: {
+    "/stock/*": ["./assets/stock/*.jpg"],
+    // the daily report PDF reads its fonts and logo from disk: the cron, the download and the "Send now" action (a Studio tab)
+    "/api/cron/reports": ["./assets/fonts/*.ttf", "./public/brand/logo-on-light.png"],
+    "/api/reports/[weddingId]": ["./assets/fonts/*.ttf", "./public/brand/logo-on-light.png"],
+    "/admin/weddings/[id]/[section]": ["./assets/fonts/*.ttf", "./public/brand/logo-on-light.png"],
+  },
   experimental: {
     serverActions: { bodySizeLimit: "4mb" },
   },

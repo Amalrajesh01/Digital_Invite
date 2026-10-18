@@ -1,6 +1,6 @@
 import { and, desc, eq, isNull } from "drizzle-orm";
 import { getDb, schema } from "@/db/client";
-import { env } from "@/lib/env";
+import { mailReady, sendMail } from "@/domain/mail/transport";
 import { brand } from "@/lib/brand";
 import { logEvent } from "@/domain/platform/logging";
 
@@ -117,17 +117,12 @@ export async function deliver(notificationId: string): Promise<void> {
         await db.update(schema.notifications).set({ status: "SKIPPED", error: "No email address" }).where(eq(schema.notifications.id, n.id));
         return;
       }
-      if (!env.resendKey) {
-        // No provider configured (development / free-tier validation): keep it in the outbox.
-        await db.update(schema.notifications).set({ status: "SKIPPED", error: "No email provider configured — see Notifications outbox" }).where(eq(schema.notifications.id, n.id));
+      if (!(await mailReady())) {
+        // No mail account saved (development / free-tier validation): keep it in the outbox.
+        await db.update(schema.notifications).set({ status: "SKIPPED", error: "No email provider configured — add your mail account in Settings → Email" }).where(eq(schema.notifications.id, n.id));
         return;
       }
-      const res = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${env.resendKey}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ from: env.emailFrom, to: [n.toAddress], subject: n.subject, text: n.body }),
-      });
-      if (!res.ok) throw new Error(`Email provider responded ${res.status}`);
+      await sendMail({ to: [n.toAddress], subject: n.subject, text: n.body });
       await db.update(schema.notifications).set({ status: "SENT", sentAt: new Date(), error: null }).where(eq(schema.notifications.id, n.id));
     } else if (n.channel === "WHATSAPP") {
       // Click-to-send: nothing to deliver server-side; the dashboard shows the link.

@@ -236,13 +236,13 @@ switches it on.
 no IP, no fingerprint) and real rows (`leads`, `orders`). There is no baseline yet and no claim about a conversion rate; see
 [docs/CONVERSION.md](docs/CONVERSION.md) for what is counted, how to set a baseline and the experiments to run.
 
-## The daily Google Sheet (Essential)
+## Email, and the daily report (Essential)
 
-An invitation without the client dashboard (Essential) can hand its client a Google Sheet instead: the Studio's **Daily sheet** tab
-takes the sheet's link, and at **6 pm India time** (`/api/cron/sheets`, 12:30 UTC) it is rewritten with a summary, every guest and
-reply, and daily views. Invitations that have the dashboard do not show the tab and are never written to. The server signs in as a
-Google service account (`GOOGLE_SERVICE_ACCOUNT_JSON`); each sheet is shared with that account's email. Setup, the crontab line and
-limits: [docs/GOOGLE-SHEETS.md](docs/GOOGLE-SHEETS.md).
+Settings → **Email** is where the platform owner saves the mail account once (a Gmail address with an app password works; any SMTP
+server does). It is stored encrypted and carries all platform email. An invitation without the client dashboard (Essential) then has a
+**Daily report** tab: a PDF (numbers, replies in the last 24 hours, views, every guest) is emailed to the owner at **6 pm India time**
+(`/api/cron/reports`, 12:30 UTC) and whenever **Send now** is pressed. Invitations that have the dashboard are not touched. Step by step,
+the crontab line and limits: [docs/EMAIL-REPORTS.md](docs/EMAIL-REPORTS.md).
 
 ## Architecture
 
@@ -291,9 +291,8 @@ Copy `.env.example`. Nothing is required locally.
 | `DATABASE_URL` | PostgreSQL connection string. Empty = embedded PGlite (dev only) |
 | `STORAGE_DRIVER` | `local` or `s3` (Cloudflare R2 or any S3-compatible bucket) |
 | `S3_ENDPOINT` `S3_REGION` `S3_BUCKET` `S3_ACCESS_KEY_ID` `S3_SECRET_ACCESS_KEY` `S3_PUBLIC_BASE_URL` | Object storage |
-| `RESEND_API_KEY` `EMAIL_FROM` | Optional email. Without a key, messages are recorded in the outbox |
-| `CRON_SECRET` | Protects `/api/cron` and `/api/cron/sheets` (Vercel Cron sends it automatically) |
-| `GOOGLE_SERVICE_ACCOUNT_JSON` | The Google service-account key (raw JSON or base64) that writes the daily sheets. Empty = the Daily sheet tab says so. See [docs/GOOGLE-SHEETS.md](docs/GOOGLE-SHEETS.md) |
+| `RESEND_API_KEY` `EMAIL_FROM` | Optional email through Resend, used only while no mail account is saved in Settings → Email. Without either, messages are recorded in the outbox |
+| `CRON_SECRET` | Protects `/api/cron` and `/api/cron/reports` (Vercel Cron sends it automatically) |
 | `TEST_DATABASE_URL` | Tests only: run `npm test` against a real PostgreSQL (migrated, empty) instead of PGlite. Raw `Date` parameters pass on PGlite and fail on PostgreSQL, so run it before changing queries |
 | `SEED_ADMIN_EMAIL` `SEED_ADMIN_PASSWORD` `SEED_ADMIN_NAME` `SEED_DEMO` | Seeding; `SEED_DEMO=false` creates only the admin and packages |
 | `SEED_ONLY` | `public-demos` or one demo slug — seeds just those, skipping any that exist |
@@ -353,8 +352,8 @@ This is how the reference server runs it; templates are in `deploy/`.
 5. `cp deploy/nginx-stackbridge-invites.conf /etc/nginx/sites-available/stackbridge-invites`, symlink into `sites-enabled`,
    `nginx -t && systemctl reload nginx`, and open the port in the firewall. The nginx block must forward
    `Host $http_host` (with the port) or Next.js rejects sign-in as a cross-origin request.
-6. Daily jobs: `30 2 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://127.0.0.1:8104/api/cron`, and for the Google Sheets
-   `30 12 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://127.0.0.1:8104/api/cron/sheets` (6 pm India time on a UTC server).
+6. Daily jobs: `30 2 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://127.0.0.1:8104/api/cron`, and for the daily email reports
+   `30 12 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://127.0.0.1:8104/api/cron/reports` (6 pm India time on a UTC server).
 
 **Update — one command** (after a one-time `install -m 755 deploy/stackbridge-deploy /usr/local/bin/stackbridge-deploy` on the server):
 

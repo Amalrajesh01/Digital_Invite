@@ -5,8 +5,8 @@ import { asc, eq, sql } from "drizzle-orm";
 import { getDb, schema } from "@/db/client";
 import type { WsCtx } from "@/lib/ws-context";
 import { ADMIN_EXTRA, WORKSPACE } from "@/lib/workspace";
-import { getSheetStatus } from "@/domain/sheets/service";
-import { SheetPanel } from "../SheetPanel";
+import { getReportStatus } from "@/domain/reports/service";
+import { ReportPanel } from "../ReportPanel";
 import { canUse } from "@/domain/packages/entitlements";
 import { FEATURES, type FeatureKey } from "@/domain/packages/features";
 import { listGuests, listGroups } from "@/domain/guests/service";
@@ -207,9 +207,9 @@ export async function renderWorkspace(section: string, ctx: WsCtx): Promise<Reac
       );
     }
 
-    case "sheet": {
-      const st = await getSheetStatus(actor, weddingId);
-      return <>{head}<SheetPanel weddingId={weddingId} view={{ ...st, lastSyncAt: st.lastSyncAt?.toISOString() ?? null }} /></>;
+    case "report": {
+      const st = await getReportStatus(actor, weddingId);
+      return <>{head}<ReportPanel weddingId={weddingId} view={{ ...st, lastSentAt: st.lastSentAt?.toISOString() ?? null }} /></>;
     }
 
     case "versions": {

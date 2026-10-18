@@ -40,7 +40,7 @@ export const WORKSPACE: WsItem[] = [
 
 export const ADMIN_EXTRA: WsItem[] = [
   { slug: "versions", label: "Versions", icon: "audit", client: false, desc: "Publish history and rollback" },
-  { slug: "sheet", label: "Daily sheet", icon: "chart", client: false, desc: "A Google Sheet for the client, updated every day at 6 pm" },
+  { slug: "report", label: "Daily report", icon: "send", client: false, desc: "A PDF report emailed to the owner every day at 6 pm" },
 ];
 
 export function itemsFor(role: "admin" | "client", ent: Entitlements) {

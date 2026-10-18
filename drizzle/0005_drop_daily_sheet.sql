@@ -1,0 +1,1 @@
+DROP TABLE "wedding_sheets" CASCADE;
