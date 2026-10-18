@@ -4,7 +4,9 @@ import { Lock } from "lucide-react";
 import { asc, eq, sql } from "drizzle-orm";
 import { getDb, schema } from "@/db/client";
 import type { WsCtx } from "@/lib/ws-context";
-import { WORKSPACE } from "@/lib/workspace";
+import { ADMIN_EXTRA, WORKSPACE } from "@/lib/workspace";
+import { getSheetStatus } from "@/domain/sheets/service";
+import { SheetPanel } from "../SheetPanel";
 import { canUse } from "@/domain/packages/entitlements";
 import { FEATURES, type FeatureKey } from "@/domain/packages/features";
 import { listGuests, listGroups } from "@/domain/guests/service";
@@ -59,7 +61,7 @@ async function groupList(weddingId: string) {
 }
 
 export async function renderWorkspace(section: string, ctx: WsCtx): Promise<React.ReactNode> {
-  const item = WORKSPACE.find((i) => i.slug === section);
+  const item = [...WORKSPACE, ...ADMIN_EXTRA].find((i) => i.slug === section);
   const title = item?.label ?? (section === "versions" ? "Versions" : section === "notifications" ? "Notifications" : "");
   const desc = item?.desc ?? (section === "versions" ? "Publish history, checkpoints and rollback" : section === "notifications" ? "What happened on your invitation" : "");
   const gate = item?.feature && !canUse(ctx.ent, item.feature) ? item.feature : null;
@@ -203,6 +205,11 @@ export async function renderWorkspace(section: string, ctx: WsCtx): Promise<Reac
           )}
         </>
       );
+    }
+
+    case "sheet": {
+      const st = await getSheetStatus(actor, weddingId);
+      return <>{head}<SheetPanel weddingId={weddingId} view={{ ...st, lastSyncAt: st.lastSyncAt?.toISOString() ?? null }} /></>;
     }
 
     case "versions": {

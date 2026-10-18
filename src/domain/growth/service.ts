@@ -97,17 +97,17 @@ export async function funnelReport(actor: Actor | null, days = 30): Promise<Funn
       count(distinct visitor_id) filter (where type = 'design_view')::int as views,
       count(distinct visitor_id) filter (where type = 'preview_open')::int as previews,
       count(*) filter (where type = 'enquiry_sent')::int as enquiries
-    from site_events where at >= ${since} and ref <> '' and type in ('design_view','preview_open','enquiry_sent')
+    from site_events where at >= ${since.toISOString()}::timestamptz and ref <> '' and type in ('design_view','preview_open','enquiry_sent')
     group by ref order by views desc, enquiries desc limit 15`);
   const bySourceRows = await db.execute<{ source: string; visitors: number; enquiries: number }>(sql`
     select coalesce(nullif(source,''),'direct') as source, count(distinct visitor_id)::int as visitors,
       count(distinct visitor_id) filter (where type = 'enquiry_sent')::int as enquiries
-    from site_events where at >= ${since} group by 1 order by visitors desc limit 12`);
+    from site_events where at >= ${since.toISOString()}::timestamptz group by 1 order by visitors desc limit 12`);
   // days follow the product's day boundary (India), not the server's
   const dailyRows = await db.execute<{ day: string; visitors: number; enquiries: number }>(sql`
     select to_char((at at time zone 'Asia/Kolkata')::date, 'YYYY-MM-DD') as day, count(distinct visitor_id)::int as visitors,
       count(*) filter (where type = 'enquiry_sent')::int as enquiries
-    from site_events where at >= ${since} group by 1 order by 1`);
+    from site_events where at >= ${since.toISOString()}::timestamptz group by 1 order by 1`);
   const rows = <T,>(r: unknown): T[] => ((r as { rows?: T[] }).rows ?? (r as T[])) as T[];
   void won;
   return {

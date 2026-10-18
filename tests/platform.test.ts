@@ -5,6 +5,7 @@ import { addDomain, deleteOrder, domainForHost, listDomains, listOrders, removeD
 import { analyticsByWedding, mediaByWedding, platformViewsPerDay, searchGuestsAcrossWeddings } from "@/domain/platform/overview";
 import { track } from "@/domain/analytics/service";
 import { createGuest } from "@/domain/guests/service";
+import { submitOpenRsvp } from "@/domain/guests/rsvp";
 import { updateWeddingSettings } from "@/domain/wedding/service";
 import { loadWallAccess } from "@/domain/live/wall";
 import { storageLabel } from "@/lib/format-bytes";
@@ -83,6 +84,24 @@ describe("cross-wedding overviews", () => {
     expect(new Set(r.rows.map((g) => g.weddingId))).toEqual(new Set([luxury.id, signature.id]));
     expect((await searchGuestsAcrossWeddings(admin, "9846011111")).rows).toHaveLength(1);
     await expect(searchGuestsAcrossWeddings(client, tag)).rejects.toBeTruthy();
+  });
+
+  it("filters guests by wedding and by reply, and counts them for the list above", async () => {
+    const tag = uniq("Fil").replace(/-/g, "");
+    await submitOpenRsvp(signature.id, { name: `${tag} Yes`, status: "YES", attendingCount: 3 }, { ip: `1.1.${Math.floor(Math.random() * 200)}.1` });
+    await submitOpenRsvp(signature.id, { name: `${tag} No`, status: "NO" }, { ip: `1.2.${Math.floor(Math.random() * 200)}.1` });
+    await createGuest(admin, signature.id, { name: `${tag} Silent` });
+    await createGuest(admin, luxury.id, { name: `${tag} Other` });
+    const names = (r: { rows: { name: string }[] }) => r.rows.map((g) => g.name).sort();
+    expect(names(await searchGuestsAcrossWeddings(admin, tag))).toHaveLength(4);
+    const one = await searchGuestsAcrossWeddings(admin, tag, { weddingId: signature.id });
+    expect(names(one)).toEqual([`${tag} No`, `${tag} Silent`, `${tag} Yes`]);
+    expect(one.summary).toMatchObject({ YES: 1, NO: 1, MAYBE: 0, NONE: 1, headcount: 3 });
+    expect(names(await searchGuestsAcrossWeddings(admin, tag, { weddingId: signature.id, reply: "YES" }))).toEqual([`${tag} Yes`]);
+    const waiting = await searchGuestsAcrossWeddings(admin, tag, { reply: "NONE" });
+    expect(names(waiting)).toEqual([`${tag} Other`, `${tag} Silent`]);
+    expect(waiting.matching).toBe(2);
+    expect(waiting.summary.YES).toBe(1); // the numbers above the list do not change with the reply filter
   });
 
   it("a wildcard-only search matches nobody", async () => {

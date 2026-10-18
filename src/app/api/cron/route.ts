@@ -1,6 +1,5 @@
-import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
-import { env } from "@/lib/env";
+import { cronAuthorised } from "@/lib/cron";
 import { processDue } from "@/domain/notify/service";
 import { processMemoryNotifications } from "@/domain/memory/service";
 import { expireGifts } from "@/domain/gifts/service";
@@ -9,18 +8,9 @@ import { logError } from "@/domain/platform/logging";
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
-function authorised(req: Request): boolean {
-  const secret = env.cronSecret;
-  if (!secret) return false;
-  const given = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
-  const a = Buffer.from(given);
-  const b = Buffer.from(secret);
-  return a.length === b.length && timingSafeEqual(a, b);
-}
-
 /** Scheduled jobs: send queued messages, tell couples when a time capsule has opened, delete gifts nobody sent. */
 export async function GET(req: Request) {
-  if (!authorised(req)) return NextResponse.json({ ok: false }, { status: 401 });
+  if (!cronAuthorised(req)) return NextResponse.json({ ok: false }, { status: 401 });
   try {
     const queued = await processDue(100);
     const capsules = await processMemoryNotifications();

@@ -786,6 +786,21 @@ export const leads = pgTable(
  * versions all work); this table holds what only a gift has: the secret that lets its maker edit it, who to talk to, and
  * when an unsent gift is deleted.
  */
+/**
+ * The daily Google Sheet an invitation without a client dashboard (Essential) hands to its client. One row per wedding;
+ * the credentials are never here: a robot Google account is configured once on the server and each sheet is shared with it.
+ */
+export const weddingSheets = pgTable("wedding_sheets", {
+  weddingId: uuid("wedding_id").primaryKey().references(() => weddings.id, { onDelete: "cascade" }),
+  spreadsheetId: text("spreadsheet_id").notNull(),
+  enabled: boolean("enabled").notNull().default(true),
+  lastSyncAt: ts("last_sync_at"),
+  lastStatus: text("last_status").$type<"OK" | "ERROR">(),
+  lastMessage: text("last_message").notNull().default(""),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
+});
+
 export const gifts = pgTable(
   "gifts",
   {

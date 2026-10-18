@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { and, asc, desc, eq, inArray, isNull, lte, sql } from "drizzle-orm";
+import { and, asc, desc, eq, inArray, isNull, lte, or, sql } from "drizzle-orm";
 import { getDb, schema } from "@/db/client";
 import { forbidden, invalid, locked, notFound } from "@/lib/errors";
 import { zonedToUtc } from "@/lib/time";
@@ -203,7 +203,7 @@ export async function listAnniversaryEntries(weddingId: string, now = new Date()
   const rows = await db
     .select()
     .from(schema.anniversaryEntries)
-    .where(and(eq(schema.anniversaryEntries.weddingId, weddingId), sql`(${schema.anniversaryEntries.unlocksAt} is null or ${schema.anniversaryEntries.unlocksAt} <= ${now})`))
+    .where(and(eq(schema.anniversaryEntries.weddingId, weddingId), or(isNull(schema.anniversaryEntries.unlocksAt), lte(schema.anniversaryEntries.unlocksAt, now))))
     .orderBy(desc(schema.anniversaryEntries.year));
   const map = await resolveMediaMap(weddingId, rows.flatMap((r) => r.assetIds));
   return rows.map((r) => ({ id: r.id, year: r.year, title: r.title, body: r.body, photos: r.assetIds.map((i) => map[i]).filter(Boolean) }));
