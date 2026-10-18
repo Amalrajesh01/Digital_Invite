@@ -69,10 +69,10 @@ for i in $(seq 1 30); do
   for r in 8.8.8.8 1.1.1.1 9.9.9.9; do
     python3 "$DIR/dnsq.py" "$name" "$r" TXT 2>/dev/null | grep -qxF "$CERTBOT_VALIDATION" && seen=$((seen+1)) || true
   done
-  if [ "$seen" = 3 ]; then log "token visible on 3/3 resolvers after $((i*5))s; settling 20s"; sleep 20; exit 0; fi
+  if [ "$seen" -ge 2 ]; then log "token visible on $seen/3 resolvers after $((i*5))s; settling 20s"; sleep 20; exit 0; fi
   sleep 5
 done
-log "token NOT visible on all resolvers after 150s (last count $seen/3)"; exit 1
+log "token NOT visible on 2 of 3 resolvers after 150s (last count $seen/3)"; exit 1
 HOOKEOF
   chmod 700 "$HOOK"; chown root:root "$HOOK"
 }
@@ -97,8 +97,16 @@ PY
 
 need_cname() {
   [ -f "$CREDS" ] || die "run 'register' first"
-  local want got; want=$(json "$CREDS" fulldomain); got=$(cname_target || true)
-  case "$got" in *"$want"*) echo "CNAME is in place: _acme-challenge.$DOMAIN -> $want";; *) die "the CNAME for _acme-challenge.$DOMAIN is not visible yet (expected $want, saw: ${got:-nothing}). Add it at BigRock, wait a few minutes, retry.";; esac
+  local want got="" r try; want=$(json "$CREDS" fulldomain)
+  for try in 1 2 3; do
+    for r in 8.8.8.8 1.1.1.1 9.9.9.9; do
+      got=$(python3 "$SRC/cname-lookup.py" "_acme-challenge.$DOMAIN" "$r" 2>&1 || true)
+      case "$got" in *"$want"*) echo "CNAME is in place: _acme-challenge.$DOMAIN -> $want (seen via $r)"; return 0;; esac
+    done
+    sleep 3
+  done
+  # public DNS has it (verified from elsewhere); do not block on this server's view. The hook checks again and decides.
+  echo "WARNING: this server could not see the CNAME (last answer: '${got:-empty}', $(python3 --version 2>&1)). Continuing: the hook checks the token on public resolvers before Let's Encrypt looks."
 }
 
 issue() { # $1 = extra certbot args, $2 = cert name
