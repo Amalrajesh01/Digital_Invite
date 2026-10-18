@@ -120,7 +120,7 @@ export async function renderWorkspace(section: string, ctx: WsCtx): Promise<Reac
       const rows = await listTransport(actor, weddingId);
       return <>{head}<RequestsTable weddingId={weddingId} kind="ride" rows={rows.map((r) => ({ id: r.req.id, status: r.req.status, guest: r.guest, a: `${r.req.pickupLocation || "—"} · ${r.req.passengers} passenger${r.req.passengers === 1 ? "" : "s"}`, b: [r.req.arrivalAt, r.req.reference].filter(Boolean).join(" · ") || "—", c: "", assignment: r.req.vehicle }))} /></>;
     }
-    case "share": return <>{head}<SharePanel weddingId={weddingId} url={`${ctx.appUrl}/invite/${ctx.slug}`} title={ctx.wedding.title || "our wedding"} message={customShareMessage(doc, ctx.wedding.title || "our wedding", ctx.wedding.defaultLocale)} canPersonal={canUse(ent, "personalized_urls")} /></>;
+    case "share": return <>{head}<SharePanel weddingId={weddingId} url={`${ctx.appUrl}/invite/${ctx.slug}`} title={ctx.wedding.title || "our wedding"} message={customShareMessage(doc, ctx.wedding.title || "our wedding", ctx.wedding.defaultLocale)} slug={ctx.slug} canEditLink={ctx.role === "admin"} live={!!ctx.wedding.publishedVersionId} canPersonal={canUse(ent, "personalized_urls")} /></>;
 
     case "checkin": {
       const events = sortEvents(doc.events).map((e) => ({ id: e.id, name: tx(e.name, "en") || "Event" }));

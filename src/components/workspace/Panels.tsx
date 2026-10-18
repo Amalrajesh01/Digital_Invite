@@ -12,6 +12,8 @@ import { Chip } from "@/components/ui/Chip";
 import { Ledger, EmptyState, Skeleton, Meter } from "@/components/ui/Bits";
 import { LText, LocaleProvider } from "@/components/admin/forms";
 import { Qr } from "@/invitation/engine/qr";
+import { normalizeSlugClient } from "@/lib/slug";
+import { checkSlugAction, saveSettingsAction } from "@/app/actions/wedding";
 import { CopyButton } from "./CopyButton";
 import type { LocalizedText } from "@/domain/doc/schema";
 import { remindersAction, shareListAction, updateAccommodationAction, updateTransportAction } from "@/app/actions/guests";
@@ -73,7 +75,36 @@ export function RequestsTable({ weddingId, kind, rows: initial }: { weddingId: s
 }
 
 // ── share centre ────────────────────────────────────────────────────────────
-export function SharePanel({ weddingId, url, title, canPersonal, message }: { weddingId: string; url: string; title: string; canPersonal: boolean; message?: string | null }) {
+/** Changes the invitation's link name, which is also what its QR code points at. Owner only. */
+function ChangeLink({ weddingId, slug, base, live }: { weddingId: string; slug: string; base: string; live: boolean }) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(slug);
+  const [checked, setChecked] = useState<{ value: string; ok: boolean; problem: string | null } | null>(null);
+  const [pending, start] = useTransition();
+  useEffect(() => {
+    if (!open || !value || value === slug) return;
+    const id = setTimeout(async () => { const r = await checkSlugAction(weddingId, value); if (r.ok) setChecked({ value, ok: r.data.ok, problem: r.data.problem }); }, 350);
+    return () => clearTimeout(id);
+  }, [value, open, slug, weddingId]);
+  const state = checked?.value === value ? checked : null;
+  const changed = value !== slug && value.length > 0;
+  return (
+    <>
+      <Button size="sm" variant="quiet" onClick={() => { setValue(slug); setOpen(true); }}>Change the link</Button>
+      <Sheet open={open} onClose={() => setOpen(false)} title="Change the invitation link"
+        description={live ? "The QR code changes with the link. Anyone who already has the old link or QR code will find nothing there, so send the new one to everyone again." : "The QR code changes with the link. Nobody has this link yet, so you can change it freely."}
+        footer={<><Button variant="quiet" onClick={() => setOpen(false)}>Cancel</Button><Button loading={pending} disabled={!changed || !state?.ok} onClick={() => start(async () => { const r = await saveSettingsAction(weddingId, { slug: value }); if (r.ok) { toast.success("Link changed. The QR code is updated."); setOpen(false); router.refresh(); } else toast.error(r.error.message); })}>Save the new link</Button></>}>
+        <div className="grid gap-3">
+          <TextField label="Link name" value={value} onChange={(e) => setValue(normalizeSlugClient(e.target.value, true))} placeholder="anjali-and-sidharth" autoComplete="off" error={state && !state.ok ? state.problem ?? "That link is not available." : undefined} hint="Lowercase letters, numbers and hyphens. Short and easy to say aloud." />
+          <p className="break-all rounded-md bg-paper-2 px-3 py-2 text-[13.5px]"><span className="text-muted">The link will be </span><span className="font-medium">{base}{value || "…"}</span>{changed && state?.ok && <span className="ml-2 text-ok">Available</span>}</p>
+        </div>
+      </Sheet>
+    </>
+  );
+}
+
+export function SharePanel({ weddingId, url, title, canPersonal, message, slug, canEditLink, live }: { weddingId: string; url: string; title: string; canPersonal: boolean; message?: string | null; slug?: string; canEditLink?: boolean; live?: boolean }) {
   const [busy, start] = useTransition();
   const [list, setList] = useState<{ guestId: string; name: string; link: string; whatsapp: string | null }[] | null>(null);
   const msg = message ? `${message}\n${url}` : `You are invited to ${title}! Open the invitation: ${url}`;
@@ -83,7 +114,8 @@ export function SharePanel({ weddingId, url, title, canPersonal, message }: { we
         <div>
           <p className="eyebrow mb-2">Public invitation link</p>
           <div className="flex items-center gap-2 rounded-md border border-rule-strong bg-surface px-4 py-3"><code className="min-w-0 flex-1 truncate text-[14.5px]">{url}</code><CopyButton text={url} label="Copy" /></div>
-          <p className="mt-2 text-[13px] text-muted">Anyone with this link can open the invitation. It is the right one to post in a group chat.</p>
+          <p className="mt-2 text-[13px] text-muted">Anyone with this link can open the invitation. It is the right one to post in a group chat. The QR code on the right opens this same link.</p>
+          {canEditLink && slug && <div className="mt-3"><ChangeLink weddingId={weddingId} slug={slug} base={url.slice(0, url.length - slug.length)} live={!!live} /></div>}
         </div>
         <div className="flex flex-wrap gap-3">
           <a className="btn btn-primary" href={`https://wa.me/?text=${encodeURIComponent(msg)}`} target="_blank" rel="noopener noreferrer"><MessageCircle className="size-4" />Share on WhatsApp</a>
