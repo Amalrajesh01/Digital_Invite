@@ -48,19 +48,31 @@ cmd_preflight() {
 
 install_hook() {
   mkdir -p "$DIR"; chmod 700 "$DIR"
+  install -m 700 -o root -g root "$SRC/cname-lookup.py" "$DIR/dnsq.py"   # root runs these from /etc, never from the deploy user's checkout
   cat > "$HOOK" <<'HOOKEOF'
 #!/usr/bin/env bash
-# certbot --manual-auth-hook: publishes the DNS-01 token through acme-dns. $CERTBOT_VALIDATION is set by certbot.
+# certbot --manual-auth-hook: publishes the DNS-01 token through acme-dns, then WAITS until public resolvers serve it.
+# $CERTBOT_VALIDATION and $CERTBOT_DOMAIN are set by certbot. Everything it sees is logged to /var/log/letsencrypt/acme-dns-hook.log
 set -Eeuo pipefail
 DIR=/etc/letsencrypt/acme-dns
 CREDS=$DIR/invites.stackbridgelab.com.json
-ACME_DNS=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["server"])' "$CREDS")
-u=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["username"])' "$CREDS")
-p=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["password"])' "$CREDS")
-s=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["subdomain"])' "$CREDS")
+LOG=/var/log/letsencrypt/acme-dns-hook.log
+log() { echo "$(date -u +%FT%TZ) $*" >> "$LOG"; }
+field() { python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))[sys.argv[2]])' "$CREDS" "$1"; }
+ACME_DNS=$(field server); u=$(field username); p=$(field password); s=$(field subdomain)
 body=$(python3 -c 'import json,sys; print(json.dumps({"subdomain":sys.argv[1],"txt":sys.argv[2]}))' "$s" "$CERTBOT_VALIDATION")
 curl -fsS --max-time 30 -X POST "$ACME_DNS/update" -H "X-Api-User: $u" -H "X-Api-Key: $p" -d "$body" >/dev/null
-sleep 10
+log "token posted to acme-dns for _acme-challenge.$CERTBOT_DOMAIN"
+name="_acme-challenge.$CERTBOT_DOMAIN"
+for i in $(seq 1 30); do
+  seen=0
+  for r in 8.8.8.8 1.1.1.1 9.9.9.9; do
+    python3 "$DIR/dnsq.py" "$name" "$r" TXT 2>/dev/null | grep -qxF "$CERTBOT_VALIDATION" && seen=$((seen+1)) || true
+  done
+  if [ "$seen" = 3 ]; then log "token visible on 3/3 resolvers after $((i*5))s; settling 20s"; sleep 20; exit 0; fi
+  sleep 5
+done
+log "token NOT visible on all resolvers after 150s (last count $seen/3)"; exit 1
 HOOKEOF
   chmod 700 "$HOOK"; chown root:root "$HOOK"
 }
@@ -90,7 +102,7 @@ need_cname() {
 }
 
 issue() { # $1 = extra certbot args, $2 = cert name
-  [ -x "$HOOK" ] || install_hook
+  install_hook
   certbot certonly --manual --preferred-challenges dns --manual-auth-hook "$HOOK" --non-interactive --agree-tos \
     --cert-name "$2" -d "$WILD" --deploy-hook "systemctl reload nginx" $1
 }
@@ -108,7 +120,14 @@ cmd_cert_staging() {
 cmd_cert() {
   need_cname
   [ -d /etc/letsencrypt/live/$CERT ] && die "certificate $CERT already exists; nothing to do (renewals run from certbot's own timer)"
-  issue "" "$CERT"
+  local try
+  for try in 1 2 3; do
+    say "issuing the real certificate (attempt $try of 3)"
+    if issue "" "$CERT"; then break; fi
+    say "hook log"; tail -n 12 /var/log/letsencrypt/acme-dns-hook.log 2>/dev/null || true
+    [ "$try" = 3 ] && die "could not issue the certificate after 3 attempts; paste the output above"
+    sleep 30
+  done
   certbot certificates --cert-name "$CERT" | grep -E "Certificate Name|Domains|Expiry|Certificate Path"
   say "dry-run renewal of the real certificate"; certbot renew --cert-name "$CERT" --dry-run
 }
