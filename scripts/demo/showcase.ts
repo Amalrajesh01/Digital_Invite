@@ -87,7 +87,7 @@ export function buildShowcaseDoc(base: InvitationDoc, c: ShowcaseCfg, id: Ids): 
   const doc = structuredClone(base) as InvitationDoc;
   const person = (p: Person) => ({ name: L(p.name), fullName: L(p.fullName), parents: L(p.parents), bio: L(p.bio), photo: id(p.photo) });
   doc.eventType = c.eventType;
-  doc.journey = { enabled: true, style: c.journey.style, headZoom: c.journey.headZoom };
+  doc.journey = { enabled: true, style: c.journey.style, autoFit: true, headZoom: c.journey.headZoom };
   doc.images = { couple: id(c.images.couple), coupleWide: c.images.coupleWide ? id(c.images.coupleWide) : undefined, ceremony: c.images.ceremony ? id(c.images.ceremony) : undefined, story: c.images.story ? id(c.images.story) : undefined, family: c.images.family ? id(c.images.family) : undefined };
   doc.couple = { ...doc.couple, bride: person(c.bride), groom: person(c.groom), order: "bride-first", tagline: L(c.tagline), invitation: L(c.invitation), quote: { text: L(c.quote.text), author: L(c.quote.author) }, hashtag: c.hashtag, monogram: c.monogram };
 

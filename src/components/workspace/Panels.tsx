@@ -73,10 +73,10 @@ export function RequestsTable({ weddingId, kind, rows: initial }: { weddingId: s
 }
 
 // ── share centre ────────────────────────────────────────────────────────────
-export function SharePanel({ weddingId, url, title, canPersonal }: { weddingId: string; url: string; title: string; canPersonal: boolean }) {
+export function SharePanel({ weddingId, url, title, canPersonal, message }: { weddingId: string; url: string; title: string; canPersonal: boolean; message?: string | null }) {
   const [busy, start] = useTransition();
   const [list, setList] = useState<{ guestId: string; name: string; link: string; whatsapp: string | null }[] | null>(null);
-  const msg = `You are invited to ${title}! Open the invitation: ${url}`;
+  const msg = message ? `${message}\n${url}` : `You are invited to ${title}! Open the invitation: ${url}`;
   return (
     <div className="grid gap-10 lg:grid-cols-[1fr_auto]">
       <div className="space-y-6">

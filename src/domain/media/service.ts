@@ -9,6 +9,8 @@ import { logError } from "@/domain/platform/logging";
 import { type FeatureKey } from "@/domain/packages/features";
 import type { LocalizedText } from "@/domain/doc/schema";
 import { processImage } from "./image";
+import { detectHead } from "./face";
+import type { Face } from "@/invitation/engine/headfit";
 import { type MediaKind, sanitizeFilename, validateUpload } from "./validate";
 
 export type MediaAsset = typeof schema.mediaAssets.$inferSelect;
@@ -29,6 +31,8 @@ export interface ResolvedMedia {
   alt: LocalizedText;
   caption: LocalizedText;
   focal?: { x: number; y: number };
+  /** Where the head is in the picture (0–1), for the walking figures. undefined = not looked at yet, null = no face found. */
+  face?: Face | null;
   durationSec?: number;
 }
 
@@ -40,7 +44,7 @@ export function assetUrl(assetId: string, variant: "xl" | "lg" | "md" | "sm" | "
 }
 
 export function toResolved(a: MediaAsset): ResolvedMedia {
-  const meta = a.metadata as { variants?: Variants; blur?: string };
+  const meta = a.metadata as { variants?: Variants; blur?: string; face?: Face | null };
   const isPublic = a.visibility === "PUBLIC" && a.moderation === "APPROVED";
   const pub = (v: "xl" | "lg" | "md" | "sm" | "file") => {
     const key = v === "file" ? a.storageKey : meta.variants?.[v]?.key;
@@ -58,6 +62,7 @@ export function toResolved(a: MediaAsset): ResolvedMedia {
     height: a.height ?? undefined,
     blur: meta.blur,
     focal: a.focalX != null && a.focalY != null ? { x: a.focalX, y: a.focalY } : undefined,
+    face: meta.face,
     durationSec: a.durationSec ?? undefined,
   };
   if (a.kind === "IMAGE" && meta.variants) {
@@ -121,6 +126,8 @@ export async function ingestFile(input: IngestInput): Promise<MediaAsset> {
       height = img.height;
       metadata.variants = variants;
       metadata.blur = img.blur;
+      // the photographs a walking figure's head can come from: look for the face now, so the very first preview is framed
+      if ((["BRIDE", "GROOM", "COUPLE"] as string[]).includes(input.category)) metadata.face = await detectHead(input.buffer).catch(() => null);
       mime = "image/webp";
     } else {
       storageKey = `${base}/file.${valid.ext}`;
@@ -242,6 +249,32 @@ export async function resolveMediaMap(weddingId: string, ids: string[], opts: { 
   for (const a of rows) {
     if (!opts.includePrivate && !(a.visibility === "PUBLIC" && a.moderation === "APPROVED")) continue;
     out[a.id] = toResolved(a);
+  }
+  return out;
+}
+
+/**
+ * Photographs uploaded before faces were looked for are looked at once, when a walking figure needs one, and the answer is
+ * remembered. Returns id → head (null = none found). A photograph that cannot be read counts as "none".
+ */
+export async function ensureFaces(weddingId: string, ids: (string | undefined)[]): Promise<Map<string, Face | null>> {
+  const out = new Map<string, Face | null>();
+  const db = await getDb();
+  for (const id of new Set(ids.filter((x): x is string => !!x))) {
+    try {
+      const [a] = await db.select().from(schema.mediaAssets).where(and(eq(schema.mediaAssets.id, id), eq(schema.mediaAssets.weddingId, weddingId)));
+      if (!a || a.kind !== "IMAGE") continue;
+      const meta = a.metadata as { variants?: Variants; face?: Face | null };
+      if (meta.face !== undefined) { out.set(id, meta.face); continue; }
+      const obj = await storage().get(meta.variants?.lg?.key ?? a.storageKey);
+      if (!obj) { out.set(id, null); continue; }
+      const buf = Buffer.isBuffer(obj.body) ? obj.body : Buffer.from(await new Response(obj.body as ReadableStream).arrayBuffer());
+      const face = await detectHead(buf).catch(() => null);
+      await db.update(schema.mediaAssets).set({ metadata: { ...a.metadata, face } }).where(eq(schema.mediaAssets.id, id));
+      out.set(id, face);
+    } catch {
+      out.set(id, null);
+    }
   }
   return out;
 }

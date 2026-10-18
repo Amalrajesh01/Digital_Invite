@@ -4,7 +4,7 @@ import type { InvitationDoc, SectionConfig } from "@/domain/doc/schema";
 import type { WeddingStatus } from "@/domain/doc/constants";
 import type { PackageKey } from "@/domain/packages/features";
 import type { ThemeTokens } from "@/domain/design/tokens";
-import { collectAssetIds, loadPublicGallery, loadPublicTracks, resolveMediaMap, type PublicTrack, type ResolvedMedia } from "@/domain/media/service";
+import { collectAssetIds, ensureFaces, loadPublicGallery, loadPublicTracks, resolveMediaMap, type PublicTrack, type ResolvedMedia } from "@/domain/media/service";
 import { type GuestContext, resolveGuestContext } from "@/domain/guests/context";
 import { getGuestRsvp } from "@/domain/guests/rsvp";
 import { guestGreeting } from "@/domain/guests/service";
@@ -101,6 +101,10 @@ async function assemble(opts: { snap: Snapshot; guest: GuestContext | null; mode
 
   const mediaIds = [...collectAssetIds(doc)];
   const media = await resolveMediaMap(wedding.id, mediaIds, { includePrivate: mode === "preview" });
+  if (doc.journey.enabled && doc.journey.autoFit) {
+    const heads = [doc.journey.brideHead ?? doc.couple.bride.photo, doc.journey.groomHead ?? doc.couple.groom.photo];
+    for (const [id, face] of await ensureFaces(wedding.id, heads)) if (media[id]) media[id].face = face;
+  }
   const [gallery, tracks] = await Promise.all([types.has("gallery") || types.has("memory") || types.has("hero") ? loadPublicGallery(wedding.id) : Promise.resolve([]), canUse(ent, "music") ? loadPublicTracks(wedding.id) : Promise.resolve([])]);
 
   let publicGuest: PublicGuest | null = null;

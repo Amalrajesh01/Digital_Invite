@@ -191,6 +191,11 @@ export async function createFromTemplate(actor: Actor | null, input: FromTemplat
     return rename(s);
   });
 
+  // the sample's hand-tuned head zoom suits the sample's photographs, not this customer's
+  doc.journey = { ...doc.journey, headZoom: { bride: 1, groom: 1 } };
+  // the sample's link-preview heading, description, message and picture describe the sample (its date, its town, its couple): start on automatic
+  doc.seo = { ...doc.seo, title: {}, description: {}, shareMessage: {}, ogImage: undefined };
+
   if (couple && nameA && nameB) {
     // the hashtag and the monogram are made of the names, so they are rebuilt rather than renamed
     const A = first(nameA), B = first(nameB), mono = `${A[0] ?? ""}${B[0] ?? ""}`.toUpperCase();

@@ -25,6 +25,8 @@ beforeAll(async () => {
     d.rsvp.deadline = "2100-01-25";
     d.couple.hashtag = "#AnjaliWedsSidharth";
     d.couple.monogram = "AS";
+    d.seo.description = { en: "Join Anjali and Sidharth on 10 February in Udaipur" };
+    d.seo.title = { en: "Anjali & Sidharth — Wedding" };
   } });
   sampleId = s.id;
   const photo = await ingestFile({ weddingId: s.id, buffer: await pngBuffer(), filename: "couple.png", category: "COUPLE", allow: ["IMAGE"], source: "ADMIN" });
@@ -60,6 +62,10 @@ describe("starting an invitation from a template's sample", () => {
     expect(json).toContain("How Divya met Rahul");
     expect(w.draftDoc.couple.hashtag).toBe("#DivyaWedsRahul");
     expect(w.draftDoc.couple.monogram).toBe("DR");
+    // the link preview starts automatic, not as the sample's own text
+    expect(w.draftDoc.seo.title).toEqual({});
+    expect(w.draftDoc.seo.description).toEqual({});
+    expect(w.draftDoc.seo.ogImage).toBeUndefined();
     // every date moved by the same 19 days (10 Feb → 1 Mar), the deadline included
     expect(w.draftDoc.events[0].date).toBe("2100-03-01");
     expect(w.draftDoc.rsvp.deadline).toBe("2100-02-13");

@@ -8,6 +8,7 @@ import { useInvitation } from "./context";
 import { InvDialog } from "./Dialog";
 import { Qr } from "./qr";
 import { whatsappHref } from "./format";
+import { customShareMessage } from "@/domain/wedding/link-preview";
 
 /** Floating controls: music, language, share, sticky RSVP. Dark frosted glass, so they read over a photograph and over paper alike. */
 const pill = "inv-glass grid place-items-center transition-transform hover:-translate-y-0.5 active:translate-y-0";
@@ -106,10 +107,10 @@ export function TopControls() {
 }
 
 export function ShareDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { view, t, has, post, isPreview } = useInvitation();
+  const { view, t, has, post, isPreview, locale } = useInvitation();
   const [showQr, setShowQr] = useState(false);
   const url = view.urls.canonical; // the PUBLIC link — a guest's personal link is never forwarded
-  const message = t("share.message", { title: view.wedding.title });
+  const message = customShareMessage(view.doc, view.wedding.title, locale) ?? t("share.message", { title: view.wedding.title });
   const track = () => !isPreview && void post("/track", { visitorId: "share", type: "share" }).catch(() => undefined);
   const native = typeof navigator !== "undefined" && !!navigator.share;
   return (

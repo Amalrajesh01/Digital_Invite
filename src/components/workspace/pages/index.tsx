@@ -13,6 +13,7 @@ import { weddingAnalytics } from "@/domain/analytics/service";
 import { getMemoryBook } from "@/domain/memory/service";
 import { listInAppFor, listNotifications, markAllRead } from "@/domain/notify/service";
 import { leaderboard } from "@/domain/games/service";
+import { customShareMessage } from "@/domain/wedding/link-preview";
 import { InvitationDoc } from "@/domain/doc/schema";
 import { EmptyState, Ledger, PageHeader, Section } from "@/components/ui/Bits";
 import { LinkButton } from "@/components/ui/Button";
@@ -119,7 +120,7 @@ export async function renderWorkspace(section: string, ctx: WsCtx): Promise<Reac
       const rows = await listTransport(actor, weddingId);
       return <>{head}<RequestsTable weddingId={weddingId} kind="ride" rows={rows.map((r) => ({ id: r.req.id, status: r.req.status, guest: r.guest, a: `${r.req.pickupLocation || "—"} · ${r.req.passengers} passenger${r.req.passengers === 1 ? "" : "s"}`, b: [r.req.arrivalAt, r.req.reference].filter(Boolean).join(" · ") || "—", c: "", assignment: r.req.vehicle }))} /></>;
     }
-    case "share": return <>{head}<SharePanel weddingId={weddingId} url={`${ctx.appUrl}/invite/${ctx.slug}`} title={ctx.wedding.title || "our wedding"} canPersonal={canUse(ent, "personalized_urls")} /></>;
+    case "share": return <>{head}<SharePanel weddingId={weddingId} url={`${ctx.appUrl}/invite/${ctx.slug}`} title={ctx.wedding.title || "our wedding"} message={customShareMessage(doc, ctx.wedding.title || "our wedding", ctx.wedding.defaultLocale)} canPersonal={canUse(ent, "personalized_urls")} /></>;
 
     case "checkin": {
       const events = sortEvents(doc.events).map((e) => ({ id: e.id, name: tx(e.name, "en") || "Event" }));

@@ -58,7 +58,7 @@ export function buildOccasionDoc(base: InvitationDoc, c: OccasionCfg, id: Ids, w
   const doc = structuredClone(base) as InvitationDoc;
   const photo = (k?: string) => (k ? id(k) : undefined);
   doc.eventType = c.eventType;
-  doc.journey = { enabled: false, style: "auto", headZoom: { bride: 1, groom: 1 } };
+  doc.journey = { enabled: false, style: "auto", autoFit: true, headZoom: { bride: 1, groom: 1 } };
   doc.images = { couple: id(c.images.couple), coupleWide: photo(c.images.coupleWide), story: photo(c.images.story), ceremony: undefined, family: undefined };
 
   const h = c.honoree;

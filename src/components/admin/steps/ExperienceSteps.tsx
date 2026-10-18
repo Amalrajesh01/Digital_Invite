@@ -37,7 +37,8 @@ export function CelebrationCard() {
               <MediaField label="Groom’s head photo" value={doc.journey.groomHead} category="GROOM" onChange={(id) => update((d) => void (d.journey.groomHead = id))} aspect="aspect-square" hint="A close-up of his face for the walking figure. Leave it empty to use his portrait." />
             </Grid>
           )}
-          {doc.journey.enabled && (
+          {doc.journey.enabled && <Switch label="Fit each face automatically" hint="Finds the face in each photograph and fits it to the head, whatever kind of photo it is. Turn it off to set the zoom yourself." checked={doc.journey.autoFit} onChange={(v) => update((d) => void (d.journey.autoFit = v))} />}
+          {doc.journey.enabled && !doc.journey.autoFit && (
             <Grid>
               <TextField label="Bride’s face zoom" type="number" step="0.05" min="0.4" max="6" value={String(doc.journey.headZoom.bride)} onChange={(e) => update((d) => void (d.journey.headZoom.bride = Math.min(6, Math.max(0.4, Number(e.target.value) || 1))))} hint="The figures wear the bride’s and groom’s real faces (from their portraits). Raise to zoom in on a wide photo, lower for a tight close-up. Set the face position as each photo’s focal point in the Media library." />
               <TextField label="Groom’s face zoom" type="number" step="0.05" min="0.4" max="6" value={String(doc.journey.headZoom.groom)} onChange={(e) => update((d) => void (d.journey.headZoom.groom = Math.min(6, Math.max(0.4, Number(e.target.value) || 1))))} />

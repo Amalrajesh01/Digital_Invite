@@ -4,12 +4,15 @@ import { figureStyleFor, journeyEnabled } from "@/domain/doc/event-types";
 import { useInvitation } from "./context";
 import { Bride, Groom, type HeadPhoto } from "./figures";
 import type { ResolvedMedia } from "@/domain/media/service";
+import { fitFor } from "./headfit";
 
 /** A real portrait as a figure's head: the smallest rendition is plenty for a head a few dozen pixels across. */
-function headFrom(m: ResolvedMedia | undefined, tilt: number, zoom: number): HeadPhoto | undefined {
+function headFrom(m: ResolvedMedia | undefined, tilt: number, zoom: number, auto: boolean): HeadPhoto | undefined {
   if (!m || m.kind !== "IMAGE" || !m.width || !m.height) return undefined;
   const smallest = m.srcSet?.split(",")[0]?.trim().split(" ")[0];
-  return { src: smallest || m.url, fx: (m.focal?.x ?? 50) / 100, fy: (m.focal?.y ?? 32) / 100, ratio: m.width / m.height, tilt, zoom };
+  // a face that was found frames the head by itself; otherwise (or with auto-fit off) the fixed framing and the manual zoom
+  const fit = auto ? fitFor(m.face ?? null) : null;
+  return { src: smallest || m.url, fx: fit?.fx ?? (m.focal?.x ?? 50) / 100, fy: fit?.fy ?? (m.focal?.y ?? 32) / 100, ratio: m.width / m.height, tilt, zoom: fit ? fit.zoom : zoom };
 }
 
 /** Both portraits, or neither: a real head on one figure and a drawn one on the other would not match. */
@@ -17,8 +20,8 @@ export function useHeads(): { bride?: HeadPhoto; groom?: HeadPhoto } {
   const { view, media } = useInvitation();
   const z = view.doc.journey.headZoom;
   const j = view.doc.journey;
-  const bride = headFrom(media(j.brideHead ?? view.doc.couple.bride.photo), 4, z.bride);
-  const groom = headFrom(media(j.groomHead ?? view.doc.couple.groom.photo), -4, z.groom);
+  const bride = headFrom(media(j.brideHead ?? view.doc.couple.bride.photo), 4, z.bride, j.autoFit);
+  const groom = headFrom(media(j.groomHead ?? view.doc.couple.groom.photo), -4, z.groom, j.autoFit);
   return bride && groom ? { bride, groom } : {};
 }
 

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { DndContext, KeyboardSensor, PointerSensor, closestCenter, useSensor, useSensors, type DragEndEvent } from "@dnd-kit/core";
 import { SortableContext, arrayMove, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Eye, EyeOff, GripVertical, Lock, Plus, Trash2 } from "lucide-react";
+import { Eye, EyeOff, GripVertical, Lock, Plus, Share2, Trash2 } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/Button";
 import { Sheet } from "@/components/ui/Sheet";
@@ -31,7 +31,7 @@ function Row({ s, active, onSelect, locked }: { s: SectionConfig; active: boolea
   );
 }
 
-export function SectionList({ selected, onSelect }: { selected: string | null; onSelect: (id: string) => void }) {
+export function SectionList({ selected, onSelect, extra }: { selected: string | null; onSelect: (id: string) => void; extra?: { id: string; label: string; hint: string } }) {
   const { doc, update, has } = useDraft();
   const [adding, setAdding] = useState(false);
   const sections = [...doc.sections].sort((a, b) => a.order - b.order);
@@ -57,6 +57,14 @@ export function SectionList({ selected, onSelect }: { selected: string | null; o
           </ul>
         </SortableContext>
       </DndContext>
+      {extra && (
+        <div className="border-t border-rule p-2">
+          <button type="button" onClick={() => onSelect(extra.id)} aria-current={selected === extra.id} className={cn("flex w-full items-center gap-3 rounded-md border px-3 py-2.5 text-left transition-colors", selected === extra.id ? "border-accent bg-surface shadow-[var(--shadow-1)]" : "border-transparent hover:bg-paper-2")}>
+            <Share2 className="size-4 shrink-0 text-accent" aria-hidden />
+            <span className="min-w-0"><span className="block text-[14px] font-medium">{extra.label}</span><span className="block truncate text-[12px] text-muted">{extra.hint}</span></span>
+          </button>
+        </div>
+      )}
       <Sheet open={adding} onClose={() => setAdding(false)} title="Add a section" description="Sections are the building blocks of the invitation. Locked ones need a higher package.">
         {addable.length === 0 ? <p className="text-muted">Every section is already on the invitation.</p> : (
           <ul className="divide-y divide-rule">

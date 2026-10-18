@@ -11,8 +11,7 @@ import { Segmented, SelectField, TextField } from "@/components/ui/Field";
 import { ConfirmProvider, useConfirm } from "@/components/ui/Confirm";
 import { DevicePreview, type Device, type DevicePreviewHandle } from "@/components/admin/DevicePreview";
 import { DraftProvider, SaveIndicator, useDraft, type WeddingSettings } from "@/components/admin/draft";
-import { FormCard, LText } from "@/components/admin/forms";
-import { MediaField } from "@/components/admin/MediaField";
+import { LText } from "@/components/admin/forms";
 import { ThemeStep, type TemplateCard, type ThemeCard } from "@/components/admin/steps/DesignSteps";
 import { mergeTokens } from "@/domain/design/tokens";
 import type { InvitationDoc } from "@/domain/doc/schema";
@@ -23,9 +22,13 @@ import { checkpointAction, publishAction, regenerateSectionsAction } from "@/app
 import { SectionList } from "./SectionList";
 import { HAS_CONTENT, SectionPanel } from "./SectionPanel";
 import { sampleHits, samplePhotosUsed } from "./sample-check";
+import { LinkPreviewPanel } from "./LinkPreviewPanel";
 import { Sheet } from "@/components/ui/Sheet";
 import { SECTION_META } from "@/domain/doc/sections";
 import type { PreviewPatch } from "@/invitation/PreviewFrame";
+
+/** The fixed entry under the sections: how the link looks in a chat. Not a section of the invitation itself. */
+const SHARE = "__share";
 
 export interface EditorProps {
   weddingId: string;
@@ -45,7 +48,7 @@ export interface EditorProps {
   sample?: { template: string; tokens: string[]; photos: string[] } | null;
 }
 
-const toResolved = (m: MediaRow): ResolvedMedia => ({ id: m.id, kind: m.kind, mime: "", url: m.url, srcSet: m.srcSet, width: m.width, height: m.height, blur: m.blur, alt: m.alt, caption: m.caption, focal: m.focal });
+const toResolved = (m: MediaRow): ResolvedMedia => ({ id: m.id, kind: m.kind, mime: "", url: m.url, srcSet: m.srcSet, width: m.width, height: m.height, blur: m.blur, alt: m.alt, caption: m.caption, focal: m.focal, face: m.face });
 
 function DesignPanel({ templates, themes }: { templates: TemplateCard[]; themes: ThemeCard[] }) {
   const { weddingId, settings, doc, update, flush } = useDraft();
@@ -72,11 +75,6 @@ function DesignPanel({ templates, themes }: { templates: TemplateCard[]; themes:
           <LText label="Line above the names" value={doc.opening.invitedLine} onChange={(v) => update((d) => void (d.opening.invitedLine = v))} placeholder="You are invited to the wedding of" /></div>
       </div>
       <div><h2 className="display mb-3 text-[28px]">Theme</h2><ThemeStep themes={themes} hidePreview /></div>
-      <FormCard title="Sharing preview" description="How the link looks in WhatsApp and search results.">
-        <LText label="Title" value={doc.seo.title} onChange={(v) => update((d) => void (d.seo.title = v))} placeholder="Meenakshi & Aravind — Wedding Invitation" />
-        <LText label="Description" multiline value={doc.seo.description} onChange={(v) => update((d) => void (d.seo.description = v))} />
-        <MediaField label="Preview image" value={doc.seo.ogImage} category="COUPLE" onChange={(id) => update((d) => void (d.seo.ogImage = id))} aspect="aspect-[1200/630]" />
-      </FormCard>
     </div>
   );
 }
@@ -142,7 +140,7 @@ function Editor({ title, slug, published, templates, themes, welcome, sample }: 
   const select = (id: string) => {
     setSelected(id);
     setTab((t) => (t === "design" ? "content" : t));
-    frame.current?.post({ type: "sbl:focus", sectionId: id });
+    if (id !== SHARE) frame.current?.post({ type: "sbl:focus", sectionId: id });
     setPane("edit");
   };
 
@@ -197,17 +195,17 @@ function Editor({ title, slug, published, templates, themes, welcome, sample }: 
 
       <div className="grid min-h-0 flex-1 lg:grid-cols-[17rem_minmax(0,1fr)_24rem] xl:grid-cols-[18rem_minmax(0,1fr)_26rem]">
         <aside className={cn("min-h-0 border-r border-rule bg-paper-2/40 lg:block", pane === "sections" ? "block" : "hidden")}>
-          <SectionList selected={selected} onSelect={select} />
+          <SectionList selected={selected} onSelect={select} extra={{ id: SHARE, label: "Link preview & message", hint: "How the link looks in WhatsApp" }} />
         </aside>
         <main className={cn("min-h-0 bg-[color-mix(in_srgb,var(--paper-2)_70%,var(--paper))] p-3 lg:block lg:p-5", pane === "preview" ? "block" : "hidden")}>
           <DevicePreview ref={frame} src={src} device={device} onMessage={onMessage} />
         </main>
         <aside className={cn("flex min-h-0 flex-col border-l border-rule bg-paper lg:flex", pane === "edit" ? "flex" : "hidden")}>
-          <div role="tablist" className="flex border-b border-rule px-2">{(["section", "content", "design"] as const).map((t) => (<button key={t} role="tab" aria-selected={effTab === t} onClick={() => setTab(t)} className={cn("relative min-h-11 flex-1 text-[14px] capitalize", tab === t ? "font-medium text-ink" : "text-muted hover:text-ink")}>{t === "design" ? "Design & page" : t === "section" ? "Layout & wording" : "Words & photos"}{tab === t && <span aria-hidden className="absolute inset-x-2 -bottom-px h-[2px] bg-accent" />}</button>))}</div>
+          {selected !== SHARE && <div role="tablist" className="flex border-b border-rule px-2">{(["section", "content", "design"] as const).map((t) => (<button key={t} role="tab" aria-selected={effTab === t} onClick={() => setTab(t)} className={cn("relative min-h-11 flex-1 text-[14px] capitalize", tab === t ? "font-medium text-ink" : "text-muted hover:text-ink")}>{t === "design" ? "Design & page" : t === "section" ? "Layout & wording" : "Words & photos"}{tab === t && <span aria-hidden className="absolute inset-x-2 -bottom-px h-[2px] bg-accent" />}</button>))}</div>}
           <div className="min-h-0 flex-1 overflow-y-auto p-4">
-            {effTab === "design" ? <DesignPanel templates={templates} themes={themes} /> : section ? <SectionPanel key={section.id + effTab} section={section} tab={effTab} weddingId={weddingId} /> : <p className="py-10 text-center text-muted">Choose a section on the left, or click one in the preview.</p>}
+            {selected === SHARE ? <LinkPreviewPanel /> : effTab === "design" ? <DesignPanel templates={templates} themes={themes} /> : section ? <SectionPanel key={section.id + effTab} section={section} tab={effTab} weddingId={weddingId} /> : <p className="py-10 text-center text-muted">Choose a section on the left, or click one in the preview.</p>}
           </div>
-          {section && effTab !== "design" && (
+          {selected !== SHARE && section && effTab !== "design" && (
             <div className="flex items-center gap-2 border-t border-rule bg-paper-2/50 px-3 py-2.5">
               <Button size="sm" variant="quiet" disabled={!prevId} onClick={() => prevId && select(prevId)}><ArrowLeft className="size-4" aria-hidden />Previous</Button>
               <button type="button" onClick={toggleHidden} aria-pressed={!section.enabled} className="btn btn-ghost btn-sm mx-auto" title={section.enabled ? "Guests will not see this section" : "Guests will see this section again"}>{section.enabled ? <><EyeOff className="size-4" aria-hidden />Hide this section</> : <><Eye className="size-4" aria-hidden />Show this section</>}</button>

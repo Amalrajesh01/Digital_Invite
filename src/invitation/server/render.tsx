@@ -8,8 +8,7 @@ import { WEDDING_STATUSES } from "@/domain/doc/constants";
 import { InvitationApp } from "@/invitation/InvitationApp";
 import { brand } from "@/lib/brand";
 import { env } from "@/lib/env";
-import { fmtDate } from "@/invitation/engine/format";
-import { EVENT_TYPE_INFO } from "@/domain/doc/event-types";
+import { linkPreview } from "@/domain/wedding/link-preview";
 
 export const loadInvite = cache((slug: string, token: string | null, state: string | null = null) =>
   loadPublicInvitation(slug, token, { asStatus: WEDDING_STATUSES.find((x) => x === state) }),
@@ -32,17 +31,7 @@ export async function inviteMetadata(slug: string, token: string | null, state: 
     return { title, description: "Someone made this for you.", metadataBase: new URL(env.appUrl), robots: { index: false, follow: false, noarchive: true, nosnippet: true }, referrer: "no-referrer", openGraph: { type: "website", title, description: "Someone made this for you.", siteName: brand.name }, twitter: { card: "summary", title } };
   }
   const loc = view.wedding.defaultLocale;
-  const seo = view.doc.seo;
-  const info = EVENT_TYPE_INFO[view.doc.eventType];
-  const couple = info.subject === "couple";
-  const title = seo.title[loc] || seo.title.en || `${view.wedding.title} — ${couple ? "Wedding Invitation" : "Invitation"}`;
-  const main = view.doc.events.find((e) => e.isMain) ?? view.doc.events[0];
-  const venue = view.doc.venues.find((v) => v.id === main?.venueId);
-  const date = main?.date || view.wedding.weddingDate;
-  const when = `${date ? ` on ${fmtDate(date, "en", "long")}` : ""}${venue ? ` at ${venue.name.en ?? ""}` : ""}`;
-  const description =
-    seo.description[loc] || seo.description.en ||
-    (couple ? `Together with our families, we joyfully invite you to celebrate our wedding${when}.` : `You are invited to ${view.wedding.title}${when}.`);
+  const { title, description } = linkPreview(view.doc, view.wedding.title, view.wedding.weddingDate, loc);
   const image = view.urls.ogImage ? new URL(view.urls.ogImage, env.appUrl).toString() : undefined;
   return {
     title,

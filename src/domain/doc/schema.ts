@@ -316,6 +316,8 @@ export const JourneyDoc = ObjDefault({
   /** A close-up of each face for the walking figures. Empty = the figure wears the couple's portrait instead. */
   brideHead: MediaId,
   groomHead: MediaId,
+  /** Find each face in its photograph and fit it to the head circle. Off = the fixed framing plus the zoom below. */
+  autoFit: z.boolean().default(true),
   /** How far to zoom into each portrait for the figure's head (1 = a head-and-shoulders photograph; tight close-ups need less). */
   headZoom: ObjDefault({ bride: z.number().min(0.4).max(6).default(1), groom: z.number().min(0.4).max(6).default(1) }),
 });
@@ -442,7 +444,8 @@ export const TimeCapsuleDoc = ObjDefault({
 export const ThankYouDoc = ObjDefault({ message: L(), signature: L(), photo: MediaId });
 export const AnniversaryDoc = ObjDefault({ message: L(), highlightPhotos: z.array(z.string()).default([]) });
 export const LiveDoc = ObjDefault({ streamUrl: z.string().default(""), streamLabel: L() });
-export const SeoDoc = ObjDefault({ title: L(), description: L(), ogImage: MediaId });
+/** How the link looks in a chat (heading, sub-heading, picture) and the message a guest sends along with it. {title} = the invitation's name. */
+export const SeoDoc = ObjDefault({ title: L(), description: L(), ogImage: MediaId, shareMessage: L() });
 
 export const GreetingsDoc = ObjDefault({
   /** Fallback greeting for personalised links. {name} is replaced with the guest name. */
