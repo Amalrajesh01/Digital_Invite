@@ -8,6 +8,9 @@ import { Reveal, useInView } from "../engine/motion";
 import { themeFontHref, themeStyle } from "../engine/theme";
 import { useLove, useSpecialDate } from "./useLove";
 
+/** A page of the main site, as an absolute address: a gift can be opened on its own address, where a relative link would not be found. */
+const platformLink = (canonical: string, path: string) => { try { return new URL(path, canonical).href; } catch { return path; } };
+
 /**
  * “For My Love”: a gift, not an invitation. Five experiences, each with its own opening, pace and way of ending.
  * A few rules hold for all of them: nothing plays by itself, nothing is asked of the person who receives it, every
@@ -407,7 +410,7 @@ export function LoveApp({ autoOpen }: { autoOpen?: boolean }) {
       {showSignature && (
         <footer className="lv-foot">
           <p>{l.t("made")}</p>
-          {!isPreview && <a href="/for-my-love">{l.t("makeYours")} →</a>}
+          {!isPreview && <a href={platformLink(view.urls.canonical, "/for-my-love")}>{l.t("makeYours")} →</a>}
         </footer>
       )}
     </div>

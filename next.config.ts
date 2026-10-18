@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { SLUG_HEADER } from "./src/lib/hosts";
 
 const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
@@ -34,6 +35,19 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     serverActions: { bodySizeLimit: "4mb" },
+  },
+  // A wedding's own address (see src/proxy.ts): the proxy validates the host and sets SLUG_HEADER; these rewrites are what move the
+  // request to the invitation. Nothing else sets that header (the proxy strips it from every inbound request).
+  async rewrites() {
+    const has = [{ type: "header" as const, key: SLUG_HEADER, value: "(?<slug>[a-z0-9]+(?:-[a-z0-9]+)*)" }];
+    return {
+      beforeFiles: [
+        { source: "/", has, destination: "/invite/:slug" },
+        { source: "/:token([A-Za-z0-9_-]+)", has, destination: "/invite/:slug/:token" },
+      ],
+      afterFiles: [],
+      fallback: [],
+    };
   },
   async headers() {
     return [

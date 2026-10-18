@@ -3,6 +3,8 @@ import { getDb, schema } from "@/db/client";
 import { type Actor, requireAdmin } from "@/domain/auth/access";
 import { audit } from "@/domain/audit/audit";
 import { invalid, notFound } from "@/lib/errors";
+import { env } from "@/lib/env";
+import { classifyHost } from "@/lib/hosts";
 import { listWeddings } from "@/domain/wedding/service";
 import { platformAnalytics } from "@/domain/analytics/service";
 import { daysBetween, todayInZone } from "@/lib/time";
@@ -148,6 +150,8 @@ export async function addDomain(actor: Actor | null, weddingId: string, hostname
   const admin = requireAdmin(actor);
   const h = hostname.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/\/.*$/, "");
   if (!HOST.test(h)) throw invalid("Enter a valid domain such as anjali-and-sid.com or wedding.example.com.", { hostname: "Invalid domain" });
+  // {slug}.<our address> is every wedding's own address, given automatically from its link; a row for one would never be used
+  if (classifyHost(h, env.appUrl).kind !== "other") throw invalid("That address belongs to this platform: every wedding already has its own address under it. Enter a domain you own, such as anjali-and-sid.com.", { hostname: "Not allowed" });
   const db = await getDb();
   const [dupe] = await db.select({ id: schema.domains.id }).from(schema.domains).where(sql`lower(${schema.domains.hostname}) = ${h}`);
   if (dupe) throw invalid("That domain is already connected to a wedding.", { hostname: "Already in use" });

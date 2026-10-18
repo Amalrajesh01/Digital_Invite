@@ -12,15 +12,14 @@ import { TemplateConfig } from "@/domain/design/templates";
 import { logError } from "@/domain/platform/logging";
 import { storage } from "@/lib/storage";
 import { buildInitialDoc, publishReadiness } from "./doc-tools";
+import { RESERVED_LABELS } from "@/lib/hosts";
 import { effectiveStatus } from "./lifecycle";
 import type { CustomerClass } from "@/domain/packages/catalog";
 
 export type WeddingRow = typeof schema.weddings.$inferSelect;
 
-export const RESERVED_SLUGS = new Set([
-  "admin", "api", "login", "logout", "client", "dashboard", "invite", "preview", "pass", "static", "assets", "media",
-  "demo", "new", "help", "support", "about", "pricing", "terms", "privacy", "_next", "favicon", "robots", "sitemap",
-]);
+/** A slug is also the label of the wedding's own address ({slug}.<our address>), so the names reserved there are reserved here. */
+export const RESERVED_SLUGS = RESERVED_LABELS;
 
 export function normalizeSlug(input: string): string {
   return input.toLowerCase().trim().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60);

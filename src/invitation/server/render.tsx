@@ -7,6 +7,7 @@ import { loadPublicInvitation, type LoadResult } from "@/domain/wedding/public";
 import { WEDDING_STATUSES } from "@/domain/doc/constants";
 import { InvitationApp } from "@/invitation/InvitationApp";
 import { brand } from "@/lib/brand";
+import { absoluteUrl } from "@/lib/site";
 import { env } from "@/lib/env";
 import { linkPreview } from "@/domain/wedding/link-preview";
 
@@ -56,7 +57,7 @@ export async function InviteScreen({ slug, token, skipGate, state }: { slug: str
           <img src="/brand/mark.png" alt="" aria-hidden className="mx-auto size-14 object-contain" />
           <h1 className="mt-5 text-[2rem] leading-tight" style={{ fontFamily: "var(--font-ui), system-ui, sans-serif", fontWeight: 650, letterSpacing: "-0.02em" }}>{r.title}</h1>
           <p className="mt-3 text-[#667085]">{r.body}</p>
-          <p className="mt-10 text-sm text-[#667085]"><Link href="/" className="underline underline-offset-4">{brand.name}</Link></p>
+          <p className="mt-10 text-sm text-[#667085]"><Link href={absoluteUrl("/")} className="underline underline-offset-4">{brand.name}</Link></p>
         </div>
       </main>
     );

@@ -211,7 +211,7 @@ The long way (package first, then every step of the setup wizard) is still there
 
 5. **Weddings → ⋯ → Delete permanently…** removes an invitation for good: it asks you to type its name, then deletes the invitation, its guests, replies, wishes, versions and every stored photograph (owner only; orders and enquiries stay, unlinked; an audit entry is kept). **Archive…** is the reversible alternative: it only takes the invitation offline and off the list.
 
-Invitations are served by the app itself at `/invite/<slug>` (and on a custom domain from **Studio → Domains**); publishing is instant and needs no redeploy. A redeploy is only for changes to the code.
+Invitations are served by the app itself at `/invite/<slug>`, at the wedding's own address `https://<slug>.<APP_URL host>` (see below), and on a custom domain from **Studio → Domains**; publishing is instant and needs no redeploy. A redeploy is only for changes to the code.
 
 ## For My Love
 
@@ -229,6 +229,19 @@ switches it on.
 * **Studio.** *Enquiries*, *Love gifts* and *Funnel* in the studio sidebar. Drafts are counted but never listed — a gift is private
   until its maker sends it. Publishing is a manual step, as is payment (there is no payment gateway).
 * **Price.** ₹499 for every style (the studio's entry-level product), shown on the pricing page, the home page and the gift pages. `GIFT_PRICE_INR` overrides it. Wedding packages start at ₹999 (Essential ₹999–₹2,499).
+
+## Wedding addresses (`{slug}.invites.example.com`)
+
+Every wedding is also reachable at `https://<slug>.<host of APP_URL>`, with no setup per wedding. `src/lib/hosts.ts` holds the rules and
+`src/proxy.ts` applies them: only the `Host` header is believed (never `X-Forwarded-*`), the name must be a valid hostname, one label, a
+valid slug (3–60 characters, single hyphens) and not a **reserved name** (`www`, `mail`, `admin`, `app`, `api`, `login`, `client`, `editor`…;
+the same list refuses those words as new slugs). A well-formed but unusable name is a 404, a malformed Host header a 400. A wedding's
+address serves only the invitation, its guest links, its assets and its own public API; the studio, sign-in, client area, editor,
+exports, reports, cron, uploads and the marketing site answer 404 there, and so does every other wedding. The same applies to verified
+custom domains. Our own address, `localhost` and IPs are untouched. The proxy marks the request with a header that `next.config.ts`
+rewrites on (a proxy-level rewrite fails behind a TLS-terminating proxy, see the comment in `proxy.ts`); the marker is stripped from every
+inbound request. Locally, with `APP_URL=http://localhost:3000`, `http://<slug>.localhost:3000` works in Chrome. The DNS record, the
+wildcard certificate and the nginx block are server work, not in this repository.
 
 ## Measuring the funnel
 
@@ -260,7 +273,7 @@ src/
   invitation/    The guest-facing engine: sections, opening gate, i18n, theming, motion
   components/    Studio UI: shell, wizard, editor, workspace pages, media library; site/ — the product site's blocks
   app/           Next.js routes and server actions (thin wrappers over domain services); (site)/ is the public product site
-  proxy.ts       Custom-domain routing
+  proxy.ts       Wedding addresses and custom domains (rules in lib/hosts.ts)
 drizzle/         SQL migrations      scripts/  seed, migrate, reset, dev tools      tests/  Vitest suites
 ```
 

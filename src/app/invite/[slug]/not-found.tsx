@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { brand } from "@/lib/brand";
+import { absoluteUrl } from "@/lib/site";
 
 export default function NotFound() {
   return (
@@ -8,7 +9,7 @@ export default function NotFound() {
         <img src="/brand/mark.png" alt="" aria-hidden className="mx-auto size-14 object-contain" />
         <h1 className="display mt-4 text-[2rem]">We couldn’t find this invitation</h1>
         <p className="mt-3 text-muted">The link may be mistyped. Please check with the family and try again.</p>
-        <p className="mt-10 text-sm text-muted"><Link href="/" className="underline underline-offset-4">{brand.name}</Link></p>
+        <p className="mt-10 text-sm text-muted"><Link href={absoluteUrl("/")} className="underline underline-offset-4">{brand.name}</Link></p>
       </div>
     </main>
   );
