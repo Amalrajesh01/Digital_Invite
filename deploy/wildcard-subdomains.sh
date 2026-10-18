@@ -30,14 +30,8 @@ say() { printf '\n\033[1m== %s\033[0m\n' "$*"; }
 
 json() { python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))[sys.argv[2]])' "$@"; }
 
-cname_target() { # what _acme-challenge.invites currently points to ("" if nothing)
-  if command -v dig >/dev/null; then dig +short CNAME "_acme-challenge.$DOMAIN" @8.8.8.8 | sed 's/\.$//' | head -1
-  elif command -v host >/dev/null; then host -t CNAME "_acme-challenge.$DOMAIN" 8.8.8.8 | awk '/alias for/ {print $NF}' | sed 's/\.$//' | head -1
-  else python3 - <<'PY'
-import subprocess
-print(subprocess.run(["nslookup","-type=CNAME","_acme-challenge.invites.stackbridgelab.com","8.8.8.8"],capture_output=True,text=True).stdout)
-PY
-  fi
+cname_target() { # what _acme-challenge.invites currently points to ("" if nothing); needs no dig/host/nslookup
+  python3 "$SRC/cname-lookup.py" "_acme-challenge.$DOMAIN" 8.8.8.8 || true
 }
 
 cmd_preflight() {
