@@ -1,6 +1,8 @@
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db/client";
-import { storage } from "@/lib/storage";
+import { storageFor } from "@/lib/storage";
+import { env } from "@/lib/env";
+import { deliveryUrl } from "@/lib/cloudinary";
 import { getCurrentActor } from "@/lib/session";
 import { isMemberOf } from "@/domain/auth/access";
 import { capsuleAssetIsPublic } from "@/domain/memory/service";
@@ -54,9 +56,16 @@ export async function GET(req: Request, ctx: { params: Promise<{ id: string; var
   }
   if (!allowed) return notFound();
 
-  const variants = (a.metadata as { variants?: Record<string, { key: string }> }).variants;
+  const variants = (a.metadata as { variants?: Record<string, { key: string; width?: number }> }).variants;
   const key = a.kind === "IMAGE" ? variants?.[variant]?.key ?? variants?.lg?.key ?? a.storageKey : a.storageKey;
-  const drv = storage();
+  // Cloudinary photographs are delivered by Cloudinary, resized to the width asked for; the access check above has already passed.
+  if (a.provider === "cloudinary") {
+    if (!env.cloudinary.cloudName) return notFound();
+    const v = variants?.[variant] ?? variants?.lg;
+    const version = (a.metadata as { cloudinary?: { version?: number } }).cloudinary?.version;
+    return new Response(null, { status: 302, headers: { Location: deliveryUrl(a.storageKey, { width: v?.width, version }), "Cache-Control": isPublic ? "public, max-age=3600" : "private, no-store" } });
+  }
+  const drv = storageFor(a.provider);
 
   if (drv.name === "s3") {
     const direct = isPublic ? drv.publicUrl(key) : null;

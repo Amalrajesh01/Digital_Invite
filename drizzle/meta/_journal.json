@@ -50,6 +50,13 @@
       "when": 1792328677262,
       "tag": "0006_email_and_daily_report",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792537441741,
+      "tag": "0007_cloudinary_storage",
+      "breakpoints": true
     }
   ]
 }

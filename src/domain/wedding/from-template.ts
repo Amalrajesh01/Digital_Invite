@@ -3,11 +3,12 @@ import { getDb, schema } from "@/db/client";
 import { type Actor, requireAdmin } from "@/domain/auth/access";
 import { audit } from "@/domain/audit/audit";
 import { invalid, notFound } from "@/lib/errors";
-import { storage } from "@/lib/storage";
+import { storageFor } from "@/lib/storage";
 import { TemplateConfig } from "@/domain/design/templates";
 import { isCoupleEvent } from "@/domain/doc/event-types";
 import { type InvitationDoc } from "@/domain/doc/schema";
 import { collectAssetIds, ingestFile, type IngestInput } from "@/domain/media/service";
+import { loadPlacement } from "@/domain/media/cloud";
 import type { PackageKey } from "@/domain/packages/features";
 import type { CustomerClass } from "@/domain/packages/catalog";
 import { createWedding, getWedding, isSlugAvailable, normalizeSlug, saveDraft, slugProblem } from "./service";
@@ -81,25 +82,38 @@ async function sampleOf(templateConfig: TemplateConfig) {
   return row ?? null;
 }
 
-async function bytesOf(key: string): Promise<Buffer | null> {
-  const obj = await storage().get(key);
+async function bytesOf(a: { provider: string; storageKey: string }): Promise<Buffer | null> {
+  const obj = await storageFor(a.provider).get(a.storageKey);
   if (!obj) return null;
   return Buffer.isBuffer(obj.body) ? obj.body : Buffer.from(await new Response(obj.body as ReadableStream).arrayBuffer());
 }
 
-/** Re-processes the sample's photographs into the new invitation's own library. Returns old id → new id. */
+/**
+ * Puts the sample's photographs into the new invitation's own library. Returns old id → new id.
+ * A photograph already on Cloudinary is not uploaded again: the new invitation gets its own row pointing at the same image (the rows are
+ * what keep invitations apart; the pixels are shared). Replacing it later uploads a new image for that invitation only.
+ */
 async function cloneImages(fromWeddingId: string, toWeddingId: string, ids: Set<string>, albumMap: Map<string, string>): Promise<Map<string, string>> {
   const db = await getDb();
   const map = new Map<string, string>();
   const assets = (await db.select().from(schema.mediaAssets).where(eq(schema.mediaAssets.weddingId, fromWeddingId))).filter((a) => ids.has(a.id) && a.kind === "IMAGE");
+  const target = await loadPlacement(toWeddingId);
   const copy = async (a: (typeof assets)[number]) => {
     try {
-      const buffer = await bytesOf(a.storageKey);
-      if (!buffer) return;
-      const made = await ingestFile({
-        weddingId: toWeddingId, buffer, filename: a.filename || "sample.jpg", category: a.category as IngestInput["category"], allow: ["IMAGE"], source: "ADMIN",
-        title: a.title, alt: a.alt, caption: a.caption, albumId: a.albumId ? albumMap.get(a.albumId) ?? null : null,
-      });
+      const albumId = a.albumId ? albumMap.get(a.albumId) ?? null : null;
+      let made: typeof a;
+      if (a.provider === "cloudinary" && target.mediaStorage === "cloudinary") {
+        // the template's own migration backup (its old files) is not this invitation's to keep or delete
+        const metadata = Object.fromEntries(Object.entries(a.metadata).filter(([k]) => k !== "legacy"));
+        [made] = await db.insert(schema.mediaAssets).values({ ...a, id: undefined, createdAt: undefined, updatedAt: undefined, metadata, weddingId: toWeddingId, albumId, source: "ADMIN", uploadedByUserId: null, moderatedBy: null, archivedAt: null }).returning();
+      } else {
+        const buffer = await bytesOf(a);
+        if (!buffer) return;
+        made = await ingestFile({
+          weddingId: toWeddingId, buffer, filename: a.filename || "sample.jpg", category: a.category as IngestInput["category"], allow: ["IMAGE"], source: "ADMIN",
+          title: a.title, alt: a.alt, caption: a.caption, albumId,
+        });
+      }
       await db.update(schema.mediaAssets).set({ focalX: a.focalX, focalY: a.focalY, sortOrder: a.sortOrder, isCover: a.isCover, metadata: { ...made.metadata, sample: true } }).where(eq(schema.mediaAssets.id, made.id));
       map.set(a.id, made.id);
     } catch {

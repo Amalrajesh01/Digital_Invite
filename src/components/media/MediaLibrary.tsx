@@ -17,6 +17,7 @@ import { LText } from "@/components/admin/forms";
 import { MEDIA_CATEGORIES } from "@/domain/media/categories";
 import { deleteMediaAction, listMediaAction, moderateMediaAction, reorderMediaAction, rotateMediaAction, updateMediaAction, type MediaRow } from "@/app/actions/media";
 import { audioDuration, cropToFile, uploadFile } from "./upload";
+import { sized } from "@/lib/media-url";
 
 interface Job { id: string; name: string; pct: number; state: "up" | "done" | "fail"; error?: string }
 type Kind = "IMAGE" | "VIDEO" | "AUDIO";
@@ -39,7 +40,7 @@ export interface MediaLibraryProps {
 }
 
 function Thumb({ row, className }: { row: MediaRow; className?: string }) {
-  if (row.kind === "IMAGE") return <img src={row.url.replace("/lg", "/md")} srcSet={row.srcSet} sizes="240px" alt="" className={cn("size-full object-cover", className)} loading="lazy" style={row.blur ? { backgroundImage: `url(${row.blur})`, backgroundSize: "cover" } : undefined} />;
+  if (row.kind === "IMAGE") return <img src={sized(row.url, "md")} srcSet={row.srcSet} sizes="240px" alt="" className={cn("size-full object-cover", className)} loading="lazy" style={row.blur ? { backgroundImage: `url(${row.blur})`, backgroundSize: "cover" } : undefined} />;
   const Icon = row.kind === "VIDEO" ? VideoIcon : Music;
   return <div className={cn("grid size-full place-items-center bg-paper-2 text-muted", className)}><Icon className="size-8" /></div>;
 }

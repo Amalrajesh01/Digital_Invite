@@ -7,6 +7,8 @@ import type { TemplateFlavor } from "@/domain/design/templates";
 import { LOVE_SPECS, type LoveSpec } from "@/domain/love/templates";
 import { MOOD_THEME, MOOD_LABEL } from "@/domain/love/constants";
 import { categoryBySlug } from "./categories";
+import { cloudinaryUrl } from "@/lib/media-url";
+import cloudThumbs from "./cloud-thumbs.json";
 
 /**
  * The templates as the public site shows them: one entry per design, each with a picture of itself
@@ -38,6 +40,15 @@ export interface SiteTemplate {
   path: string;
 }
 
+/**
+ * A template's picture: from Cloudinary when `npm run cloudinary:static` has put it there (the manifest names its own cloud, so server and
+ * browser always agree), otherwise the screenshot in public/templates.
+ */
+const thumbFor = (slug: string): string => {
+  const t = (cloudThumbs.thumbs as Record<string, { id: string; version: number }>)[slug];
+  return cloudThumbs.cloud && t ? cloudinaryUrl(cloudThumbs.cloud, t.id, { version: t.version, original: true }) : `/templates/${slug}.webp`;
+};
+
 const palette = (slug: string) => {
   const t = THEME_SEEDS.find((x) => x.slug === slug);
   return { slug, name: t?.name ?? slug, colors: t ? [t.tokens.colors.background, t.tokens.colors.primary, t.tokens.colors.accent, t.tokens.colors.inverse] : [] };
@@ -47,7 +58,7 @@ function fromSpec(s: TemplateSpec): SiteTemplate {
   return {
     slug: s.slug, name: s.name, category: s.category, tagline: s.tagline, concept: s.concept, style: s.direction, styleLabel: DIRECTIONS[s.direction].label,
     opening: s.opening, openingLabel: OPENING_LABELS[s.opening], theme: palette(s.theme), target: s.target, interactions: s.interactions, images: s.images, motion: s.motion,
-    demo: s.demo, edition: !!s.edition, love: false, thumb: `/templates/${s.slug}.webp`, path: `/templates/${s.category}/${s.slug}`,
+    demo: s.demo, edition: !!s.edition, love: false, thumb: thumbFor(s.slug), path: `/templates/${s.category}/${s.slug}`,
   };
 }
 
@@ -56,7 +67,7 @@ function fromLove(s: LoveSpec): SiteTemplate {
   return {
     slug: s.slug, name: s.name, category: "for-my-love", tagline: s.tagline, concept: s.concept, style: s.direction, styleLabel: `${MOOD_LABEL[mood]} mood`,
     opening: "none", openingLabel: "Its own opening", theme: palette(MOOD_THEME[mood]), target: s.target, interactions: s.interactions, images: s.images, motion: s.motion,
-    demo: s.demo, edition: false, love: true, thumb: `/templates/${s.slug}.webp`, path: `/templates/for-my-love/${s.slug}`,
+    demo: s.demo, edition: false, love: true, thumb: thumbFor(s.slug), path: `/templates/for-my-love/${s.slug}`,
   };
 }
 

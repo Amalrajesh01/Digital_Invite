@@ -11,6 +11,7 @@ import { useConfirm } from "@/components/ui/Confirm";
 import { LText } from "@/components/admin/forms";
 import type { LocalizedText } from "@/domain/doc/schema";
 import { MediaLibrary } from "./MediaLibrary";
+import { sized } from "@/lib/media-url";
 import { addToAlbumAction, captionItemAction, deleteAlbumAction, listAlbumsAction, listMediaAction, removeFromAlbumAction, reorderAlbumAction, saveAlbumAction, type MediaRow } from "@/app/actions/media";
 
 type Album = { id: string; title: LocalizedText; kind: string; isPublic: boolean; coverAssetId: string | null; items: { id: string; assetId: string; caption: LocalizedText; sortOrder: number }[] };
@@ -97,7 +98,7 @@ export function AlbumsPanel({ weddingId, advanced }: { weddingId: string; advanc
                   const r = rows[it.assetId];
                   return (
                     <li key={it.id} className="flex items-start gap-4 p-3">
-                      <div className="relative size-20 shrink-0 overflow-hidden rounded bg-paper-2">{r && <img src={r.url.replace("/lg", "/sm")} alt="" className="size-full object-cover" />}{album.coverAssetId === it.assetId && <span className="absolute left-1 top-1 rounded bg-brass px-1 text-[10px] font-semibold text-white">Cover</span>}</div>
+                      <div className="relative size-20 shrink-0 overflow-hidden rounded bg-paper-2">{r && <img src={sized(r.url, "sm")} alt="" className="size-full object-cover" />}{album.coverAssetId === it.assetId && <span className="absolute left-1 top-1 rounded bg-brass px-1 text-[10px] font-semibold text-white">Cover</span>}</div>
                       <div className="min-w-0 flex-1"><LText label="Caption" value={it.caption} onChange={(v) => setAlbums((s) => s!.map((x) => (x.id === album.id ? { ...x, items: x.items.map((y) => (y.id === it.id ? { ...y, caption: v } : y)) } : x)))} /><Button size="sm" variant="ghost" className="mt-1" onClick={() => call(() => captionItemAction(weddingId, album.id, it.assetId, it.caption), "Caption saved")}>Save caption</Button></div>
                       <div className="flex flex-col gap-1">
                         <button type="button" className="btn btn-ghost btn-sm !px-2" onClick={() => move(i, -1)} disabled={i === 0} aria-label="Move up"><ArrowUp className="size-4" /></button>

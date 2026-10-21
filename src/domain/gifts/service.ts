@@ -99,7 +99,7 @@ export async function createGift(input: { occasion: LoveOccasion; ipKey: string 
   const token = randomBytes(24).toString("base64url"); // 192 bits
   const [w] = await db
     .insert(schema.weddings)
-    .values({ slug: newSlug(), title: "Love gift", packageKey: "ESSENTIAL", customerClass: "PAID_ESSENTIAL", templateId: tpl.id, themeId: thm.id, autoLifecycle: false, draftDoc: doc })
+    .values({ slug: newSlug(), title: "Love gift", packageKey: "ESSENTIAL", customerClass: "PAID_ESSENTIAL", templateId: tpl.id, themeId: thm.id, autoLifecycle: false, mediaStorage: "legacy", draftDoc: doc })
     .returning();
   const [g] = await db.insert(schema.gifts).values({ weddingId: w.id, editTokenHash: hash(token), expiresAt: days(DRAFT_DAYS) }).returning();
   await audit(SYSTEM, "gift.created", { weddingId: w.id, entityType: "gift", entityId: g.id, metadata: { occasion: input.occasion } });

@@ -9,7 +9,7 @@ import { fitFor } from "./headfit";
 /** A real portrait as a figure's head: the smallest rendition is plenty for a head a few dozen pixels across. */
 function headFrom(m: ResolvedMedia | undefined, tilt: number, zoom: number, auto: boolean): HeadPhoto | undefined {
   if (!m || m.kind !== "IMAGE" || !m.width || !m.height) return undefined;
-  const smallest = m.srcSet?.split(",")[0]?.trim().split(" ")[0];
+  const smallest = m.srcSet?.split(/,s+/)[0]?.trim().split(" ")[0];
   // a face that was found frames the head by itself; otherwise (or with auto-fit off) the fixed framing and the manual zoom
   const fit = auto ? fitFor(m.face ?? null) : null;
   return { src: smallest || m.url, fx: fit?.fx ?? (m.focal?.x ?? 50) / 100, fy: fit?.fy ?? (m.focal?.y ?? 32) / 100, ratio: m.width / m.height, tilt, zoom: fit ? fit.zoom : zoom };

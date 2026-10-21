@@ -1,15 +1,18 @@
 import { randomUUID } from "node:crypto";
 import { and, asc, desc, eq, ilike, inArray, isNull, or, sql } from "drizzle-orm";
 import { getDb, schema } from "@/db/client";
-import { storage } from "@/lib/storage";
+import { storage, storageFor } from "@/lib/storage";
+import { env } from "@/lib/env";
+import { deliveryUrl, destroyImage } from "@/lib/cloudinary";
 import { forbidden, invalid, notFound, uploadRejected } from "@/lib/errors";
 import { type Actor, requireWeddingAccess } from "@/domain/auth/access";
 import { audit } from "@/domain/audit/audit";
 import { logError } from "@/domain/platform/logging";
 import { type FeatureKey } from "@/domain/packages/features";
 import type { LocalizedText } from "@/domain/doc/schema";
-import { processImage } from "./image";
+import { processImage, type ProcessedImage } from "./image";
 import { detectHead } from "./face";
+import { type CloudMeta, loadPlacement, putProcessedImage, releaseCloudKeys, removeStored, wantsCloudinary } from "./cloud";
 import type { Face } from "@/invitation/engine/headfit";
 import { type MediaKind, sanitizeFilename, validateUpload } from "./validate";
 
@@ -44,9 +47,12 @@ export function assetUrl(assetId: string, variant: "xl" | "lg" | "md" | "sm" | "
 }
 
 export function toResolved(a: MediaAsset): ResolvedMedia {
-  const meta = a.metadata as { variants?: Variants; blur?: string; face?: Face | null };
+  const meta = a.metadata as { variants?: Variants; blur?: string; face?: Face | null; cloudinary?: CloudMeta };
   const isPublic = a.visibility === "PUBLIC" && a.moderation === "APPROVED";
+  const onCloud = a.provider === "cloudinary" && !!env.cloudinary.cloudName;
   const pub = (v: "xl" | "lg" | "md" | "sm" | "file") => {
+    // Cloudinary photographs: the picture's own delivery URL at the width of the size asked for (format and quality chosen per browser)
+    if (onCloud && isPublic) return deliveryUrl(a.storageKey, { width: v === "file" ? undefined : meta.variants?.[v]?.width, version: meta.cloudinary?.version });
     const key = v === "file" ? a.storageKey : meta.variants?.[v]?.key;
     const direct = isPublic && key ? storage().publicUrl(key) : null;
     return direct ?? assetUrl(a.id, v, a.updatedAt.getTime());
@@ -102,6 +108,9 @@ export async function ingestFile(input: IngestInput): Promise<MediaAsset> {
   const id = randomUUID();
   const base = `w/${input.weddingId}/${id}`;
   const written: string[] = [];
+  let cloudKey: string | null = null;
+  const isGuest = input.source === "GUEST";
+  const visibility = input.visibility ?? (isGuest ? "PRIVATE" : "PUBLIC");
   try {
     let storageKey: string;
     let width: number | null = null;
@@ -109,22 +118,34 @@ export async function ingestFile(input: IngestInput): Promise<MediaAsset> {
     let sizeBytes = valid.size;
     const metadata: Record<string, unknown> = {};
     let mime = valid.mime;
+    let provider: MediaAsset["provider"] = "legacy";
 
     if (valid.kind === "IMAGE") {
       const img = await processImage(input.buffer);
-      const variants: Record<string, { key: string; width: number; height: number }> = {};
-      sizeBytes = 0;
-      for (const v of img.variants) {
-        const key = `${base}/${v.name}.webp`;
-        await storage().put(key, v.data, "image/webp");
-        written.push(key);
-        variants[v.name] = { key, width: v.width, height: v.height };
-        sizeBytes += v.bytes;
+      const place = await loadPlacement(input.weddingId);
+      if (wantsCloudinary(place, { kind: valid.kind, visibility, source: input.source, category: input.category })) {
+        const put = await putProcessedImage(place, id, img, { category: input.category });
+        cloudKey = put.storageKey;
+        provider = "cloudinary";
+        storageKey = put.storageKey;
+        sizeBytes = put.sizeBytes;
+        metadata.variants = put.variants;
+        metadata.cloudinary = put.cloud;
+      } else {
+        const variants: Record<string, { key: string; width: number; height: number }> = {};
+        sizeBytes = 0;
+        for (const v of img.variants) {
+          const key = `${base}/${v.name}.webp`;
+          await storage().put(key, v.data, "image/webp");
+          written.push(key);
+          variants[v.name] = { key, width: v.width, height: v.height };
+          sizeBytes += v.bytes;
+        }
+        storageKey = variants.xl.key;
+        metadata.variants = variants;
       }
-      storageKey = variants.xl.key;
       width = img.width;
       height = img.height;
-      metadata.variants = variants;
       metadata.blur = img.blur;
       // the photographs a walking figure's head can come from: look for the face now, so the very first preview is framed
       if ((["BRIDE", "GROOM", "COUPLE"] as string[]).includes(input.category)) metadata.face = await detectHead(input.buffer).catch(() => null);
@@ -136,7 +157,6 @@ export async function ingestFile(input: IngestInput): Promise<MediaAsset> {
     }
 
     const duration = input.durationSec && input.durationSec > 0 ? Math.min(input.durationSec, 3600) : null;
-    const isGuest = input.source === "GUEST";
     const [row] = await db
       .insert(schema.mediaAssets)
       .values({
@@ -144,6 +164,7 @@ export async function ingestFile(input: IngestInput): Promise<MediaAsset> {
         weddingId: input.weddingId,
         category: input.category,
         kind: valid.kind,
+        provider,
         storageKey,
         mime,
         sizeBytes,
@@ -155,7 +176,7 @@ export async function ingestFile(input: IngestInput): Promise<MediaAsset> {
         alt: input.alt ?? {},
         caption: input.caption ?? {},
         albumId: input.albumId ?? null,
-        visibility: input.visibility ?? (isGuest ? "PRIVATE" : "PUBLIC"),
+        visibility,
         moderation: input.moderation ?? (isGuest ? "PENDING" : "APPROVED"),
         retention: input.retention ?? (isGuest ? "TEMPORARY" : "PUBLISHED"),
         source: input.source,
@@ -167,7 +188,7 @@ export async function ingestFile(input: IngestInput): Promise<MediaAsset> {
     return row;
   } catch (e) {
     // Roll back any half-written objects so a failed upload never leaves orphans.
-    await Promise.allSettled(written.map((k) => storage().delete(k)));
+    await Promise.allSettled([...written.map((k) => storage().delete(k)), ...(cloudKey ? [destroyImage(cloudKey)] : [])]);
     await logError("upload", e, { weddingId: input.weddingId, metadata: { filename: sanitizeFilename(input.filename), size: input.buffer.length } });
     throw e;
   }
@@ -266,7 +287,7 @@ export async function ensureFaces(weddingId: string, ids: (string | undefined)[]
       if (!a || a.kind !== "IMAGE") continue;
       const meta = a.metadata as { variants?: Variants; face?: Face | null };
       if (meta.face !== undefined) { out.set(id, meta.face); continue; }
-      const obj = await storage().get(meta.variants?.lg?.key ?? a.storageKey);
+      const obj = await storageFor(a.provider).get(meta.variants?.lg?.key ?? a.storageKey);
       if (!obj) { out.set(id, null); continue; }
       const buf = Buffer.isBuffer(obj.body) ? obj.body : Buffer.from(await new Response(obj.body as ReadableStream).arrayBuffer());
       const face = await detectHead(buf).catch(() => null);
@@ -317,34 +338,58 @@ export async function deleteMedia(actor: Actor | null, weddingId: string, assetI
   const a = await loadAsset(weddingId, assetId);
   if (scope.actor.kind === "client" && a.retention === "PERMANENT") throw forbidden("Permanent memories cannot be deleted from here. Please contact your designer.");
   const db = await getDb();
-  const variants = (a.metadata as { variants?: Variants }).variants;
-  const keys = variants ? Object.values(variants).map((v) => v.key) : [a.storageKey];
   await db.delete(schema.mediaAssets).where(and(eq(schema.mediaAssets.id, assetId), eq(schema.mediaAssets.weddingId, weddingId)));
-  await Promise.allSettled(keys.map((k) => storage().delete(k)));
+  await removeStored([a]); // a Cloudinary photograph another invitation still uses (a template's) is kept
   await audit(scope.actor, "media.deleted", { weddingId, entityType: "media", entityId: assetId });
 }
 
-export async function rotateMedia(actor: Actor | null, weddingId: string, assetId: string, degrees: 90 | 180 | 270) {
-  await requireWeddingAccess(actor, weddingId);
-  const a = await loadAsset(weddingId, assetId);
-  if (a.kind !== "IMAGE") throw invalid("Only photos can be rotated.");
-  const src = await storage().get(a.storageKey);
-  if (!src) throw notFound("The original file is unavailable.");
-  const buf = Buffer.isBuffer(src.body) ? src.body : Buffer.from(await new Response(src.body as ReadableStream).arrayBuffer());
-  const img = await processImage(buf, { rotate: degrees });
+/**
+ * Writes new pixels for an existing photograph, keeping its id (so every place that uses it updates).
+ * A Cloudinary photograph is never overwritten: the new pixels get a new public id, the row is pointed at it, and only then is the
+ * old image released — unless another invitation still shows it, which is the case for a template's sample photographs.
+ */
+async function writePixels(a: MediaAsset, weddingId: string, img: ProcessedImage): Promise<MediaAsset> {
+  const db = await getDb();
+  const place = await loadPlacement(weddingId);
+  const onCloud = a.provider === "cloudinary" || wantsCloudinary(place, a);
+  if (onCloud) {
+    const rev = ((a.metadata as { cloudinary?: CloudMeta }).cloudinary?.rev ?? 0) + 1;
+    const put = await putProcessedImage(place, a.id, img, { rev, category: a.category });
+    try {
+      const [row] = await db
+        .update(schema.mediaAssets)
+        .set({ provider: "cloudinary", storageKey: put.storageKey, width: put.width, height: put.height, sizeBytes: put.sizeBytes, mime: "image/webp", metadata: { variants: put.variants, blur: img.blur, cloudinary: put.cloud }, updatedAt: new Date() })
+        .where(eq(schema.mediaAssets.id, a.id))
+        .returning();
+      if (a.provider === "cloudinary") await releaseCloudKeys([a.storageKey]);
+      return row;
+    } catch (e) {
+      await destroyImage(put.storageKey).catch(() => undefined);
+      throw e;
+    }
+  }
   const variants: Variants = {};
   for (const v of img.variants) {
     const key = `w/${weddingId}/${a.id}/${v.name}.webp`;
     await storage().put(key, v.data, "image/webp");
     variants[v.name] = { key, width: v.width, height: v.height };
   }
-  const db = await getDb();
   const [row] = await db
     .update(schema.mediaAssets)
     .set({ width: img.width, height: img.height, metadata: { variants, blur: img.blur }, updatedAt: new Date() })
-    .where(eq(schema.mediaAssets.id, assetId))
+    .where(eq(schema.mediaAssets.id, a.id))
     .returning();
   return row;
+}
+
+export async function rotateMedia(actor: Actor | null, weddingId: string, assetId: string, degrees: 90 | 180 | 270) {
+  await requireWeddingAccess(actor, weddingId);
+  const a = await loadAsset(weddingId, assetId);
+  if (a.kind !== "IMAGE") throw invalid("Only photos can be rotated.");
+  const src = await storageFor(a.provider).get(a.storageKey);
+  if (!src) throw notFound("The original file is unavailable.");
+  const buf = Buffer.isBuffer(src.body) ? src.body : Buffer.from(await new Response(src.body as ReadableStream).arrayBuffer());
+  return writePixels(a, weddingId, await processImage(buf, { rotate: degrees }));
 }
 
 /** Replace a photo's pixels (used after the browser crop tool) while keeping its id — so every place that uses it updates. */
@@ -352,22 +397,8 @@ export async function replaceImage(actor: Actor | null, weddingId: string, asset
   await requireWeddingAccess(actor, weddingId);
   const a = await loadAsset(weddingId, assetId);
   if (a.kind !== "IMAGE") throw invalid("Only photos can be replaced.");
-  const valid = validateUpload(buffer, { allow: ["IMAGE"] });
-  void valid;
-  const img = await processImage(buffer);
-  const variants: Variants = {};
-  for (const v of img.variants) {
-    const key = `w/${weddingId}/${a.id}/${v.name}.webp`;
-    await storage().put(key, v.data, "image/webp");
-    variants[v.name] = { key, width: v.width, height: v.height };
-  }
-  const db = await getDb();
-  const [row] = await db
-    .update(schema.mediaAssets)
-    .set({ width: img.width, height: img.height, metadata: { variants, blur: img.blur }, updatedAt: new Date() })
-    .where(eq(schema.mediaAssets.id, assetId))
-    .returning();
-  return row;
+  validateUpload(buffer, { allow: ["IMAGE"] });
+  return writePixels(a, weddingId, await processImage(buffer));
 }
 
 export async function reorderMedia(actor: Actor | null, weddingId: string, orderedIds: string[]) {

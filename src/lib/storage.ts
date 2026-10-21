@@ -3,6 +3,7 @@ import fsp from "node:fs/promises";
 import path from "node:path";
 import { Readable } from "node:stream";
 import { env } from "./env";
+import { deliveryUrl, destroyImage, fetchOriginal, uploadImage } from "./cloudinary";
 
 /**
  * Object storage abstraction. Development uses the local disk; production points at Cloudflare R2
@@ -18,7 +19,7 @@ export interface StoredObject {
 }
 
 export interface StorageDriver {
-  name: "local" | "s3";
+  name: "local" | "s3" | "cloudinary";
   put(key: string, body: Buffer, contentType: string): Promise<void>;
   get(key: string, range?: { start: number; end?: number }): Promise<StoredObject | null>;
   delete(key: string): Promise<void>;
@@ -134,8 +135,32 @@ function makeS3Driver(): StorageDriver {
   };
 }
 
+// ── Cloudinary (photographs only) ──────────────────────────────────────────
+// The key of a Cloudinary object is its public id. Ingest uses uploadImage() directly (it needs the version back); this driver is
+// what generic code (route handler, copy, face detection, cleanup) reaches through storageFor().
+const cloudinaryDriver: StorageDriver = {
+  name: "cloudinary",
+  async put(key, body) {
+    await uploadImage(key, body);
+  },
+  async get(key) {
+    const o = await fetchOriginal(key);
+    return o ? { body: o.data, contentType: o.contentType, size: o.data.length } : null;
+  },
+  async delete(key) {
+    await destroyImage(key);
+  },
+  publicUrl: (key) => deliveryUrl(key),
+  signedUrl: async () => null,
+};
+
 let cached: StorageDriver | null = null;
 export function storage(): StorageDriver {
   if (!cached) cached = env.storageDriver === "s3" ? makeS3Driver() : localDriver;
   return cached;
+}
+
+/** The store holding a given asset's bytes: its own `provider`, never the global setting. */
+export function storageFor(provider: string): StorageDriver {
+  return provider === "cloudinary" ? cloudinaryDriver : storage();
 }

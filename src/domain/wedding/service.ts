@@ -10,7 +10,7 @@ import { type PackageKey, PACKAGE_RANK } from "@/domain/packages/features";
 import { type ThemeTokens, ThemeTokens as ThemeTokensSchema, mergeTokens } from "@/domain/design/tokens";
 import { TemplateConfig } from "@/domain/design/templates";
 import { logError } from "@/domain/platform/logging";
-import { storage } from "@/lib/storage";
+import { removeStored } from "@/domain/media/cloud";
 import { buildInitialDoc, publishReadiness } from "./doc-tools";
 import { RESERVED_LABELS } from "@/lib/hosts";
 import { effectiveStatus } from "./lifecycle";
@@ -332,14 +332,9 @@ export async function duplicateWedding(actor: Actor | null, id: string, input: {
 export async function purgeWedding(weddingId: string) {
   const db = await getDb();
   const assets = await db.select().from(schema.mediaAssets).where(eq(schema.mediaAssets.weddingId, weddingId));
-  const keys = new Set<string>();
-  for (const a of assets) {
-    keys.add(a.storageKey);
-    const variants = (a.metadata as { variants?: Record<string, { key: string }> }).variants;
-    if (variants) for (const v of Object.values(variants)) keys.add(v.key);
-  }
-  await Promise.allSettled([...keys].map((k) => storage().delete(k)));
   await db.delete(schema.weddings).where(eq(schema.weddings.id, weddingId));
+  // after the rows are gone: a Cloudinary photograph that another invitation (a template) still shows is kept
+  await removeStored(assets);
 }
 
 /** Deletes an invitation for good. Owner only, and the caller must repeat its name, so a slip of the finger cannot do it. Orders and enquiries stay, unlinked. */

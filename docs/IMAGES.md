@@ -12,6 +12,13 @@ Three kinds of picture appear in this product, and each is handled differently.
 Nothing in an invitation is hot-linked, so an invitation can never show a broken remote image. If an upload is
 missing, or fails to load, the `<Photo>` component draws a themed placeholder instead of a grey box.
 
+## Where the files are stored
+
+A customer's photographs (and a template's sample photographs) are stored on **Cloudinary** and delivered resized to each phone;
+audio, video, guests' own uploads, time-capsule photographs and gifts stay on the app's own store. Everything about this — the
+rules, setup, migration, testing and troubleshooting — is in [CLOUDINARY.md](CLOUDINARY.md). Nothing above changes for a person
+using the Media library: slots, focal points, alt text and replacing a photograph work the same.
+
 ## Named photograph slots — replacing a photo without touching code
 
 Every photograph an invitation shows belongs to a **named slot**, declared in one file:

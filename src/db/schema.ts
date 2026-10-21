@@ -217,6 +217,11 @@ export const weddings = pgTable(
     accessMode: text("access_mode").$type<"PUBLIC" | "PERSONALIZED_ONLY">().notNull().default("PUBLIC"),
     /** Demonstration weddings may be previewed in any lifecycle state (?state=…) from the public URL. */
     isDemo: boolean("is_demo").notNull().default(false),
+    /**
+     * Where this invitation's NEW photographs go. 'cloudinary' for every invitation created from now on; 'legacy' for the ones that
+     * existed before Cloudinary (until the migration tool moves them); 'pinned' = a person decided its files must never be moved.
+     */
+    mediaStorage: text("media_storage").$type<"legacy" | "cloudinary" | "pinned">().notNull().default("cloudinary"),
     contactEmail: text("contact_email"),
     contactPhone: text("contact_phone"),
     draftDoc: jsonb("draft_doc").$type<InvitationDoc>().notNull(),
@@ -294,6 +299,8 @@ export const mediaAssets = pgTable(
       .notNull()
       .default("OTHER"),
     kind: text("kind").$type<"IMAGE" | "VIDEO" | "AUDIO">().notNull(),
+    /** Where the bytes live: 'legacy' = the STORAGE_DRIVER store (storageKey is its key); 'cloudinary' = Cloudinary (storageKey is the public id, details in metadata.cloudinary). */
+    provider: text("provider").$type<"legacy" | "cloudinary">().notNull().default("legacy"),
     storageKey: text("storage_key").notNull(),
     mime: text("mime").notNull(),
     sizeBytes: integer("size_bytes").notNull().default(0),

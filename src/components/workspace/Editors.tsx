@@ -16,6 +16,7 @@ import { MediaLibrary } from "@/components/media/MediaLibrary";
 import type { LocalizedText } from "@/domain/doc/schema";
 import { capsuleDashboardAction, deleteAnniversaryAction, hideCapsuleItemAction, listMessagesAction, saveAnniversaryAction, saveMemoryBookAction, unlockCapsuleAction } from "@/app/actions/participation";
 import { rollbackAction, checkpointAction, saveSettingsAction, setStatusAction, versionsAction } from "@/app/actions/wedding";
+import { sized } from "@/lib/media-url";
 
 // ── time capsule ────────────────────────────────────────────────────────────
 export function CapsulePanel({ weddingId, isAdmin }: { weddingId: string; isAdmin: boolean }) {
@@ -77,7 +78,7 @@ export function MemoryEditor({ weddingId, bookInit, canBook }: { weddingId: stri
           <Grid><LText label="Title" value={title} onChange={setTitle} placeholder="Our memory book" /><LText label="Introduction" value={intro} onChange={setIntro} /></Grid>
           <div>
             <p className="mb-2 text-[13.5px] font-medium text-ink-2">Photographs ({pinnedA.length})</p>
-            <div className="flex flex-wrap gap-2">{pinnedA.map((id) => (<button key={id} type="button" onClick={() => setPinnedA((s) => s.filter((x) => x !== id))} className="group relative size-20 overflow-hidden rounded border border-rule" aria-label="Remove photograph">{media[id] && <img src={media[id].url.replace("/lg", "/sm")} alt="" className="size-full object-cover" />}<span className="absolute inset-0 grid place-items-center bg-ink/60 text-white opacity-0 group-hover:opacity-100">✕</span></button>))}<Button variant="quiet" onClick={() => setPicking(true)}>Add photographs</Button></div>
+            <div className="flex flex-wrap gap-2">{pinnedA.map((id) => (<button key={id} type="button" onClick={() => setPinnedA((s) => s.filter((x) => x !== id))} className="group relative size-20 overflow-hidden rounded border border-rule" aria-label="Remove photograph">{media[id] && <img src={sized(media[id].url, "sm")} alt="" className="size-full object-cover" />}<span className="absolute inset-0 grid place-items-center bg-ink/60 text-white opacity-0 group-hover:opacity-100">✕</span></button>))}<Button variant="quiet" onClick={() => setPicking(true)}>Add photographs</Button></div>
           </div>
           <div>
             <p className="mb-2 text-[13.5px] font-medium text-ink-2">Wishes to include ({pinnedM.length})</p>

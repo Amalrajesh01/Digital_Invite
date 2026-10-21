@@ -32,6 +32,19 @@ export const env = {
     get secretAccessKey() { return process.env.S3_SECRET_ACCESS_KEY || ""; },
     get publicBaseUrl() { return (process.env.S3_PUBLIC_BASE_URL || "").replace(/\/$/, ""); },
   },
+  /** Cloudinary hosts invitation photographs. Unset = every photograph stays on the STORAGE_DRIVER store (development, tests). */
+  cloudinary: {
+    get cloudName() { return process.env.CLOUDINARY_CLOUD_NAME || ""; },
+    get apiKey() { return process.env.CLOUDINARY_API_KEY || ""; },
+    get apiSecret() { return process.env.CLOUDINARY_API_SECRET || ""; },
+    get configured() { return !!(this.cloudName && this.apiKey && this.apiSecret); },
+    /** Top-level folder (public-id prefix) for everything this app uploads, so one account can serve several products. */
+    get folder() { return (process.env.CLOUDINARY_FOLDER || "sbl-invites").replace(/^\/+|\/+$/g, "").toLowerCase(); },
+    /** Extra names (plain text, comma-separated) whose invitations the migration must skip, on top of the built-in list. */
+    get excludedNames() { return (process.env.CLOUDINARY_EXCLUDE_NAMES || "").split(",").map((s) => s.trim()).filter(Boolean); },
+    /** Invitations a person has said must never be moved by a tool: comma-separated wedding ids. */
+    get excludedWeddingIds() { return (process.env.CLOUDINARY_EXCLUDE_WEDDING_IDS || "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean); },
+  },
   get resendKey() {
     return process.env.RESEND_API_KEY || "";
   },
