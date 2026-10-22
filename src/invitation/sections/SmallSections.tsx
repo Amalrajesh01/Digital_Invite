@@ -1,11 +1,13 @@
 "use client";
+import { useMemo } from "react";
 import { Pause, Phone, Play, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/cn";
 import type { SectionConfig } from "@/domain/doc/schema";
 import { useInvitation } from "../engine/context";
 import { Photo } from "../engine/Photo";
-import { Reveal } from "../engine/motion";
-import { embedUrl, whatsappHref } from "../engine/format";
+import { Reveal, useCountdown, useNow } from "../engine/motion";
+import { fmtDate, fmtTime, whatsappHref, zoneName } from "../engine/format";
+import { STREAM_PROVIDER_LABEL, streamLink, streamPhase, streamWindow, type StreamLink } from "@/domain/live/stream";
 import { readableOn } from "../engine/theme";
 import { Divider } from "../engine/Ornament";
 import { ChatCta } from "../engine/Chat";
@@ -156,16 +158,56 @@ export function MusicSection({ section }: { section: SectionConfig }) {
   );
 }
 
+/** The stream itself: played here when the provider allows it, otherwise a button that opens it in a new tab. */
+function StreamPlayer({ link, title }: { link: StreamLink; title: string }) {
+  const { t } = useInvitation();
+  if (link.embed) {
+    return (
+      <div className="relative aspect-video w-full overflow-hidden" style={{ borderRadius: "var(--r)" }}>
+        <iframe src={link.embed} title={title} className="absolute inset-0 h-full w-full border-0" allow="accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen loading="lazy" referrerPolicy="strict-origin-when-cross-origin" />
+      </div>
+    );
+  }
+  return (
+    <div className="text-center">
+      <a className="inv-btn inv-btn-primary" href={link.href} target="_blank" rel="noopener noreferrer">{t("live.openStream")}</a>
+      <p className="inv-muted mt-3 text-[0.9rem]">{t("live.opensOn", { provider: STREAM_PROVIDER_LABEL[link.provider] })}</p>
+    </div>
+  );
+}
+
 export function LivestreamSection({ section }: { section: SectionConfig }) {
-  const { view, L, t } = useInvitation();
-  const url = embedUrl(view.doc.live.streamUrl);
-  if (!url) return null;
+  const { view, L, t, locale } = useInvitation();
+  const live = view.doc.live;
+  const tz = view.wedding.timezone;
+  const link = streamLink(live.streamUrl);
+  const replay = streamLink(live.replayUrl);
+  const win = useMemo(() => streamWindow(live, tz), [live, tz]);
+  const now = useNow(); // null until mounted, so the server never guesses the phase
+  const c = useCountdown(win.start);
+  if (!link) return null;
+  const phase = !win.start ? "live" : now === null ? "before" : streamPhase(win, now);
+  const when = win.start && live.startsAt ? `${fmtDate(live.startsAt.slice(0, 10), locale, "long")}, ${fmtTime(live.startsAt.slice(11), locale)} ${zoneName(win.start, tz)}` : "";
+  const title = L(live.streamLabel) || t("live.stream");
+  const note = [L(live.instructions), L(live.access) && `${t("live.howToJoin")}: ${L(live.access)}`].filter(Boolean);
   return (
     <Shell section={section} wide={false}>
-      <SectionHead eyebrow={t("live.stream")} title={L(view.doc.live.streamLabel) || undefined} className="!mb-8" />
-      <div className="relative aspect-video w-full overflow-hidden" style={{ borderRadius: "var(--r)" }}>
-        <iframe src={url} title={t("live.stream")} className="absolute inset-0 h-full w-full border-0" allow="accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen loading="lazy" referrerPolicy="strict-origin-when-cross-origin" />
-      </div>
+      <SectionHead eyebrow={t("live.stream")} title={L(live.streamLabel) || undefined} intro={L(live.description) || undefined} className="!mb-8" />
+      {phase === "before" && (
+        <Reveal className="text-center">
+          {when && <p className="inv-h3">{t("live.scheduled", { when })}</p>}
+          {live.showCountdown && c && !c.done && <p className="inv-num mt-3 text-xl text-[var(--c-accent)]">{t("live.startsIn", { t: c.days ? `${c.days}d ${c.hours}h` : c.hours ? `${c.hours}h ${c.minutes}m` : `${c.minutes}m ${c.seconds}s` })}</p>}
+          <p className="mt-4 opacity-80">{L(live.waitingMessage) || t("live.waiting")}</p>
+        </Reveal>
+      )}
+      {phase === "live" && <StreamPlayer link={link} title={title} />}
+      {phase === "after" && (
+        <div className="text-center">
+          <p className="mb-5 opacity-90">{L(live.endedMessage) || t("live.ended")}</p>
+          {replay && <StreamPlayer link={replay} title={t("live.replay")} />}
+        </div>
+      )}
+      {phase !== "after" && note.length > 0 && <div className="mx-auto mt-6 max-w-xl space-y-1 text-center opacity-85">{note.map((n) => <p key={n}>{n}</p>)}</div>}
     </Shell>
   );
 }

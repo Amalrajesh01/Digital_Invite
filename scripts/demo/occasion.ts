@@ -116,7 +116,7 @@ export function buildOccasionDoc(base: InvitationDoc, c: OccasionCfg, id: Ids, w
   doc.thankYou = { message: L(c.thankYou?.message ?? ""), signature: L(c.thankYou?.signature ?? ""), photo: photo(c.thankYou?.photo) } as never;
   doc.seo = { title: L(c.seo.title), description: L(c.seo.description), ogImage: id(c.seo.og) } as never;
   doc.film = { url: "", video: undefined, poster: undefined, title: {}, caption: {} };
-  doc.live = { streamUrl: "", streamLabel: {} };
+  doc.live = { streamUrl: "", streamLabel: {} } as never;
   for (const s of doc.sections) {
     if (s.type === "venue") s.variant = "classic";
   }

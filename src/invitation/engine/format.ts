@@ -1,5 +1,6 @@
 import type { WeddingEvent } from "@/domain/doc/schema";
 import { zonedToUtc } from "@/lib/time";
+import { streamLink } from "@/domain/live/stream";
 
 const LOCALE_TAG: Record<string, string> = { en: "en-IN", ml: "ml-IN", ta: "ta-IN", te: "te-IN", kn: "kn-IN", hi: "hi-IN", mr: "mr-IN", bn: "bn-IN", gu: "gu-IN", pa: "pa-IN", ur: "ur-IN" };
 const tag = (l: string) => `${LOCALE_TAG[l] ?? "en-IN"}-u-nu-latn`;
@@ -22,6 +23,11 @@ export function fmtDate(iso: string, locale: string, style: "long" | "short" | "
     monthYear: { month: "long", year: "numeric" },
   };
   return new Intl.DateTimeFormat(tag(locale), { ...opts[style], timeZone: "UTC" }).format(dt);
+}
+
+/** "IST", "GMT+1" … — the short name of a zone at a given moment. */
+export function zoneName(at: Date, tz: string): string {
+  return new Intl.DateTimeFormat("en-IN", { timeZone: tz, timeZoneName: "short" }).formatToParts(at).find((p) => p.type === "timeZoneName")?.value ?? "";
 }
 
 export function fmtTime(time: string, locale: string): string {
@@ -89,23 +95,8 @@ export function safeExternal(url: string): string | null {
   }
 }
 
-/** Only YouTube and Vimeo are embeddable, converted to their privacy-friendly embed URLs. */
-export function embedUrl(url: string): string | null {
-  const u = safeExternal(url);
-  if (!u) return null;
-  const x = new URL(u);
-  const host = x.hostname.replace(/^www\./, "");
-  if (host === "youtu.be") return `https://www.youtube-nocookie.com/embed/${x.pathname.slice(1)}?rel=0`;
-  if (host.endsWith("youtube.com")) {
-    const id = x.searchParams.get("v") ?? (x.pathname.startsWith("/live/") || x.pathname.startsWith("/embed/") ? x.pathname.split("/")[2] : null);
-    return id ? `https://www.youtube-nocookie.com/embed/${id}?rel=0` : null;
-  }
-  if (host === "vimeo.com") {
-    const id = x.pathname.split("/").filter(Boolean)[0];
-    return id ? `https://player.vimeo.com/video/${id}` : null;
-  }
-  return null;
-}
+/** Only YouTube and Vimeo are embeddable, converted to their privacy-friendly embed URLs (rules in `domain/live/stream.ts`). */
+export const embedUrl = (url: string): string | null => streamLink(url)?.embed ?? null;
 
 export function whatsappHref(phone: string, text: string): string {
   return `https://wa.me/${phone.replace(/\D/g, "")}?text=${encodeURIComponent(text)}`;

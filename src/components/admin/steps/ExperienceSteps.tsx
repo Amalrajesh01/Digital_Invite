@@ -5,6 +5,7 @@ import { EVENT_TYPES, EVENT_TYPE_INFO, type EventType } from "@/domain/doc/event
 import { CEREMONY_GLYPHS, type Ceremony } from "@/domain/doc/schema";
 import { IMAGE_SLOT_KEYS, IMAGE_SLOTS, assignSlot, ownSlotValue } from "@/domain/imagery/slots";
 import { filmSourceFromUrl } from "@/invitation/engine/format";
+import { STREAM_PROVIDER_LABEL, streamLink } from "@/domain/live/stream";
 import { Glyph } from "@/invitation/engine/Glyphs";
 import { FormCard, Grid, Hint, LText, ListEditor } from "../forms";
 import { MediaField } from "../MediaField";
@@ -112,6 +113,35 @@ export function FilmEditor() {
         <LText label="Title" value={f.title} onChange={(v) => update((d) => void (d.film.title = v))} placeholder="Our wedding film" />
         <LText label="A line under the film" value={f.caption} onChange={(v) => update((d) => void (d.film.caption = v))} />
       </Grid>
+    </FormCard>
+  );
+}
+
+/** The live stream: a link, when it starts and what guests see before and after. Empty link = the section is not shown. */
+export function LiveStreamEditor() {
+  const { doc, update, settings } = useDraft();
+  const l = doc.live;
+  const link = l.streamUrl.trim() ? streamLink(l.streamUrl) : null;
+  const bad = !!l.streamUrl.trim() && !link;
+  const replayBad = !!l.replayUrl.trim() && !streamLink(l.replayUrl);
+  return (
+    <FormCard title="Live stream" description="Optional. Paste the link from YouTube, Vimeo, Facebook, Zoom, Google Meet or any other service you stream with. Without a link the section does not appear. The platform does not host video — guests watch on the service you choose.">
+      <TextField label="Stream link" value={l.streamUrl} onChange={(e) => update((d) => void (d.live.streamUrl = e.target.value))} placeholder="https://www.youtube.com/live/…" error={bad ? "Use a full https:// link" : undefined}
+        hint={link ? (link.embed ? `${STREAM_PROVIDER_LABEL[link.provider]} — plays right inside the invitation.` : `${STREAM_PROVIDER_LABEL[link.provider]} — guests get a button that opens it in a new tab.`) : "Only https links are accepted."} />
+      <Grid>
+        <LText label="Title" value={l.streamLabel} onChange={(v) => update((d) => void (d.live.streamLabel = v))} placeholder="Watch the muhurtham live" />
+        <LText label="A line about the stream" value={l.description} onChange={(v) => update((d) => void (d.live.description = v))} />
+      </Grid>
+      <Grid>
+        <TextField type="datetime-local" label="Starts" value={l.startsAt} onChange={(e) => update((d) => void (d.live.startsAt = e.target.value))} hint={`In the invitation's own time zone (${settings.timezone}). Empty = the stream is shown as soon as the invitation is open.`} />
+        <TextField type="datetime-local" label="Ends (optional)" value={l.endsAt} onChange={(e) => update((d) => void (d.live.endsAt = e.target.value))} hint="Empty = four hours after it starts. After this guests see your thank-you message and the replay." />
+      </Grid>
+      <Switch label="Show a countdown before it starts" checked={l.showCountdown} onChange={(v) => update((d) => void (d.live.showCountdown = v))} />
+      <LText label="Message before it starts" value={l.waitingMessage} onChange={(v) => update((d) => void (d.live.waitingMessage = v))} placeholder="The stream opens here when the ceremony begins." />
+      <LText label="Instructions for guests" multiline value={l.instructions} onChange={(v) => update((d) => void (d.live.instructions = v))} placeholder="Join five minutes early; turn your microphone off." />
+      <LText label="Passcode or how to join (optional)" value={l.access} onChange={(v) => update((d) => void (d.live.access = v))} hint="Shown to everyone who opens the invitation — only put a passcode you are happy to share with all guests." />
+      <LText label="Message after it ends" value={l.endedMessage} onChange={(v) => update((d) => void (d.live.endedMessage = v))} placeholder="Thank you for celebrating with us." />
+      <TextField label="Replay link (optional)" value={l.replayUrl} onChange={(e) => update((d) => void (d.live.replayUrl = e.target.value))} placeholder="https://www.youtube.com/watch?v=…" error={replayBad ? "Use a full https:// link" : undefined} />
     </FormCard>
   );
 }

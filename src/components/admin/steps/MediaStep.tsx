@@ -6,7 +6,7 @@ import { AlbumsPanel } from "@/components/media/AlbumsPanel";
 import { FormCard, Hint } from "../forms";
 import { MediaField } from "../MediaField";
 import { useDraft } from "../draft";
-import { FilmEditor, KeyPhotos } from "./ExperienceSteps";
+import { FilmEditor, KeyPhotos, LiveStreamEditor } from "./ExperienceSteps";
 
 export function MediaStep() {
   const { weddingId, doc, update, has } = useDraft();
@@ -31,6 +31,7 @@ export function MediaStep() {
             )}
           </FormCard>
           <FilmEditor />
+          {has("live_stream") && <LiveStreamEditor />}
         </>
       )}
 

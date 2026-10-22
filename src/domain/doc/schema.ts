@@ -443,7 +443,21 @@ export const TimeCapsuleDoc = ObjDefault({
 
 export const ThankYouDoc = ObjDefault({ message: L(), signature: L(), photo: MediaId });
 export const AnniversaryDoc = ObjDefault({ message: L(), highlightPhotos: z.array(z.string()).default([]) });
-export const LiveDoc = ObjDefault({ streamUrl: z.string().default(""), streamLabel: L() });
+/** The live stream. `startsAt`/`endsAt` are wall-clock times (`YYYY-MM-DDTHH:mm`) in the wedding's time zone; empty = always open. */
+export const LiveDoc = ObjDefault({
+  streamUrl: z.string().max(2000).default(""),
+  streamLabel: L(),
+  description: L(),
+  startsAt: z.string().regex(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})?$/).default(""),
+  endsAt: z.string().regex(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})?$/).default(""),
+  showCountdown: z.boolean().default(true),
+  instructions: L(),
+  /** A passcode or how to join. Shown to everyone who opens the invitation, so never a private credential. */
+  access: L(),
+  waitingMessage: L(),
+  endedMessage: L(),
+  replayUrl: z.string().max(2000).default(""),
+});
 /** How the link looks in a chat (heading, sub-heading, picture) and the message a guest sends along with it. {title} = the invitation's name. */
 export const SeoDoc = ObjDefault({ title: L(), description: L(), ogImage: MediaId, shareMessage: L() });
 

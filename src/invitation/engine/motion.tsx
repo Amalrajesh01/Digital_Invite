@@ -118,14 +118,20 @@ export function Parallax({ children, amount = 40, className }: { children: React
   );
 }
 
-/** Live-updating countdown. Returns null until mounted so server and client never disagree. */
-export function useCountdown(target: Date | null) {
+/** The clock, ticking once a second. Null until mounted so server and client never disagree. */
+export function useNow(): number | null {
   const [now, setNow] = useState<number | null>(null);
   useEffect(() => {
     setNow(Date.now());
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
   }, []);
+  return now;
+}
+
+/** Live-updating countdown. Returns null until mounted so server and client never disagree. */
+export function useCountdown(target: Date | null) {
+  const now = useNow();
   if (!target || now === null) return null;
   const diff = Math.max(0, target.getTime() - now);
   const s = Math.floor(diff / 1000);

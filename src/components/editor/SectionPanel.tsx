@@ -13,7 +13,7 @@ import { EventsStep } from "@/components/admin/steps/EventsStep";
 import { FamilyStep } from "@/components/admin/steps/FamilyStep";
 import { AlbumsPanel } from "@/components/media/AlbumsPanel";
 import { StoryStep } from "@/components/admin/steps/StoryStep";
-import { CeremoniesEditor, FilmEditor } from "@/components/admin/steps/ExperienceSteps";
+import { CeremoniesEditor, FilmEditor, LiveStreamEditor } from "@/components/admin/steps/ExperienceSteps";
 import { assignSlot, ownSlotValue } from "@/domain/imagery/slots";
 import { VenueStep } from "@/components/admin/steps/VenueStep";
 import { RsvpSetupStep } from "@/components/admin/steps/SetupSteps";
@@ -33,7 +33,7 @@ const PHASES = WEDDING_STATUSES.filter((s) => s !== "DRAFT" && s !== "PREVIEW");
 const PHASE_LABEL: Record<string, string> = { PUBLISHED: "Before the wedding", LIVE_EVENT: "On the wedding day", POST_EVENT: "Just after (thank-you)", MEMORY: "Memories", ANNIVERSARY: "Anniversary" };
 
 /** Sections whose “Words & photos” tab has real content to edit; the others only have layout and wording. */
-export const HAS_CONTENT = new Set<string>(["hero", "couple", "story", "timeline", "ceremonies", "film", "family", "events", "countdown", "livesched", "dresscode", "menu", "venue", "travel", "rsvp", "gallery", "photowall", "memory", "games", "quiz", "scavenger"]);
+export const HAS_CONTENT = new Set<string>(["hero", "couple", "story", "timeline", "ceremonies", "film", "livestream", "family", "events", "countdown", "livesched", "dresscode", "menu", "venue", "travel", "rsvp", "gallery", "photowall", "memory", "games", "quiz", "scavenger"]);
 
 export function SectionPanel({ section, tab, weddingId }: { section: SectionConfig; tab: "section" | "content"; weddingId: string }) {
   const { update, has, groups, doc } = useDraft();
@@ -52,6 +52,7 @@ export function SectionPanel({ section, tab, weddingId }: { section: SectionConf
       case "story": case "timeline": return <StoryStep />;
       case "ceremonies": return <CeremoniesEditor />;
       case "film": return <FilmEditor />;
+      case "livestream": return <LiveStreamEditor />;
       case "family": return <FamilyStep />;
       case "events": case "countdown": case "livesched": case "dresscode": case "menu": return <EventsStep />;
       case "venue": case "travel": return <VenueStep />;
