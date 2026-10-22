@@ -9,7 +9,7 @@ import { LOVE_OCCASIONS, OCCASION_INFO } from "@/domain/love/constants";
 import { LOVE_SPECS } from "@/domain/love/templates";
 import { giftPriceText } from "@/domain/gifts/pricing";
 import { SiteImage } from "@/components/site/SiteImage";
-import { FallbackImg } from "@/components/site/FallbackImg";
+import { Reel } from "@/components/site/Reel";
 import { SiteButton } from "@/components/site/WaButton";
 import { FaqList, FinalCta, Heading, Section, Wrap } from "@/components/site/blocks";
 
@@ -82,9 +82,9 @@ export default function ForMyLovePage() {
             const spec = LOVE_SPECS[i];
             return (
               <li key={t.slug}>
-                <Link href={t.path} data-track="cta_click" data-ref={`love-way-${t.slug}`} className="group block">
+                <Link href={t.path} data-track="cta_click" data-ref={`love-way-${t.slug}`} className="reel-card group block">
                   <div className="relative aspect-[9/19] overflow-hidden rounded-[1.6rem] border-[5px] border-ink bg-paper-2 shadow-[0_26px_44px_-28px_rgba(23,20,31,.55)] transition duration-500 group-hover:-translate-y-1.5">
-                    <FallbackImg src={t.thumb} alt={`${t.name}, a love gift`} width={540} height={1140} loading="lazy" className="absolute inset-0 size-full object-cover object-top" />
+                    <Reel slug={t.slug} thumb={t.thumb} alt={`${t.name}, a love gift`} className="absolute inset-0" />
                   </div>
                   <h3 className="mt-4 font-serif text-[25px] font-medium leading-tight text-ink group-hover:text-rose">{t.name}</h3>
                   <p className="mt-1 text-[15px] leading-snug text-ink-2/85">{t.tagline}</p>

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { FallbackImg } from "./FallbackImg";
+import { Reel } from "./Reel";
 import { Swatches } from "./Swatches";
 
 export interface WayGroup {
@@ -35,9 +35,9 @@ export function FiveWays({ groups }: { groups: WayGroup[] }) {
       <ul role="tabpanel" className="-mx-5 mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-6 sm:mx-0 sm:grid sm:grid-cols-5 sm:gap-4 sm:overflow-visible sm:px-0" tabIndex={0} aria-label={`${g.name} designs`}>
         {g.designs.slice(0, 5).map((d) => (
           <li key={d.slug} className="w-[62%] shrink-0 snap-center sm:w-auto">
-            <Link href={d.path} data-track="cta_click" data-ref={`fiveways-${d.slug}`} className="group block">
+            <Link href={d.path} data-track="cta_click" data-ref={`fiveways-${d.slug}`} className="reel-card group block">
               <div className="relative aspect-[9/19] overflow-hidden rounded-[1.5rem] border-[4px] border-ink bg-paper-2 shadow-[0_22px_36px_-26px_rgba(23,20,31,.55)] transition duration-500 group-hover:-translate-y-1.5">
-                <FallbackImg src={d.thumb} alt={`${d.name}, a ${d.styleLabel} design`} width={540} height={1140} loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover object-top" />
+                <Reel slug={d.slug} thumb={d.thumb} alt={`${d.name}, a ${d.styleLabel} design`} className="absolute inset-0" />
               </div>
               <p className="mt-3 font-serif text-[22px] font-medium leading-tight text-ink group-hover:text-accent">{d.name}</p>
               <div className="mt-0.5 flex items-center justify-between gap-2"><p className="truncate text-[13.5px] text-muted">{d.styleLabel}</p><Swatches colors={d.colors.slice(0, 3)} /></div>

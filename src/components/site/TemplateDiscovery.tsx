@@ -87,7 +87,7 @@ export function TemplateDiscovery({ items, occasions, tagLabels, initialOccasion
             <article className="reel-card group flex h-full flex-col">
               <Link href={d.path} data-track="cta_click" data-ref={`discover-${d.slug}`} className="block" aria-label={`Preview ${d.name}`}>
                 <div className="overflow-hidden rounded-[1.6rem] border-[5px] border-ink bg-paper-2 shadow-[0_26px_40px_-28px_rgba(23,20,31,.6)] transition duration-500 group-hover:-translate-y-1.5">
-                  <Reel tall={`/templates/tall/${d.slug}.webp`} thumb={d.thumb} alt={`The ${d.name} invitation, scrolling`} index={i} eager={i < 4} />
+                  <Reel slug={d.slug} thumb={d.thumb} alt={`The ${d.name} invitation, scrolling`} eager={i < 4} />
                 </div>
               </Link>
               <div className="mt-3 flex flex-1 flex-col">

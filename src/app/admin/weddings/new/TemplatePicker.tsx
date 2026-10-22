@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/Bits";
 import { SelectField, TextField } from "@/components/ui/Field";
 import { Sheet } from "@/components/ui/Sheet";
+import { Reel } from "@/components/site/Reel";
 import { formatPriceRange } from "@/domain/packages/catalog";
 import type { PackageKey } from "@/domain/packages/features";
 import { createFromTemplateAction } from "@/app/actions/wedding";
@@ -68,9 +69,9 @@ export function TemplatePicker({ templates, packages }: { templates: PickTemplat
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
           {shown.map((t) => (
             <li key={t.id}>
-              <button type="button" onClick={() => choose(t)} className="group block w-full overflow-hidden rounded-xl border border-rule-strong bg-white text-left transition hover:-translate-y-0.5 hover:border-ink-2 hover:shadow-[var(--shadow-2)]">
+              <button type="button" onClick={() => choose(t)} className="reel-card group block w-full overflow-hidden rounded-xl border border-rule-strong bg-white text-left transition hover:-translate-y-0.5 hover:border-ink-2 hover:shadow-[var(--shadow-2)]">
                 <span className="relative block aspect-[9/16] bg-paper-2">
-                  {t.thumb ? <img src={t.thumb} alt="" loading="lazy" className="absolute inset-0 size-full object-cover object-top" /> : <span className="absolute inset-0 grid place-items-center p-4 text-center font-serif text-xl text-muted">{t.name}</span>}
+                  {t.thumb ? <Reel slug={t.slug} thumb={t.thumb} alt="" className="absolute inset-0" /> : <span className="absolute inset-0 grid place-items-center p-4 text-center font-serif text-xl text-muted">{t.name}</span>}
                 </span>
                 <span className="block p-3.5">
                   <span className="block text-[15.5px] font-semibold text-ink">{t.name}</span>

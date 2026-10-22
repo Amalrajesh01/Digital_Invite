@@ -8,7 +8,7 @@ import { categoryBySlug } from "@/domain/catalogue/categories";
 import { SITE_TEMPLATES, TAG_LABELS, siteTemplateBySlug, templatesIn } from "@/domain/catalogue/templates";
 import { inr, loadPublicPackages } from "@/domain/catalogue/pricing";
 import { giftPriceText } from "@/domain/gifts/pricing";
-import { FallbackImg } from "@/components/site/FallbackImg";
+import { Reel } from "@/components/site/Reel";
 import { SiteButton, WaButton } from "@/components/site/WaButton";
 import { FiveWays, type WayGroup } from "@/components/site/FiveWays";
 import { PortfolioWall } from "@/components/site/PortfolioWall";
@@ -95,10 +95,10 @@ export default async function Home() {
                 aria-label={`${t.name} — ${t.styleLabel}`}
                 data-track="cta_click"
                 data-ref={`hero-phone-${t.slug}`}
-                className="absolute w-[38%] overflow-hidden rounded-[1.9rem] border-[6px] border-ink bg-paper-2 shadow-[0_40px_70px_-30px_rgba(23,20,31,.6)] transition-transform duration-500 hover:z-30 hover:-translate-y-2 sm:rounded-[2.2rem] sm:border-[7px]"
+                className="reel-card absolute w-[38%] overflow-hidden rounded-[1.9rem] border-[6px] border-ink bg-paper-2 shadow-[0_40px_70px_-30px_rgba(23,20,31,.6)] transition-transform duration-500 hover:z-30 hover:-translate-y-2 sm:rounded-[2.2rem] sm:border-[7px]"
                 style={[{ left: "0%", top: "14%", transform: "rotate(-5deg)", zIndex: 10 }, { left: "30.5%", top: "0%", width: "41%", zIndex: 20 }, { right: "0%", top: "17%", transform: "rotate(5deg)", zIndex: 10 }][i]}
               >
-                <div className="relative aspect-[9/19]"><FallbackImg src={t.thumb} alt={`The ${t.name} invitation`} width={540} height={1140} loading={i === 1 ? "eager" : "lazy"} fetchPriority={i === 1 ? "high" : undefined} className="absolute inset-0 size-full object-cover object-top" /></div>
+                <div className="relative aspect-[9/19]"><Reel slug={t.slug} thumb={t.thumb} alt={`The ${t.name} invitation`} eager={i === 1} className="absolute inset-0" /></div>
               </Link>
             ))}
           </div>
@@ -167,9 +167,9 @@ export default async function Home() {
           <ul className="-mx-5 flex snap-x gap-4 overflow-x-auto px-5 pb-4 sm:mx-0 sm:grid sm:grid-cols-5 sm:gap-3 sm:overflow-visible sm:px-0">
             {love.map((t, i) => (
               <li key={t.slug} className={`w-[44%] shrink-0 snap-center sm:w-auto ${i % 2 ? "sm:mt-8" : ""}`}>
-                <Link href={t.path} data-track="cta_click" data-ref={`love-${t.slug}`} className="group block">
+                <Link href={t.path} data-track="cta_click" data-ref={`love-${t.slug}`} className="reel-card group block">
                   <div className="relative aspect-[9/19] overflow-hidden rounded-[1.4rem] border-[3px] border-white/20 bg-white/5 transition duration-500 group-hover:-translate-y-1.5">
-                    <FallbackImg src={t.thumb} alt={`${t.name}, a love gift`} width={540} height={1140} loading="lazy" className="absolute inset-0 size-full object-cover object-top" />
+                    <Reel slug={t.slug} thumb={t.thumb} alt={`${t.name}, a love gift`} className="absolute inset-0" />
                   </div>
                   <p className="mt-2.5 font-serif text-[18px] leading-tight text-white">{t.name}</p>
                 </Link>
