@@ -32,6 +32,8 @@ import { buildShowcaseDoc, type ShowcaseCfg } from "./demo/showcase";
 import { CHRISTIAN } from "./demo/christian";
 import { MUSLIM } from "./demo/muslim";
 import { ISHA } from "./demo/isha";
+import { CINEMATIC_DEMOS } from "./demo/cinematic";
+import { addLibraryTrack } from "../src/domain/music/service";
 import { TARA } from "./demo/tara";
 import { HELEN } from "./demo/helen";
 import { MEERA } from "./demo/meera";
@@ -323,13 +325,16 @@ async function seedWishes(admin: AdminActor, weddingId: string, slug: string, wi
 type Draft = Awaited<ReturnType<typeof getWedding>>["draftDoc"];
 
 /** The common tail of every public sample: gallery, music, draft, wishes, publish. */
-async function finishDemo(admin: AdminActor, weddingId: string, o: { slug: string; track: string; galleryIds: string[]; buildDoc: (base: Draft) => Draft; wishes?: [string, string, string][]; label: string }) {
+async function finishDemo(admin: AdminActor, weddingId: string, o: { slug: string; track: string; libraryTrack?: string; galleryIds: string[]; buildDoc: (base: Draft) => Draft; wishes?: [string, string, string][]; label: string }) {
   if (o.galleryIds.length) {
     const album = await saveAlbum(admin, weddingId, { title: { en: "Gallery" }, kind: "OFFICIAL", coverAssetId: o.galleryIds[0] });
     await addToAlbum(admin, weddingId, album.id, o.galleryIds);
   }
-  const track = await upload(weddingId, makeAmbientWav(), "ambient.wav", "MUSIC", ["AUDIO"]);
-  await saveTrack(admin, weddingId, { assetId: track.id, title: o.track, artist: "StackBridge Studio (ambient)", isPrimary: true, inPlaylist: true });
+  if (o.libraryTrack) await addLibraryTrack(admin, weddingId, o.libraryTrack, { primary: true });
+  else {
+    const track = await upload(weddingId, makeAmbientWav(), "ambient.wav", "MUSIC", ["AUDIO"]);
+    await saveTrack(admin, weddingId, { assetId: track.id, title: o.track, artist: "StackBridge Studio (ambient)", isPrimary: true, inPlaylist: true });
+  }
   const cur = await getWedding(admin, weddingId);
   await saveDraft(admin, weddingId, o.buildDoc(cur.draftDoc));
   if (o.wishes?.length) await seedWishes(admin, weddingId, o.slug, o.wishes);
@@ -352,7 +357,7 @@ async function seedShowcase(admin: AdminActor, c: ShowcaseCfg) {
   await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com", autoLifecycle: false }).where(eq(schema.weddings.id, w.id));
   const { ids, galleryIds } = await loadDemoAssets(w.id, c.slug, c.needs, c.gallery);
   await finishDemo(admin, w.id, {
-    slug: c.slug, track: c.track, galleryIds, wishes: c.wishes, label: "Launch",
+    slug: c.slug, track: c.track, libraryTrack: c.libraryTrack, galleryIds, wishes: c.wishes, label: "Launch",
     buildDoc: (base) => {
       const doc = buildShowcaseDoc(base, c, (k) => ids.get(k));
       if (c.celebration) doc.opening.celebration = c.celebration;
@@ -504,6 +509,7 @@ const PUBLIC_DEMOS: [slug: string, run: (admin: AdminActor) => Promise<string>][
   [CHRISTIAN.slug, (a) => seedShowcase(a, CHRISTIAN)],
   [MUSLIM.slug, (a) => seedShowcase(a, MUSLIM)],
   [ISHA.slug, (a) => seedShowcase(a, ISHA)],
+  ...CINEMATIC_DEMOS.map((c): [string, (a: AdminActor) => Promise<string>] => [c.slug, (a) => seedShowcase(a, c)]),
   [MEERA.slug, (a) => seedOccasion(a, MEERA)],
   [IRA.slug, (a) => seedOccasion(a, IRA)],
   [KABIR.slug, (a) => seedOccasion(a, KABIR)],

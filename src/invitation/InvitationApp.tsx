@@ -5,8 +5,10 @@ import "./sections/cinematic.css";
 import "./sections/spreads.css";
 import "./sections/occasion.css";
 import "./styles/directions.css";
+import "./styles/motion.css";
 import "./sections/variants.css";
 import "./sections/heroes.css";
+import "./sections/heroes2.css";
 import { useEffect, useState } from "react";
 import type { InvitationView } from "@/domain/wedding/public";
 import { brand } from "@/lib/brand";
@@ -104,9 +106,10 @@ function Inner({ skipGate }: { skipGate?: boolean }) {
       data-card={tk.card}
       data-decor={tk.decor}
       data-flavor={view.flavor}
+      data-motion={view.doc.opening.motion}
       data-status={view.wedding.status}
       data-entered={entered}
-      style={themeStyle(tk, view.wedding.secondaryLocale, EVENT_TYPE_INFO[view.doc.eventType].tone)}
+      style={themeStyle(tk, view.wedding.secondaryLocale, EVENT_TYPE_INFO[view.doc.eventType].tone, view.doc.opening.motion)}
     >
       {href && <link rel="stylesheet" href={href} precedence="default" />}
       <Gate skip={skipGate} />

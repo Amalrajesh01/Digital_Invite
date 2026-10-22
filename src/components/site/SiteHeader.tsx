@@ -12,6 +12,7 @@ import { WaIcon } from "./WaButton";
 const NAV = [
   { href: "/templates", label: "Choose Your Design" },
   { href: "/for-my-love", label: "For My Love", love: true },
+  { href: "/portfolio", label: "Our Work" },
   { href: "/pricing", label: "Pricing" },
   { href: "/how-it-works", label: "How It Works" },
   { href: "/faq", label: "Help" },

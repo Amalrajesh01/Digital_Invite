@@ -107,6 +107,7 @@ export const regenerateSectionsAction = async (weddingId: string, templateId: st
     const old = new Map(doc.sections.map((s) => [s.type, s]));
     doc.sections = generateSections(cfg, ent).map((s) => ({ ...s, content: old.get(s.type)?.content ?? {} }));
     doc.opening.variant = cfg.opening;
+    doc.opening.motion = cfg.motion ?? "auto";
     await saveDraft(a, weddingId, doc);
     await updateWeddingSettings(a, weddingId, { templateId });
     revalidate(weddingId);

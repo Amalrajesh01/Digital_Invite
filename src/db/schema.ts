@@ -798,6 +798,39 @@ export const siteEvents = pgTable(
   (t) => [index("site_events_at_idx").on(t.at), index("site_events_type_idx").on(t.type, t.at)],
 );
 
+/**
+ * The public portfolio wall: finished work the studio chooses to show. Nothing appears automatically. An item is hidden (DRAFT) until
+ * the studio publishes it; one that links to a customer's real invitation needs that customer's recorded consent first, and the
+ * public side never reads names, dates or guests from the wedding — only what is written here and the approved cover.
+ */
+export const portfolioItems = pgTable(
+  "portfolio_items",
+  {
+    id: pk(),
+    slug: text("slug").notNull(),
+    title: text("title").notNull(),
+    description: text("description").notNull().default(""),
+    /** The occasion category slug, e.g. "wedding". */
+    category: text("category").notNull().default("wedding"),
+    /** The design it was made from (a template slug); its own screenshot is the cover until an approved photograph is chosen. */
+    templateSlug: text("template_slug").notNull().default(""),
+    city: text("city").notNull().default(""),
+    /** An approved, public photograph of the linked invitation, used as the cover. */
+    coverAssetId: uuid("cover_asset_id").references(() => mediaAssets.id, { onDelete: "set null" }),
+    /** The invitation this stands for. A sample invitation needs no consent; a customer's does. */
+    weddingId: uuid("wedding_id").references(() => weddings.id, { onDelete: "set null" }),
+    /** Offer visitors the live invitation. Needs consent (unless it is a sample) and a published invitation. */
+    showLive: boolean("show_live").notNull().default(false),
+    consent: boolean("consent").notNull().default(false),
+    consentNote: text("consent_note").notNull().default(""),
+    status: text("status").$type<"DRAFT" | "PUBLISHED">().notNull().default("DRAFT"),
+    sortOrder: integer("sort_order").notNull().default(0),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [uniqueIndex("portfolio_slug_uq").on(t.slug), index("portfolio_status_idx").on(t.status, t.sortOrder)],
+);
+
 /** Someone who asked us to make something. The studio works them from NEW to WON (and links the order when they pay). */
 export const leads = pgTable(
   "leads",

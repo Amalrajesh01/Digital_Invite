@@ -14,12 +14,17 @@ import { LOVE_EXPERIENCES } from "@/domain/love/constants";
  * and the visual direction (its decorative language). It never contains customer data.
  * The designs themselves are specified in `template-specs.ts`.
  */
-export const TEMPLATE_FLAVORS = ["royal", "cinematic", "editorial", "minimal", "floral", "playful"] as const;
+/** The first six are the original visual directions; the rest are the cinematic-wedding set (see directions.css). */
+export const TEMPLATE_FLAVORS = ["royal", "cinematic", "editorial", "minimal", "floral", "playful", "noir", "couture", "celestial", "vintage", "storybook", "aquarelle", "atelier", "marine"] as const;
 export type TemplateFlavor = (typeof TEMPLATE_FLAVORS)[number];
 
 export const TemplateConfig = z.object({
   flavor: z.enum(TEMPLATE_FLAVORS),
   opening: z.enum(OPENINGS),
+  /** The motion profile an invitation made from this template starts with. */
+  motion: z.enum(["auto", "elegant", "cinematic", "immersive"]).optional(),
+  /** The library track (see `domain/music/library`) a new invitation made from this template starts with. */
+  music: z.string().optional(),
   /** Suggested theme slug for the wizard's default pick. */
   suggestedTheme: z.string().optional(),
   /** The occasion a wedding made from this template starts as (drives the opening, the walking couple and the starter ceremonies). */
@@ -83,7 +88,8 @@ function toSeed(spec: TemplateSpec): TemplateSeed {
     slug: spec.slug,
     name: spec.name,
     description: `${spec.tagline} ${spec.concept}`,
-    config: { flavor: spec.direction, opening: spec.opening, suggestedTheme: spec.theme, eventType: spec.eventType, demo: spec.demo, sections: specSections(spec) },
+    // keys a design does not use are left out, so a template that never had them stays identical to what is stored (a refresh then changes nothing)
+    config: { flavor: spec.direction, opening: spec.opening, ...(spec.profile ? { motion: spec.profile } : {}), ...(spec.music?.length ? { music: spec.music[0] } : {}), suggestedTheme: spec.theme, eventType: spec.eventType, demo: spec.demo, sections: specSections(spec) },
   };
 }
 

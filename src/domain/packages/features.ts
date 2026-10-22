@@ -69,7 +69,7 @@ export const FEATURES = {
   event_visibility: { label: "Personalised event visibility", description: "Guests only see the events meant for them (enforced on the server).", group: "Guests & RSVP", tier: "LUXURY" },
   live_schedule: { label: "Live schedule & What's Happening Now", description: "A live schedule that highlights the current and next event.", group: "Event day", tier: "LUXURY" },
   live_updates: { label: "Live updates", description: "Post announcements to every guest's invitation in real time.", group: "Event day", tier: "LUXURY" },
-  live_stream: { label: "Live stream", description: "Embed a YouTube / Vimeo live stream for those who can't travel.", group: "Event day", tier: "LUXURY" },
+  live_stream: { label: "Live stream", description: "Stream the ceremony for those who can't travel: a scheduled countdown, YouTube or Vimeo played inside the invitation (or a link for Zoom, Facebook and others), and a replay afterwards.", group: "Event day", tier: "LUXURY" },
   live_photo_wall: { label: "Live photo wall", description: "Guest photos appear on a live wall after moderation.", group: "Event day", tier: "LUXURY" },
   voice_wishes: { label: "Voice wishes", description: "Guests record a voice message for the hosts.", group: "Participation", tier: "LUXURY" },
   advanced_gallery: { label: "Guest, live & memory galleries", description: "Official, guest, live and memory galleries side by side.", group: "Memories", tier: "LUXURY" },

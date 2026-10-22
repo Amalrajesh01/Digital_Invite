@@ -3,6 +3,10 @@ import { TEMPLATE_SEEDS } from "@/domain/design/templates";
 import { THEME_SEEDS } from "@/domain/design/themes";
 import { SECTION_META } from "@/domain/doc/sections";
 import { categoryBySlug } from "./categories";
+import { CINEMATIC_SPECS } from "@/domain/design/template-specs-cinematic";
+import { CASTING } from "@/domain/imagery/casting";
+import { stockInfo } from "@/domain/imagery/stock";
+import { CINEMATIC_SAMPLE_FACTS } from "./cinematic-samples";
 
 /**
  * The sample invitations shown on the public template gallery. Each one is a real, published invitation
@@ -40,7 +44,7 @@ export interface DemoDef {
   where: string;
 }
 
-export const DEMOS: DemoDef[] = [
+const BASE_DEMOS: DemoDef[] = [
   {
     slug: "ananya-and-arjun", name: "Ananya & Arjun", title: "Luxury Hindu Wedding", eventType: "hindu_wedding", template: "cinematic-noir", theme: "royal-gold", styles: ["Traditional", "Luxury"],
     cover: "2oQy4GAGxbk", coverFocal: { x: 50, y: 17 }, strip: ["2XXQkrL0k-Q", "OQDYhr9HRNo", "gG5MoExhMnU", "DC0d6A2kX0k"],
@@ -227,6 +231,24 @@ export const DEMOS: DemoDef[] = [
     highlights: ["A live countdown", "Years together, counted", "A timeline of memories", "A burst of celebration"], bestFor: ["Anniversaries", "Milestone birthdays"], languages: ["English"], when: "Private gift", where: "A link only they have",
   },
 ];
+
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const TAG_STYLE: Record<string, StyleTag> = { minimalist: "Modern & minimal", royal: "Traditional", traditional: "Traditional", romantic: "Romantic", cinematic: "Luxury", editorial: "Luxury", destination: "Luxury", animated: "Romantic" };
+
+/** The shop window of the twenty-five cinematic weddings, made from what the specification and the casting already say. */
+const CINEMATIC_DEMOS: DemoDef[] = CINEMATIC_SPECS.map((s): DemoDef => {
+  const cast = CASTING[s.slug];
+  const [name, date, , city] = CINEMATIC_SAMPLE_FACTS[s.slug];
+  const styles = [...new Set((s.tags ?? []).map((t) => TAG_STYLE[t]).filter((t): t is StyleTag => !!t))];
+  return {
+    slug: s.demo, name, title: s.name, eventType: s.eventType, template: s.slug, theme: s.theme, styles: styles.length ? styles : ["Luxury"],
+    cover: cast.hero, coverFocal: stockInfo(cast.hero)?.focal, strip: cast.gallery.filter((g) => g !== cast.hero).slice(0, 4),
+    tagline: s.tagline, description: s.concept, highlights: s.interactions.slice(0, 4), bestFor: s.target, languages: ["English"],
+    when: `${Number(date.slice(8))} ${MONTHS[Number(date.slice(5, 7)) - 1]} ${date.slice(0, 4)}`, where: city,
+  };
+});
+
+export const DEMOS: DemoDef[] = [...BASE_DEMOS, ...CINEMATIC_DEMOS];
 
 // ── lookups ─────────────────────────────────────────────────────────────────
 const BY_SLUG = new Map(DEMOS.map((d) => [d.slug, d]));

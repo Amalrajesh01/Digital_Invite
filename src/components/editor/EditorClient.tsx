@@ -71,6 +71,9 @@ function DesignPanel({ templates, themes }: { templates: TemplateCard[]; themes:
         <SelectField label="How the invitation opens" value={doc.opening.variant} onChange={(e) => update((d) => void (d.opening.variant = e.target.value as never))}>
           {OPENINGS.map((o) => <option key={o} value={o}>{OPENING_LABELS[o]}</option>)}
         </SelectField>
+        <SelectField className="mt-4" label="How much the page moves" value={doc.opening.motion} onChange={(e) => update((d) => void (d.opening.motion = e.target.value as never))} hint="Elegant: fades only. Cinematic: weightier reveals, each section arrives like a scene. Immersive: scroll-linked depth. Guests who ask for reduced motion always get stillness.">
+          <option value="auto">The design’s own pace</option><option value="elegant">Elegant — quiet fades</option><option value="cinematic">Cinematic — scene by scene</option><option value="immersive">Immersive — depth as you scroll</option>
+        </SelectField>
         <div className="mt-4 grid gap-4"><TextField label="Seal letters" maxLength={4} value={doc.opening.sealText} onChange={(e) => update((d) => void (d.opening.sealText = e.target.value.toUpperCase()))} hint="Shown on the wax seal / envelope." />
           <LText label="Line above the names" value={doc.opening.invitedLine} onChange={(v) => update((d) => void (d.opening.invitedLine = v))} placeholder="You are invited to the wedding of" /></div>
       </div>

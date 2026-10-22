@@ -5,12 +5,16 @@ import { companyLink } from "@/lib/site";
 import { WA } from "@/lib/whatsapp";
 import { pageMetadata } from "@/lib/seo";
 import { categoryBySlug } from "@/domain/catalogue/categories";
-import { SITE_TEMPLATES, siteTemplateBySlug, templatesIn } from "@/domain/catalogue/templates";
+import { SITE_TEMPLATES, TAG_LABELS, siteTemplateBySlug, templatesIn } from "@/domain/catalogue/templates";
 import { inr, loadPublicPackages } from "@/domain/catalogue/pricing";
 import { giftPriceText } from "@/domain/gifts/pricing";
 import { FallbackImg } from "@/components/site/FallbackImg";
 import { SiteButton, WaButton } from "@/components/site/WaButton";
 import { FiveWays, type WayGroup } from "@/components/site/FiveWays";
+import { PreviewStrip } from "@/components/site/PreviewStrip";
+import { PortfolioWall } from "@/components/site/PortfolioWall";
+import { listPublicPortfolio } from "@/domain/portfolio/service";
+import { TemplateDiscovery, type DiscoveryItem } from "@/components/site/TemplateDiscovery";
 import { CategoryCard, FaqList, FinalCta, HOW_IT_WORKS, Heading, LovePriceCard, PackageCards, Section, Steps, Wrap } from "@/components/site/blocks";
 import { FAQ_HOME } from "@/domain/catalogue/faq";
 import { JsonLd, faqLd } from "@/lib/jsonld";
@@ -50,7 +54,7 @@ const WHAT_GUESTS_GET = [
 ];
 
 export default async function Home() {
-  const packages = await loadPublicPackages();
+  const [packages, work] = await Promise.all([loadPublicPackages(), listPublicPortfolio(6).catch(() => [])]);
   const phones = HERO_PHONES.map((s) => siteTemplateBySlug(s)).filter((t): t is NonNullable<typeof t> => !!t);
   const cats = SHOWN_CATEGORIES.map((s) => categoryBySlug(s)).filter((c): c is NonNullable<typeof c> => !!c);
   const groups: WayGroup[] = WAYS.map((slug) => {
@@ -58,6 +62,11 @@ export default async function Home() {
     return { slug, name: c.name, line: WAYS_LINE[slug] ?? c.blurb, designs: templatesIn(slug).filter((t) => !t.edition).map((t) => ({ slug: t.slug, name: t.name, styleLabel: t.styleLabel, thumb: t.thumb, path: t.path, colors: t.theme.colors })) };
   });
   const love = SITE_TEMPLATES.filter((t) => t.love);
+  // the whole library, straight from the registry: nothing here is a list of names
+  const library = SITE_TEMPLATES.filter((t) => !t.love);
+  const discover: DiscoveryItem[] = library.map((t) => ({ slug: t.slug, name: t.name, tagline: t.tagline, styleLabel: t.styleLabel, category: t.category, categoryName: categoryBySlug(t.category)?.name ?? t.category, thumb: t.thumb, path: t.path, colors: t.theme.colors, tags: t.tags, featured: t.featured }));
+  const occasions = [...new Set(library.map((t) => t.category))].map((slug) => ({ slug, name: categoryBySlug(slug)?.name ?? slug }));
+  const strip = [...library.filter((t) => t.category === "wedding")].sort((a, b) => Number(b.featured) - Number(a.featured)).map((t) => ({ slug: t.slug, name: t.name, styleLabel: t.styleLabel, thumb: t.thumb, path: t.path }));
   return (
     <>
       {/* ── hero ─────────────────────────────────────────────────────── */}
@@ -97,6 +106,24 @@ export default async function Home() {
           </div>
         </Wrap>
       </section>
+
+      {/* ── the whole library ────────────────────────────────────────── */}
+      <section id="designs" className="bg-white py-16 sm:py-20 lg:py-24">
+        <Wrap><Heading eyebrow="Our templates" title="Find the Beginning of Your Forever" lede="Explore cinematic invitations designed to tell your story beautifully." align="center" /></Wrap>
+        {strip.length > 0 && <div className="mt-10"><PreviewStrip items={strip} label="Wedding designs" /></div>}
+        <Wrap className="mt-12"><TemplateDiscovery items={discover} occasions={occasions} tagLabels={TAG_LABELS} initialOccasion={occasions.some((o) => o.slug === "wedding") ? "wedding" : ""} /></Wrap>
+      </section>
+
+      {/* ── our work: only ever the studio's published, approved items ── */}
+      {work.length > 0 && (
+        <Section tone="paper">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <Heading eyebrow="Our work" title="Stories We’ve Brought to Life" lede="A few of the invitations we have made, and the people they were made for." />
+            <Link href="/portfolio" className="btn btn-quiet" data-track="cta_click" data-ref="home-all-work">All our work <ArrowRight className="size-4" aria-hidden /></Link>
+          </div>
+          <div className="mt-10"><PortfolioWall items={work} /></div>
+        </Section>
+      )}
 
       {/* ── occasions ────────────────────────────────────────────────── */}
       <Section tone="white">

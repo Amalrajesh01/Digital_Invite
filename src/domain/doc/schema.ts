@@ -431,6 +431,8 @@ export const OpeningDoc = ObjDefault({
   invitedLine: L(), // "You are invited"
   /** What falls when the invitation opens: "auto" follows the event type. */
   celebration: z.enum(["auto", "petals", "confetti", "off"]).default("auto"),
+  /** How much the page moves. "auto" = the design's own pacing (how every older invitation behaves); the others are the three motion profiles in `invitation/styles/motion.css`. */
+  motion: z.enum(["auto", "elegant", "cinematic", "immersive"]).default("auto"),
 });
 
 export const TimeCapsuleDoc = ObjDefault({

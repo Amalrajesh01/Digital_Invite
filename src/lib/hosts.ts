@@ -29,7 +29,7 @@ export const RESERVED_LABELS: ReadonlySet<string> = new Set([
   // routes and environments
   "wall", "invite", "invites", "invitation", "invitations", "preview", "pass", "new", "demo", "test", "tests", "testing", "dev", "development", "stage",
   "staging", "prod", "production", "beta", "alpha", "sandbox", "docs", "doc", "blog", "news", "help", "support", "contact", "about", "pricing", "terms",
-  "privacy", "legal", "faq", "sitemap", "robots", "favicon", "_next", "love", "for-my-love", "gift", "gifts", "templates", "themes", "categories", "how-it-works", "start",
+  "privacy", "legal", "faq", "sitemap", "robots", "favicon", "_next", "love", "for-my-love", "gift", "gifts", "templates", "themes", "categories", "how-it-works", "start", "portfolio",
   // mailbox roles
   "abuse", "postmaster", "hostmaster", "webmaster", "noreply", "no-reply", "info", "sales", "team", "hello", "office", "press",
   // our own names (so nobody can pose as us)

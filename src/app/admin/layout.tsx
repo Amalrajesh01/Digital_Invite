@@ -24,6 +24,7 @@ const GROUPS: NavGroup[] = [
     label: "Design library",
     items: [
       { href: "/admin/templates", label: "Templates", icon: "templates" },
+      { href: "/admin/portfolio", label: "Portfolio", icon: "portfolio" },
       { href: "/admin/themes", label: "Themes", icon: "themes" },
       { href: "/admin/media", label: "Media library", icon: "media" },
       { href: "/admin/packages", label: "Packages", icon: "packages" },

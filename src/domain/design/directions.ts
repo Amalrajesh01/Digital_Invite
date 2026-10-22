@@ -56,6 +56,62 @@ export const DIRECTIONS: Record<TemplateFlavor, Direction> = {
     mobile: "Stacked paper sheets with rounded tops; big thumb-sized buttons; snapshots overlap but stay readable.",
     accessibility: "Every playful opening is a single large tap target with a plain-button alternative; no timed or precise interactions.",
   },
+  noir: {
+    key: "noir", label: "Film & Noir", promise: "Letterboxed scenes, deep shadow and a slow spotlight.",
+    typography: "Wide-tracked capitals for titles, a high-contrast serif for names, small caps for credits.",
+    animation: "Slow fades, spotlight sweeps and masked reveals; nothing bounces.",
+    mobile: "Photograph-first; credits sit in the lower third, clear of faces.",
+    accessibility: "A scrim guarantees contrast; the opening can always be skipped; motion stops for reduced-motion users.",
+  },
+  couture: {
+    key: "couture", label: "Fashion Editorial", promise: "A magazine made for the two of you: oversized type, asymmetry, white space.",
+    typography: "A high-contrast display serif at cover scale, a quiet grotesque for captions, running heads in small capitals.",
+    animation: "Masked image reveals and staggered headlines; scroll effects stay subtle.",
+    mobile: "Cover type scales with the viewport; spreads become a single column with the photograph first.",
+    accessibility: "Large type and strong contrast; decorative running heads are hidden from screen readers.",
+  },
+  celestial: {
+    key: "celestial", label: "Celestial", promise: "A quiet night sky with the two of you at the centre.",
+    typography: "A light serif for names, wide-tracked capitals for labels, thin constellation lines.",
+    animation: "A slow star field, soft light sweeps and gentle depth; never flashing.",
+    mobile: "Centred single column; the star field is a static layer on small screens.",
+    accessibility: "Text always sits on a solid-enough ground; the star field is decorative and hidden from screen readers.",
+  },
+  vintage: {
+    key: "vintage", label: "Vintage Film", promise: "A restored romance: sepia, film frames and soft grain.",
+    typography: "A warm old-style serif, typewriter details for dates and captions, film-frame numbering.",
+    animation: "Slow fades, frame-by-frame title cards and light grain that never touches the photograph.",
+    mobile: "Photographs sit inside a single frame; grain is a very light overlay.",
+    accessibility: "Grain is faint and removed for reduced motion; captions never rely on the texture for legibility.",
+  },
+  storybook: {
+    key: "storybook", label: "Storybook", promise: "A book that turns its pages: chapters, illustrations and a last page.",
+    typography: "A friendly serif for the story, a hand script for chapter titles, drop caps.",
+    animation: "Page turns and chapter transitions; illustrations draw in once.",
+    mobile: "One page at a time, photographs inside framed plates.",
+    accessibility: "Every page is plain content in reading order; the page-turn is decoration only.",
+  },
+  aquarelle: {
+    key: "aquarelle", label: "Watercolour", promise: "Soft washes of colour behind clear, quiet type.",
+    typography: "A calligraphic script for names, a light serif for reading, generous leading.",
+    animation: "Washes bloom behind photographs once and then stay still.",
+    mobile: "Washes shrink to the edges so text never sits on a strong colour.",
+    accessibility: "Text is always set on a plain ground; washes are decorative and low-contrast by design.",
+  },
+  atelier: {
+    key: "atelier", label: "Architectural", promise: "Stone, shadow and precise geometry.",
+    typography: "A restrained serif or grotesque at large sizes, numbered plates, hairline construction lines.",
+    animation: "Geometric masks and precise slides; everything lands exactly.",
+    mobile: "Plates stack; construction lines thin out but keep their alignment.",
+    accessibility: "High-contrast stone and charcoal; no decorative information.",
+  },
+  marine: {
+    key: "marine", label: "Coastal", promise: "Air, light and a long horizon.",
+    typography: "A light serif for names, open-tracked capitals for places, soft sans for details.",
+    animation: "Slow wave-like drift and horizon reveals.",
+    mobile: "Horizontal bands scale with the screen; the horizon sits above the fold.",
+    accessibility: "Light grounds with dark text; motion is slow and stops for reduced-motion users.",
+  },
   editorial: {
     key: "editorial", label: "Editorial", promise: "A magazine layout — large photographs, generous white space.",
     typography: "An oversized serif headline with clean supporting text.",
@@ -67,3 +123,5 @@ export const DIRECTIONS: Record<TemplateFlavor, Direction> = {
 
 /** The five a customer can choose between, in the order they are shown everywhere. */
 export const DIRECTION_ORDER = ["royal", "minimal", "cinematic", "floral", "playful"] as const;
+/** Every direction a public template can use, in the order the template filter lists them. */
+export const ALL_DIRECTIONS = [...DIRECTION_ORDER, "noir", "couture", "celestial", "vintage", "storybook", "aquarelle", "atelier", "marine"] as const;

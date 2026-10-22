@@ -9,6 +9,7 @@ import { fmtDate } from "../engine/format";
 import { distanceKm } from "../engine/format";
 import { useSubject, type Subject } from "../engine/subject";
 import { BalloonsArt, BloomArt, DoorsArt, LampArt } from "./scenes";
+import { SCENE2_DURATION, Scene2, isScene2 } from "./Scenes2";
 
 type State = "closed" | "opening" | "leaving" | "gone";
 const DURATION: Record<string, number> = { envelope: 3000, seal: 1500, cinematic: 250, swipe: 350, curtain: 1600, lamp: 2000, doors: 1900, balloons: 1100, ticket: 1500, bloom: 1900, none: 0 };
@@ -158,7 +159,7 @@ export function Gate({ skip }: { skip?: boolean }) {
       // Music only ever starts here — inside the guest's own tap.
       if (withMusic && music.ready) music.play();
       setState("opening");
-      const wait = reducedMotion ? 0 : DURATION[variant] ?? 800;
+      const wait = reducedMotion ? 0 : DURATION[variant] ?? (isScene2(variant) ? SCENE2_DURATION[variant] : 800);
       window.setTimeout(() => setState("leaving"), wait);
       window.setTimeout(() => {
         setState("gone");
@@ -302,7 +303,7 @@ export function Gate({ skip }: { skip?: boolean }) {
           <h1 className="gate-names">{names.a}{names.isCouple && <> <span className="amp">{t("invite.and")}</span> {names.b}</>}</h1>
           {mainDate && <RollingDate date={mainDate} active={isOpening} locale={locale} />}
           {seatsText && <p className="gate-hint">{seatsText}</p>}
-          <div className="swipe-handle" role="button" tabIndex={0} aria-label={t("gate.enter")} onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), open(wantsMusic))}>
+          <div className="swipe-handle" role="button" tabIndex={0} aria-label={t("gate.enter")} onClick={() => open(wantsMusic)} onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), open(wantsMusic))}>
             <span className="swipe-arrow"><ChevronUp className="size-6" /></span>
             <span className="gate-hint">{t("gate.swipeUp")}</span>
           </div>
@@ -392,6 +393,10 @@ export function Gate({ skip }: { skip?: boolean }) {
           {seatsText && <p className="gate-hint">{seatsText}</p>}
           {Actions}
         </div>
+      )}
+      {isScene2(variant) && (
+        <Scene2 variant={variant} isOpening={isOpening} open={() => open(wantsMusic)} names={names} mainDate={mainDate} locale={locale} invited={invited} greeting={greeting} seatsText={seatsText}
+          tapLabel={t("gate.tapToOpen")} starsHint={t("gate.stars")} and={t("invite.and")} actions={Actions} />
       )}
     </motion.div>
   );

@@ -38,7 +38,15 @@ export interface SiteTemplate {
   love: boolean;
   thumb: string;
   path: string;
+  /** Filter tags for the public library: cinematic, minimalist, royal, editorial, romantic, destination, animated, traditional, ceremonial. */
+  tags: string[];
+  /** The newest, flagship designs (the cinematic set) lead the library. */
+  featured: boolean;
 }
+
+export const TAG_LABELS: Record<string, string> = { cinematic: "Cinematic", minimalist: "Minimalist", royal: "Royal", editorial: "Editorial", romantic: "Romantic", destination: "Destination", animated: "Animated", traditional: "Traditional", ceremonial: "Religious & ceremonial" };
+/** The tags a design carries when its specification names none: what its visual direction means to a customer. */
+const TAGS_BY_DIRECTION: Record<string, string[]> = { royal: ["royal", "traditional"], minimal: ["minimalist"], cinematic: ["cinematic"], floral: ["romantic"], playful: ["animated"], editorial: ["editorial"], noir: ["cinematic"], couture: ["editorial"], celestial: ["romantic"], vintage: ["romantic"], storybook: ["animated"], aquarelle: ["romantic"], atelier: ["editorial"], marine: ["destination"] };
 
 /**
  * A template's picture: from Cloudinary when `npm run cloudinary:static` has put it there (the manifest names its own cloud, so server and
@@ -59,6 +67,7 @@ function fromSpec(s: TemplateSpec): SiteTemplate {
     slug: s.slug, name: s.name, category: s.category, tagline: s.tagline, concept: s.concept, style: s.direction, styleLabel: DIRECTIONS[s.direction].label,
     opening: s.opening, openingLabel: OPENING_LABELS[s.opening], theme: palette(s.theme), target: s.target, interactions: s.interactions, images: s.images, motion: s.motion,
     demo: s.demo, edition: !!s.edition, love: false, thumb: thumbFor(s.slug), path: `/templates/${s.category}/${s.slug}`,
+    tags: [...new Set([...(s.tags ?? TAGS_BY_DIRECTION[s.direction] ?? []), ...(s.edition ? ["ceremonial"] : [])])], featured: !!s.profile,
   };
 }
 
@@ -67,7 +76,7 @@ function fromLove(s: LoveSpec): SiteTemplate {
   return {
     slug: s.slug, name: s.name, category: "for-my-love", tagline: s.tagline, concept: s.concept, style: s.direction, styleLabel: `${MOOD_LABEL[mood]} mood`,
     opening: "none", openingLabel: "Its own opening", theme: palette(MOOD_THEME[mood]), target: s.target, interactions: s.interactions, images: s.images, motion: s.motion,
-    demo: s.demo, edition: false, love: true, thumb: thumbFor(s.slug), path: `/templates/for-my-love/${s.slug}`,
+    demo: s.demo, edition: false, love: true, thumb: thumbFor(s.slug), path: `/templates/for-my-love/${s.slug}`, tags: [], featured: false,
   };
 }
 

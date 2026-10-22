@@ -9,7 +9,7 @@ import { TemplateFilter, type FilterGroup } from "@/components/site/TemplateFilt
 export const metadata = pageMetadata({
   path: "/templates",
   title: "Choose your invitation design",
-  description: "Digital invitation designs for weddings, engagements, birthdays, anniversaries, housewarmings, naming ceremonies, corporate events, memorials — and love gifts. Five different designs for every occasion. Open any one the way your guests will.",
+  description: "Digital invitation designs for weddings, engagements, birthdays, anniversaries, housewarmings, naming ceremonies, corporate events, memorials — and love gifts. At least five different designs for every occasion. Open any one the way your guests will.",
   image: "ch4Fc1cGTq4",
 });
 export const dynamic = "force-dynamic";
@@ -44,7 +44,7 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Pr
     <>
       <section className="bg-[linear-gradient(180deg,#fbf7f0,#ffffff)] pb-4 pt-12 sm:pt-20">
         <Wrap>
-          <Heading as="h1" eyebrow="Choose your design" title="Find the one that feels like your celebration." lede={`${total} designs, with five different ones for every occasion. Tap any design to open it the way your guests will — then tell us your details and we make it yours.`} />
+          <Heading as="h1" eyebrow="Choose your design" title="Find the one that feels like your celebration." lede={`${total} designs, with at least five different ones for every occasion. Tap any design to open it the way your guests will — then tell us your details and we make it yours.`} />
         </Wrap>
       </section>
       <Section tone="white" className="!pt-8">

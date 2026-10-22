@@ -1,0 +1,53 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   Three motion profiles. `data-motion` on the invitation root (set from `doc.opening.motion`); "auto" has no rule here and is
+   how every older invitation behaves.
+
+     elegant    fades and a hair of lift; images fade instead of wiping; no parallax. Restraint is the effect.
+     cinematic  weightier reveals, wipes, and each section arrives like a new scene as it enters the screen.
+     immersive  everything cinematic, plus scroll-linked depth: photographs settle as they arrive, the opening photograph drifts
+                away as you leave it, and image wipes cut diagonally.
+
+   Scroll-linked effects use CSS scroll-driven animations (compositor-only: opacity and transform), so they cost no JavaScript, and
+   they are applied only where the browser supports them and the guest has not asked for reduced motion. A browser without them
+   simply shows the ordinary reveals — nothing is ever hidden because an effect is missing.
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* An element that has arrived always rests at its place. The directions and the profiles below give a reveal its *starting* offset with
+   more specificity than the base `.rv.in`, which would otherwise leave it shifted for ever — so this one outranks them all. */
+html.js .inv[data-flavor] .rv.in { transform: none; }
+
+/* ═══ ELEGANT ═════════════════════════════════════════════════════════ */
+.inv[data-motion="elegant"] { --ease: cubic-bezier(0.33, 0.1, 0.25, 1); }
+html.js .inv[data-motion="elegant"] .rv-up { transform: translateY(0.55rem); }
+html.js .inv[data-motion="elegant"] .rv-left { transform: translateX(-0.7rem); }
+html.js .inv[data-motion="elegant"] .rv-right { transform: translateX(0.7rem); }
+html.js .inv[data-motion="elegant"] .rv-mask { clip-path: none; opacity: 0; }
+html.js .inv[data-motion="elegant"] .rv-mask.in { opacity: 1; }
+html.js .inv[data-motion="elegant"] .rw-word { transform: translateY(0.35em); opacity: 0; transition: transform calc(1.1s * var(--motion, 1)) var(--ease), opacity calc(1.1s * var(--motion, 1)) var(--ease); }
+html.js .inv[data-motion="elegant"] .rw.in .rw-word { transform: none; opacity: 1; }
+.inv[data-motion="elegant"] .will-change-transform { transform: none !important; }
+
+/* ═══ CINEMATIC & IMMERSIVE (shared) ══════════════════════════════════ */
+.inv:is([data-motion="cinematic"], [data-motion="immersive"]) { --ease: cubic-bezier(0.65, 0, 0.2, 1); }
+html.js .inv:is([data-motion="cinematic"], [data-motion="immersive"]) .rv-up { transform: translateY(2.4rem); }
+html.js .inv:is([data-motion="cinematic"], [data-motion="immersive"]) .rv-mask { transition-duration: calc(1.6s * var(--motion, 1)); }
+
+/* ═══ IMMERSIVE ═══════════════════════════════════════════════════════ */
+html.js .inv[data-motion="immersive"] .rv-mask { clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); }
+html.js .inv[data-motion="immersive"] .rv-mask.in { clip-path: polygon(-2% -2%, 102% -2%, 102% 102%, -2% 102%); }
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /* each section arrives like a new scene */
+    .inv:is([data-motion="cinematic"], [data-motion="immersive"]) main > .inv-section { animation: mo-scene linear both; animation-timeline: view(); animation-range: entry 0% entry 35%; }
+    @keyframes mo-scene { from { opacity: 0.001; translate: 0 2.2rem; } to { opacity: 1; translate: 0 0; } }
+    /* photographs settle into place as they arrive */
+    .inv[data-motion="immersive"] main > .inv-section :is(picture, .gal-item, figure) img { animation: mo-settle linear both; animation-timeline: view(); animation-range: entry 0% cover 45%; }
+    @keyframes mo-settle { from { scale: 1.16; } to { scale: 1; } }
+  }
+  @supports (animation-timeline: scroll()) {
+    /* the opening photograph drifts away and softens as the guest leaves it */
+    .inv[data-motion="immersive"] [data-section="hero"] :is(.hero-bg, .cv-photo, .bb-photo, .reel-photo, .hz-band) { animation: mo-depart linear both; animation-timeline: scroll(root); animation-range: 0 100svh; }
+    @keyframes mo-depart { to { translate: 0 9svh; scale: 1.1; opacity: 0.55; } }
+  }
+}

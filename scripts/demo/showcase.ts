@@ -41,6 +41,8 @@ export interface ShowcaseCfg {
   gallery: [stock: string, caption: string][];
   /** Defaults to LUXURY. */
   package?: PackageKey;
+  /** A song from the bundled music library (`src/domain/music/library.ts`); replaces the generated ambient track. */
+  libraryTrack?: string;
   celebration?: "auto" | "petals" | "confetti" | "off";
   /** Guests who leave a wish on the sample invitation: [name, relationship, message]. */
   wishes?: [name: string, relationship: string, message: string][];

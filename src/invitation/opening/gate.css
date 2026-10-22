@@ -99,3 +99,9 @@
 .dateroll .col { display: inline-block; height: 1.1em; overflow: hidden; line-height: 1.1; }
 .dateroll .strip { display: flex; flex-direction: column; transition: transform 1.6s var(--ease); }
 .dateroll .strip span { height: 1.1em; }
+
+/* A gate is a dark scene (the light ones — bloom, balloons, ink, tide — are excluded): a theme's outline or underline button, whose
+   text is the theme's primary colour, must still read on it. A theme whose primary is near-black would otherwise vanish. */
+.inv:is([data-button="outline"], [data-button="underline"]) .gate:not([data-variant="bloom"], [data-variant="balloons"], [data-variant="ink"], [data-variant="tide"]) .inv-btn:not(.inv-btn-ghost) { color: var(--c-on-inverse); border-color: color-mix(in srgb, var(--c-on-inverse) 60%, transparent); }
+.inv[data-button="outline"] .gate:not([data-variant="bloom"], [data-variant="balloons"], [data-variant="ink"], [data-variant="tide"]) .inv-btn:not(.inv-btn-ghost):hover:not(:disabled) { background: color-mix(in srgb, var(--c-on-inverse) 14%, transparent); color: var(--c-on-inverse); }
+.inv:is([data-button="solid"], [data-button="pill"]) .gate:not([data-variant="bloom"], [data-variant="balloons"], [data-variant="ink"], [data-variant="tide"]) .inv-btn:not(.inv-btn-ghost) { background: var(--c-gate-btn); color: var(--c-gate-btn-text); border-color: var(--c-gate-btn); }

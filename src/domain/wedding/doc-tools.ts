@@ -11,6 +11,7 @@ export function buildInitialDoc(template: TemplateConfig | null, ent: Entitlemen
   const doc = emptyDoc();
   const t = (en: string, local?: string): LocalizedText => (locale && local ? { en, [locale]: local } : { en });
   doc.opening.variant = template?.opening ?? "envelope";
+  doc.opening.motion = template?.motion ?? "auto";
   if (template?.eventType) doc.eventType = template.eventType;
   doc.ceremonies.items = STARTER_CEREMONIES[doc.eventType].map((c) => ({ id: newId(), name: t(c.name), when: {}, description: t(c.description), photo: undefined, glyph: c.glyph }));
   doc.rsvp.mealOptions = [

@@ -60,7 +60,7 @@ export default async function CategoryPage({ params }: Props) {
       </section>
 
       <Section tone="white" className="!pt-10">
-        <Heading as="h2" eyebrow={`${designs.length} designs`} title={love ? "Five ways to unfold a gift." : `Five different designs for your ${cat.name.toLowerCase()}.`} lede={family ? `We do not have a separate set for a ${cat.name.toLowerCase()}, so here are the five designs nearest to it. We change the wording and the details to suit — and you see it before anyone else.` : "Open any of them the way your guests will. They open differently, are laid out differently and move differently."} />
+        <Heading as="h2" eyebrow={`${designs.length} designs`} title={love ? "Five ways to unfold a gift." : designs.filter((d) => !d.edition).length > 5 ? `${designs.filter((d) => !d.edition).length} designs for your ${cat.name.toLowerCase()}.` : `Five different designs for your ${cat.name.toLowerCase()}.`} lede={family ? `We do not have a separate set for a ${cat.name.toLowerCase()}, so here are the five designs nearest to it. We change the wording and the details to suit — and you see it before anyone else.` : "Open any of them the way your guests will. They open differently, are laid out differently and move differently."} />
         <ul className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-3 lg:grid-cols-5">
           {designs.map((t, i) => (<li key={t.slug}><TemplateCard t={t} priority={i < 3} /></li>))}
         </ul>

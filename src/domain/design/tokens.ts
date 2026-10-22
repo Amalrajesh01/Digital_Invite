@@ -70,15 +70,15 @@ function stripUndefined<T extends object>(obj: T): T {
  * may pair an elegant display serif (names, headings) with Inter for supporting text — the wedding-stationery look.
  */
 export const FONT_CHOICES = {
-  heading: ["Cormorant Garamond", "Playfair Display", "Cinzel", "Marcellus", "Bodoni Moda", "DM Serif Display", "Fraunces", "Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Outfit", "Poppins", "Work Sans", "Hanken Grotesk", "Space Grotesk", "Fredoka", "Baloo 2"],
-  body: ["Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Work Sans", "Hanken Grotesk", "Mulish", "Karla", "Nunito"],
-  script: ["Cormorant Garamond", "Playfair Display", "Bodoni Moda", "Fraunces", "Pinyon Script", "Great Vibes", "Parisienne", "Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Outfit", "Poppins", "Space Grotesk", "Fredoka", "Baloo 2"],
+  heading: ["Cormorant Garamond", "Playfair Display", "Cinzel", "Marcellus", "Bodoni Moda", "DM Serif Display", "Fraunces", "Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Outfit", "Poppins", "Work Sans", "Hanken Grotesk", "Space Grotesk", "Fredoka", "Baloo 2", "Italiana", "Tenor Sans", "Jost", "Instrument Serif", "Libre Caslon Display", "Prata", "Bebas Neue", "Special Elite", "Gloock", "Josefin Sans", "EB Garamond"],
+  body: ["Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Work Sans", "Hanken Grotesk", "Mulish", "Karla", "Nunito", "Jost", "Josefin Sans"],
+  script: ["Cormorant Garamond", "Playfair Display", "Bodoni Moda", "Fraunces", "Pinyon Script", "Great Vibes", "Parisienne", "Inter", "Manrope", "DM Sans", "Plus Jakarta Sans", "Outfit", "Poppins", "Space Grotesk", "Fredoka", "Baloo 2", "Allura", "Alex Brush", "Sacramento", "Italiana", "Instrument Serif", "EB Garamond"],
 } as const;
 
 /** Display serifs: drive the invitation's typographic details (case, tracking, weights). */
-export const SERIF_FONTS: readonly string[] = ["Cormorant Garamond", "Playfair Display", "Cinzel", "Marcellus", "Bodoni Moda", "DM Serif Display", "Fraunces"];
+export const SERIF_FONTS: readonly string[] = ["Cormorant Garamond", "Playfair Display", "Cinzel", "Marcellus", "Bodoni Moda", "DM Serif Display", "Fraunces", "Italiana", "Instrument Serif", "Libre Caslon Display", "Prata", "Gloock", "EB Garamond"];
 /** Accent fonts that have a true italic; everything else is shown upright (a synthesised slant looks cheap). */
-export const ITALIC_ACCENTS: readonly string[] = ["Cormorant Garamond", "Playfair Display", "DM Serif Display", "Bodoni Moda", "Fraunces"];
+export const ITALIC_ACCENTS: readonly string[] = ["Cormorant Garamond", "Playfair Display", "DM Serif Display", "Bodoni Moda", "Fraunces", "Instrument Serif", "EB Garamond"];
 export const isSerif = (family: string) => SERIF_FONTS.includes(family);
 
 export const RADIUS_PX: Record<ThemeTokens["radius"], string> = { none: "0px", soft: "4px", round: "14px", pill: "999px" };
@@ -95,6 +95,8 @@ const WEIGHTS: Record<string, string> = {
   "Fraunces": "ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500",
   "Baloo 2": "wght@400;500;600;700;800",
   "Great Vibes": "",
+  "Italiana": "", "Tenor Sans": "", "Jost": "wght@300;400;500;600", "Instrument Serif": "ital@0;1", "Libre Caslon Display": "", "Prata": "", "Bebas Neue": "", "Special Elite": "", "Gloock": "",
+  "Josefin Sans": "wght@300;400;600", "EB Garamond": "ital,wght@0,400;0,500;1,400", "Allura": "", "Alex Brush": "", "Sacramento": "",
   "Inter": "opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800",
   "Manrope": "wght@300;400;500;600;700",
   "Plus Jakarta Sans": "wght@300;400;500;600;700",

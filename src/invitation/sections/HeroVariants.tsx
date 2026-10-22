@@ -6,6 +6,7 @@ import { useInvitation } from "../engine/context";
 import { Photo } from "../engine/Photo";
 import { Reveal, RevealWords } from "../engine/motion";
 import { fmtDate } from "../engine/format";
+import { HeroMore, isMoreHero } from "./HeroMore";
 import ClassicHero, { MiniCountdown, ScrollCue, goNext, useHeroData, type HeroData } from "./HeroSection";
 
 /**
@@ -238,7 +239,7 @@ export default function Hero({ section }: { section: SectionConfig }) {
     case "polaroids": return <Polaroids section={section} />;
     case "gateway": return <Gateway section={section} />;
     case "numeral": return <Numeral section={section} />;
-    default: return <ClassicHero section={section} />;
+    default: return isMoreHero(section.variant) ? <HeroMore section={section} /> : <ClassicHero section={section} />;
   }
 }
 

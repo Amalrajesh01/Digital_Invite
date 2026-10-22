@@ -238,6 +238,7 @@ export async function loadTemplatePreview(opts: { templateId?: string | null; th
     const old = new Map(snap.doc.sections.map((x) => [x.type, x]));
     snap.doc.sections = generateSections(cfg.data, ent).map((x) => ({ ...x, content: old.get(x.type)?.content ?? {} }));
     snap.doc.opening.variant = cfg.data.opening;
+    snap.doc.opening.motion = cfg.data.motion ?? "auto";
     snap.meta.flavor = cfg.data.flavor;
   }
   if (thm) snap.meta.tokens = mergeTokens(TokensSchema.parse(thm.tokens), opts.overrides);
@@ -266,6 +267,7 @@ export async function loadSpecPreview(slug: string, opts: { state?: WeddingStatu
   const old = new Map(snap.doc.sections.map((x) => [x.type, x]));
   snap.doc.sections = generateSections(seed.config, ent).map((x) => ({ ...x, content: old.get(x.type)?.content ?? {} }));
   snap.doc.opening.variant = seed.config.opening;
+  snap.doc.opening.motion = seed.config.motion ?? "auto";
   snap.meta.flavor = seed.config.flavor;
   const theme = THEME_SEEDS.find((t) => t.slug === seed.config.suggestedTheme);
   if (theme) snap.meta.tokens = theme.tokens;

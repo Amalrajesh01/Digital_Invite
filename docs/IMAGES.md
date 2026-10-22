@@ -19,6 +19,19 @@ audio, video, guests' own uploads, time-capsule photographs and gifts stay on th
 rules, setup, migration, testing and troubleshooting — is in [CLOUDINARY.md](CLOUDINARY.md). Nothing above changes for a person
 using the Media library: slots, focal points, alt text and replacing a photograph work the same.
 
+## The cinematic wedding templates' casting
+
+Each of the 25 cinematic templates has a **casting**: which photograph plays the hero, the wide hero, the bride and groom, the story, the
+venue, the ceremony, the four milestones and the gallery — and, for the hero, a one-sentence brief of what the frame had to be
+([`src/domain/imagery/casting.ts`](../src/domain/imagery/casting.ts)). `manifestFor(templateId)` flattens it into manifest rows
+(template, section, asset type, provider, source page, alt text, aspect ratio, focal point, licence status, usage). Every new template
+opens on a photograph of its own.
+
+`npm run images:check` (also a test) fails on: a missing or unreadable file, a hero under 1600 px on its long side, no alternative text, a
+licence not recorded in `assets/stock/CREDITS.md`, an id that is not in the catalogue, or a hero shared between two new templates; it warns on
+soft or oddly proportioned photographs. A photograph that fails to load in an invitation shows the themed placeholder, never a broken image
+or an empty band (`Photo` in `src/invitation/engine`). To give a template better photography see the note at the top of `casting.ts`.
+
 ## Named photograph slots — replacing a photo without touching code
 
 Every photograph an invitation shows belongs to a **named slot**, declared in one file:

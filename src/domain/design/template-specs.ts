@@ -2,6 +2,7 @@ import type { OpeningVariant } from "@/domain/doc/constants";
 import type { CategorySlug, EventType } from "@/domain/doc/event-types";
 import { AFTER, LIVE, layout, type Item, type TemplateSection } from "./layout";
 import type { TemplateFlavor } from "./templates";
+import { CINEMATIC_SPECS } from "./template-specs-cinematic";
 
 /**
  * The templates, one specification each. A template is a *design concept*, not a recolour: it chooses its own
@@ -46,9 +47,25 @@ export interface TemplateSpec {
   edition?: boolean;
   /** Not offered on the public site (older designs that existing invitations still use). */
   legacy?: boolean;
+  /** The motion profile an invitation made from it starts with (see invitation/styles/motion.css). */
+  profile?: "elegant" | "cinematic" | "immersive";
+  /** The feeling, in a few words. */
+  tone?: string;
+  /** How the story is told and in what order. */
+  story?: string;
+  /** How the gallery is treated. */
+  gallery?: string;
+  /** How one scene gives way to the next. */
+  transition?: string;
+  /** What it looks like on a phone. */
+  mobile?: string;
+  /** Library tracks that suit it (ids from `domain/music/library`); the first is the default for a new invitation. */
+  music?: string[];
+  /** Filter tags on the public template library: cinematic, minimalist, royal, editorial, romantic, destination, animated, traditional. */
+  tags?: string[];
 }
 
-export const TEMPLATE_SPECS: TemplateSpec[] = [
+const BASE_SPECS: TemplateSpec[] = [
   // ═══ WEDDING ════════════════════════════════════════════════════════════════════════════════════════════
   {
     slug: "royal-heritage", name: "Royal Heritage", category: "wedding", eventType: "hindu_wedding", direction: "royal", hero: "gateway", opening: "lamp", theme: "kasavu", demo: "meenakshi-and-aravind",
@@ -618,6 +635,9 @@ export const TEMPLATE_SPECS: TemplateSpec[] = [
 ];
 
 /** The sections of a template: its hero, then its flow. */
+/** Every design: the original occasions, then the twenty-five cinematic weddings. */
+export const TEMPLATE_SPECS: TemplateSpec[] = [...BASE_SPECS, ...CINEMATIC_SPECS];
+
 export function specSections(spec: TemplateSpec): TemplateSection[] {
   return layout([["hero", { variant: spec.hero }], ...spec.flow]);
 }

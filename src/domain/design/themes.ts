@@ -1,5 +1,6 @@
 import type { ThemeTokens } from "./tokens";
 import { EXTRA_THEMES } from "./themes-extra";
+import { CINEMATIC_THEMES } from "./themes-cinematic";
 
 export interface ThemeSeed {
   slug: string;
@@ -182,4 +183,4 @@ const CORE_THEMES: ThemeSeed[] = [
   },
 ];
 
-export const THEME_SEEDS: ThemeSeed[] = [...CORE_THEMES, ...EXTRA_THEMES];
+export const THEME_SEEDS: ThemeSeed[] = [...CORE_THEMES, ...EXTRA_THEMES, ...CINEMATIC_THEMES];

@@ -1,0 +1,176 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   Thirteen more hero compositions (HeroMore.tsx). Each is its own layout. They read the theme variables (--c-*, --f-*, --r)
+   and never hard-code a colour except black/white scrims, so every palette gives them a different feeling.
+   ────────────────────────────────────────────────────────────────────────── */
+.inv[data-locale]:not([data-locale="en"]) :is(.cv-name, .st-name, .tp-name, .ns-name, .pc-name, .wn-name, .ws-name, .hz-name, .bk-name, .bb-name, .ff-name, .sl-name, .sk-name) { font-family: var(--f-local); text-transform: none; letter-spacing: 0; font-weight: 600; line-height: 1.25; }
+.hv :is(.cv-name, .st-name, .tp-name, .ns-name, .pc-name, .wn-name, .ws-name, .hz-name, .bk-name, .bb-name, .ff-name, .sl-name, .sk-name) { display: block; }
+.hv-inner-center { text-align: center; }
+
+/* ── cover: oversized names over a full-bleed portrait ─────────────────── */
+.hv-cover { min-height: 100svh; display: grid; grid-template-rows: auto 1fr auto auto; color: #fff; overflow: hidden; background: #111; }
+.cv-photo { position: absolute; inset: 0; }
+.cv-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent 22%, transparent 45%, rgba(0, 0, 0, 0.72)); }
+.cv-mast { position: relative; z-index: 1; display: flex; justify-content: space-between; gap: 1rem; padding: clamp(1rem, 3vh, 1.6rem) clamp(1rem, 4vw, 2.4rem); font-size: 0.66rem; letter-spacing: 0.34em; text-transform: uppercase; border-bottom: 1px solid rgba(255, 255, 255, 0.4); margin: 3.6rem clamp(1rem, 4vw, 2.4rem) 0; padding-inline: 0; }
+.cv-title { position: relative; z-index: 1; align-self: end; margin: 0; padding: 0 clamp(1rem, 4vw, 2.4rem); line-height: 0.82; text-shadow: 0 4px 40px rgba(0, 0, 0, 0.35); }
+.cv-name { font-family: var(--f-heading); font-weight: 400; font-size: clamp(3.8rem, 25vw, 14rem); letter-spacing: -0.045em; text-transform: none; }
+.cv-title .rw:nth-of-type(2) { text-align: right; }
+.cv-amp { position: absolute; right: 8%; top: 42%; font-family: var(--f-script); font-style: var(--f-script-style, normal); color: var(--c-accent); font-size: clamp(2rem, 10vw, 5rem); }
+.cv-title[data-len="medium"] .cv-name { font-size: clamp(3rem, 18vw, 10rem); }
+.cv-title[data-len="long"] .cv-name { font-size: clamp(2.4rem, 12vw, 7rem); }
+.cv-lines { position: relative; z-index: 1; display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding: 1rem clamp(1rem, 4vw, 2.4rem) 0; font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase; }
+.hv-cover > a { position: relative; z-index: 1; margin-top: 1rem; margin-bottom: 1.4rem; }
+
+/* ── stage: a figure in a pool of light on black ───────────────────────── */
+.hv-stage { min-height: 100svh; display: grid; place-items: center; background: #040405; color: var(--c-on-inverse); overflow: hidden; padding-block: clamp(2rem, 6vh, 4rem); }
+.st-beam { position: absolute; left: 50%; top: -10%; width: 120%; height: 120%; translate: -50% 0; pointer-events: none; background: conic-gradient(from 180deg at 50% 0%, transparent 162deg, color-mix(in srgb, var(--c-on-inverse) 14%, transparent) 172deg, color-mix(in srgb, var(--c-accent) 22%, transparent) 180deg, color-mix(in srgb, var(--c-on-inverse) 14%, transparent) 188deg, transparent 198deg); animation: st-sway 14s ease-in-out infinite alternate; }
+@keyframes st-sway { from { transform: rotate(-3deg); } to { transform: rotate(3deg); } }
+.st-inner { position: relative; display: grid; justify-items: center; gap: 1.1rem; text-align: center; }
+.st-figure { position: relative; width: min(74vw, 21rem); aspect-ratio: 3 / 4; -webkit-mask-image: radial-gradient(ellipse 62% 56% at 50% 42%, #000 52%, transparent 100%); mask-image: radial-gradient(ellipse 62% 56% at 50% 42%, #000 52%, transparent 100%); }
+.st-names { margin: 0; line-height: 1; }
+.st-name { font-family: var(--f-heading); font-weight: 400; font-size: clamp(2.4rem, 11vw, 5.4rem); letter-spacing: 0.03em; }
+.st-meta { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; justify-content: center; font-size: 0.74rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.85; }
+
+/* ── triptych: three frames ─────────────────────────────────────────────── */
+.hv-triptych { min-height: 100svh; display: grid; place-items: center; padding-block: clamp(2rem, 6vh, 4rem); background: var(--c-bg); color: var(--c-text); }
+.tp-inner { display: grid; justify-items: center; gap: 1.2rem; text-align: center; }
+.tp-frames { display: grid; grid-template-columns: 1fr 2.1fr 1fr; align-items: center; gap: clamp(0.4rem, 1.6vw, 1rem); width: min(100%, 44rem); }
+.tp-side { position: relative; aspect-ratio: 2 / 3.1; }
+.tp-mid { position: relative; aspect-ratio: 3 / 4.4; }
+.tp-names { margin: 0.4rem 0 0; line-height: 1; }
+.tp-name { font-family: var(--f-heading); font-weight: 400; font-size: clamp(2.2rem, 9vw, 4.8rem); letter-spacing: -0.01em; }
+.tp-meta { font-size: 0.74rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--c-muted); }
+
+/* ── night sky: a portrait in orbit ─────────────────────────────────────── */
+.hv-nightsky { min-height: 100svh; display: grid; place-items: center; background: radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--c-primary) 30%, var(--c-inverse)), var(--c-inverse) 70%); color: var(--c-on-inverse); overflow: hidden; padding-block: clamp(2rem, 6vh, 4rem); }
+.ns-stars { position: absolute; inset: 0; pointer-events: none; background-repeat: repeat; animation: ns-twinkle 6s ease-in-out infinite alternate; }
+.ns-stars.s1 { background-image: radial-gradient(1px 1px at 12% 18%, #fff, transparent 60%), radial-gradient(1px 1px at 33% 72%, #fff, transparent 60%), radial-gradient(1.4px 1.4px at 61% 28%, #fff, transparent 60%), radial-gradient(1px 1px at 82% 64%, #fff, transparent 60%), radial-gradient(1px 1px at 91% 12%, #fff, transparent 60%), radial-gradient(1.2px 1.2px at 47% 90%, #fff, transparent 60%); background-size: 340px 340px; opacity: 0.8; }
+.ns-stars.s2 { background-image: radial-gradient(1px 1px at 22% 38%, color-mix(in srgb, var(--c-accent) 90%, #fff), transparent 60%), radial-gradient(1.2px 1.2px at 72% 82%, #fff, transparent 60%), radial-gradient(1px 1px at 55% 8%, #fff, transparent 60%), radial-gradient(1px 1px at 5% 88%, #fff, transparent 60%); background-size: 460px 460px; animation-delay: -3s; opacity: 0.6; }
+@keyframes ns-twinkle { to { opacity: 0.35; } }
+.ns-inner { position: relative; display: grid; justify-items: center; gap: 1.1rem; text-align: center; }
+.ns-orbit { position: relative; width: min(66vw, 19rem); aspect-ratio: 1; }
+.ns-ring { position: absolute; inset: -6%; width: 112%; height: 112%; fill: none; stroke: color-mix(in srgb, var(--c-accent) 70%, transparent); stroke-width: 0.25; animation: ns-spin 60s linear infinite; }
+.ns-dot { fill: var(--c-accent); stroke: none; }
+@keyframes ns-spin { to { transform: rotate(360deg); } }
+.ns-photo { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; box-shadow: 0 0 60px color-mix(in srgb, var(--c-accent) 28%, transparent); }
+.ns-names { margin: 0; line-height: 1.05; }
+.ns-name { font-family: var(--f-heading); font-weight: 400; font-size: clamp(2.3rem, 10vw, 4.8rem); letter-spacing: 0.04em; }
+.ns-meta { font-size: 0.74rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.85; }
+
+/* ── postcard: a card with a stamp ──────────────────────────────────────── */
+.hv-postcard { min-height: 100svh; display: grid; place-items: center; padding-block: clamp(2rem, 6vh, 4rem); background: color-mix(in srgb, var(--c-accent) 14%, var(--c-bg)); color: var(--c-text); }
+.pc-inner { display: grid; justify-items: center; gap: 1.2rem; }
+.pc-card { width: min(92vw, 34rem); background: #fffdf8; color: #2b2620; padding: 0.7rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 24px 40px -14px rgba(0, 0, 0, 0.35); transform: rotate(-1.6deg); }
+.pc-photo { position: relative; aspect-ratio: 3 / 2; }
+.pc-back { position: relative; display: grid; gap: 0.5rem; justify-items: start; padding: 1.1rem 0.6rem 0.7rem; background: repeating-linear-gradient(0deg, transparent 0 1.7rem, rgba(0, 0, 0, 0.05) 1.7rem calc(1.7rem + 1px)); }
+.pc-stamp { position: absolute; right: 0.6rem; top: 0.9rem; width: 3.4rem; aspect-ratio: 4 / 5; display: grid; place-items: center; background: color-mix(in srgb, var(--c-primary) 14%, #fff); color: var(--c-primary); outline: 3px dotted color-mix(in srgb, var(--c-primary) 35%, transparent); outline-offset: -3px; font-family: var(--f-heading); font-size: 1.3rem; }
+.pc-mark { position: absolute; right: 2.9rem; top: 0.5rem; width: 4.6rem; fill: none; stroke: color-mix(in srgb, var(--c-text) 35%, transparent); stroke-width: 1; rotate: -12deg; }
+.pc-mark text { fill: color-mix(in srgb, var(--c-text) 45%, transparent); stroke: none; }
+.pc-eyebrow { font-size: 0.64rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--c-primary); }
+.pc-names { margin: 0; line-height: 1; max-width: 80%; }
+.pc-name { font-family: var(--f-script); font-style: var(--f-script-style, normal); font-weight: 400; font-size: clamp(2rem, 9vw, 3.4rem); color: #2b2620; }
+.pc-meta { font-size: 0.78rem; letter-spacing: 0.18em; opacity: 0.8; }
+
+/* ── window: an arched opening on a grid ────────────────────────────────── */
+.hv-window { min-height: 100svh; display: grid; place-items: center; padding-block: clamp(2rem, 6vh, 4rem); background: var(--c-bg); color: var(--c-text); background-image: linear-gradient(90deg, color-mix(in srgb, var(--c-text) 7%, transparent) 1px, transparent 1px); background-size: 25% 100%; }
+.wn-inner { display: grid; justify-items: center; gap: 1.1rem; text-align: center; }
+.wn-plate { font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--c-muted); }
+.wn-sill { padding: 0.7rem 0.7rem 0; border-bottom: 0.7rem solid color-mix(in srgb, var(--c-text) 80%, var(--c-bg)); }
+.wn-arch { position: relative; width: min(66vw, 17rem); aspect-ratio: 3 / 4.2; clip-path: url(#win-arch); }
+.wn-names { margin: 0; line-height: 0.98; }
+.wn-name { font-family: var(--f-heading); font-weight: 400; font-size: clamp(2.4rem, 10vw, 5rem); letter-spacing: -0.015em; }
+.wn-meta { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; justify-content: center; font-size: 0.72rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--c-muted); }
+
+/* ── wash: an oval that melts into colour ───────────────────────────────── */
+.hv-wash { position: relative; min-height: 100svh; display: grid; place-items: center; padding-block: clamp(2rem, 6vh, 4rem); background: var(--c-bg); color: var(--c-text); overflow: hidden; }
+.ws-blob { position: absolute; border-radius: 50%; filter: blur(40px); opacity: 0.5; pointer-events: none; }
+.ws-blob.b1 { width: 70vmax; aspect-ratio: 1; left: -26vmax; top: -22vmax; background: color-mix(in srgb, var(--c-accent) 55%, transparent); }
+.ws-blob.b2 { width: 60vmax; aspect-ratio: 1; right: -24vmax; top: 18vh; background: color-mix(in srgb, var(--c-primary) 34%, transparent); }
+.ws-blob.b3 { width: 56vmax; aspect-ratio: 1; left: 4vmax; bottom: -30vmax; background: color-mix(in srgb, var(--c-secondary) 30%, transparent); }
+.ws-inner { position: relative; display: grid; justify-items: center; gap: 1.1rem; text-align: center; }
+.ws-oval { position: relative; width: min(72vw, 19rem); aspect-ratio: 4 / 5; border-radius: 50%; overflow: hidden; -webkit-mask-image: radial-gradient(closest-side, #000 74%, transparent 100%); mask-image: radial-gradient(closest-side, #000 74%, transparent 100%); }
+.ws-names { margin: 0; line-height: 1.05; }
+.ws-name { font-family: var(--f-script); font-style: var(--f-script-style, normal); font-weight: 400; font-size: clamp(2.8rem, 12vw, 5.6rem); }
+.ws-meta { font-size: 0.74rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--c-muted); }
+
+/* ── horizon: a landscape band, the names across its line ──────────────── */
+.hv-horizon { min-height: 100svh; background: linear-gradient(180deg, var(--c-bg), color-mix(in srgb, var(--c-accent) 16%, var(--c-bg))); color: var(--c-text); }
+.hz-band { position: relative; height: 56svh; overflow: hidden; }
+.hz-line { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: color-mix(in srgb, #fff 80%, transparent); }
+.hz-inner { position: relative; display: grid; justify-items: center; gap: 0.9rem; text-align: center; margin-top: -3.4rem; padding-bottom: clamp(2rem, 6vh, 3.4rem); }
+.hz-inner .inv-eyebrow { color: #fff; text-shadow: 0 1px 12px rgba(0, 0, 0, 0.55); }
+.hz-names { margin: 0; line-height: 1; padding: 0.4rem 1.4rem 0.6rem; background: var(--c-bg); }
+.hz-name { font-family: var(--f-heading); font-weight: 400; font-size: clamp(2.2rem, 9vw, 4.6rem); letter-spacing: 0.04em; }
+.hz-meta { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; justify-content: center; font-size: 0.72rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--c-muted); }
+.hz-coord { opacity: 0.8; }
+
+/* ── book: an open storybook ────────────────────────────────────────────── */
+.hv-book { min-height: 100svh; display: grid; place-items: center; padding-block: clamp(2rem, 6vh, 4rem); background: color-mix(in srgb, var(--c-primary) 10%, var(--c-bg)); color: var(--c-text); }
+.bk-inner { display: grid; justify-items: center; gap: 1rem; }
+.bk-spread { display: grid; grid-template-columns: 1fr 1fr; width: min(96vw, 52rem); background: #fbf5e6; color: #3a2f22; border-radius: 4px 10px 10px 4px; box-shadow: 0 30px 50px -18px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(0, 0, 0, 0.08); position: relative; }
+.bk-spread::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 3rem; translate: -50% 0; background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.14) 50%, transparent); pointer-events: none; }
+.bk-page { display: grid; align-content: center; justify-items: center; gap: 0.7rem; padding: clamp(1rem, 4vw, 2.6rem); text-align: center; min-height: 26rem; }
+.bk-page .inv-eyebrow { color: color-mix(in srgb, var(--c-primary) 80%, #3a2f22); }
+.bk-names { margin: 0; line-height: 1.02; }
+.bk-name { font-family: var(--f-heading); font-weight: 400; font-size: clamp(1.7rem, 6.4vw, 3.4rem); color: #3a2f22; }
+.bk-orn { width: 3.6rem; height: 1px; background: var(--c-accent); position: relative; }
+.bk-orn::after { content: ""; position: absolute; left: 50%; top: 50%; width: 0.4rem; aspect-ratio: 1; translate: -50% -50%; rotate: 45deg; background: var(--c-accent); }
+.bk-meta { font-size: 0.74rem; letter-spacing: 0.22em; text-transform: uppercase; opacity: 0.8; }
+.bk-plate { position: relative; width: 100%; aspect-ratio: 3 / 4; outline: 1px solid color-mix(in srgb, #3a2f22 30%, transparent); outline-offset: 0.35rem; }
+@media (max-width: 640px) { .bk-spread { grid-template-columns: 1fr; } .bk-spread::after { display: none; } .bk-page { min-height: 0; } .bk-r { order: -1; padding-bottom: 0; } .bk-plate { max-width: 15rem; } }
+
+/* ── billboard: a premiere title ────────────────────────────────────────── */
+.hv-billboard { min-height: 100svh; display: grid; place-items: end center; background: #000; color: #fff; overflow: hidden; }
+.bb-photo { position: absolute; inset: 0; }
+.bb-shade { position: absolute; inset: 0; background: radial-gradient(120% 90% at 50% 40%, transparent 30%, rgba(0, 0, 0, 0.7)), linear-gradient(0deg, rgba(0, 0, 0, 0.88), transparent 62%); }
+.bb-inner { position: relative; display: grid; justify-items: center; gap: 1rem; text-align: center; padding: 0 1rem clamp(1.6rem, 5vh, 3rem); width: min(100%, 60rem); }
+.bb-kicker { font-size: 0.7rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--c-accent); }
+.bb-title { margin: 0; line-height: 0.92; }
+.bb-name { font-family: var(--f-heading); font-weight: 400; font-size: clamp(3rem, 15vw, 8.6rem); letter-spacing: 0.06em; text-transform: uppercase; text-shadow: 0 0 40px color-mix(in srgb, var(--c-accent) 35%, transparent); }
+.bb-title[data-len="medium"] .bb-name { font-size: clamp(2.4rem, 11vw, 6.2rem); }
+.bb-title[data-len="long"] .bb-name { font-size: clamp(1.9rem, 8vw, 4.4rem); }
+.bb-amp { font-family: var(--f-script); font-style: var(--f-script-style, normal); color: var(--c-accent); font-size: clamp(1.6rem, 6vw, 3.4rem); display: block; margin: 0.1em 0; }
+.bb-credits { display: flex; align-items: center; gap: 1rem; font-size: 0.74rem; letter-spacing: 0.3em; text-transform: uppercase; }
+.bb-credits div { display: grid; gap: 0.3rem; }
+.bb-laurel { width: 1.9rem; color: var(--c-accent); }
+.bb-count { font-size: 0.74rem; letter-spacing: 0.2em; opacity: 0.85; }
+
+/* ── film frame: a still with sprocket holes ────────────────────────────── */
+.hv-filmframe { min-height: 100svh; display: grid; place-items: center; padding-block: clamp(2rem, 6vh, 4rem); background: color-mix(in srgb, var(--c-text) 92%, var(--c-bg)); color: var(--c-on-inverse); }
+.ff-inner { display: grid; justify-items: center; gap: 1.1rem; text-align: center; }
+.ff-slate { font-family: var(--f-body); font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.8; }
+.ff-strip { position: relative; width: min(78vw, 22rem); padding: 1.6rem 1.7rem; background: #15110d; border-radius: 3px; box-shadow: 0 24px 40px -14px rgba(0, 0, 0, 0.7); }
+.ff-holes { position: absolute; top: 0.5rem; bottom: 0.5rem; left: 0.45rem; width: 0.7rem; background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--c-on-inverse) 70%, transparent) 0 2px, transparent 2.5px) 0 0 / 0.7rem 1.1rem repeat-y; }
+.ff-holes.r { left: auto; right: 0.45rem; }
+.ff-still { position: relative; aspect-ratio: 4 / 5; filter: sepia(0.28) contrast(1.04); }
+.ff-grain { position: absolute; inset: 0; opacity: 0.16; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E"); pointer-events: none; }
+.ff-no { position: absolute; right: 2rem; bottom: 0.35rem; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--c-accent); }
+.ff-names { margin: 0; line-height: 1.05; }
+.ff-name { font-family: var(--f-heading); font-weight: 400; font-size: clamp(2.2rem, 9vw, 4.4rem); letter-spacing: 0.02em; color: var(--c-on-inverse); }
+.ff-meta { font-family: var(--f-body); font-size: 0.74rem; letter-spacing: 0.26em; text-transform: uppercase; opacity: 0.8; }
+.hv-filmframe .inv-eyebrow, .hv-filmframe a { color: var(--c-on-inverse); }
+@media (prefers-reduced-motion: reduce) { .ff-grain { display: none; } }
+
+/* ── slab: a monolith of photograph, the names cutting across ──────────── */
+.hv-slab { min-height: 100svh; display: grid; place-items: center; padding-block: clamp(2rem, 6vh, 4rem); background: var(--c-bg); color: var(--c-text); background-image: linear-gradient(0deg, color-mix(in srgb, var(--c-text) 8%, transparent) 1px, transparent 1px); background-size: 100% 25%; }
+.sl-inner { position: relative; display: grid; grid-template-columns: 1fr; justify-items: start; gap: 0.9rem; width: min(100% - 2rem, 46rem); }
+.sl-plate { display: flex; gap: 1rem; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--c-muted); border-bottom: 1px solid currentColor; padding-bottom: 0.5rem; width: 100%; }
+.sl-block { position: relative; width: 74%; margin-left: auto; aspect-ratio: 3 / 4; box-shadow: -1.4rem 1.4rem 0 -0.1rem color-mix(in srgb, var(--c-text) 14%, transparent); }
+.sl-names { position: relative; margin: -4.4rem 0 0; line-height: 0.9; z-index: 1; text-align: left; }
+.sl-name { font-family: var(--f-heading); font-weight: 400; font-size: clamp(3rem, 15vw, 7.4rem); letter-spacing: -0.03em; color: var(--c-text); mix-blend-mode: normal; text-shadow: 0 0 0.5rem var(--c-bg), 0 0 1.2rem var(--c-bg); }
+.sl-names .hv-amp { font-size: clamp(1.6rem, 6vw, 3rem); display: block; margin-left: 0.4em; }
+.sl-meta { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; font-size: 0.72rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--c-muted); }
+
+/* ── stack: nothing but type, and one narrow strip of photograph ───────── */
+.hv-stack { min-height: 100svh; display: grid; align-items: end; padding-block: clamp(2rem, 6vh, 4rem); background: var(--c-bg); color: var(--c-text); }
+.sk-inner { display: grid; grid-template-columns: 1fr auto; gap: clamp(1rem, 4vw, 3rem); align-items: end; }
+.sk-type { display: grid; gap: 1.4rem; }
+.sk-eyebrow { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--c-muted); border-top: 1px solid currentColor; padding-top: 0.9rem; }
+.sk-names { margin: 0; line-height: 0.88; }
+.sk-name { font-family: var(--f-heading); font-weight: 400; font-size: clamp(3.2rem, 17vw, 10rem); letter-spacing: -0.045em; }
+.sk-amp { display: block; font-family: var(--f-script); font-style: var(--f-script-style, normal); color: var(--c-accent); font-size: clamp(1.4rem, 5vw, 2.6rem); margin: 0.2em 0 0.2em 0.2em; }
+.sk-meta { display: grid; gap: 0.35rem; font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--c-muted); }
+.sk-meta a { color: inherit; text-decoration: none; margin-top: 0.8rem; }
+.sk-strip { position: relative; width: clamp(5.5rem, 22vw, 13rem); height: min(62svh, 34rem); }
+@media (max-width: 520px) { .sk-inner { grid-template-columns: 1fr 5rem; } .sk-name { font-size: clamp(2.8rem, 15vw, 5rem); } }
+
+@media (prefers-reduced-motion: reduce) { .st-beam, .ns-stars, .ns-ring { animation: none; } }

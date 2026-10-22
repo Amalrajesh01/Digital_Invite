@@ -12,6 +12,7 @@ const target = args.find((a) => !a.startsWith("--")) ?? "all";
 const opt = (n, d) => args.find((a) => a.startsWith(`--${n}=`))?.split("=").slice(1).join("=") ?? d;
 const base = process.env.BASE ?? "http://localhost:3000";
 const out = opt("out", ".shots/tpl");
+const extraWait = Number(opt("wait", 0)); // slower motion profiles are still arriving at 3 s; --wait=3000 waits for them
 const W = Number(opt("w", 390)), H = Number(opt("h", 844));
 // a normal phone browser, so the preview guard (which refuses scripted clients) lets our own QA through
 const UA = "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36";
@@ -30,11 +31,11 @@ for (const s of specs) {
   const wantGate = args.includes("--gate");
   await page.goto(`${base}/preview/t/${s.slug}${wantGate ? "" : "?gate=0"}`, { waitUntil: "networkidle", timeout: 90000 }).catch(() => {});
   await page.addStyleTag({ content: "nextjs-portal, [data-nextjs-toast], [data-next-badge-root] { display: none !important; }" }).catch(() => {});
-  await page.waitForTimeout(wantGate ? 1500 : 3200);
+  await page.waitForTimeout((wantGate ? 1500 : 3200) + (wantGate ? 0 : extraWait));
   if (wantGate) {
     await page.screenshot({ path: `${out}/${s.slug}-gate.png` });
     await page.locator(".gate [role=button], .gate .inv-btn").first().click({ timeout: 4000, force: true }).catch(() => errors.push("no gate button"));
-    await page.waitForTimeout(3800);
+    await page.waitForTimeout(3800 + extraWait);
   }
   if (args.includes("--thumbs")) {
     const buf = await page.screenshot({ type: "png" });

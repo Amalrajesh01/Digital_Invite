@@ -198,6 +198,7 @@ export async function saveWeddingAsTemplate(actor: Actor | null, weddingId: stri
     config: {
       flavor: base?.success ? base.data.flavor : "minimal",
       opening: doc.opening.variant,
+      motion: doc.opening.motion === "auto" ? undefined : doc.opening.motion,
       suggestedTheme: theme?.slug,
       eventType: doc.eventType,
       // the preview of the new template shows the words of the sample it came from

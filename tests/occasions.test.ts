@@ -1,3 +1,4 @@
+import { CINEMATIC_DEMOS } from "../scripts/demo/cinematic";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
@@ -260,6 +261,7 @@ describe("the sample invitations and the shop window agree", () => {
     { cfg: ISHA, kind: "couple" }, { cfg: TARA, kind: "couple" }, { cfg: HELEN, kind: "couple" }, { cfg: CHRISTIAN, kind: "couple" }, { cfg: MUSLIM, kind: "couple" },
     { cfg: MEERA, kind: "occasion" }, { cfg: IRA, kind: "occasion" }, { cfg: KABIR, kind: "occasion" }, { cfg: TWINS, kind: "occasion" }, { cfg: AARAV, kind: "occasion" }, { cfg: AADHYA, kind: "occasion" }, { cfg: CONCLAVE, kind: "occasion" }, { cfg: SUMMIT, kind: "occasion" }, { cfg: THOMAS, kind: "occasion" },
     { cfg: NANDINI, kind: "couple" }, { cfg: RIYA, kind: "couple" }, { cfg: NAIR, kind: "occasion" }, { cfg: PUJA, kind: "occasion" }, { cfg: ONAM, kind: "occasion" },
+    ...CINEMATIC_DEMOS.map((cfg) => ({ cfg, kind: "couple" as const })),
   ];
   const build = (c: (typeof CONFIGS)[number]) => {
     const tpl = TEMPLATE_SEEDS.find((t) => t.slug === c.cfg.template)!;
@@ -423,8 +425,8 @@ describe("the WhatsApp links", () => {
 });
 
 describe("the product site’s routes", () => {
-  it("lists every public page, every occasion and every design", () => {
-    const urls = sitemap().map((s) => s.url);
+  it("lists every public page, every occasion and every design", async () => {
+    const urls = (await sitemap()).map((s) => s.url);
     for (const p of ["/", "/templates", "/categories", "/pricing", "/how-it-works", "/faq"]) expect(urls).toContain(absoluteUrl(p));
     expect(urls).toContain(absoluteUrl("/templates/wedding"));
     expect(urls).toContain(absoluteUrl("/templates/wedding/modern-minimal"));

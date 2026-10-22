@@ -85,3 +85,104 @@ html.js .inv[data-flavor="floral"] .rv-up { transform: translateY(1.2rem); }
 html.js .inv[data-flavor="playful"] .rv-up { transform: translateY(2.4rem) rotate(-1.2deg) scale(0.96); }
 html.js .inv[data-flavor="playful"] .rv.in { transform: none; }
 @media (prefers-reduced-motion: reduce) { .inv[data-flavor="playful"] .inv-section { margin-top: 0; } }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Eight more directions for the cinematic wedding set. Same idea as above: they change how a whole invitation is put together.
+     noir        scenes, hairlines, a long shadow          couture    running heads, rules, oversized type
+     celestial   a night-sky ground and thin star lines    vintage    reel numbers, dashed perforations, faint grain
+     storybook   chapters in Roman numerals, drop caps     aquarelle  soft washes behind plain type
+     atelier     plates, a visible grid, square corners    marine     a wave between sections, light and airy
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ═══ NOIR ════════════════════════════════════════════════════════════ */
+.inv[data-flavor="noir"] { --ease: cubic-bezier(0.65, 0, 0.2, 1); }
+.inv[data-flavor="noir"] .inv-section { border-top: 1px solid color-mix(in srgb, currentColor 14%, transparent); }
+.inv[data-flavor="noir"] .chap-line { width: 2.6rem; height: 1px; margin: 0 auto 1.2rem; background: var(--c-accent); }
+.inv[data-flavor="noir"] .inv-head::before { display: block; content: "SCENE " counter(sec, decimal-leading-zero); margin-bottom: 0.9rem; font: 500 0.66rem/1 var(--f-body); letter-spacing: 0.4em; color: var(--c-accent); }
+.inv[data-flavor="noir"] .inv-h2 { font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; font-size: clamp(1.8rem, 5.6vw, 3.2rem); }
+.inv[data-flavor="noir"] .inv-eyebrow { letter-spacing: 0.44em; }
+.inv[data-flavor="noir"] .inv-card { background: transparent; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); border-radius: 0; box-shadow: none; }
+.inv[data-flavor="noir"] .inv-card::before { display: none; }
+.inv[data-flavor="noir"] .inv-btn { border-radius: 0; letter-spacing: 0.32em; }
+.inv[data-flavor="noir"] [data-section="hero"]::before, .inv[data-flavor="noir"] [data-section="hero"]::after { content: ""; position: absolute; left: 0; right: 0; height: 2.4svh; background: #000; z-index: 3; pointer-events: none; }
+.inv[data-flavor="noir"] [data-section="hero"]::before { top: 0; }
+.inv[data-flavor="noir"] [data-section="hero"]::after { bottom: 0; }
+.inv[data-locale]:not([data-locale="en"])[data-flavor="noir"] .inv-h2 { text-transform: none; letter-spacing: 0; }
+
+/* ═══ COUTURE ═════════════════════════════════════════════════════════ */
+.inv[data-flavor="couture"] { --ease: cubic-bezier(0.2, 0.7, 0.1, 1); }
+.inv[data-flavor="couture"] .inv-section { padding-block: clamp(4.5rem, 12vw, 9rem); }
+.inv[data-flavor="couture"] .chap, .inv[data-flavor="couture"] .inv-head { text-align: left; }
+.inv[data-flavor="couture"] .inv-head :is(.mx-auto, .inv-lede) { margin-inline: 0; }
+.inv[data-flavor="couture"] .chap-line { display: none; }
+.inv[data-flavor="couture"] .inv-head::before { display: flex; justify-content: space-between; content: "No. " counter(sec, decimal-leading-zero); padding-bottom: 0.5rem; margin-bottom: 1.4rem; border-bottom: 1px solid currentColor; font: 500 0.64rem/1 var(--f-body); letter-spacing: 0.34em; text-transform: uppercase; }
+.inv[data-flavor="couture"] .inv-h2 { font-weight: 400; letter-spacing: -0.03em; line-height: 0.95; font-size: clamp(2.8rem, 9vw, 6.4rem); }
+.inv[data-flavor="couture"] .inv-eyebrow { letter-spacing: 0.34em; }
+.inv[data-flavor="couture"] .inv-card { background: transparent; border: 0; border-bottom: 1px solid currentColor; border-radius: 0; box-shadow: none; }
+.inv[data-flavor="couture"] .inv-card::before { display: none; }
+.inv[data-flavor="couture"] .inv-btn { border-radius: 0; background: none; color: inherit; border: 0; border-bottom: 1px solid currentColor; padding-inline: 0; letter-spacing: 0.3em; }
+html.js .inv[data-flavor="couture"] .rv-up { transform: translateY(3.2rem); }
+
+/* ═══ CELESTIAL ═══════════════════════════════════════════════════════ */
+.inv[data-flavor="celestial"] { --ease: cubic-bezier(0.4, 0, 0.2, 1); }
+.inv[data-flavor="celestial"] .chap-line { width: 7rem; height: 0.6rem; margin: 0 auto 1.3rem; background: radial-gradient(circle, var(--c-accent) 0 2.2px, transparent 3px) 50% 50% / 0.6rem 0.6rem no-repeat, linear-gradient(90deg, transparent, color-mix(in srgb, var(--c-accent) 70%, transparent) 20% 44%, transparent 44% 56%, color-mix(in srgb, var(--c-accent) 70%, transparent) 56% 80%, transparent) 50% 50% / 100% 1px no-repeat; }
+.inv[data-flavor="celestial"] .inv-h2 { font-weight: 300; letter-spacing: 0.08em; }
+.inv[data-flavor="celestial"] .inv-eyebrow { letter-spacing: 0.42em; color: var(--c-accent); }
+.inv[data-flavor="celestial"] .inv-tint { background: radial-gradient(1px 1px at 20% 30%, color-mix(in srgb, var(--c-accent) 80%, transparent), transparent 60%), radial-gradient(1px 1px at 70% 60%, color-mix(in srgb, var(--c-text) 40%, transparent), transparent 60%), radial-gradient(1.2px 1.2px at 45% 85%, color-mix(in srgb, var(--c-accent) 70%, transparent), transparent 60%), color-mix(in srgb, var(--c-primary) 7%, var(--c-bg)); background-size: 260px 260px, 330px 330px, 410px 410px, auto; }
+.inv[data-flavor="celestial"] .inv-card { background: color-mix(in srgb, var(--c-surface) 82%, transparent); border: 1px solid color-mix(in srgb, var(--c-accent) 38%, transparent); border-radius: calc(var(--r) * 2); box-shadow: 0 0 40px -20px var(--c-accent); }
+.inv[data-flavor="celestial"] .inv-btn { border-radius: 999px; letter-spacing: 0.24em; }
+
+/* ═══ VINTAGE ═════════════════════════════════════════════════════════ */
+.inv[data-flavor="vintage"] { --ease: cubic-bezier(0.45, 0.05, 0.3, 1); }
+.inv[data-flavor="vintage"] .inv-section { border-top: 2px dashed color-mix(in srgb, currentColor 22%, transparent); }
+.inv[data-flavor="vintage"] .chap-line { display: none; }
+.inv[data-flavor="vintage"] .inv-head::before { display: block; content: "REEL " counter(sec, upper-roman); margin-bottom: 0.8rem; font: 400 0.7rem/1 var(--f-body); letter-spacing: 0.34em; color: var(--c-accent); }
+.inv[data-flavor="vintage"] .inv-h2 { font-weight: 400; font-style: italic; letter-spacing: 0; font-size: clamp(2.2rem, 7vw, 4.2rem); }
+.inv[data-flavor="vintage"] .inv-eyebrow { letter-spacing: 0.3em; }
+.inv[data-flavor="vintage"] .inv-card { background: color-mix(in srgb, var(--c-surface) 92%, var(--c-accent)); border: 1px solid color-mix(in srgb, var(--c-text) 24%, transparent); border-radius: 2px; box-shadow: 3px 3px 0 color-mix(in srgb, var(--c-text) 12%, transparent); }
+.inv[data-flavor="vintage"] .inv-card::before { border-radius: 1px; }
+.inv[data-flavor="vintage"] .inv-btn { border-radius: 2px; }
+.inv[data-flavor="vintage"] .inv-tint { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .3 0 0 0 0 .2 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E"); background-color: color-mix(in srgb, var(--c-accent) 10%, var(--c-bg)); }
+@media (prefers-reduced-motion: reduce) { .inv[data-flavor="vintage"] .inv-tint { background-image: none; } }
+
+/* ═══ STORYBOOK ═══════════════════════════════════════════════════════ */
+.inv[data-flavor="storybook"] { --ease: cubic-bezier(0.3, 0.6, 0.2, 1); }
+.inv[data-flavor="storybook"] .chap-line { display: none; }
+.inv[data-flavor="storybook"] .inv-head::before { display: block; content: "Chapter " counter(sec, upper-roman); margin-bottom: 0.6rem; font-family: var(--f-script); font-style: var(--f-script-style, normal); font-size: 1.5rem; color: var(--c-accent); }
+.inv[data-flavor="storybook"] .inv-h2 { font-weight: 500; letter-spacing: 0; font-size: clamp(2.2rem, 7vw, 4rem); }
+.inv[data-flavor="storybook"] .inv-lede::first-letter, .inv[data-flavor="storybook"] .inv-serif-lede::first-letter { float: left; font-family: var(--f-heading); font-size: 3.2em; line-height: 0.82; padding: 0.06em 0.12em 0 0; color: var(--c-accent); }
+.inv[data-flavor="storybook"] .inv-card { background: color-mix(in srgb, var(--c-surface) 94%, #f3e7cc); border: 1px solid color-mix(in srgb, var(--c-text) 16%, transparent); border-radius: 0.4rem 1.2rem 1.2rem 0.4rem; box-shadow: 0 10px 24px -14px rgba(60, 40, 10, 0.5), inset 0.5rem 0 0.6rem -0.5rem rgba(60, 40, 10, 0.2); }
+.inv[data-flavor="storybook"] .inv-btn { border-radius: 0.8rem; }
+
+/* ═══ AQUARELLE ═══════════════════════════════════════════════════════ */
+.inv[data-flavor="aquarelle"] { --ease: cubic-bezier(0.4, 0, 0.2, 1); }
+.inv[data-flavor="aquarelle"] .chap-line { width: 5rem; height: 0.5rem; margin: 0 auto 1.1rem; border-radius: 50%; background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--c-accent) 55%, transparent), transparent); filter: blur(2px); }
+.inv[data-flavor="aquarelle"] .inv-h2 { font-family: var(--f-script); font-style: var(--f-script-style, normal); font-weight: 400; letter-spacing: 0; line-height: 1.08; font-size: clamp(2.6rem, 9vw, 4.6rem); }
+.inv[data-flavor="aquarelle"] .inv-eyebrow { letter-spacing: 0.3em; color: var(--c-accent); }
+.inv[data-flavor="aquarelle"] .inv-tint { background: radial-gradient(60% 55% at 6% 8%, color-mix(in srgb, var(--c-accent) 20%, transparent), transparent 70%), radial-gradient(55% 50% at 96% 92%, color-mix(in srgb, var(--c-primary) 16%, transparent), transparent 70%), radial-gradient(40% 35% at 70% 20%, color-mix(in srgb, var(--c-secondary) 10%, transparent), transparent 70%), var(--c-bg); }
+.inv[data-flavor="aquarelle"] .inv-card { background: color-mix(in srgb, var(--c-surface) 88%, transparent); border: 0; border-radius: 1.4rem; box-shadow: 0 18px 40px -26px color-mix(in srgb, var(--c-primary) 60%, transparent); }
+.inv[data-flavor="aquarelle"] .inv-card::before { display: none; }
+.inv[data-flavor="aquarelle"] .inv-btn { border-radius: 999px; letter-spacing: 0.16em; }
+
+/* ═══ ATELIER ═════════════════════════════════════════════════════════ */
+.inv[data-flavor="atelier"] { --ease: cubic-bezier(0.7, 0, 0.2, 1); }
+.inv[data-flavor="atelier"] .inv-section { border-top: 1px solid currentColor; background-image: linear-gradient(90deg, color-mix(in srgb, currentColor 7%, transparent) 1px, transparent 1px); background-size: 25% 100%; }
+.inv[data-flavor="atelier"] .chap, .inv[data-flavor="atelier"] .inv-head { text-align: left; }
+.inv[data-flavor="atelier"] .inv-head :is(.mx-auto, .inv-lede) { margin-inline: 0; }
+.inv[data-flavor="atelier"] .chap-line { display: none; }
+.inv[data-flavor="atelier"] .inv-head::before { display: block; content: "PLATE " counter(sec, decimal-leading-zero); margin-bottom: 1.2rem; font: 500 0.66rem/1 var(--f-body); letter-spacing: 0.34em; }
+.inv[data-flavor="atelier"] .inv-h2 { font-weight: 400; letter-spacing: -0.02em; font-size: clamp(2.2rem, 7vw, 4.4rem); }
+.inv[data-flavor="atelier"] .inv-eyebrow { letter-spacing: 0.3em; color: var(--c-muted); }
+.inv[data-flavor="atelier"] .inv-card { background: var(--c-surface); border: 1px solid currentColor; border-radius: 0; box-shadow: 0.6rem 0.6rem 0 -1px color-mix(in srgb, currentColor 14%, transparent); }
+.inv[data-flavor="atelier"] .inv-card::before { display: none; }
+.inv[data-flavor="atelier"] .inv-btn { border-radius: 0; letter-spacing: 0.28em; }
+
+/* ═══ MARINE ══════════════════════════════════════════════════════════ */
+.inv[data-flavor="marine"] { --ease: cubic-bezier(0.35, 0.1, 0.25, 1); }
+.inv[data-flavor="marine"] .chap-line { width: 6rem; height: 0.7rem; margin: 0 auto 1.1rem; background: var(--c-accent); opacity: 0.8; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 8'%3E%3Cpath d='M0 4 Q7.5 0 15 4 T30 4 T45 4 T60 4' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 8'%3E%3Cpath d='M0 4 Q7.5 0 15 4 T30 4 T45 4 T60 4' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/svg%3E") center / contain no-repeat; }
+.inv[data-flavor="marine"] .inv-h2 { font-weight: 300; letter-spacing: 0.04em; }
+.inv[data-flavor="marine"] .inv-eyebrow { letter-spacing: 0.38em; color: var(--c-primary); }
+.inv[data-flavor="marine"] .inv-tint { background: linear-gradient(180deg, color-mix(in srgb, var(--c-accent) 14%, var(--c-bg)), color-mix(in srgb, var(--c-primary) 8%, var(--c-bg))); }
+.inv[data-flavor="marine"] .inv-card { border-radius: 1.2rem; border: 1px solid color-mix(in srgb, var(--c-primary) 22%, transparent); box-shadow: 0 16px 30px -22px color-mix(in srgb, var(--c-primary) 60%, transparent); }
+.inv[data-flavor="marine"] .inv-card::before { display: none; }
+.inv[data-flavor="marine"] .inv-btn { border-radius: 999px; letter-spacing: 0.2em; }

@@ -1,3 +1,4 @@
+import { addLibraryTrack } from "@/domain/music/service";
 import { and, asc, eq } from "drizzle-orm";
 import { getDb, schema } from "@/db/client";
 import { type Actor, requireAdmin } from "@/domain/auth/access";
@@ -124,6 +125,12 @@ async function cloneImages(fromWeddingId: string, toWeddingId: string, ids: Set<
   return map;
 }
 
+/** A template may suggest a song from the library; it is only a starting point, and never blocks the invitation. */
+async function startMusic(admin: Actor, weddingId: string, trackId: string | undefined) {
+  if (!trackId) return;
+  await addLibraryTrack(admin, weddingId, trackId, { primary: true }).catch(() => undefined);
+}
+
 async function uniqueSlug(base: string): Promise<string | undefined> {
   const b = normalizeSlug(base);
   if (!b || slugProblem(b)) return undefined;
@@ -156,6 +163,7 @@ export async function createFromTemplate(actor: Actor | null, input: FromTemplat
   });
   const cur = (await getWedding(admin, w.id)).draftDoc;
   const sample = await sampleOf(config);
+  await startMusic(admin, w.id, config.music);
   if (!sample) return { id: w.id, slug: w.slug, fromSample: false, photos: 0 };
 
   const src = (await getWedding(admin, sample.id)).draftDoc;
@@ -165,7 +173,7 @@ export async function createFromTemplate(actor: Actor | null, input: FromTemplat
   const byType = new Map(src.sections.map((s) => [s.type, s]));
   doc.sections = cur.sections.map((s) => ({ ...s, content: byType.get(s.type)?.content ?? s.content }));
   doc.eventType = cur.eventType;
-  doc.opening = { ...src.opening, variant: cur.opening.variant };
+  doc.opening = { ...src.opening, variant: cur.opening.variant, motion: cur.opening.motion };
   doc.whatsapp = cur.whatsapp; // the sample's chat and call buttons point at Stack Bridge Labs
   doc.contacts = cur.contacts;
   doc.rsvp = { ...doc.rsvp, whatsappNumber: cur.rsvp.whatsappNumber };
