@@ -16,7 +16,7 @@ What was added, where it lives, how to turn it on, and what it honestly does not
 | **Live stream** | A first-class section: schedule, countdown, before / during / after states, replay, studio editor | `src/domain/live/stream.ts`, `LivestreamSection` |
 | **Image manifest + gate** | Every photograph in every sample is assigned a part and checked | `src/domain/imagery/casting.ts`, `npm run images:check` |
 | **Portfolio wall** | Admin-managed, consent-gated public “Our work”, a listing API and sitemap entries | `src/domain/portfolio/service.ts`, `/admin/portfolio`, `/portfolio` |
-| **Template library on the home page** | A drifting preview strip, and the whole registry as a filterable grid | `src/components/site/PreviewStrip.tsx`, `TemplateDiscovery.tsx` |
+| **Template library on the home page** | The whole registry as a filterable grid of phones, four across; each phone slowly scrolls its own invitation and stops under the pointer. The long pictures come from `npx tsx scripts/dev/tall.mjs all` (needs the samples seeded locally) and live in `public/templates/tall/` | `src/components/site/TemplateDiscovery.tsx`, `Reel.tsx`, `.reel` in `globals.css` |
 
 The five original wedding designs and the two faith editions are untouched. Nothing was renamed in the database; the only schema change is one new table (`portfolio_items`, migration `0008`).
 

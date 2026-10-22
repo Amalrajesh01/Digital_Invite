@@ -11,7 +11,6 @@ import { giftPriceText } from "@/domain/gifts/pricing";
 import { FallbackImg } from "@/components/site/FallbackImg";
 import { SiteButton, WaButton } from "@/components/site/WaButton";
 import { FiveWays, type WayGroup } from "@/components/site/FiveWays";
-import { PreviewStrip } from "@/components/site/PreviewStrip";
 import { PortfolioWall } from "@/components/site/PortfolioWall";
 import { listPublicPortfolio } from "@/domain/portfolio/service";
 import { TemplateDiscovery, type DiscoveryItem } from "@/components/site/TemplateDiscovery";
@@ -66,7 +65,6 @@ export default async function Home() {
   const library = SITE_TEMPLATES.filter((t) => !t.love);
   const discover: DiscoveryItem[] = library.map((t) => ({ slug: t.slug, name: t.name, tagline: t.tagline, styleLabel: t.styleLabel, category: t.category, categoryName: categoryBySlug(t.category)?.name ?? t.category, thumb: t.thumb, path: t.path, colors: t.theme.colors, tags: t.tags, featured: t.featured }));
   const occasions = [...new Set(library.map((t) => t.category))].map((slug) => ({ slug, name: categoryBySlug(slug)?.name ?? slug }));
-  const strip = [...library.filter((t) => t.category === "wedding")].sort((a, b) => Number(b.featured) - Number(a.featured)).map((t) => ({ slug: t.slug, name: t.name, styleLabel: t.styleLabel, thumb: t.thumb, path: t.path }));
   return (
     <>
       {/* ── hero ─────────────────────────────────────────────────────── */}
@@ -110,7 +108,6 @@ export default async function Home() {
       {/* ── the whole library ────────────────────────────────────────── */}
       <section id="designs" className="bg-white py-16 sm:py-20 lg:py-24">
         <Wrap><Heading eyebrow="Our templates" title="Find the Beginning of Your Forever" lede="Explore cinematic invitations designed to tell your story beautifully." align="center" /></Wrap>
-        {strip.length > 0 && <div className="mt-10"><PreviewStrip items={strip} label="Wedding designs" /></div>}
         <Wrap className="mt-12"><TemplateDiscovery items={discover} occasions={occasions} tagLabels={TAG_LABELS} initialOccasion={occasions.some((o) => o.slug === "wedding") ? "wedding" : ""} /></Wrap>
       </section>
 

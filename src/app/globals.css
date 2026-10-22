@@ -409,3 +409,25 @@ dialog.drawer[open] {
   --color-rose-soft: var(--rose-soft);
   --color-night: var(--night);
 }
+
+/* Template reels (homepage): a tall picture of an invitation drifting up and back down its phone. Paused until the reel is on
+   screen (data-live), and for the pointer, keyboard focus, the visitor's own pause, and reduced motion. */
+.reel { container-type: size; }
+.reel-img {
+  height: auto;
+  will-change: transform;
+  animation: reel-drift 100s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation-play-state: paused;
+}
+.reel[data-live="true"] .reel-img { animation-play-state: running; }
+.reel-card:hover .reel-img,
+.reel-card:focus-within .reel-img,
+.reel-still .reel-img { animation-play-state: paused !important; }
+@keyframes reel-drift {
+  0%, 8% { transform: translateY(0); }
+  50%, 58% { transform: translateY(calc(100cqh - 100%)); }
+  100% { transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reel-img { animation: none; }
+}

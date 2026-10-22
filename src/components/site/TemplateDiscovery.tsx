@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ArrowRight, Search } from "lucide-react";
+import { ArrowRight, Pause, Play, Search } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { FallbackImg } from "./FallbackImg";
+import { Reel } from "./Reel";
 import { Swatches } from "./Swatches";
 
 export interface DiscoveryItem {
@@ -13,13 +13,15 @@ export interface DiscoveryItem {
 /**
  * The whole template library, driven by the registry: every public design is a card, filtered by occasion, by feeling and by a word in
  * its name. Every card is rendered on the server (it is in the page for search engines and for anyone without JavaScript); this only
- * decides which are shown. Four columns at most, two on a tablet, one or two on a phone — never four narrow ones.
+ * decides which are shown. A grid of phones, four across on a desktop, three on a tablet, two on a phone; each phone slowly scrolls
+ * its own invitation (see Reel) unless the visitor pauses it.
  */
 export function TemplateDiscovery({ items, occasions, tagLabels, initialOccasion }: { items: DiscoveryItem[]; occasions: { slug: string; name: string }[]; tagLabels: Record<string, string>; initialOccasion: string }) {
   const [occasion, setOccasion] = useState(initialOccasion);
   const [tag, setTag] = useState("");
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<"featured" | "az">("featured");
+  const [still, setStill] = useState(false);
 
   const inOccasion = useMemo(() => items.filter((d) => !occasion || d.category === occasion), [items, occasion]);
   // only feelings that some design in this occasion really has
@@ -65,6 +67,9 @@ export function TemplateDiscovery({ items, occasions, tagLabels, initialOccasion
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted" aria-hidden />
             <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search by name" className="h-11 w-48 rounded-full border border-rule-strong bg-white pl-9 pr-3 text-[15px] outline-none focus:border-ink" />
           </label>
+          <button type="button" onClick={() => setStill((v) => !v)} aria-pressed={still} className="inline-flex h-11 items-center gap-2 rounded-full border border-rule-strong bg-white px-4 text-[14px] font-medium text-ink hover:border-ink">
+            {still ? <Play className="size-4" aria-hidden /> : <Pause className="size-4" aria-hidden />}{still ? "Play previews" : "Pause previews"}
+          </button>
           <label className="flex items-center gap-2 text-[14px] text-muted">
             Sort
             <select value={sort} onChange={(e) => setSort(e.target.value as "featured" | "az")} className="h-11 rounded-full border border-rule-strong bg-white px-3 text-[15px] text-ink">
@@ -76,24 +81,23 @@ export function TemplateDiscovery({ items, occasions, tagLabels, initialOccasion
 
       <p className="mt-6 text-[14px] text-muted" role="status" aria-live="polite">{[...shown].length} design{[...shown].length === 1 ? "" : "s"}{occasion || tag || needle ? " match" : ""}</p>
 
-      <ul className="mt-4 grid grid-cols-1 gap-x-5 gap-y-10 min-[460px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {order.map((d) => (
-          <li key={d.slug} hidden={!shown.has(d.slug)} className="[content-visibility:auto] [contain-intrinsic-size:auto_26rem]">
-            <article className="group flex h-full flex-col">
+      <ul className={cn("mt-4 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-5 md:grid-cols-3 lg:grid-cols-4", still && "reel-still")}>
+        {order.map((d, i) => (
+          <li key={d.slug} hidden={!shown.has(d.slug)} className="[content-visibility:auto] [contain-intrinsic-size:auto_34rem]">
+            <article className="reel-card group flex h-full flex-col">
               <Link href={d.path} data-track="cta_click" data-ref={`discover-${d.slug}`} className="block" aria-label={`Preview ${d.name}`}>
-                <div className="relative aspect-[4/5] overflow-hidden rounded-xl border border-rule bg-paper-2">
-                  <FallbackImg src={d.thumb} alt={`The first screen of the ${d.name} invitation`} width={540} height={1140} loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover object-top transition duration-700 group-hover:scale-[1.03]" />
-                  <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink backdrop-blur">{d.categoryName}</span>
+                <div className="overflow-hidden rounded-[1.6rem] border-[5px] border-ink bg-paper-2 shadow-[0_26px_40px_-28px_rgba(23,20,31,.6)] transition duration-500 group-hover:-translate-y-1.5">
+                  <Reel tall={`/templates/tall/${d.slug}.webp`} thumb={d.thumb} alt={`The ${d.name} invitation, scrolling`} index={i} eager={i < 4} />
                 </div>
               </Link>
               <div className="mt-3 flex flex-1 flex-col">
                 <div className="flex items-start justify-between gap-3">
-                  <h3 className="font-serif text-[22px] font-medium leading-tight text-ink">{d.name}</h3>
+                  <h3 className="font-serif text-[18px] font-medium leading-tight text-ink min-[420px]:text-[20px] sm:text-[22px]">{d.name}</h3>
                   <Swatches colors={d.colors.slice(0, 3)} />
                 </div>
-                <p className="mt-1 text-[13.5px] text-muted">{d.styleLabel}</p>
-                <p className="mt-2 line-clamp-2 text-[15px] leading-snug text-ink-2/85">{d.tagline}</p>
-                <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-1 pt-4">
+                <p className="mt-1 text-[13.5px] text-muted">{d.styleLabel} · {d.categoryName}</p>
+                <p className="mt-2 line-clamp-2 text-[14.5px] leading-snug text-ink-2/85 sm:text-[15px]">{d.tagline}</p>
+                <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-1 pt-3">
                   <Link href={d.path} data-track="cta_click" data-ref={`discover-preview-${d.slug}`} className="inline-flex min-h-11 items-center gap-1.5 text-[15px] font-medium text-ink underline underline-offset-4 hover:text-accent">Preview <ArrowRight className="size-4" aria-hidden /></Link>
                   <Link href={`/start?template=${d.slug}`} data-track="cta_click" data-ref={`discover-choose-${d.slug}`} className="inline-flex min-h-11 items-center text-[15px] text-ink-2 underline-offset-4 hover:text-accent hover:underline">Choose this design</Link>
                 </div>
