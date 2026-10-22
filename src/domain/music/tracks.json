@@ -1,0 +1,890 @@
+[
+  {
+    "id": "there-is-romance",
+    "title": "There is Romance",
+    "category": "soft-piano",
+    "moods": [
+      "tender",
+      "romantic"
+    ],
+    "seconds": 140,
+    "bytes": 1392360,
+    "file": "there-is-romance.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1100044",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Piano",
+    "shortened": true,
+    "originalSeconds": 198,
+    "note": "A slow solo piano; the quietest way to open an invitation."
+  },
+  {
+    "id": "reawakening",
+    "title": "Reawakening",
+    "category": "soft-piano",
+    "moods": [
+      "intimate",
+      "romantic"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "reawakening.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1400017",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Piano, Cello",
+    "shortened": true,
+    "originalSeconds": 214,
+    "note": "Piano and cello: a easy love theme, in the author's words “useful for quiet talks”."
+  },
+  {
+    "id": "immersed",
+    "title": "Immersed",
+    "category": "piano-strings",
+    "moods": [
+      "emotional",
+      "contemplative"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "immersed.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1600010",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Piano, Strings",
+    "shortened": true,
+    "originalSeconds": 249,
+    "note": "Minimal piano with a slow string bed that swells."
+  },
+  {
+    "id": "eternal-hope",
+    "title": "Eternal Hope",
+    "category": "piano-strings",
+    "moods": [
+      "hopeful",
+      "emotional"
+    ],
+    "seconds": 140,
+    "bytes": 1263116,
+    "file": "eternal-hope.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1100238",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Piano, Strings, Helicon, French Horn, Choir",
+    "shortened": true,
+    "originalSeconds": 284,
+    "note": "A building, hopeful piano with strings and horn."
+  },
+  {
+    "id": "simple-duet",
+    "title": "Simple Duet",
+    "category": "piano-strings",
+    "moods": [
+      "optimistic",
+      "tender"
+    ],
+    "seconds": 140,
+    "bytes": 1392360,
+    "file": "simple-duet.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1100074",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Piano, Violin",
+    "shortened": true,
+    "originalSeconds": 199,
+    "note": "Piano and violin, slow, optimistic and simple."
+  },
+  {
+    "id": "morning",
+    "title": "Morning",
+    "category": "acoustic",
+    "moods": [
+      "warm",
+      "bright"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "morning.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN2300003",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Classical Guitar, Harp, Flutes",
+    "shortened": true,
+    "originalSeconds": 153,
+    "note": "Classical guitar, harp and flutes: a gentle daytime feel."
+  },
+  {
+    "id": "almost-bliss",
+    "title": "Almost Bliss",
+    "category": "acoustic",
+    "moods": [
+      "warm",
+      "relaxed"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "almost-bliss.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1900015",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Guitars, Percussion",
+    "shortened": true,
+    "originalSeconds": 317,
+    "note": "Layered acoustic guitars, unhurried."
+  },
+  {
+    "id": "midnight-tale",
+    "title": "Midnight Tale",
+    "category": "guitar",
+    "moods": [
+      "romantic",
+      "intimate"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "midnight-tale.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1900004",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Guitar, Lute",
+    "shortened": true,
+    "originalSeconds": 162,
+    "note": "Guitar and lute, a quiet evening serenade."
+  },
+  {
+    "id": "evening",
+    "title": "Evening",
+    "category": "guitar",
+    "moods": [
+      "relaxed",
+      "warm"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "evening.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN2300002",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Guitar, Cello, Oboe",
+    "shortened": true,
+    "originalSeconds": 186,
+    "note": "Guitar, cello and oboe as the day goes down."
+  },
+  {
+    "id": "wholesome",
+    "title": "Wholesome",
+    "category": "golden-hour",
+    "moods": [
+      "warm",
+      "golden"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "wholesome.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1900022",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Cello, Viola, Marimba, Drums",
+    "shortened": true,
+    "originalSeconds": 364,
+    "note": "Cello, viola and marimba with a soft pulse; sunlit and kind."
+  },
+  {
+    "id": "inspired",
+    "title": "Inspired",
+    "category": "golden-hour",
+    "moods": [
+      "uplifting",
+      "warm"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "inspired.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1600022",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Guitar, Synths, Percussion",
+    "shortened": true,
+    "originalSeconds": 286,
+    "note": "A slowly rising guitar-led piece."
+  },
+  {
+    "id": "dreamer",
+    "title": "Dreamer",
+    "category": "contemporary",
+    "moods": [
+      "modern",
+      "romantic"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "dreamer.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1600043",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Piano, Percussion",
+    "shortened": true,
+    "originalSeconds": 204,
+    "note": "Piano with light percussion; a contemporary love song without words."
+  },
+  {
+    "id": "aretes",
+    "title": "Aretes",
+    "category": "contemporary",
+    "moods": [
+      "modern",
+      "uplifting"
+    ],
+    "seconds": 140,
+    "bytes": 1377002,
+    "file": "aretes.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1100325",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Piano, Synths, Choir",
+    "shortened": true,
+    "originalSeconds": 276,
+    "note": "Solo piano surrounded by rich, airy textures."
+  },
+  {
+    "id": "thaxted",
+    "title": "Thaxted (Holst)",
+    "category": "orchestral",
+    "moods": [
+      "regal",
+      "grand"
+    ],
+    "seconds": 140,
+    "bytes": 1355667,
+    "file": "thaxted.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1100051",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Full Orchestra",
+    "shortened": true,
+    "originalSeconds": 153,
+    "note": "Holst's “Thaxted” theme for full orchestra; stately and warm."
+  },
+  {
+    "id": "bittersweet",
+    "title": "Bittersweet",
+    "category": "orchestral",
+    "moods": [
+      "emotional",
+      "cinematic"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "bittersweet.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1700004",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Synth, Cello, Piano, Choir",
+    "shortened": true,
+    "originalSeconds": 202,
+    "note": "Cello, piano and wordless choir; a film-score swell."
+  },
+  {
+    "id": "manor",
+    "title": "Manor",
+    "category": "ambience",
+    "moods": [
+      "elegant",
+      "airy"
+    ],
+    "seconds": 140,
+    "bytes": 1801337,
+    "file": "manor.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1800015",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Synths",
+    "shortened": true,
+    "originalSeconds": 234,
+    "note": "Soft synthesised pads; calm, bright, unobtrusive."
+  },
+  {
+    "id": "cottages",
+    "title": "Cottages",
+    "category": "ambience",
+    "moods": [
+      "elegant",
+      "serene"
+    ],
+    "seconds": 140,
+    "bytes": 1801337,
+    "file": "cottages.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1800014",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Synths",
+    "shortened": true,
+    "originalSeconds": 234,
+    "note": "A warm, slow ambient bed."
+  },
+  {
+    "id": "airship-serenity",
+    "title": "Airship Serenity",
+    "category": "dreamlike",
+    "moods": [
+      "dreamy",
+      "floating"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "airship-serenity.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1600046",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Synths",
+    "shortened": true,
+    "originalSeconds": 240,
+    "note": "Weightless ambient synthesiser."
+  },
+  {
+    "id": "frozen-star",
+    "title": "Frozen Star",
+    "category": "dreamlike",
+    "moods": [
+      "dreamy",
+      "celestial"
+    ],
+    "seconds": 140,
+    "bytes": 1262816,
+    "file": "frozen-star.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1100356",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Harp, Choir, Helicons, Flutes",
+    "shortened": true,
+    "originalSeconds": 221,
+    "note": "Harp, flutes and choir over odd, lilting chords."
+  },
+  {
+    "id": "frost-waltz",
+    "title": "Frost Waltz",
+    "category": "dreamlike",
+    "moods": [
+      "magical",
+      "celestial"
+    ],
+    "seconds": 135,
+    "bytes": 1222692,
+    "file": "frost-waltz.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1100516",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Celesta, Glockenspiel, Basses, Cellos, Violas, Violins, French Horns",
+    "shortened": false,
+    "originalSeconds": 135,
+    "note": "Celesta and glockenspiel in a slow, glittering waltz."
+  },
+  {
+    "id": "canon-in-d-major",
+    "title": "Canon in D Major",
+    "category": "classical-strings",
+    "moods": [
+      "classic",
+      "romantic"
+    ],
+    "seconds": 140,
+    "bytes": 1355667,
+    "file": "canon-in-d-major.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1100301",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Double Bass, Violin, Harp",
+    "shortened": true,
+    "originalSeconds": 356,
+    "note": "Pachelbel's Canon for bass, violins and harp."
+  },
+  {
+    "id": "canon-two-harps",
+    "title": "Canon in D for Two Harps",
+    "category": "harp",
+    "moods": [
+      "gentle",
+      "classic"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "canon-two-harps.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN2000015",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Concert Harps",
+    "shortened": true,
+    "originalSeconds": 340,
+    "note": "Pachelbel's Canon on two concert harps."
+  },
+  {
+    "id": "skye-cuillin",
+    "title": "Skye Cuillin",
+    "category": "harp",
+    "moods": [
+      "airy",
+      "pastoral"
+    ],
+    "seconds": 140,
+    "bytes": 1368988,
+    "file": "skye-cuillin.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1100346",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Harp, Whistle, Fiddle, Synths, Strings, Choir",
+    "shortened": true,
+    "originalSeconds": 193,
+    "note": "Harp, whistle, fiddle and strings with a Celtic feel."
+  },
+  {
+    "id": "lobby-time",
+    "title": "Lobby Time",
+    "category": "editorial",
+    "moods": [
+      "chic",
+      "cool"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "lobby-time.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1600054",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Vibraphone, Piano, Bass, Drums",
+    "shortened": true,
+    "originalSeconds": 193,
+    "note": "Vibraphone and piano with a soft groove: a quiet hotel lobby."
+  },
+  {
+    "id": "late-night-radio",
+    "title": "Late Night Radio",
+    "category": "editorial",
+    "moods": [
+      "chic",
+      "slow"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "late-night-radio.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN2100003",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Electric Piano, Bass, Drums, Synth",
+    "shortened": true,
+    "originalSeconds": 264,
+    "note": "Electric piano and a laid-back beat."
+  },
+  {
+    "id": "crinoline-dreams",
+    "title": "Crinoline Dreams",
+    "category": "vintage",
+    "moods": [
+      "nostalgic",
+      "romantic"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "crinoline-dreams.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1700073",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Piano, Violin, Viola, Bass, Cello, Double Bass",
+    "shortened": true,
+    "originalSeconds": 246,
+    "note": "Piano, violin and strings in an old-fashioned ballroom jazz style."
+  },
+  {
+    "id": "starting-out-waltz",
+    "title": "Starting Out Waltz Allegretto",
+    "category": "vintage",
+    "moods": [
+      "nostalgic",
+      "gentle"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "starting-out-waltz.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN2100023",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Piano, Bass, Drum Kit",
+    "shortened": true,
+    "originalSeconds": 249,
+    "note": "A piano waltz, brushed drums and bass."
+  },
+  {
+    "id": "prelude-in-c",
+    "title": "Prelude in C (BWV 846)",
+    "category": "minimal-piano",
+    "moods": [
+      "minimal",
+      "classic"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "prelude-in-c.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1100689",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Piano",
+    "shortened": true,
+    "originalSeconds": 179,
+    "note": "Bach's Prelude in C, solo piano; clean and unhurried."
+  },
+  {
+    "id": "gymnopedie-1",
+    "title": "Gymnopedie No. 1",
+    "category": "minimal-piano",
+    "moods": [
+      "minimal",
+      "contemplative"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "gymnopedie-1.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1100787",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Piano",
+    "shortened": true,
+    "originalSeconds": 187,
+    "note": "Satie's Gymnopédie No. 1, solo piano."
+  },
+  {
+    "id": "reign",
+    "title": "Reign",
+    "category": "dramatic",
+    "moods": [
+      "dramatic",
+      "grand"
+    ],
+    "seconds": 140,
+    "bytes": 1268068,
+    "file": "reign.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1100373",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Piano, Basses, French Horn, Drum Kit, Guitar, Choir",
+    "shortened": true,
+    "originalSeconds": 163,
+    "note": "A slow piano introduction that opens into a large, warm orchestral swell."
+  },
+  {
+    "id": "second-coming",
+    "title": "Second Coming - no percussion",
+    "category": "dramatic",
+    "moods": [
+      "epic",
+      "cinematic"
+    ],
+    "seconds": 132,
+    "bytes": 1054764,
+    "file": "second-coming.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1100674",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Orchestra",
+    "shortened": false,
+    "originalSeconds": 132,
+    "note": "Orchestra only, no drums: an epic, rising fanfare."
+  },
+  {
+    "id": "northern-glade",
+    "title": "Northern Glade",
+    "category": "nature",
+    "moods": [
+      "serene",
+      "airy"
+    ],
+    "seconds": 140,
+    "bytes": 1801337,
+    "file": "northern-glade.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1800017",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Synths",
+    "shortened": true,
+    "originalSeconds": 315,
+    "note": "A bright, calm pad like morning light through trees."
+  },
+  {
+    "id": "farm",
+    "title": "Farm",
+    "category": "nature",
+    "moods": [
+      "serene",
+      "pastoral"
+    ],
+    "seconds": 140,
+    "bytes": 1801337,
+    "file": "farm.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1800016",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Synths",
+    "shortened": true,
+    "originalSeconds": 292,
+    "note": "A slow, open ambient piece with a countryside feel."
+  },
+  {
+    "id": "poppers-and-prosecco",
+    "title": "Poppers and Prosecco",
+    "category": "celebration",
+    "moods": [
+      "celebratory",
+      "chic"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "poppers-and-prosecco.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1700014",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Trombone, Piano, Bass, Drums",
+    "shortened": true,
+    "originalSeconds": 194,
+    "note": "Trombone, piano and a light swing; a cocktail-hour toast."
+  },
+  {
+    "id": "carpe-diem",
+    "title": "Carpe Diem",
+    "category": "celebration",
+    "moods": [
+      "celebratory",
+      "bright"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "carpe-diem.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1600023",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Clarinet, Ukulele, Flute, Guitar, Xylophone, Percussion, Bass",
+    "shortened": true,
+    "originalSeconds": 295,
+    "note": "Clarinet, ukulele, flute and guitar; light and cheerful."
+  },
+  {
+    "id": "heart-of-nowhere",
+    "title": "Heart of Nowhere",
+    "category": "spiritual",
+    "moods": [
+      "spiritual",
+      "calm"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "heart-of-nowhere.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1400045",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Choir, Cellos, Basses",
+    "shortened": true,
+    "originalSeconds": 172,
+    "note": "Wordless choir over cellos. Not tied to any faith."
+  },
+  {
+    "id": "ascending-the-vale",
+    "title": "Ascending the Vale",
+    "category": "spiritual",
+    "moods": [
+      "spiritual",
+      "pastoral"
+    ],
+    "seconds": 140,
+    "bytes": 1120592,
+    "file": "ascending-the-vale.mp3",
+    "composer": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/music.html",
+    "isrc": "USUAN1600064",
+    "licence": {
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": true
+    },
+    "instruments": "Harp, Choir, Flute, Percussion, Anyafil Horn",
+    "shortened": true,
+    "originalSeconds": 248,
+    "note": "Harp, choir and flute. Not tied to any faith."
+  }
+]

@@ -7,7 +7,8 @@ import { Sheet } from "@/components/ui/Sheet";
 import { Switch, TextField } from "@/components/ui/Field";
 import { EmptyState } from "@/components/ui/Bits";
 import { MediaLibrary } from "@/components/media/MediaLibrary";
-import { deleteTrackAction, listTracksAction, saveTrackAction, type MediaRow } from "@/app/actions/media";
+import { addLibraryTrackAction, deleteTrackAction, listTracksAction, saveTrackAction, type MediaRow } from "@/app/actions/media";
+import { MusicLibraryPicker } from "./MusicLibrary";
 import { FormCard, Hint } from "../forms";
 import { useDraft } from "../draft";
 
@@ -17,6 +18,7 @@ export function MusicStep() {
   const { weddingId, media, refreshMedia, has } = useDraft();
   const [tracks, setTracks] = useState<Track[] | null>(null);
   const [picking, setPicking] = useState(false);
+  const [browsing, setBrowsing] = useState(false);
   const [pending, start] = useTransition();
   const load = useCallback(async () => {
     const r = await listTracksAction(weddingId);
@@ -43,11 +45,11 @@ export function MusicStep() {
 
   return (
     <div className="space-y-6">
-      <FormCard title="Background music" description="Guests hear the main song after they tap ‘Open with music’ — browsers never allow music to start by itself, so it always begins with a deliberate tap." actions={<Button size="sm" icon={<Plus className="size-4" />} onClick={() => setPicking(true)}>Add a song</Button>}>
+      <FormCard title="Background music" description="Guests hear the main song after they tap ‘Open with music’ — browsers never allow music to start by itself, so it always begins with a deliberate tap." actions={<div className="flex flex-wrap gap-2"><Button size="sm" icon={<Music className="size-4" />} onClick={() => setBrowsing(true)}>Choose from the library</Button><Button size="sm" variant="quiet" icon={<Plus className="size-4" />} onClick={() => setPicking(true)}>Upload a song</Button>{!!tracks?.length && <Button size="sm" variant="ghost" className="text-bad" onClick={() => { if (confirm("Turn the music off? Every song is taken out of this invitation (the files stay in your media library).")) for (const t of tracks) call(() => deleteTrackAction(weddingId, t.id)); }}>No music</Button>}</div>}>
         {tracks === null ? (
           <p className="text-muted">Loading…</p>
         ) : tracks.length === 0 ? (
-          <EmptyState mark="♪" title="No music yet" body="Upload an MP3, M4A or WAV of a song you love. Instrumental tracks work beautifully." action={<Button variant="quiet" onClick={() => setPicking(true)}>Choose a song</Button>} />
+          <EmptyState mark="♪" title="No music yet" body="Choose a song from our library of licensed instrumentals, or upload an MP3, M4A or WAV of your own." action={<Button variant="quiet" onClick={() => setBrowsing(true)}>Browse the library</Button>} />
         ) : (
           <ul className="divide-y divide-rule rounded-md border border-rule">
             {tracks.map((t, i) => {
@@ -75,6 +77,9 @@ export function MusicStep() {
         {pending && <p className="text-[13px] text-muted">Saving…</p>}
       </FormCard>
       {!has("music") && <Hint>Music is part of every package — if you can’t add songs, ask the platform owner to enable it.</Hint>}
+      <Sheet open={browsing} onClose={() => setBrowsing(false)} title="Music library" description="Licensed instrumental tracks. Press play to hear a track; it only plays in this window and never starts by itself for guests." wide>
+        {browsing && <MusicLibraryPicker added={new Set((tracks ?? []).map((t) => `${t.title}|${t.artist}`))} busy={pending} onPick={(id, primary) => call(() => addLibraryTrackAction(weddingId, id, primary), primary ? "Main song changed" : "Song added")} />}
+      </Sheet>
       <Sheet open={picking} onClose={() => setPicking(false)} title="Choose a song" description="Upload MP3, M4A, WAV or OGG. Only songs you have the right to use should be uploaded." wide>
         <MediaLibrary weddingId={weddingId} mode="pick" kinds={["AUDIO"]} categories={["MUSIC"]} defaultCategory="MUSIC" onPick={add} />
       </Sheet>

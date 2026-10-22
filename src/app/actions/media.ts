@@ -7,6 +7,7 @@ import {
   saveTrack, deleteTrack, setItemCaption, toResolved, updateMedia, type MediaFilter,
 } from "@/domain/media/service";
 import type { LocalizedText } from "@/domain/doc/schema";
+import { addLibraryTrack } from "@/domain/music/service";
 
 const bust = (id: string) => {
   revalidatePath(`/admin/weddings/${id}`, "layout");
@@ -62,4 +63,6 @@ export const listTracksAction = async (weddingId: string) =>
   }, { weddingId });
 export const saveTrackAction = async (weddingId: string, input: { id?: string; assetId?: string; title: string; artist?: string; isPrimary?: boolean; inPlaylist?: boolean; coverAssetId?: string | null }) =>
   act(async (a) => (await saveTrack(a, weddingId, input), bust(weddingId), true), { weddingId });
+export const addLibraryTrackAction = async (weddingId: string, trackId: string, primary?: boolean) =>
+  act(async (a) => (await addLibraryTrack(a, weddingId, trackId, { primary }), bust(weddingId), true), { weddingId });
 export const deleteTrackAction = async (weddingId: string, id: string) => act(async (a) => (await deleteTrack(a, weddingId, id), bust(weddingId), true), { weddingId });
