@@ -2,6 +2,7 @@
 import type { LoveDoc } from "@/domain/doc/schema";
 import type { InvitationDoc } from "@/domain/doc/schema";
 import type { ResolvedMedia } from "@/domain/media/service";
+import type { LetterSpec } from "@/domain/letters/types";
 
 /** What a gift's maker holds: the id, the secret that proves it is theirs, and the token that lets their browser preview it. */
 export interface GiftCreds { id: string; token: string; viewToken: string }
@@ -19,6 +20,9 @@ export interface OwnerGift {
   expiresAt: string | null;
   contact: { name: string; phone: string };
   published: boolean;
+  /** For a Forever Letter: the experience being made, and the answers its recipient has sent back. */
+  letter: LetterSpec | null;
+  replies: { id: string; choice: string; label: string; note: string; when: string; answers: { q: string; a: string }[]; at: string }[];
 }
 
 const KEY = "sb-gift";

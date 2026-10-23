@@ -7,6 +7,7 @@ import { Photo } from "../engine/Photo";
 import { Reveal, useInView } from "../engine/motion";
 import { themeFontHref, themeStyle } from "../engine/theme";
 import { useLove, useSpecialDate } from "./useLove";
+import { ForeverApp } from "../letters/ForeverApp";
 
 /** A page of the main site, as an absolute address: a gift can be opened on its own address, where a relative link would not be found. */
 const platformLink = (canonical: string, path: string) => { try { return new URL(path, canonical).href; } catch { return path; } };
@@ -400,12 +401,16 @@ export function LoveApp({ autoOpen }: { autoOpen?: boolean }) {
   const tk = view.tokens;
   const href = themeFontHref(tk, view.wedding.secondaryLocale);
   const experience = l.love.experience;
-  const Body = { story: Story, letter: Letter, surprise: Surprise, sorry: Sorry, day: Day }[experience];
-  const showSignature = experience !== "sorry"; // an apology is not the place for an advertisement
+  const forever = experience === "forever";
+  const Body = forever ? null : { story: Story, letter: Letter, surprise: Surprise, sorry: Sorry, day: Day }[experience];
+  const showSignature = experience !== "sorry" && !forever; // an apology is not the place for an advertisement; a Forever Letter has its own ending
+  // a Forever Letter has its own palette: the floating music control and everything outside the player should match it
+  const p = forever ? view.letter?.palette : undefined;
+  const own = p ? ({ "--c-bg": p.bg, "--c-surface": p.surface, "--c-text": p.ink, "--c-muted": p.muted, "--c-primary": p.accent, "--c-accent": p.accent, "--c-on-primary": p.onAccent, "--c-border": p.muted, "--c-inverse": p.ink, "--c-on-inverse": p.bg } as React.CSSProperties) : undefined;
   return (
-    <div className="inv love" lang={l.ui} data-locale={locale} data-love={experience} data-mood={l.love.mood} data-dark={tk.dark} data-grain={tk.grain} data-button={tk.button} data-card={tk.card} data-flavor={view.flavor} style={themeStyle(tk, view.wedding.secondaryLocale)}>
+    <div className="inv love" lang={l.ui} data-locale={locale} data-love={experience} data-mood={l.love.mood} data-dark={p ? p.dark : tk.dark} data-grain={tk.grain} data-button={tk.button} data-card={tk.card} data-flavor={view.flavor} style={{ ...themeStyle(tk, view.wedding.secondaryLocale), ...own }}>
       {href && <link rel="stylesheet" href={href} precedence="default" />}
-      <main id="main"><Body l={l} auto={autoOpen} /></main>
+      {Body ? <main id="main"><Body l={l} auto={autoOpen} /></main> : <ForeverApp autoOpen={autoOpen} />}
       <MusicPill />
       {showSignature && (
         <footer className="lv-foot">

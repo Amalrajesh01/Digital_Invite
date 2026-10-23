@@ -882,3 +882,33 @@ export const gifts = pgTable(
   },
   (t) => [uniqueIndex("gifts_wedding_uq").on(t.weddingId), index("gifts_state_idx").on(t.state)],
 );
+
+/**
+ * What a recipient answered to a Forever Letter — one row per answer, only when the sender's letter asks and the sender left
+ * collection on. The maker reads these through their own secret link and no one else can; a deleted gift takes them with it.
+ * Nothing here notifies anyone: there is no mail, no push, no repeat.
+ */
+export const giftReplies = pgTable(
+  "gift_replies",
+  {
+    id: pk(),
+    weddingId: weddingRef(),
+    /** The key of the answer the recipient chose (yes, alt, no, talk, later…) and the words on the button they pressed. */
+    choice: text("choice").notNull(),
+    label: text("label").notNull().default(""),
+    note: text("note").notNull().default(""),
+    /** The day or time they suggested, when they answered “another time”. */
+    whenText: text("when_text").notNull().default(""),
+    /** Their answers along the way — stored only when the sender chose to receive them. */
+    answers: jsonb("answers").$type<{ q: string; a: string }[]>().notNull().default([]),
+    createdAt: createdAt(),
+  },
+  (t) => [index("gift_replies_wedding_idx").on(t.weddingId, t.createdAt)],
+);
+
+/** The studio's on/off switch for each Forever Letter in the public gallery. A letter with no row is on. */
+export const letterSettings = pgTable("letter_settings", {
+  slug: text("slug").primaryKey(),
+  enabled: boolean("enabled").notNull().default(true),
+  updatedAt: updatedAt(),
+});

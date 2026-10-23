@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { Check, Copy, Loader2, Lock, Pause, Pencil, Play, RefreshCw, Trash2 } from "lucide-react";
+import { Check, Copy, Loader2, Lock, Pause, Pencil, Play, RefreshCw, Share2, Trash2 } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { WaIcon } from "@/components/site/WaButton";
 import { GiftError, clearCreds, credsFromHash, giftFetch, saveCreds, type OwnerGift } from "./api";
@@ -14,6 +14,37 @@ const STATE: Record<OwnerGift["state"], { label: string; tone: string; text: str
   PAUSED: { label: "Paused — the link is switched off", tone: "bg-paper-2 text-ink-2", text: "Nobody can open it right now. Switch it back on whenever you like." },
 };
 
+const CHOICE_TONE: Record<string, string> = { yes: "bg-ok-soft text-ok", alt: "bg-info-soft text-info", talk: "bg-info-soft text-info", later: "bg-warn-soft text-warn", no: "bg-paper-2 text-ink-2", open: "bg-info-soft text-info" };
+
+/** What the person it was made for has answered — read only by the maker, through their own secret link. Nothing here is ever sent to anyone. */
+function Replies({ gift }: { gift: OwnerGift }) {
+  const mode = gift.love.forever.replies;
+  return (
+    <section className="rounded-xl border border-rule-strong bg-white p-5">
+      <h2 className="text-[19px] font-semibold text-ink">Their answer</h2>
+      {mode !== "collect" ? (
+        <p className="mt-1 text-[15px] text-ink-2/85">{mode === "whatsapp" ? "Answers arrive in your WhatsApp, if they choose to send one." : "You chose not to collect an answer. They can answer you in their own way."}</p>
+      ) : gift.replies.length === 0 ? (
+        <p className="mt-1 text-[15px] text-ink-2/85">Nothing yet — and that is fine. Answers appear here only if they choose to send one. We never remind or message them.</p>
+      ) : (
+        <ul className="mt-3 grid gap-3">
+          {gift.replies.map((r) => (
+            <li key={r.id} className="rounded-lg border border-rule bg-paper p-4">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className={cn("rounded-full px-3 py-1 text-[13.5px] font-semibold", CHOICE_TONE[r.choice] ?? "bg-paper-2 text-ink-2")}>{r.label || r.choice}</span>
+                <time className="text-[13px] text-muted" dateTime={new Date(r.at).toISOString()}>{new Date(r.at).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}</time>
+              </div>
+              {r.when && <p className="mt-2 text-[15px] text-ink"><b>Suggested:</b> {r.when}</p>}
+              {r.note && <p className="mt-2 whitespace-pre-wrap text-[15px] text-ink">{r.note}</p>}
+              {r.answers.length > 0 && <details className="mt-2 text-[14px]"><summary className="cursor-pointer text-ink-2">Their answers along the way</summary><ul className="mt-2 grid gap-1">{r.answers.map((a, i) => <li key={i}><span className="text-muted">{a.q}</span> — <b>{a.a}</b></li>)}</ul></details>}
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
+
 /** The maker's page for one gift: where it stands, its private link, and the controls that keep it theirs. */
 export function GiftManage({ id }: { id: string }) {
   const [gift, setGift] = useState<OwnerGift | null>(null);
@@ -23,6 +54,8 @@ export function GiftManage({ id }: { id: string }) {
   const [msg, setMsg] = useState<{ tone: "ok" | "bad"; text: string } | null>(null);
   const [copied, setCopied] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [canShare, setCanShare] = useState(false);
+  useEffect(() => setCanShare(typeof navigator !== "undefined" && typeof navigator.share === "function"), []);
 
   const load = useCallback(async (t: string) => {
     try {
@@ -84,9 +117,12 @@ export function GiftManage({ id }: { id: string }) {
                 <input readOnly className="field-input min-w-0 flex-1 !text-[13.5px]" value={share} aria-label="Private link to your gift" onFocus={(e) => e.currentTarget.select()} />
                 <button type="button" className="btn btn-quiet" onClick={async () => { try { await navigator.clipboard.writeText(share); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch {} }}>{copied ? <Check className="size-4" aria-hidden /> : <Copy className="size-4" aria-hidden />} {copied ? "Copied" : "Copy"}</button>
                 <a className="btn bg-[#1fa855] text-white hover:bg-[#188f47]" href={`https://wa.me/?text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer"><WaIcon className="size-4" /> Send on WhatsApp</a>
+                {canShare && <button type="button" className="btn btn-quiet" onClick={() => { void navigator.share({ text: "I made something for you.", url: share }).catch(() => {}); }}><Share2 className="size-4" aria-hidden /> Share…</button>}
               </div>
             </section>
           )}
+
+          {gift.letter && <Replies gift={gift} />}
 
           <section className="rounded-xl border border-rule-strong bg-white p-5">
             <h2 className="text-[19px] font-semibold text-ink">What would you like to do?</h2>

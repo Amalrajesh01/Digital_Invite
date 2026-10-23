@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, CalendarCheck, Globe2, Heart, Images, MailOpen, MapPin, QrCode } from "lucide-react";
+import { ArrowRight, CalendarCheck, Globe2, Images, MailOpen, MapPin, QrCode } from "lucide-react";
 import { brand } from "@/lib/brand";
 import { companyLink } from "@/lib/site";
 import { WA } from "@/lib/whatsapp";
@@ -9,6 +9,7 @@ import { SITE_TEMPLATES, TAG_LABELS, siteTemplateBySlug, templatesIn } from "@/d
 import { inr, loadPublicPackages } from "@/domain/catalogue/pricing";
 import { giftPriceText } from "@/domain/gifts/pricing";
 import { Reel } from "@/components/site/Reel";
+import { LettersSection } from "@/components/site/letters/LettersSection";
 import { SiteButton, WaButton } from "@/components/site/WaButton";
 import { FiveWays, type WayGroup } from "@/components/site/FiveWays";
 import { PortfolioWall } from "@/components/site/PortfolioWall";
@@ -60,7 +61,6 @@ export default async function Home() {
     const c = categoryBySlug(slug)!;
     return { slug, name: c.name, line: WAYS_LINE[slug] ?? c.blurb, designs: templatesIn(slug).filter((t) => !t.edition).map((t) => ({ slug: t.slug, name: t.name, styleLabel: t.styleLabel, thumb: t.thumb, path: t.path, colors: t.theme.colors })) };
   });
-  const love = SITE_TEMPLATES.filter((t) => t.love);
   // the whole library, straight from the registry: nothing here is a list of names
   const library = SITE_TEMPLATES.filter((t) => !t.love);
   const discover: DiscoveryItem[] = library.map((t) => ({ slug: t.slug, name: t.name, tagline: t.tagline, styleLabel: t.styleLabel, category: t.category, categoryName: categoryBySlug(t.category)?.name ?? t.category, thumb: t.thumb, path: t.path, colors: t.theme.colors, tags: t.tags, featured: t.featured }));
@@ -149,35 +149,8 @@ export default async function Home() {
         </div>
       </Section>
 
-      {/* ── for my love ──────────────────────────────────────────────── */}
-      <Section tone="night">
-        <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr]">
-          <div>
-            <p className="eyebrow !text-[#f3a5b6]"><Heart className="mr-1.5 inline size-3.5 fill-current" aria-hidden />For My Love</p>
-            <h2 className="mt-3 font-serif text-[clamp(38px,5.2vw,64px)] font-medium leading-[1.02] text-white">Some things are too personal for a card.</h2>
-            <p className="mt-5 max-w-lg text-[18px] leading-relaxed text-white/75">Make a private gift for the person you love: a birthday surprise, a love letter, an anniversary story — or a sincere apology. Your photographs, your words, your song, on a link only they can open.</p>
-            <ul className="mt-6 grid gap-2.5 text-[15.5px] text-white/80">
-              {["Five ways to unfold it, each different", "Private by design — pause or delete it any time", "Nothing is ever asked of them. No pressure, no tricks."].map((t) => (<li key={t} className="flex gap-3"><Heart className="mt-1 size-4 shrink-0 fill-[#f3a5b6] text-[#f3a5b6]" aria-hidden />{t}</li>))}
-            </ul>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <SiteButton href="/for-my-love/make" variant="light" data-track="cta_click" data-ref="love-make">Make a gift <ArrowRight className="size-4" aria-hidden /></SiteButton>
-              <SiteButton href="/for-my-love" variant="quiet" className="!border-white/30 !bg-transparent !text-white hover:!bg-white/10">See the five ways</SiteButton>
-            </div>
-          </div>
-          <ul className="-mx-5 flex snap-x gap-4 overflow-x-auto px-5 pb-4 sm:mx-0 sm:grid sm:grid-cols-5 sm:gap-3 sm:overflow-visible sm:px-0">
-            {love.map((t, i) => (
-              <li key={t.slug} className={`w-[44%] shrink-0 snap-center sm:w-auto ${i % 2 ? "sm:mt-8" : ""}`}>
-                <Link href={t.path} data-track="cta_click" data-ref={`love-${t.slug}`} className="reel-card group block">
-                  <div className="relative aspect-[9/19] overflow-hidden rounded-[1.4rem] border-[3px] border-white/20 bg-white/5 transition duration-500 group-hover:-translate-y-1.5">
-                    <Reel slug={t.slug} thumb={t.thumb} alt={`${t.name}, a love gift`} className="absolute inset-0" />
-                  </div>
-                  <p className="mt-2.5 font-serif text-[18px] leading-tight text-white">{t.name}</p>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Section>
+      {/* ── Forever Letters: every experience that is switched on, from the registry ── */}
+      <LettersSection />
 
       {/* ── what guests get ──────────────────────────────────────────── */}
       <Section tone="white">

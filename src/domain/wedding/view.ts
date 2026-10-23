@@ -2,6 +2,8 @@ import type { InvitationDoc, SectionConfig, WeddingEvent } from "@/domain/doc/sc
 import type { WeddingStatus } from "@/domain/doc/constants";
 import { SECTION_META, phasesFor } from "@/domain/doc/sections";
 import { canUse, type Entitlements } from "@/domain/packages/entitlements";
+import { applyGuards } from "@/domain/letters/values";
+import type { Values } from "@/domain/letters/types";
 
 /**
  * Pure functions that turn a stored document into what ONE viewer may see.
@@ -34,7 +36,10 @@ export function filterDocForGuest(doc: InvitationDoc, opts: { groupKey: string |
   // A venue only used by hidden events would leak a private address, so drop it too.
   const venues = doc.venues.filter((v) => referencedByVisible.has(v.id) || !referencedByAny.has(v.id));
   void visibleIds;
-  return { ...doc, events, venues };
+  // A Forever Letter may hold a private value (a surprise's address) that only the sender can switch on for the recipient.
+  const f = doc.love.forever;
+  const love = Object.keys(f.guards).length ? { ...doc.love, forever: { ...f, v: applyGuards(f.v as Values, f.guards) } } : doc.love;
+  return { ...doc, events, venues, love };
 }
 
 export interface SectionVisibilityInput {

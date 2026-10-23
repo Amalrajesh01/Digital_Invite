@@ -257,3 +257,53 @@ when you republish them. Click the file name for the original, its author and th
 
 Several demonstration invitations also use the Unsplash photographs above as stand-ins; none of the sample invitations is a real family's.
 | `wc-23392362` | Destination8infinity | CC BY-SA 3.0 — [Dakshina-Chitra-Kerala-House.JPG](https://commons.wikimedia.org/wiki/File:Dakshina-Chitra-Kerala-House.JPG) |
+
+## Wikimedia Commons photographs for Forever Letters (atmosphere, light and landscape)
+
+Fetched with `scripts/dev/commons.mjs` (CC0, public domain, CC BY and CC BY-SA only). Used as the backdrops and demonstration photographs of the Forever Letters experiences (see `src/domain/letters/images.ts`). CC BY and CC BY-SA require this credit; **CC BY-SA 4.0/3.0/2.0 requires the resized copy to stay under the same licence.** Click the file name for the original, its author and the licence text.
+
+| Photo id | Author | Licence and original |
+|---|---|---|
+| `wc-109044092` | Crimea Sleepwalker | CC BY-SA 4.0 — [Moon over Black Sea in Crimea.jpg](https://commons.wikimedia.org/wiki/File:Moon_over_Black_Sea_in_Crimea.jpg) |
+| `wc-110735609` | NPS/Jacob W. Frank | Public domain — [Milky Way and starry night sky (26972689115).jpg](https://commons.wikimedia.org/wiki/File:Milky_Way_and_starry_night_sky_(26972689115).jpg) |
+| `wc-113874950` | Srishti Sethi | CC BY-SA 4.0 — [Rise lantern festival, Nevada, California.jpg](https://commons.wikimedia.org/wiki/File:Rise_lantern_festival,_Nevada,_California.jpg) |
+| `wc-115195156` | Dietmar Rabich | CC BY-SA 4.0 — [Dülmen, Kirchspiel, Börnste, Neusträßer Graben -- 2022 -- 9891.jpg](https://commons.wikimedia.org/wiki/File:D%C3%BClmen,_Kirchspiel,_B%C3%B6rnste,_Neustr%C3%A4%C3%9Fer_Graben_--_2022_--_9891.jpg) |
+| `wc-128606183` | Chris Holifield | CC BY-SA 2.0 — [Cromer Lighthouse - geograph.org.uk - 4405245.jpg](https://commons.wikimedia.org/wiki/File:Cromer_Lighthouse_-_geograph.org.uk_-_4405245.jpg) |
+| `wc-138925231` | Asad Photo Maldives | CC0 — [Silhouettes of people during sunrise.jpg](https://commons.wikimedia.org/wiki/File:Silhouettes_of_people_during_sunrise.jpg) |
+| `wc-161711817` | mypubliclands | Public domain — [-TravelTuesday with My Public Lands (24320355805).jpg](https://commons.wikimedia.org/wiki/File:-TravelTuesday_with_My_Public_Lands_(24320355805).jpg) |
+| `wc-161711857` | mypubliclands | Public domain — [-TravelTuesday with My Public Lands (24294185156).jpg](https://commons.wikimedia.org/wiki/File:-TravelTuesday_with_My_Public_Lands_(24294185156).jpg) |
+| `wc-161711873` | mypubliclands | Public domain — [-TravelTuesday with My Public Lands (24320354915).jpg](https://commons.wikimedia.org/wiki/File:-TravelTuesday_with_My_Public_Lands_(24320354915).jpg) |
+| `wc-162628823` | Aung Chan Thar Myanmar | CC BY-SA 4.0 — [Festival night.jpg](https://commons.wikimedia.org/wiki/File:Festival_night.jpg) |
+| `wc-170807041` | B.Hawkins.Cornwall | CC BY 4.0 — [Godrevy Lighthouse at Dusk.jpg](https://commons.wikimedia.org/wiki/File:Godrevy_Lighthouse_at_Dusk.jpg) |
+| `wc-175754824` | David Zhang | CC BY-SA 2.0 — [Morning Clouds Over North Van Mountain Valley (5).jpg](https://commons.wikimedia.org/wiki/File:Morning_Clouds_Over_North_Van_Mountain_Valley_(5).jpg) |
+| `wc-185562644` | Montzr 1 | CC BY-SA 4.0 — [The Ramadan Crescent Shining in the Sky with a Lantern.jpg](https://commons.wikimedia.org/wiki/File:The_Ramadan_Crescent_Shining_in_the_Sky_with_a_Lantern.jpg) |
+| `wc-29803443` | Scarleth White | CC BY 2.0 — [Romantic kiss sunset cliché.jpg](https://commons.wikimedia.org/wiki/File:Romantic_kiss_sunset_clich%C3%A9.jpg) |
+| `wc-30298411` | Dietmar Rabich | CC BY-SA 4.0 — [Dülmen, Umland, Sonnenaufgang -- 2012 -- 8069.jpg](https://commons.wikimedia.org/wiki/File:D%C3%BClmen,_Umland,_Sonnenaufgang_--_2012_--_8069.jpg) |
+| `wc-33069222` | Juan Jose lopez (Jjsopri) | CC BY-SA 3.0 — [Tarde de amor.JPG](https://commons.wikimedia.org/wiki/File:Tarde_de_amor.JPG) |
+| `wc-33472738` | Mathias Krumbholz | CC BY-SA 3.0 — [Stars 01 (MK).jpg](https://commons.wikimedia.org/wiki/File:Stars_01_(MK).jpg) |
+| `wc-3762647` | Maksym Mozul | CC BY 3.0 — [Moon over sea Cala Millor.jpg](https://commons.wikimedia.org/wiki/File:Moon_over_sea_Cala_Millor.jpg) |
+| `wc-39954260` | Bhavishya Goel from Gothenburg, Sweden | CC BY 2.0 — [A night lit up on Makar Sankranti Uttarayana Festival with Kites and Lights India.jpg](https://commons.wikimedia.org/wiki/File:A_night_lit_up_on_Makar_Sankranti_Uttarayana_Festival_with_Kites_and_Lights_India.jpg) |
+| `wc-48476943` | Dietmar Rabich | CC BY-SA 4.0 — [Haltern am See, Westruper Heide -- 2015 -- 8306-10.jpg](https://commons.wikimedia.org/wiki/File:Haltern_am_See,_Westruper_Heide_--_2015_--_8306-10.jpg) |
+| `wc-48477085` | Dietmar Rabich | CC BY-SA 4.0 — [Dülmen, Kirchspiel, Oedlerteich -- 2016 -- 1949.jpg](https://commons.wikimedia.org/wiki/File:D%C3%BClmen,_Kirchspiel,_Oedlerteich_--_2016_--_1949.jpg) |
+| `wc-49179506` | Ștefan Jurcă from Munich, Germany | CC BY 2.0 — [In love (26591565640).jpg](https://commons.wikimedia.org/wiki/File:In_love_(26591565640).jpg) |
+| `wc-52753774` | Rolando Jelves Aguay… | CC BY-SA 3.0 — [Moon glowing over the sea on New Year's Day - panoramio.jpg](https://commons.wikimedia.org/wiki/File:Moon_glowing_over_the_sea_on_New_Year%27s_Day_-_panoramio.jpg) |
+| `wc-59678282` | Stig Nygaard | CC BY 3.0 — [Twillight at Kullen, Sweden 2015. - panoramio.jpg](https://commons.wikimedia.org/wiki/File:Twillight_at_Kullen,_Sweden_2015._-_panoramio.jpg) |
+| `wc-61706389` | Caleb Ekeroth calebekeroth | CC0 — [Sunset beach couple (Unsplash).jpg](https://commons.wikimedia.org/wiki/File:Sunset_beach_couple_(Unsplash).jpg) |
+| `wc-61706637` | frank mckenna frankiefoto | CC0 — [The Kiss (Unsplash).jpg](https://commons.wikimedia.org/wiki/File:The_Kiss_(Unsplash).jpg) |
+| `wc-61710722` | Gerrit Vermeulen gerritvermeulen | CC0 — [Couple sitting watching sunset (Unsplash).jpg](https://commons.wikimedia.org/wiki/File:Couple_sitting_watching_sunset_(Unsplash).jpg) |
+| `wc-63786477` | Vian | CC BY-SA 4.0 — [Milky way above the mountains.jpg](https://commons.wikimedia.org/wiki/File:Milky_way_above_the_mountains.jpg) |
+| `wc-70875155` | Ansgar Koreng | CC BY-SA 4.0 — [Rubjerg Knude Fyr, Hjørring, Denmark, 1807072231, ako.jpg](https://commons.wikimedia.org/wiki/File:Rubjerg_Knude_Fyr,_Hj%C3%B8rring,_Denmark,_1807072231,_ako.jpg) |
+| `wc-71405462` | Wolfgang Weber | CC BY 3.0 — [Moonlight Over The Sea (223535943).jpeg](https://commons.wikimedia.org/wiki/File:Moonlight_Over_The_Sea_(223535943).jpeg) |
+| `wc-73399017` | Sheba_Also 43,000 photos | CC BY-SA 2.0 — [Brisbane Riverside at Dusk-07+ (2050082867).jpg](https://commons.wikimedia.org/wiki/File:Brisbane_Riverside_at_Dusk-07%2B_(2050082867).jpg) |
+| `wc-73409692` | Sheba_Also 43,000 photos | CC BY-SA 2.0 — [Brisbane Story Bridge at dusk-6+ (2658437042).jpg](https://commons.wikimedia.org/wiki/File:Brisbane_Story_Bridge_at_dusk-6%2B_(2658437042).jpg) |
+| `wc-73430230` | Sheba_Also 43,000 photos | CC BY-SA 2.0 — [Shorncliffe Jetty at Dusk-01+ (237545009).jpg](https://commons.wikimedia.org/wiki/File:Shorncliffe_Jetty_at_Dusk-01%2B_(237545009).jpg) |
+| `wc-75812682` | Dmitry A. Mottl | CC BY-SA 4.0 — [Lake Geneva from Chillon Castle.jpg](https://commons.wikimedia.org/wiki/File:Lake_Geneva_from_Chillon_Castle.jpg) |
+| `wc-7653196` | Jockanderson | Public domain — [Hancock center at sunset, from navy pier, june 06.jpg](https://commons.wikimedia.org/wiki/File:Hancock_center_at_sunset,_from_navy_pier,_june_06.jpg) |
+| `wc-76837053` | Herryz | CC BY-SA 4.0 — [Couple nd Sunset.png](https://commons.wikimedia.org/wiki/File:Couple_nd_Sunset.png) |
+| `wc-77381910` | DHANYA PAVITHRAN | CC BY-SA 4.0 — [Silhouette, Muzhappilangad beach.jpg](https://commons.wikimedia.org/wiki/File:Silhouette,_Muzhappilangad_beach.jpg) |
+| `wc-79958196` | Pulperm Phungprachit | CC BY-SA 4.0 — [Starry Night at Phu Kradueng National Park 07.jpg](https://commons.wikimedia.org/wiki/File:Starry_Night_at_Phu_Kradueng_National_Park_07.jpg) |
+| `wc-81522331` | Mahesh Gudladona | CC BY 3.0 — [Fields Golden Hour (95316529).jpeg](https://commons.wikimedia.org/wiki/File:Fields_Golden_Hour_(95316529).jpeg) |
+| `wc-81572487` | Michal Klajban | CC BY-SA 4.0 — [Pier by Sabine Hut, Nelson Lakes National Park, New Zealand.jpg](https://commons.wikimedia.org/wiki/File:Pier_by_Sabine_Hut,_Nelson_Lakes_National_Park,_New_Zealand.jpg) |
+| `wc-95942753` | Blessin2 | CC BY-SA 4.0 — [Alma Lake 1.jpg](https://commons.wikimedia.org/wiki/File:Alma_Lake_1.jpg) |
+| `wc-96589866` | Eddie basler | CC BY-SA 4.0 — [Starry night sky.jpg](https://commons.wikimedia.org/wiki/File:Starry_night_sky.jpg) |
+| `wc-98214138` | Roman Eisele | CC BY-SA 4.0 — [Östringen - Tiefenbach - Kreuzbergkapelle - Situationsansicht von Osten bei Sonnenuntergang.jpg](https://commons.wikimedia.org/wiki/File:%C3%96stringen_-_Tiefenbach_-_Kreuzbergkapelle_-_Situationsansicht_von_Osten_bei_Sonnenuntergang.jpg) |

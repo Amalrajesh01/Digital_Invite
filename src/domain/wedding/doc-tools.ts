@@ -87,8 +87,8 @@ export function publishReadiness(input: {
     const has = (t: Record<string, string>) => Object.values(t).some((v) => (v ?? "").trim());
     if (!love.to.trim()) err("love.to", "Add the name of the person it is for.", "names");
     if (!love.from.trim() && love.signAs !== "anonymous") err("love.from", "Add your name, or choose to sign as “someone who loves you”.", "names");
-    if (!has(love.letter) && !has(love.apology.owning) && !love.memories.length) err("love.words", "Write at least a few words — a message, a memory or an apology.", "message");
-    if (!love.photos.length && !love.memories.some((m) => m.photo)) warn("love.photos", "Add a photograph or two — they make it yours.", "photos");
+    if (love.experience !== "forever" && !has(love.letter) && !has(love.apology.owning) && !love.memories.length) err("love.words", "Write at least a few words — a message, a memory or an apology.", "message");
+    if (love.experience !== "forever" && !love.photos.length && !love.memories.some((m) => m.photo)) warn("love.photos", "Add a photograph or two — they make it yours.", "photos");
     return issues;
   }
 

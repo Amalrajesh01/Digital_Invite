@@ -1,9 +1,13 @@
 "use client";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Check, Copy, Eye, Heart, ImagePlus, Loader2, Lock, Music2, Plus, Trash2, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { LoveDoc } from "@/domain/doc/schema";
+import type { LetterCard } from "@/domain/letters";
+import type { LetterSpec, Values } from "@/domain/letters/types";
+import { ScenarioForm } from "./ScenarioForm";
+import { GiftMusicLibrary } from "./GiftMusicLibrary";
 import type { ResolvedMedia } from "@/domain/media/service";
 import { LOVE_EXPERIENCES, LOVE_EXPERIENCE_INFO, LOVE_MOODS, LOVE_OCCASIONS, LOVE_PROMPTS, MOOD_LABEL, MOOD_THEME, OCCASION_INFO, type LoveExperience, type LoveMood, type LoveOccasion } from "@/domain/love/constants";
 import { THEME_SEEDS } from "@/domain/design/themes";
@@ -14,6 +18,8 @@ import { GiftError, clearCreds, credsFromHash, credsHash, giftFetch, readCreds, 
 type Love = LoveDoc;
 type LT = Record<string, string>;
 const STEPS = ["Occasion", "Names", "Style", "Your words", "Photos", "Music", "Preview", "Send"] as const;
+const FOREVER_STEPS = ["Letter", "Names", "Settings", "Your words", "Photos", "Music", "Preview", "Send"] as const;
+const FOREVER_TITLES = ["Your letter", "Who is it between?", "How should it behave?", "Say it your way", "Add your photographs", "Add a song", "See it the way they will", "Send it to us"];
 const LANGS = [{ code: "en", label: "English" }, ...LOCALES.map((l) => ({ code: l.code as string, label: l.native }))];
 
 const getT = (t: LT | undefined, lang: string) => t?.[lang] ?? t?.en ?? Object.values(t ?? {}).find(Boolean) ?? "";
@@ -44,7 +50,7 @@ function Pill({ on, children, onClick, className }: { on: boolean; children: Rea
 }
 
 // ── the builder ─────────────────────────────────────────────────────────────────────────────────────────
-export function GiftBuilder({ priceText }: { priceText: string | null }) {
+export function GiftBuilder({ priceText, letters = [], tags = [], initialLetter }: { priceText: string | null; letters?: LetterCard[]; tags?: { key: string; label: string }[]; initialLetter?: string }) {
   const [creds, setCreds] = useState<GiftCreds | null>(null);
   const [booting, setBooting] = useState(true);
   const [love, setLove] = useState<Love>(emptyLove);
@@ -61,6 +67,9 @@ export function GiftBuilder({ priceText }: { priceText: string | null }) {
   const lang = love.language;
   const [frame, setFrame] = useState<HTMLIFrameElement | null>(null);
   const [dirty, setDirty] = useState(false);
+  const [letter, setLetter] = useState<LetterSpec | null>(null);
+  const [filter, setFilter] = useState("");
+  const forever = !!letter;
 
   // resume: from the link the maker saved (#g=…), or from this browser
   useEffect(() => {
@@ -72,20 +81,21 @@ export function GiftBuilder({ priceText }: { priceText: string | null }) {
         try {
           const g = await giftFetch<OwnerGift>(known, `/api/gift/${known.id}`);
           if (!alive) return;
+          if (initialLetter && g.letter?.slug !== initialLetter) throw new Error("start a new letter");
           const c = { id: known.id, token: known.token, viewToken: g.viewToken };
           saveCreds(c);
-          setCreds(c); setLove(g.love); setBaseDoc(g.doc); setPhotos(g.photos); setMusic(g.music);
+          setCreds(c); setLove(g.love); setBaseDoc(g.doc); setPhotos(g.photos); setMusic(g.music); setLetter(g.letter);
           setStep(g.state === "DRAFT" ? 1 : 7);
           if (g.state !== "DRAFT") setSent({ ref: g.ref, whatsapp: "" });
           if (fromHash) window.history.replaceState(null, "", window.location.pathname);
         } catch {
-          clearCreds();
+          if (!initialLetter) clearCreds();
         }
       }
       if (alive) setBooting(false);
     })();
     return () => { alive = false; };
-  }, []);
+  }, [initialLetter]);
 
   const fail = (e: unknown) => setError(e instanceof GiftError ? e.message : "Something went wrong. Please try again.");
 
@@ -125,19 +135,31 @@ export function GiftBuilder({ priceText }: { priceText: string | null }) {
     return () => window.removeEventListener("message", on);
   }, [post]);
 
+  const create = async (body: { occasion?: LoveOccasion; scenario?: string }) => {
+    setBusy("start");
+    try {
+      const made = await giftFetch<{ id: string; token: string; viewToken: string }>(null, "/api/gift", { method: "POST", body: JSON.stringify(body) });
+      const c = { id: made.id, token: made.token, viewToken: made.viewToken };
+      saveCreds(c);
+      const g = await giftFetch<OwnerGift>(c, `/api/gift/${c.id}`);
+      setCreds(c); setLove(g.love); setBaseDoc(g.doc); setPhotos(g.photos); setLetter(g.letter); setStep(1);
+    } catch (e) { fail(e); } finally { setBusy(null); }
+  };
   const begin = async (occasion: LoveOccasion) => {
     const info = OCCASION_INFO[occasion];
     setError(null);
     if (creds) { update({ occasion, experience: info.experience, mood: info.mood }); setStep(1); return; }
-    setBusy("start");
-    try {
-      const made = await giftFetch<{ id: string; token: string; viewToken: string }>(null, "/api/gift", { method: "POST", body: JSON.stringify({ occasion }) });
-      const c = { id: made.id, token: made.token, viewToken: made.viewToken };
-      saveCreds(c);
-      const g = await giftFetch<OwnerGift>(c, `/api/gift/${c.id}`);
-      setCreds(c); setLove(g.love); setBaseDoc(g.doc); setPhotos(g.photos); setStep(1);
-    } catch (e) { fail(e); } finally { setBusy(null); }
+    await create({ occasion });
   };
+  const beginLetter = async (slug: string) => { setError(null); await create({ scenario: slug }); };
+  // arriving from a letter's own page ("Make this letter") starts that letter straight away — once
+  const started = useRef(false);
+  useEffect(() => {
+    if (booting || creds || !initialLetter || started.current) return;
+    started.current = true;
+    void beginLetter(initialLetter);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [booting, creds, initialLetter]);
 
   const upload = async (files: FileList | null) => {
     if (!files || !creds) return;
@@ -180,6 +202,11 @@ export function GiftBuilder({ priceText }: { priceText: string | null }) {
       setMusic(r.music);
     } catch (e) { fail(e); } finally { setBusy(null); }
   };
+  const pickLibrary = async (library: string) => {
+    if (!creds) return;
+    setBusy("music"); setError(null);
+    try { const r = await giftFetch<{ music: OwnerGift["music"] }>(creds, `/api/gift/${creds.id}/music`, { method: "POST", body: JSON.stringify({ library }) }); setMusic(r.music); } catch (e) { fail(e); } finally { setBusy(null); }
+  };
   const dropMusic = async () => {
     if (!creds) return;
     setBusy("music");
@@ -221,13 +248,86 @@ export function GiftBuilder({ priceText }: { priceText: string | null }) {
   const memLimit = exp === "sorry" ? 1 : 6;
   const previewUrl = creds ? `/for-my-love/preview/${creds.id}?t=${creds.viewToken}` : "";
 
+  const setForever = (patch: Partial<Love["forever"]>) => update((l) => ({ ...l, forever: { ...l.forever, ...patch } }));
+  const hasQuestion = !!letter?.beats.some((b) => b.type === "ask");
+  const collectsAnswers = !!letter?.beats.some((b) => b.type === "choose" || b.type === "quiz" || b.type === "clues");
+  const letterSettings = () => !letter ? null : (
+    <div className="grid gap-9">
+      <div className="rounded-xl border border-rule-strong bg-white p-5">
+        <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-muted">Its look is its own</p>
+        <p className="mt-2 text-[16px] text-ink-2/90">{letter.direction}</p>
+        <ul className="mt-3 flex items-center gap-2" aria-label="Colours of this letter">{[letter.palette.bg, letter.palette.accent, letter.palette.accent2].map((c) => <li key={c} className="size-6 rounded-full border border-black/15" style={{ background: c }} />)}</ul>
+      </div>
+      <div>
+        <h3 className="text-[19px] font-semibold text-ink">How lively should it be?</h3>
+        <div className="mt-3 flex flex-wrap gap-2.5">
+          {([["calm", "Calm and slow"], ["standard", "As designed"], ["rich", "A little livelier"]] as const).map(([k, label]) => <Pill key={k} on={love.forever.intensity === k} onClick={() => setForever({ intensity: k })}>{label}</Pill>)}
+        </div>
+      </div>
+      {letter.playfulNo && (
+        <div className="rounded-xl border border-rule-strong bg-white p-4">
+          <label className="flex cursor-pointer items-start gap-3">
+            <input type="checkbox" className="mt-1 size-5 accent-[var(--accent)]" checked={love.forever.playfulNo} onChange={(e) => setForever({ playfulNo: e.target.checked })} />
+            <span><span className="block text-[15.5px] font-semibold text-ink">A playful, moving “No” button</span><span className="block text-[13.5px] text-muted">Off by default. When it is on, the “No” hops away from a finger or pointer — three times at most — and an ordinary “No, thank you” always sits beneath it. They can always say no.</span></span>
+          </label>
+        </div>
+      )}
+      {letter.reply && hasQuestion && (
+        <div>
+          <h3 className="text-[19px] font-semibold text-ink">Where should their answer go?</h3>
+          <div className="mt-3 grid gap-3">
+            {([
+              ["collect", "Send it to me, privately", "Their answer is saved for you, and only you can read it on your private page. Nobody is notified and nothing repeats."],
+              ["whatsapp", "Let them reply on WhatsApp", "Each answer opens WhatsApp with a message ready for you. They choose whether to send it."],
+              ["off", "Don’t collect an answer", "The question is still asked, in words. They answer however they like — in person, or in a message of their own."],
+            ] as const).map(([k, t, d]) => (
+              <label key={k} className={cn("flex cursor-pointer items-start gap-3 rounded-xl border bg-white p-4", love.forever.replies === k ? "border-ink shadow-[0_0_0_1px_var(--ink)]" : "border-rule-strong")}>
+                <input type="radio" name="reply-mode" className="mt-1 size-5 accent-[var(--accent)]" checked={love.forever.replies === k} onChange={() => { setForever({ replies: k }); if (k === "whatsapp") update((l) => ({ ...l, reply: { ...l.reply, enabled: true } })); }} />
+                <span><span className="block text-[15.5px] font-semibold text-ink">{t}</span><span className="block text-[13.5px] text-muted">{d}</span></span>
+              </label>
+            ))}
+          </div>
+          {love.forever.replies === "whatsapp" && (<div className="mt-4"><Field label="Your WhatsApp number" hint="With country code, e.g. 919846000000"><input className={input} inputMode="tel" value={love.reply.whatsapp} onChange={(e) => update((l) => ({ ...l, reply: { enabled: true, whatsapp: e.target.value } }))} /></Field></div>)}
+          {love.forever.replies === "collect" && collectsAnswers && (
+            <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-xl border border-rule-strong bg-white p-4">
+              <input type="checkbox" className="mt-1 size-5 accent-[var(--accent)]" checked={love.forever.shareAnswers} onChange={(e) => setForever({ shareAnswers: e.target.checked })} />
+              <span><span className="block text-[15.5px] font-semibold text-ink">Also send me their answers to the games and questions</span><span className="block text-[13.5px] text-muted">Off by default. Only included when they send their reply, and only seen by you. We tell them where their answer goes before they send it.</span></span>
+            </label>
+          )}
+        </div>
+      )}
+    </div>
+  );
+
   const stepBody = () => {
     switch (step) {
       case 0:
         return (
           <div>
-            <p className="text-[17px] text-ink-2/85">Choose what it is for. You can change your mind later.</p>
-            <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+            {!creds && letters.length > 0 && (
+              <div className="mb-12">
+                <h3 className="text-[22px] font-semibold text-ink">Forever Letters</h3>
+                <p className="mt-1 text-[16px] text-ink-2/85">Little experiences with games, reveals and a question at the end. Pick one — you will see exactly how it works before you send anything.</p>
+                <div role="group" aria-label="Filter the experiences" className="mt-4 flex flex-wrap gap-2">
+                  <Pill on={filter === ""} onClick={() => setFilter("")}>All {letters.length}</Pill>
+                  {tags.map((t) => <Pill key={t.key} on={filter === t.key} onClick={() => setFilter(t.key)}>{t.label}</Pill>)}
+                </div>
+                <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                  {letters.filter((c) => !filter || (c.tags as string[]).includes(filter)).map((c) => (
+                    <li key={c.slug}>
+                      <button type="button" disabled={busy === "start"} onClick={() => void beginLetter(c.slug)} className="group block w-full text-left">
+                        <img src={c.cover} alt="" width={540} height={1020} loading="lazy" className="aspect-[9/17] w-full rounded-[1.2rem] border-[4px] border-ink bg-paper-2 object-cover object-top transition group-hover:-translate-y-1" onError={(ev) => { (ev.currentTarget as HTMLImageElement).style.visibility = "hidden"; }} />
+                        <span className="mt-2 block font-serif text-[18px] leading-tight text-ink group-hover:text-accent">{c.title}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                <h3 className="mt-14 text-[22px] font-semibold text-ink">Or a classic gift</h3>
+              </div>
+            )}
+            {forever && creds && letter && <div className="rounded-xl border border-rule-strong bg-white p-5"><p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-muted">You are making</p><p className="mt-1 font-serif text-[30px] leading-tight text-ink">{letter.title}</p><p className="mt-1 text-[15.5px] text-ink-2/85">{letter.purpose}</p></div>}
+            {!forever && <p className="text-[17px] text-ink-2/85">Choose what it is for. You can change your mind later.</p>}
+            {!forever && <ul className="mt-6 grid gap-3 sm:grid-cols-2">
               {LOVE_OCCASIONS.map((o) => (
                 <li key={o}>
                   <button type="button" disabled={busy === "start"} onClick={() => begin(o)} className={cn("flex w-full items-center gap-4 rounded-xl border p-4 text-left transition hover:border-ink-2", love.occasion === o && creds ? "border-ink bg-white" : "border-rule-strong bg-white")}>
@@ -236,7 +336,7 @@ export function GiftBuilder({ priceText }: { priceText: string | null }) {
                   </button>
                 </li>
               ))}
-            </ul>
+            </ul>}
             {busy === "start" && <p className="mt-4 flex items-center gap-2 text-muted"><Loader2 className="size-4 animate-spin" /> Setting up your gift…</p>}
           </div>
         );
@@ -262,7 +362,7 @@ export function GiftBuilder({ priceText }: { priceText: string | null }) {
                 ))}
               </div>
             </div>
-            {DATE_Q[love.occasion] && (
+            {!forever && DATE_Q[love.occasion] && (
               <Field label={DATE_Q[love.occasion]}><input type="date" className={input} value={love.date} onChange={(e) => update({ date: e.target.value })} /></Field>
             )}
             <Field label="The language you are writing in" hint="Your own words stay exactly as you write them. This only picks the right letters for them.">
@@ -271,6 +371,7 @@ export function GiftBuilder({ priceText }: { priceText: string | null }) {
           </div>
         );
       case 2:
+        if (letter) return letterSettings();
         return (
           <div className="grid gap-9">
             <div>
@@ -303,6 +404,7 @@ export function GiftBuilder({ priceText }: { priceText: string | null }) {
           </div>
         );
       case 3:
+        if (letter) return <ScenarioForm spec={letter} values={love.forever.v as Values} photos={photos} onChange={(v) => setForever({ v })} />;
         return (
           <div className="grid gap-8">
             <p className="text-[16.5px] text-ink-2/85">Write as little or as much as you like. Nothing here is required — and if you are stuck, tap a question for a nudge.</p>
@@ -430,7 +532,8 @@ export function GiftBuilder({ priceText }: { priceText: string | null }) {
                 </label>
               )}
             </div>
-            <p className="mt-4 text-[13.5px] leading-relaxed text-muted">Please use music you have the right to share — your own, or something you are licensed to use. We don’t supply songs. If you would rather have no music at all, simply skip this step.</p>
+            {letter && !music && <GiftMusicLibrary suggest={letter.music} onPick={(id) => void pickLibrary(id)} busy={busy === "music"} />}
+            <p className="mt-4 text-[13.5px] leading-relaxed text-muted">{letter ? "If you add your own song, please use music you have the right to share. " : "Please use music you have the right to share — your own, or something you are licensed to use. We don’t supply songs. "}If you would rather have no music at all, simply skip this step.</p>
           </div>
         );
       case 6:
@@ -468,7 +571,7 @@ export function GiftBuilder({ priceText }: { priceText: string | null }) {
     <div className="mx-auto max-w-[76rem] px-5 pb-32 pt-8 sm:px-8 lg:pb-16">
       <nav aria-label="Steps" className="mb-8">
         <ol className="flex flex-wrap gap-x-5 gap-y-2 text-[13.5px]">
-          {STEPS.map((s, i) => (
+          {(forever ? FOREVER_STEPS : STEPS).map((s, i) => (
             <li key={s}><button type="button" disabled={i > 0 && !creds} onClick={() => void goto(i)} aria-current={i === step ? "step" : undefined} className={cn("inline-flex items-center gap-1.5 py-1", i === step ? "font-semibold text-ink" : i < step ? "text-accent" : "text-muted")}>{i < step ? <Check className="size-3.5" aria-hidden /> : <span className="tnum">{i + 1}</span>} {s}</button></li>
           ))}
         </ol>
@@ -476,7 +579,7 @@ export function GiftBuilder({ priceText }: { priceText: string | null }) {
       </nav>
       <div className="grid gap-12 lg:grid-cols-[1fr_24rem]">
         <section aria-live="polite">
-          <h1 className="font-serif text-[clamp(34px,4.6vw,52px)] font-medium leading-[1.05] text-ink">{["What is it for?", "Who is it between?", "How should it feel?", "Say it your way", "Add your photographs", "Add a song", "See it the way they will", "Send it to us"][step]}</h1>
+          <h1 className="font-serif text-[clamp(34px,4.6vw,52px)] font-medium leading-[1.05] text-ink">{(forever ? FOREVER_TITLES : ["What is it for?", "Who is it between?", "How should it feel?", "Say it your way", "Add your photographs", "Add a song", "See it the way they will", "Send it to us"])[step]}</h1>
           <div className="mt-7">{stepBody()}</div>
           {error && <p role="alert" className="mt-6 rounded-lg border border-bad/40 bg-bad-soft px-4 py-3 text-[15px] text-bad">{error}</p>}
           {step > 0 && !(step === 7 && sent) && (

@@ -35,7 +35,7 @@ export function buildLoveDoc(base: InvitationDoc, c: LoveCfg, id: Ids): Invitati
     reasons: (c.reasons ?? []).map(L),
     memories: (c.memories ?? []).map((m) => ({ id: newId(), title: L(m.title), body: L(m.body), when: m.when, photo: m.photo ? id(m.photo) : undefined })),
     photos: c.photos.map((k) => id(k)).filter((x): x is string => !!x),
-    closing: L(c.closing ?? ""), reply: { enabled: false, whatsapp: "" },
+    closing: L(c.closing ?? ""), reply: { enabled: false, whatsapp: "" }, forever: base.love.forever,
   };
   doc.seo = { title: L("A sample love gift"), description: L("A sample from Invites by Stack Bridge Labs."), ogImage: undefined } as never;
   return doc;

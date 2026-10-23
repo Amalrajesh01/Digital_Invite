@@ -12,6 +12,7 @@ import { track, deviceFromUserAgent } from "@/domain/analytics/service";
 import { getEntitlements } from "@/domain/packages/service";
 import { canUse } from "@/domain/packages/entitlements";
 import { rateLimit } from "@/domain/platform/rate-limit";
+import { submitLetterReply } from "@/domain/letters/service";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -114,6 +115,12 @@ export async function POST(req: Request, { params }: Params) {
         const p = participant(c, form.get("name"));
         const msg = form.get("message");
         return ok(await submitMediaWish(p, kind, await fileFrom(form), typeof msg === "string" ? msg : ""));
+      }
+      case "letter-reply": {
+        // an answer to a Forever Letter: stored for its sender only (see domain/letters/service.ts)
+        const snap = await loadPublishedSnapshot(c.wedding);
+        if (!snap) throw notFound();
+        return ok(await submitLetterReply(c.wedding.id, c.ip, snap.doc.love, await req.json()));
       }
       case "play": {
         const body = await req.json();

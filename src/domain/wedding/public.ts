@@ -18,6 +18,8 @@ import { env } from "@/lib/env";
 import { SECTION_META } from "@/domain/doc/sections";
 import { tx } from "@/domain/doc/schema";
 import { resolveSlot } from "@/domain/imagery/slots";
+import { letterBySlug, slimSpec } from "@/domain/letters";
+import type { LetterSpec } from "@/domain/letters/types";
 
 export interface PublicGuest {
   name: string;
@@ -30,6 +32,8 @@ export interface PublicGuest {
   rsvp: Awaited<ReturnType<typeof getGuestRsvp>>;
   isPreview?: boolean;
 }
+
+const slimSpecOf = (slug: string) => { const s = letterBySlug(slug); return s ? slimSpec(s) : undefined; };
 
 export interface InvitationView {
   mode: "public" | "preview";
@@ -68,6 +72,8 @@ export interface InvitationView {
   };
   urls: { canonical: string; ogImage: string | null };
   version: number | null;
+  /** For a Forever Letter: the experience it plays (everything the player needs, as plain data). */
+  letter?: LetterSpec;
 }
 
 export type LoadResult =
@@ -171,6 +177,7 @@ async function assemble(opts: { snap: Snapshot; guest: GuestContext | null; mode
     initial,
     urls: { canonical, ogImage: ogId && media[ogId] ? media[ogId].url : null },
     version: snap.versionNumber,
+    letter: doc.love.experience === "forever" ? slimSpecOf(doc.love.forever.scenario) : undefined,
   };
 }
 

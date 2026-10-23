@@ -56,6 +56,8 @@ const nextConfig: NextConfig = {
       // a gift's maker pages and preview: private, never indexed, never cached, never shown inside another site
       { source: "/for-my-love/preview/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }, { key: "Cache-Control", value: "private, no-store" }, { key: "Referrer-Policy", value: "no-referrer" }] },
       { source: "/for-my-love/gift/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }, { key: "Cache-Control", value: "private, no-store" }, { key: "Referrer-Policy", value: "no-referrer" }] },
+      // the public demonstration of a Forever Letter is for playing, not for search results
+      { source: "/for-my-love/letter-demo/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }, { key: "Referrer-Policy", value: "no-referrer" }] },
       { source: "/for-my-love/make", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }, { key: "Cache-Control", value: "private, no-store" }] },
     ];
   },

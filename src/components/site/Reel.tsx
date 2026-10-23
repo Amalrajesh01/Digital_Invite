@@ -10,7 +10,7 @@ import { FallbackImg } from "./FallbackImg";
  * with no tall picture shows its first screen instead, standing still. By default it is a 9:18 box; pass `className="absolute inset-0"`
  * to fill a frame that already has a shape.
  */
-export function Reel({ slug, thumb, alt, eager, className }: { slug: string; thumb: string; alt: string; eager?: boolean; className?: string }) {
+export function Reel({ slug, thumb, alt, eager, className, src }: { slug: string; thumb: string; alt: string; eager?: boolean; className?: string; /** The tall picture, when it is not `/templates/tall/<slug>.webp` (Forever Letters keep theirs in `/letters/tall/`). */ src?: string }) {
   const frame = useRef<HTMLDivElement>(null);
   const img = useRef<HTMLImageElement>(null);
   const [live, setLive] = useState(false);
@@ -33,7 +33,7 @@ export function Reel({ slug, thumb, alt, eager, className }: { slug: string; thu
       {missing ? (
         <FallbackImg src={thumb} alt={alt} width={540} height={1140} loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover object-top" />
       ) : (
-        <img ref={img} src={`/templates/tall/${slug}.webp`} alt={alt} width={520} height={4500} loading={eager ? "eager" : "lazy"} decoding="async" onError={() => setMissing(true)} className="reel-img absolute inset-x-0 top-0 w-full" style={{ animationDelay: `${-offset}s` }} />
+        <img ref={img} src={src ?? `/templates/tall/${slug}.webp`} alt={alt} width={520} height={4500} loading={eager ? "eager" : "lazy"} decoding="async" onError={() => setMissing(true)} className="reel-img absolute inset-x-0 top-0 w-full" style={{ animationDelay: `${-offset}s` }} />
       )}
     </div>
   );

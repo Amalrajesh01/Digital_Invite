@@ -13,6 +13,10 @@ import { ingestFile, deleteMedia, toResolved, type ResolvedMedia } from "@/domai
 import { publishWedding, purgeWedding } from "@/domain/wedding/service";
 import { loadPreviewInvitation } from "@/domain/wedding/public";
 import { LOVE_EXPERIENCE_INFO, MOOD_THEME, OCCASION_INFO, type LoveOccasion } from "@/domain/love/constants";
+import { letterBySlug } from "@/domain/letters";
+import { addLibraryTrack } from "@/domain/music/service";
+import { isLetterEnabled, listRepliesForWedding } from "@/domain/letters/service";
+import { cleanValues, guardsOf, missingRequired, withoutPhoto } from "@/domain/letters/values";
 
 /**
  * “For My Love” gifts made on the public site. A gift is an ordinary invitation row (so photographs, publishing and
@@ -76,24 +80,34 @@ export async function openGift(giftId: string, token: string | null | undefined)
 }
 
 // ── create ─────────────────────────────────────────────────────────────────
-export async function createGift(input: { occasion: LoveOccasion; ipKey: string }) {
+/** A Forever Letter is a gift whose experience is one of the catalogue's; its look comes from its own palette, so it borrows the plain letter template and paper theme. */
+const FOREVER_TEMPLATE = LOVE_EXPERIENCE_INFO.letter.slug;
+const FOREVER_MOOD = "minimal" as const;
+
+export async function createGift(input: { occasion?: LoveOccasion; scenario?: string; ipKey: string }) {
   await rateLimit(`gift-new:${input.ipKey}`, 10, 3600);
   const db = await getDb();
-  const info = OCCASION_INFO[input.occasion];
-  const templateSlug = LOVE_EXPERIENCE_INFO[info.experience].slug;
+  const spec = input.scenario ? letterBySlug(input.scenario) : undefined;
+  if (input.scenario && (!spec || !(await isLetterEnabled(spec.slug)))) throw invalid("That experience is not available.");
+  const occasion: LoveOccasion = spec?.occasion ?? input.occasion ?? "just_because";
+  const info = OCCASION_INFO[occasion];
+  const templateSlug = spec ? FOREVER_TEMPLATE : LOVE_EXPERIENCE_INFO[info.experience].slug;
+  const moodTheme = spec ? MOOD_THEME[FOREVER_MOOD] : MOOD_THEME[info.mood];
   let [tpl] = await db.select().from(schema.templates).where(eq(schema.templates.slug, templateSlug));
-  let [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, MOOD_THEME[info.mood]));
+  let [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, moodTheme));
   if (!tpl || !thm) {
     await ensureDesignLibrary();
     [tpl] = await db.select().from(schema.templates).where(eq(schema.templates.slug, templateSlug));
-    [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, MOOD_THEME[info.mood]));
+    [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, moodTheme));
   }
   if (!tpl || !thm) throw invalid("We could not set up your gift just now. Please try again in a moment.");
 
   const doc = emptyDoc();
   doc.eventType = "love_gift";
   doc.opening = { ...doc.opening, variant: "none", celebration: "off" };
-  doc.love = LoveDoc.parse({ experience: info.experience, occasion: input.occasion, mood: info.mood });
+  doc.love = spec
+    ? LoveDoc.parse({ experience: "forever", occasion, mood: FOREVER_MOOD, forever: { scenario: spec.slug, guards: guardsOf(spec), playfulNo: false, replies: spec.reply ? "collect" : "off" } })
+    : LoveDoc.parse({ experience: info.experience, occasion, mood: info.mood });
   doc.sections = [];
 
   const token = randomBytes(24).toString("base64url"); // 192 bits
@@ -102,7 +116,7 @@ export async function createGift(input: { occasion: LoveOccasion; ipKey: string 
     .values({ slug: newSlug(), title: "Love gift", packageKey: "ESSENTIAL", customerClass: "PAID_ESSENTIAL", templateId: tpl.id, themeId: thm.id, autoLifecycle: false, mediaStorage: "legacy", draftDoc: doc })
     .returning();
   const [g] = await db.insert(schema.gifts).values({ weddingId: w.id, editTokenHash: hash(token), expiresAt: days(DRAFT_DAYS) }).returning();
-  await audit(SYSTEM, "gift.created", { weddingId: w.id, entityType: "gift", entityId: g.id, metadata: { occasion: input.occasion } });
+  await audit(SYSTEM, "gift.created", { weddingId: w.id, entityType: "gift", entityId: g.id, metadata: { occasion, scenario: spec?.slug } });
   return { id: g.id, token, weddingId: w.id, viewToken: giftViewToken(w.id) };
 }
 
@@ -119,7 +133,11 @@ export async function getGiftForOwner(giftId: string, token: string) {
   const db = await getDb();
   const assets = await db.select().from(schema.mediaAssets).where(and(eq(schema.mediaAssets.weddingId, wedding.id), eq(schema.mediaAssets.kind, "IMAGE"))).orderBy(asc(schema.mediaAssets.createdAt));
   const [track] = await db.select().from(schema.musicTracks).where(eq(schema.musicTracks.weddingId, wedding.id)).limit(1);
+  const letter = wedding.draftDoc.love.experience === "forever" ? letterBySlug(wedding.draftDoc.love.forever.scenario) ?? null : null;
+  const replies = letter ? (await listRepliesForWedding(wedding.id)).map((r) => ({ id: r.id, choice: r.choice, label: r.label, note: r.note, when: r.whenText, answers: r.answers, at: r.createdAt })) : [];
   return {
+    letter,
+    replies,
     id: gift.id,
     ref: giftRef(gift.id),
     state: gift.state,
@@ -165,8 +183,24 @@ export async function saveGift(giftId: string, token: string, input: unknown) {
   love.photos = love.photos.filter((id) => owned.has(id));
   love.memories = love.memories.map((m) => ({ ...m, photo: m.photo && owned.has(m.photo) ? m.photo : undefined }));
 
+  // A Forever Letter keeps the scenario it was made for; what is written into it is cleaned against that scenario's own fields.
+  const before = wedding.draftDoc.love;
+  if (before.experience === "forever") {
+    const spec = letterBySlug(before.forever.scenario);
+    if (!spec) throw invalid("That experience is no longer available.");
+    love.experience = "forever";
+    love.occasion = spec.occasion;
+    love.forever.scenario = spec.slug;
+    love.forever.v = cleanValues(spec, love.forever.v, (id) => owned.has(id));
+    love.forever.guards = guardsOf(spec);
+    if (!spec.reply) love.forever.replies = "off";
+    if (!spec.playfulNo) love.forever.playfulNo = false;
+  } else if (love.experience === "forever") {
+    throw invalid("Something in your gift could not be saved. Please check it and try again.");
+  }
+
   // The experience and the mood pick the template and the colours.
-  const slug = LOVE_EXPERIENCE_INFO[love.experience].slug;
+  const slug = love.experience === "forever" ? FOREVER_TEMPLATE : LOVE_EXPERIENCE_INFO[love.experience].slug;
   const [tpl] = await db.select({ id: schema.templates.id }).from(schema.templates).where(eq(schema.templates.slug, slug));
   const [thm] = await db.select({ id: schema.themes.id }).from(schema.themes).where(eq(schema.themes.slug, MOOD_THEME[love.mood]));
   const doc: InvitationDoc = { ...wedding.draftDoc, eventType: "love_gift", love, sections: [] };
@@ -197,13 +231,15 @@ export async function removeGiftPhoto(giftId: string, token: string, assetId: st
   const doc = structuredClone(wedding.draftDoc);
   doc.love.photos = doc.love.photos.filter((id) => id !== assetId);
   doc.love.memories = doc.love.memories.map((m) => (m.photo === assetId ? { ...m, photo: undefined } : m));
+  const spec = doc.love.experience === "forever" ? letterBySlug(doc.love.forever.scenario) : undefined;
+  if (spec) doc.love.forever.v = withoutPhoto(spec, doc.love.forever.v, assetId);
   const db = await getDb();
   await db.update(schema.weddings).set({ draftDoc: doc, draftUpdatedAt: new Date() }).where(eq(schema.weddings.id, wedding.id));
   await deleteMedia(SYSTEM, wedding.id, assetId);
   return doc.love;
 }
 
-export async function setGiftMusic(giftId: string, token: string, file: { buffer: Buffer; filename: string } | null) {
+export async function setGiftMusic(giftId: string, token: string, file: { buffer: Buffer; filename: string } | { library: string } | null) {
   await rateLimit(`gift-music:${giftId}`, 20, 3600);
   const { wedding } = await openGift(giftId, token);
   const db = await getDb();
@@ -211,6 +247,8 @@ export async function setGiftMusic(giftId: string, token: string, file: { buffer
   const old = await db.select().from(schema.musicTracks).where(eq(schema.musicTracks.weddingId, wedding.id));
   for (const t of old) await deleteMedia(SYSTEM, wedding.id, t.assetId);
   if (!file) return null;
+  // a song from the licensed library (instrumentals, credit travels with the song): copied into the gift's own media like an upload
+  if ("library" in file) { const t = await addLibraryTrack(SYSTEM, wedding.id, file.library, { primary: true }); return { id: t.id, title: t.title }; }
   if (file.buffer.length > MAX_AUDIO_BYTES) throw invalid("That audio file is too large. Please choose one under 10 MB.");
   const asset = await ingestFile({ weddingId: wedding.id, buffer: file.buffer, filename: file.filename, category: "MUSIC", allow: ["AUDIO"], source: "SYSTEM", visibility: "PUBLIC", retention: "PUBLISHED" });
   const title = file.filename.replace(/\.[a-z0-9]+$/i, "").slice(0, 80) || "Our song";
@@ -229,9 +267,15 @@ export async function submitGift(giftId: string, token: string, contact: { name:
   const db = await getDb();
   const issues = (await import("@/domain/wedding/doc-tools")).publishReadiness({ doc: wedding.draftDoc, slug: wedding.slug, weddingDate: wedding.weddingDate, secondaryLocale: null, hasTemplate: true, hasTheme: true, galleryCount: 0, hasMusic: false }).filter((i) => i.level === "error");
   if (issues.length) throw invalid(issues[0].message);
+  const forever = wedding.draftDoc.love;
+  if (forever.experience === "forever") {
+    const spec = letterBySlug(forever.forever.scenario);
+    const missing = spec ? missingRequired(spec, forever.forever.v) : [];
+    if (missing.length) throw invalid(`Please write "${missing[0]}" before sending it to us.`);
+  }
   await db.update(schema.gifts).set({ state: gift.state === "DRAFT" ? "SUBMITTED" : gift.state, contactName: name, contactPhone: phone, submittedAt: new Date(), expiresAt: gift.state === "DRAFT" ? days(SUBMITTED_DAYS) : gift.expiresAt, updatedAt: new Date() }).where(eq(schema.gifts.id, gift.id));
   const love = wedding.draftDoc.love;
-  await db.insert(schema.leads).values({ kind: "GIFT", name, phone, occasion: "for-my-love", templateSlug: LOVE_EXPERIENCE_INFO[love.experience].slug, eventDate: love.date || null, message: `Love gift (${love.occasion}) — ref ${giftRef(gift.id)}`, source: "gift-builder", weddingId: wedding.id });
+  await db.insert(schema.leads).values({ kind: "GIFT", name, phone, occasion: "for-my-love", templateSlug: love.experience === "forever" ? love.forever.scenario : LOVE_EXPERIENCE_INFO[love.experience].slug, eventDate: love.date || null, message: `Love gift (${love.occasion}) — ref ${giftRef(gift.id)}`, source: "gift-builder", weddingId: wedding.id });
   await audit(SYSTEM, "gift.submitted", { weddingId: wedding.id, entityType: "gift", entityId: gift.id });
   const text = `Hi, I made a love gift on your site. My reference is ${giftRef(gift.id)}. Please help me publish it.`;
   return { ref: giftRef(gift.id), whatsapp: `https://wa.me/${brand.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(text)}` };

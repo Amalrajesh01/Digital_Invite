@@ -504,7 +504,7 @@ export type SectionConfig = z.infer<typeof SectionConfig>;
  * by default, so every other kind of invitation parses exactly as before.
  */
 export const LoveDoc = ObjDefault({
-  experience: z.enum(LOVE_EXPERIENCES).default("letter"),
+  experience: z.enum([...LOVE_EXPERIENCES, "forever"]).default("letter"),
   occasion: z.enum(LOVE_OCCASIONS).default("just_because"),
   mood: z.enum(LOVE_MOODS).default("romantic"),
   /** Who it is from, who it is for, and the pet name they like. */
@@ -530,6 +530,21 @@ export const LoveDoc = ObjDefault({
     .default([]),
   photos: z.array(z.string()).max(12).default([]),
   closing: L(),
+  /**
+   * A Forever Letter (experience "forever"): which of the catalogue it is, what the sender wrote into its fields (a string per
+   * field, or a list of items — see `src/domain/letters/`), and the few choices that belong to the sender: whether the playful
+   * “No” is on, where an answer goes, whether the recipient's answers along the way are shared, how lively it is.
+   * `guards` names fields that are removed from every recipient's copy unless their toggle is on.
+   */
+  forever: ObjDefault({
+    scenario: z.string().max(60).default(""),
+    v: z.record(z.string().max(40), z.union([z.string().max(6000), z.array(z.record(z.string().max(30), z.string().max(2000))).max(60)])).default({}),
+    guards: z.record(z.string().max(40), z.string().max(40)).default({}),
+    playfulNo: z.boolean().default(false),
+    replies: z.enum(["collect", "whatsapp", "off"]).default("collect"),
+    shareAnswers: z.boolean().default(false),
+    intensity: z.enum(["calm", "standard", "rich"]).default("standard"),
+  }),
   /** Optional: let them answer. Off by default — nothing is ever asked of the person who receives it. */
   reply: ObjDefault({ enabled: z.boolean().default(false), whatsapp: z.string().max(24).default("") }),
 });

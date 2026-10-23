@@ -24,7 +24,7 @@ export function SiteFooter() {
         <nav aria-label="Explore">
           <p className="eyebrow !text-white/50">Explore</p>
           <ul className="mt-4 grid gap-2.5 text-[15px]">
-            {[["/templates", "Choose Your Design"], ["/for-my-love", "For My Love"], ["/pricing", "Pricing"], ["/how-it-works", "How It Works"], ["/faq", "Help & Questions"], ["/start", "Create Your Invitation"]].map(([href, label]) => (
+            {[["/templates", "Choose Your Design"], ["/for-my-love", "Forever Letters"], ["/pricing", "Pricing"], ["/how-it-works", "How It Works"], ["/faq", "Help & Questions"], ["/start", "Create Your Invitation"]].map(([href, label]) => (
               <li key={href}><Link href={href} className="text-white/80 hover:text-white">{label}</Link></li>
             ))}
           </ul>
