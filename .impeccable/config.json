@@ -11,6 +11,15 @@
         ],
         "createdAt": "2026-10-15T23:12:37.289Z",
         "reason": "Photo-filled numeral (background-clip:text with the customer's photograph); gradient is only the no-photo fallback. Decided by the design brief: image-led hero compositions."
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/invitation/letters/beats.css"
+        ],
+        "createdAt": "2026-10-23T06:19:38.152Z",
+        "reason": "Claude judgement, not user-confirmed: .fl-rail is the vertical axis of a milestone timeline (the dots sit on the line); it is not an accent border on a card. The one real card variant (.fl-timeline-cards) drops it."
       }
     ]
   }
