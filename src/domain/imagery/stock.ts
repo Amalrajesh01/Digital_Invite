@@ -8,6 +8,8 @@
  * Every picture of a person is a real photograph of a real person used as a STAND-IN for a fictional invitation; the
  * sample invitations say so in their footer.
  */
+import { GENERATED } from "@/domain/baptism/generated";
+
 export interface StockInfo {
   /** Plain-language description (used as alt text). */
   alt: string;
@@ -260,6 +262,9 @@ export const STOCK: Record<string, StockInfo> = {
   "wc-152617626": { alt: "An Onam sadya served on a banana leaf, with rice, parippu, pickles, banana chips and payasam", focal: { x: 50, y: 50 } },
   "wc-40896574": { alt: "A Kerala Onam sadya laid out on a banana leaf", focal: { x: 50, y: 50 } },
 };
+
+// Images brought in from the baptism prompts (`npm run baptism:ingest`) sit beside the licensed photographs and are described the same way.
+for (const [id, g] of Object.entries(GENERATED)) STOCK[id] = { alt: g.alt, focal: g.focal };
 
 export function stockInfo(id: string): StockInfo | undefined {
   return Object.prototype.hasOwnProperty.call(STOCK, id) ? STOCK[id] : undefined;

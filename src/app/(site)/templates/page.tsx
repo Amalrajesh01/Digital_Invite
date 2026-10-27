@@ -9,12 +9,12 @@ import { TemplateFilter, type FilterGroup } from "@/components/site/TemplateFilt
 export const metadata = pageMetadata({
   path: "/templates",
   title: "Choose your invitation design",
-  description: "Digital invitation designs for weddings, engagements, birthdays, anniversaries, housewarmings, naming ceremonies, corporate events, memorials — and love gifts. At least five different designs for every occasion. Open any one the way your guests will.",
+  description: "Digital invitation designs for weddings, engagements, birthdays, anniversaries, housewarmings, naming ceremonies, baptisms and christenings, corporate events, memorials — and love gifts. At least five different designs for every occasion. Open any one the way your guests will.",
   image: "ch4Fc1cGTq4",
 });
 export const dynamic = "force-dynamic";
 
-const ORDER = ["wedding", "engagement", "birthday", "anniversary", "housewarming", "naming-ceremony", "religious", "corporate", "conference", "funeral", "for-my-love"] as const;
+const ORDER = ["wedding", "engagement", "birthday", "anniversary", "housewarming", "naming-ceremony", "baptism", "religious", "corporate", "conference", "funeral", "for-my-love"] as const;
 const LINE: Record<string, string> = {
   wedding: "Royal, minimal, cinematic, floral or full of fun — plus editions for Christian and Muslim weddings.",
   engagement: "Ring ceremonies, from a lamp-lit tradition to a party.",
@@ -22,6 +22,7 @@ const LINE: Record<string, string> = {
   anniversary: "Years told as a number, a film, a garden or a night out.",
   housewarming: "Griha Pravesh, open houses and house parties.",
   "naming-ceremony": "Welcoming a little one — with the rituals explained.",
+  baptism: "Twenty designs for a baptism or christening — church light, a dove, a lamp, still water — with the verse and the family.",
   religious: "Pujas, prayers and community festivals.",
   corporate: "Galas, keynotes, retreats and team parties.",
   conference: "Summits, forums and meetups.",

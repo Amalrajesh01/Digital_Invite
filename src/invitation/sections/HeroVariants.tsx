@@ -6,7 +6,11 @@ import { useInvitation } from "../engine/context";
 import { Photo } from "../engine/Photo";
 import { Reveal, RevealWords } from "../engine/motion";
 import { fmtDate } from "../engine/format";
+import dynamic from "next/dynamic";
 import { HeroMore, isMoreHero } from "./HeroMore";
+
+// The twenty baptism heroes carry their own scenes and stylesheet; no other invitation downloads them.
+const HeroGrace = dynamic(() => import("./HeroGrace"));
 import ClassicHero, { MiniCountdown, ScrollCue, goNext, useHeroData, type HeroData } from "./HeroSection";
 
 /**
@@ -239,7 +243,9 @@ export default function Hero({ section }: { section: SectionConfig }) {
     case "polaroids": return <Polaroids section={section} />;
     case "gateway": return <Gateway section={section} />;
     case "numeral": return <Numeral section={section} />;
-    default: return isMoreHero(section.variant) ? <HeroMore section={section} /> : <ClassicHero section={section} />;
+    default:
+      if (section.variant?.startsWith("gr-")) return <HeroGrace section={section} />;
+      return isMoreHero(section.variant) ? <HeroMore section={section} /> : <ClassicHero section={section} />;
   }
 }
 

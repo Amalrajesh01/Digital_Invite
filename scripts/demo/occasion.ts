@@ -20,6 +20,8 @@ export interface OccasionCfg {
   slug: string; title: string; date: string; template: string; theme: string; track: string;
   eventType: EventType;
   package?: PackageKey;
+  /** A song from the bundled music library (`src/domain/music/library.ts`); replaces the generated ambient track. */
+  libraryTrack?: string;
   headline: { title: string; subtitle: string; invitation: string; hosts?: string; monogram: string; dateLabel?: string };
   honoree?: { name: string; fullName?: string; role?: string; age?: string; born?: string; passed?: string; photo?: string; epitaph?: string };
   about?: { eyebrow?: string; title?: string; body: string; quote?: [text: string, author: string]; highlights?: [value: string, label: string, note?: string][] };
@@ -30,7 +32,7 @@ export interface OccasionCfg {
   people?: { group: string; name: string; relation?: string; note?: string; photo?: string }[];
   registration?: { label?: string; note?: string; url?: string };
   prayer?: { title?: string; text: string; source?: string };
-  images: { couple: string; coupleWide?: string; story?: string };
+  images: { couple?: string; coupleWide?: string; story?: string };
   /** Opening lines of the story section, one thought per line (only for templates that include the story section). */
   intro?: string;
   venues: VenueCfg[];
@@ -47,7 +49,7 @@ export interface OccasionCfg {
   looks?: { title: string; forWhom: "women" | "men" | "everyone"; description: string; colors: string[]; photo?: string }[];
   opening: { sealText?: string; invited?: string };
   thankYou?: { message: string; signature: string; photo?: string };
-  seo: { title: string; description: string; og: string };
+  seo: { title: string; description: string; og?: string };
   needs: Need[];
   gallery: [stock: string, caption: string][];
   wishes?: [name: string, relationship: string, message: string][];
@@ -59,7 +61,7 @@ export function buildOccasionDoc(base: InvitationDoc, c: OccasionCfg, id: Ids, w
   const photo = (k?: string) => (k ? id(k) : undefined);
   doc.eventType = c.eventType;
   doc.journey = { enabled: false, style: "auto", autoFit: true, headZoom: { bride: 1, groom: 1 } };
-  doc.images = { couple: id(c.images.couple), coupleWide: photo(c.images.coupleWide), story: photo(c.images.story), ceremony: undefined, family: undefined };
+  doc.images = { couple: photo(c.images.couple), coupleWide: photo(c.images.coupleWide), story: photo(c.images.story), ceremony: undefined, family: undefined };
 
   const h = c.honoree;
   doc.occasion = {
@@ -114,7 +116,7 @@ export function buildOccasionDoc(base: InvitationDoc, c: OccasionCfg, id: Ids, w
   doc.guestGreetings = { default: L("Dear {name}, you are warmly invited."), byRelationship: [] } as never;
   doc.opening = { variant: "envelope", sealText: c.opening.sealText ?? "", dateReveal: true, showInitials: true, locationAware: false, invitedLine: L(c.opening.invited ?? ""), celebration: "auto" } as never;
   doc.thankYou = { message: L(c.thankYou?.message ?? ""), signature: L(c.thankYou?.signature ?? ""), photo: photo(c.thankYou?.photo) } as never;
-  doc.seo = { title: L(c.seo.title), description: L(c.seo.description), ogImage: id(c.seo.og) } as never;
+  doc.seo = { title: L(c.seo.title), description: L(c.seo.description), ogImage: photo(c.seo.og) } as never;
   doc.film = { url: "", video: undefined, poster: undefined, title: {}, caption: {} };
   doc.live = { streamUrl: "", streamLabel: {} } as never;
   for (const s of doc.sections) {

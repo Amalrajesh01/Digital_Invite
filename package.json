@@ -28,7 +28,11 @@
     "cloudinary:static": "tsx scripts/cloudinary-static.ts",
     "letters:images": "tsx scripts/letters-images.ts",
     "letters:check": "tsx scripts/letters-check.ts",
-    "docs:letters": "tsx scripts/docs-letters.ts"
+    "docs:letters": "tsx scripts/docs-letters.ts",
+    "baptism:scripture": "tsx scripts/baptism-scripture.ts",
+    "baptism:check": "tsx scripts/baptism-check.ts",
+    "baptism:images": "tsx scripts/baptism-images.ts",
+    "baptism:ingest": "tsx scripts/baptism-ingest.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1142.0",

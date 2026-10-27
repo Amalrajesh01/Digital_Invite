@@ -1696,6 +1696,608 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Accessibility** | Every playful opening is a single large tap target with a plain-button alternative; no timed or precise interactions. |
 | **Sample content** | `onam-celebration` |
 
+## Baptism & christening
+
+### A New Beginning
+
+| | |
+|---|---|
+| **Template ID** | `a-new-beginning` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | The flagship: a title sequence, then church doors open on night; dawn floods the nave, doves rise, water ripples at the threshold and the name appears in the light. |
+| **Target customer** | Families who want the full cinematic treatment; Baptisms with relatives watching from abroad; Large services with a reception |
+| **Visual style** | Cinematic Story |
+| **Colour palette** | New Dawn — paper #FBF5EC, ink #1F2742, main #1F2E5C, accent #C99B3F, night #111A3B |
+| **Typography** | Playfair Display for names and headings, Inter for reading text, Cormorant Garamond for flourishes |
+| **Opening** | Film title sequence |
+| **Hero composition** | Baptism — doors open on dawn |
+| **Section layout** | Hero → About the occasion → Prayer / reading → People → A message → Ceremonies → Countdown → Events → Live stream → Venue & map → Travel & stay → Gallery → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | Everything is drawn and lit; a photograph of the church or the child is dropped into the dawn and lit by it. |
+| **Animation strategy** | A short title sequence, the doors open, light floods in over four seconds, two doves rise and gold dust drifts upward; then it settles. |
+| **Interactive features** | A film title sequence opens it; Verse, family and service in order; Livestream for family far away; A keepsake wall afterwards |
+| **Emotional tone** | Cinematic, hopeful, complete |
+| **Storytelling structure** | The full story: the child, the verse, the family, the service, the day, the livestream for those far away and a keepsake afterwards. |
+| **Gallery treatment** | A film strip of photographs from the day, afterwards. |
+| **Transition style** | Scene-by-scene: each section arrives like the next shot. |
+| **Motion profile** | Cinematic |
+| **Music recommendations** | Immersed; Eternal Hope; Ascending the Vale (first is the default) |
+| **Library filters** | cinematic, royal |
+| **Mobile behaviour** | Portrait-first: the doors fill the screen and the name sits in the lower third. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (14 pages need Signature or Luxury) |
+| **Accessibility** | A scrim guarantees text contrast on any photograph; motion stops completely for reduced-motion users. |
+| **Sample content** | `elias-baptism` |
+
+### Heavenly Grace
+
+| | |
+|---|---|
+| **Template ID** | `heavenly-grace` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | A high, bright sky: clouds part, a soft ray comes down and a single dove crosses the light above the child’s name. |
+| **Target customer** | Families who want something light and calm; Morning services; Any denomination |
+| **Visual style** | Celestial |
+| **Colour palette** | Sky & Grace — paper #F3F6FB, ink #1E2A44, main #4F73A8, accent #C9A757, night #14203A |
+| **Typography** | Italiana for names and headings, Inter for reading text, Cormorant Garamond for flourishes |
+| **Opening** | Swipe up |
+| **Hero composition** | Baptism — clouds and a dove |
+| **Section layout** | Hero → Prayer / reading → About the occasion → People → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A portrait of the child sits in a soft oval of cloud, or the scene stands alone; nothing is cropped hard. |
+| **Animation strategy** | Clouds drift at two speeds, the ray breathes, a dove crosses once and gold dust rises slowly. |
+| **Interactive features** | Lift the sky to open; Verse set large; RSVP and a wall of blessings |
+| **Emotional tone** | Gentle, bright, reverent |
+| **Storytelling structure** | The verse comes straight after the opening; then the child, the people who hold them, and the day. |
+| **Gallery treatment** | Photographs sit on soft white cards with generous space. |
+| **Transition style** | Sections rise out of the clouds with a slow fade. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | Heart of Nowhere; Ascending the Vale; Airship Serenity (first is the default) |
+| **Library filters** | romantic, traditional |
+| **Mobile behaviour** | Centred single column; the name sits in the clearest part of the sky and never over the dove. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | Text always sits on a solid-enough ground; the star field is decorative and hidden from screen readers. |
+| **Sample content** | `anya-baptism` |
+
+### A Blessing from Above
+
+| | |
+|---|---|
+| **Template ID** | `blessing-from-above` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | A single column of light falls from the top of the screen onto the child’s name while feathers of light drift down through it. |
+| **Target customer** | Evening or late-morning services; Families who value the blessing above the party; Orthodox and Catholic families |
+| **Visual style** | Cinematic Story |
+| **Colour palette** | Dawn Rose — paper #FBF3EC, ink #3B2B2E, main #A9625C, accent #B98F3E, night #2E1D22 |
+| **Typography** | Prata for names and headings, Jost for reading text, Pinyon Script for flourishes |
+| **Opening** | A spotlight finds the names |
+| **Hero composition** | Baptism — a beam of light |
+| **Section layout** | Hero → Prayer / reading → About the occasion → A message → Events → Live stream → Venue & map → People → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | The beam is the only decoration; a portrait, if there is one, is lit by it and shown full height. |
+| **Animation strategy** | The light descends in two seconds and then only breathes; feathers fall once, slowly. |
+| **Interactive features** | A spotlight finds the name; Blessing read in full; RSVP at the end |
+| **Emotional tone** | Tender, hushed, luminous |
+| **Storytelling structure** | The priestly blessing first, then the letter from the family, then the order of the day. |
+| **Gallery treatment** | A quiet row of photographs under the same light. |
+| **Transition style** | Each section is lit from above as it arrives. |
+| **Motion profile** | Cinematic |
+| **Music recommendations** | Canon in D for Two Harps; Heart of Nowhere; Gymnopedie No. 1 (first is the default) |
+| **Library filters** | cinematic, romantic |
+| **Mobile behaviour** | The beam is narrower on small screens so the name stays in its brightest part. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | A scrim guarantees text contrast on any photograph; motion stops completely for reduced-motion users. |
+| **Sample content** | `nathan-baptism` |
+
+### The Sacred Waters
+
+| | |
+|---|---|
+| **Template ID** | `sacred-waters` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | Still water at first light: a drop falls, rings of light widen across the page and the child’s name rests on the surface. |
+| **Target customer** | Families who want the water to be the symbol; Baptisms by immersion or pouring; Daytime and lakeside or church-hall celebrations |
+| **Visual style** | Coastal |
+| **Colour palette** | Living Water — paper #EEF6F6, ink #12343B, main #2A7482, accent #B99B55, night #0B2A31 |
+| **Typography** | Jost for names and headings, Karla for reading text, Cormorant Garamond for flourishes |
+| **Opening** | The tide rolls in |
+| **Hero composition** | Baptism — still water |
+| **Section layout** | Hero → About the occasion → Ceremonies → Prayer / reading → Events → Live stream → Venue & map → People → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | Water is drawn, not photographed; the family’s photograph sits in a round frame on the surface. |
+| **Animation strategy** | One drop falls and rings widen for as long as the page is open, very slowly; reduced-motion shows the rings still. |
+| **Interactive features** | The tide rolls in to open; Each step of the service explained; RSVP and blessings |
+| **Emotional tone** | Calm, clear, renewing |
+| **Storytelling structure** | The sacrament explained step by step, then the verse, then the day. |
+| **Gallery treatment** | Photographs float on pale glass-like cards. |
+| **Transition style** | Sections surface from below like something rising through water. |
+| **Motion profile** | Immersive |
+| **Music recommendations** | Northern Glade; Skye Cuillin; Heart of Nowhere (first is the default) |
+| **Library filters** | cinematic, minimalist |
+| **Mobile behaviour** | The rings are centred on the name; the horizon line sits at two-thirds height. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | Light grounds with dark text; motion is slow and stops for reduced-motion users. |
+| **Sample content** | `ezra-baptism` |
+
+### Kerala Christian Heritage
+
+| | |
+|---|---|
+| **Template ID** | `kerala-christian-heritage` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | A kasavu-bordered arch holds the parish church; a lamp is lit, a Nasrani cross rises above and the families are introduced with the names they use at home. |
+| **Target customer** | Syrian Christian families — Orthodox, Jacobite, Mar Thoma, Syro-Malabar; Families with grandparents who want to be named properly; Parish churches and family homes in Kerala |
+| **Visual style** | Royal Tradition |
+| **Colour palette** | Kasavu & Cross — paper #FAF4E3, ink #2B2316, main #7A5A12, accent #B8913E, night #1E3A2B |
+| **Typography** | Marcellus for names and headings, Mulish for reading text, Cormorant Garamond for flourishes |
+| **Opening** | Light the lamp |
+| **Hero composition** | Baptism — kasavu arch and church |
+| **Section layout** | Hero → People → A message → About the occasion → Prayer / reading → Ceremonies → Events → Live stream → Venue & map → Dress code & palette → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | The parish church or the child in an arch edged with a kasavu band; a second photograph of the grandparents beside the family section. |
+| **Animation strategy** | The lamp is lit, the kasavu band draws in, and the cross rises into place; nothing else moves. |
+| **Interactive features** | Light the lamp to open; Family introduced by their own names for each other; Service explained for guests of other churches |
+| **Emotional tone** | Rooted, warm, ceremonial |
+| **Storytelling structure** | The family first — Appachan, Ammachi, parents, godparents — then the letter, the verse and the service. |
+| **Gallery treatment** | Photographs in cream cards with gold keylines. |
+| **Transition style** | Kasavu lines draw between sections. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | Ascending the Vale; Canon in D for Two Harps; Heart of Nowhere (first is the default) |
+| **Library filters** | traditional, royal |
+| **Mobile behaviour** | The arch is sized to the screen; the kasavu band stays above the fold. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | High-contrast ivory/ink pairs; ornament is decorative-only and hidden from screen readers; every opening can be skipped. |
+| **Sample content** | `maria-baptism` |
+
+### Little Prince of Grace
+
+| | |
+|---|---|
+| **Template ID** | `little-prince-of-grace` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | A tiny crown above a single initial drawn in light, stars arriving one by one: the first page of a storybook about a very new prince. |
+| **Target customer** | Families welcoming a son; Storybook-minded parents; Church followed by a lunch at home |
+| **Visual style** | Storybook |
+| **Colour palette** | Little Prince — paper #F1F5FA, ink #1C2B4A, main #2F4C85, accent #C9A54A, night #14234A |
+| **Typography** | DM Serif Display for names and headings, Nunito for reading text, Sacramento for flourishes |
+| **Opening** | Monogram drawn in light |
+| **Hero composition** | Baptism — crown and stars |
+| **Section layout** | Hero → About the occasion → The beginning (timeline) → People → Prayer / reading → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A portrait of the little prince in a crowned oval; otherwise the crown and stars carry the page. |
+| **Animation strategy** | The initial draws itself in light, the crown settles, the stars come out one at a time and twinkle. |
+| **Interactive features** | Monogram drawn in light; A small timeline of the first weeks; RSVP and wishes |
+| **Emotional tone** | Warm, storybook, proud |
+| **Storytelling structure** | The weeks of waiting set as a short timeline, then the people who love him, then the day. |
+| **Gallery treatment** | Photographs as storybook plates with a thin gold rule. |
+| **Transition style** | Sections turn in like pages. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | Simple Duet; Morning; Eternal Hope (first is the default) |
+| **Library filters** | romantic, animated |
+| **Mobile behaviour** | The crown and initial are centred with the name beneath, on a single screen. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | Every page is plain content in reading order; the page-turn is decoration only. |
+| **Sample content** | `aaron-baptism` |
+
+### Little Princess of Heaven
+
+| | |
+|---|---|
+| **Template ID** | `little-princess-of-heaven` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | Soft curtains part on a garland of tiny flowers around an arch; a small crown rests above the name and petals drift once. |
+| **Target customer** | Families welcoming a daughter; Soft, floral, daytime celebrations; Church followed by a garden lunch |
+| **Visual style** | Floral & Romantic |
+| **Colour palette** | Little Princess — paper #FDF4F3, ink #44292F, main #B26B74, accent #B88E5B, night #3A1E26 |
+| **Typography** | Playfair Display for names and headings, Mulish for reading text, Great Vibes for flourishes |
+| **Opening** | Curtains part |
+| **Hero composition** | Baptism — flower garland |
+| **Section layout** | Hero → About the occasion → Prayer / reading → People → A message → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | An arch of flowers frames a portrait of the little princess; the garland is drawn, so it never covers her face. |
+| **Animation strategy** | Curtains part, the garland grows from the base of the arch and petals drift once. |
+| **Interactive features** | Curtains part to open; Verse in script; RSVP and wishes |
+| **Emotional tone** | Sweet, graceful, light |
+| **Storytelling structure** | The child and her name first; the family and the verse follow. |
+| **Gallery treatment** | Photographs in arched frames. |
+| **Transition style** | Petals drift between sections, once. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | Simple Duet; There is Romance; Cottages (first is the default) |
+| **Library filters** | romantic, traditional |
+| **Mobile behaviour** | The arch fills the width; the crown sits above it, never over her face. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | Script is used for headings only, never for dates, times or addresses; decorative leaves are aria-hidden. |
+| **Sample content** | `hannah-baptism` |
+
+### Generations of Faith
+
+| | |
+|---|---|
+| **Template ID** | `generations-of-faith` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | A family tree drawn line by line — grandparents, parents, the child — and a letter from the grandparents that opens first. |
+| **Target customer** | Families where grandparents are central; Baptisms with relatives travelling from abroad; Heritage-minded families |
+| **Visual style** | Vintage Film |
+| **Colour palette** | Sepia & Olive — paper #F6EFE1, ink #2E2619, main #646234, accent #AE833A, night #2A2417 |
+| **Typography** | Libre Caslon Display for names and headings, Karla for reading text, EB Garamond for flourishes |
+| **Opening** | Wax-sealed envelope |
+| **Hero composition** | Baptism — the family tree |
+| **Section layout** | Hero → A message → People → About the occasion → Prayer / reading → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | An old photograph of the grandparents, or the hands of three generations, set as a sepia plate. |
+| **Animation strategy** | The tree draws itself from the roots up; names appear as each branch reaches them. |
+| **Interactive features** | Open the envelope — a letter from the grandparents; The family tree draws in; A wall of blessings |
+| **Emotional tone** | Rooted, nostalgic, grateful |
+| **Storytelling structure** | The elders first, with a letter in their own words; then the parents; then the child they are praying for. |
+| **Gallery treatment** | Plates with a thin paper border, like an album. |
+| **Transition style** | Pages turn with a soft shadow. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | Canon in D Major; Cottages; Prelude in C (BWV 846) (first is the default) |
+| **Library filters** | traditional, editorial |
+| **Mobile behaviour** | The tree is vertical on a phone, one generation per row. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | Grain is faint and removed for reduced motion; captions never rely on the texture for legibility. |
+| **Sample content** | `isaac-baptism` |
+
+### The Church of Light
+
+| | |
+|---|---|
+| **Template ID** | `church-of-light` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | The great doors open on a nave in the dark: gothic arches recede toward a window of light and candles come alight one by one. |
+| **Target customer** | Cathedral and large-parish baptisms; Evening services; Families who want the setting to be the invitation |
+| **Visual style** | Film & Noir |
+| **Colour palette** | Nave & Candle Gold — paper #0F1424, ink #F1E9D6, main #E3BE6B, accent #F0D28A, night #080B16 |
+| **Typography** | Cormorant Garamond for names and headings, Inter for reading text |
+| **Opening** | Doors open |
+| **Hero composition** | Baptism — the nave at night |
+| **Section layout** | Hero → Ceremonies → Prayer / reading → Events → Live stream → Venue & map → About the occasion → People → A message → Gallery → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | Architecture first: a photograph of the church itself, or the drawn nave; the child’s portrait appears later, in a lit niche. |
+| **Animation strategy** | Doors part, arches recede, the window brightens and candles are lit left to right; then only the flames move. |
+| **Interactive features** | Open the church doors; Order of service set like a missal; Directions to the church |
+| **Emotional tone** | Hushed, sacred, grand |
+| **Storytelling structure** | The order of service first, as in a missal; then the verse, then the people. |
+| **Gallery treatment** | Photographs set as niches in a dark wall. |
+| **Transition style** | Each section is lit by candle: a slow rise from dark. |
+| **Motion profile** | Cinematic |
+| **Music recommendations** | Heart of Nowhere; Ascending the Vale; Immersed (first is the default) |
+| **Library filters** | cinematic, royal |
+| **Mobile behaviour** | The nave is cropped to its centre so the arches and the window stay in view. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | A scrim guarantees contrast; the opening can always be skipped; motion stops for reduced-motion users. |
+| **Sample content** | `elena-baptism` |
+
+### White Dove Blessing
+
+| | |
+|---|---|
+| **Template ID** | `white-dove-blessing` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | A large white dove with an olive branch glides across a pale sky, trailing feathers, while the name settles beneath it. |
+| **Target customer** | Families who want peace as the theme; Any denomination; Spring and early-summer services |
+| **Visual style** | Coastal |
+| **Colour palette** | Dove & Sage — paper #F7F8F6, ink #25302B, main #5F7C6C, accent #A98F55, night #1F2A25 |
+| **Typography** | Tenor Sans for names and headings, Jost for reading text, Allura for flourishes |
+| **Opening** | Ink and wash |
+| **Hero composition** | Baptism — dove and olive branch |
+| **Section layout** | Hero → Prayer / reading → About the occasion → Events → Live stream → Venue & map → People → A message → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A stained-glass or sky photograph if the family has one; otherwise the drawn dove stands alone. |
+| **Animation strategy** | The dove glides in from the left over eight seconds, then hovers; two feathers fall. |
+| **Interactive features** | Ink and wash fade to open; Verse about the dove; RSVP and blessings |
+| **Emotional tone** | Peaceful, airy, hopeful |
+| **Storytelling structure** | The verse of the Spirit descending, then the child, then the practical details. |
+| **Gallery treatment** | Photographs on white with a pencil-thin border. |
+| **Transition style** | Sections drift in sideways like a feather. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | Skye Cuillin; Northern Glade; Ascending the Vale (first is the default) |
+| **Library filters** | minimalist, romantic |
+| **Mobile behaviour** | The dove is scaled to two-thirds of the width so the name is never behind its wing. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | Light grounds with dark text; motion is slow and stops for reduced-motion users. |
+| **Sample content** | `gabriel-baptism` |
+
+### The Open Bible
+
+| | |
+|---|---|
+| **Template ID** | `the-open-bible` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | An open book glows on a dark lectern, a ribbon marks the page and the verse the family chose is the first thing the guest reads. |
+| **Target customer** | Families whose faith is centred on the Word; CSI, Methodist, Lutheran, Brethren and other Bible-centred churches; A believer’s baptism of an older child or an adult, as well as an infant’s |
+| **Visual style** | Editorial |
+| **Colour palette** | Parchment & Ink — paper #F3EAD6, ink #2A1F16, main #6E1F2B, accent #A98233, night #261A12 |
+| **Typography** | EB Garamond for names and headings, Inter for reading text |
+| **Opening** | Open the storybook |
+| **Hero composition** | Baptism — the open book |
+| **Section layout** | Hero → Prayer / reading → About the occasion → Ceremonies → Events → Live stream → Venue & map → People → A message → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | The book is drawn with no legible text; a photograph, if used, is a portrait of the child beside the verse. |
+| **Animation strategy** | The pages ruffle open, light rises from the gutter and the ribbon falls into place. |
+| **Interactive features** | Open the book; A verse set large, with its reference and translation; RSVP |
+| **Emotional tone** | Studious, devout, warm |
+| **Storytelling structure** | The verse first and largest; then the child, the order of service and the day. |
+| **Gallery treatment** | Photographs as book plates. |
+| **Transition style** | Pages turn between sections. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | Prelude in C (BWV 846); Gymnopedie No. 1; Immersed (first is the default) |
+| **Library filters** | editorial, traditional |
+| **Mobile behaviour** | The book is drawn at the width of the screen; the verse sits above it. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | Standard contrast and tap targets. |
+| **Sample content** | `daniel-baptism` |
+
+### Floral Grace
+
+| | |
+|---|---|
+| **Template ID** | `floral-grace` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | Three lilies lean in from the edges of a pale page, the child’s name set large between them, and white petals fall slowly. |
+| **Target customer** | Spring baptisms and Easter-season services; Florists’ and gardeners’ families; Families who want flowers, not ornament |
+| **Visual style** | Fashion Editorial |
+| **Colour palette** | Lily White — paper #FBF8F3, ink #2B3A30, main #5F8062, accent #B98676, night #24342A |
+| **Typography** | Bodoni Moda for names and headings, Hanken Grotesk for reading text, Pinyon Script for flourishes |
+| **Opening** | A flower blooms |
+| **Hero composition** | Baptism — lilies |
+| **Section layout** | Hero → About the occasion → Prayer / reading → People → Events → Live stream → Venue & map → Gallery → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A lily photograph or a portrait of the child, framed by drawn stems; photographs are never covered by a flower. |
+| **Animation strategy** | The stems grow upward, the lilies open one at a time and petals drift down. |
+| **Interactive features** | A flower blooms to open; A verse about lilies; RSVP and wishes |
+| **Emotional tone** | Fresh, fragrant, graceful |
+| **Storytelling structure** | The child’s name and a verse about the lilies; then the family, then the day. |
+| **Gallery treatment** | Photographs in tall frames with a hairline. |
+| **Transition style** | A single stem grows between sections. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | Cottages; There is Romance; Skye Cuillin (first is the default) |
+| **Library filters** | romantic, editorial |
+| **Mobile behaviour** | Lilies sit in the corners; the name is centred and clear of them. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | Large type and strong contrast; decorative running heads are hidden from screen readers. |
+| **Sample content** | `liya-baptism` |
+
+### Golden Morning
+
+| | |
+|---|---|
+| **Template ID** | `golden-morning` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | The sun comes up over low hills, light spreads across the page and the name is lit as the sun clears the horizon. |
+| **Target customer** | Early-morning services and sunrise gatherings; Families who want warmth and hope; Hill-station and outdoor ceremonies |
+| **Visual style** | Cinematic Story |
+| **Colour palette** | Morning Gold — paper #FFF6E5, ink #3A2A12, main #A8630A, accent #C26A2B, night #2E1E0B |
+| **Typography** | Fraunces for names and headings, Nunito for reading text, Sacramento for flourishes |
+| **Opening** | The sun rises |
+| **Hero composition** | Baptism — sunrise |
+| **Section layout** | Hero → About the occasion → Events → Live stream → Prayer / reading → Venue & map → People → A message → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A sunlit landscape or the child’s portrait warmed by the light; the sun is drawn and never replaces a photograph. |
+| **Animation strategy** | The sun rises for six seconds and then only breathes; light rays turn very slowly; birds cross once. |
+| **Interactive features** | The sun rises to open; The morning as a timeline; RSVP |
+| **Emotional tone** | Warm, hopeful, new |
+| **Storytelling structure** | The morning as a timeline: the service, the blessing, breakfast. |
+| **Gallery treatment** | Photographs with a warm wash. |
+| **Transition style** | Each section is lit from the horizon. |
+| **Motion profile** | Cinematic |
+| **Music recommendations** | Morning; Wholesome; Inspired (first is the default) |
+| **Library filters** | cinematic, romantic |
+| **Mobile behaviour** | The horizon sits low so the name rides in the sky above it. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | A scrim guarantees text contrast on any photograph; motion stops completely for reduced-motion users. |
+| **Sample content** | `ethan-baptism` |
+
+### Jesus and the Little Child
+
+| | |
+|---|---|
+| **Template ID** | `jesus-and-the-little-child` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | Two open hands drawn in a single line hold a small flame; a soft watercolour hillside sits behind. No face is ever drawn. |
+| **Target customer** | Families who want the Gospel welcome of children at the heart of the invitation; Sunday-school and parish families; Any denomination |
+| **Visual style** | Watercolour |
+| **Colour palette** | Shepherd Sand — paper #F7F1E5, ink #2D2A20, main #566F52, accent #B8974C, night #263322 |
+| **Typography** | Instrument Serif for names and headings, Mulish for reading text |
+| **Opening** | Title card |
+| **Hero composition** | Baptism — open hands |
+| **Section layout** | Hero → Prayer / reading → About the occasion → People → Ceremonies → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | The artwork is symbolic — hands and light — so no depiction of Jesus is needed; a portrait of the child may sit above the hands. |
+| **Animation strategy** | The hands are drawn in a single stroke, the flame is lit and the hillside colours wash in. |
+| **Interactive features** | A title card opens it; Gospel verse set large; RSVP |
+| **Emotional tone** | Tender, reverent, simple |
+| **Storytelling structure** | The Gospel verse first; then the child; then the people who bring them. |
+| **Gallery treatment** | Photographs with a watercolour edge. |
+| **Transition style** | Sections wash in from the side. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | Heart of Nowhere; Canon in D for Two Harps; Eternal Hope (first is the default) |
+| **Library filters** | traditional, minimalist |
+| **Mobile behaviour** | The hands are centred and sized to the width; the flame is always above the name. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | Text is always set on a plain ground; washes are decorative and low-contrast by design. |
+| **Sample content** | `immanuel-baptism` |
+
+### A Garden of Blessings
+
+| | |
+|---|---|
+| **Template ID** | `garden-of-blessings` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | A vine-covered trellis arch grows leaf by leaf, roses open on it and a butterfly crosses the path to the name. |
+| **Target customer** | Garden and lawn receptions after the church service; Families with a love of growing things; Spring and monsoon-season services |
+| **Visual style** | Floral & Romantic |
+| **Colour palette** | Garden Green — paper #F5F7EC, ink #22331F, main #436F37, accent #C9A83E, night #1B2E19 |
+| **Typography** | Gloock for names and headings, Karla for reading text, Parisienne for flourishes |
+| **Opening** | Magazine cover |
+| **Hero composition** | Baptism — trellis garden |
+| **Section layout** | Hero → About the occasion → Prayer / reading → People → Events → Live stream → Venue & map → Dress code & palette → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A garden photograph or the child’s portrait under the arch; leaves are drawn around, never over, a photograph. |
+| **Animation strategy** | The vine grows over the arch, roses open and one butterfly crosses. |
+| **Interactive features** | Open the garden journal; Verse about the tree by the water; RSVP and a wall of blessings |
+| **Emotional tone** | Fresh, growing, joyful |
+| **Storytelling structure** | A garden journal: the verse about the tree by the water, then the child, then the people and the day. |
+| **Gallery treatment** | Photographs in garden-tag frames. |
+| **Transition style** | Vines draw between sections. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | Farm; Northern Glade; Wholesome (first is the default) |
+| **Library filters** | romantic, traditional |
+| **Mobile behaviour** | The arch is full width; leaves thin out beside the name. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | Script is used for headings only, never for dates, times or addresses; decorative leaves are aria-hidden. |
+| **Sample content** | `naomi-baptism` |
+
+### Royal Catholic Elegance
+
+| | |
+|---|---|
+| **Template ID** | `royal-catholic-elegance` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | A gold-keylined frame, a cross with rays and a wax seal: the formality of a parish register and the splendour of a feast day. |
+| **Target customer** | Latin and Syro-Malabar Catholic baptisms; Formal services in cathedrals and basilicas; Families with many guests to seat and direct |
+| **Visual style** | Royal Tradition |
+| **Colour palette** | Burgundy & Gold — paper #FAF3E7, ink #2D1A1C, main #7B1E2E, accent #B88F34, night #3B0F18 |
+| **Typography** | Cinzel for names and headings, Mulish for reading text, Cormorant Garamond for flourishes |
+| **Opening** | Wax seal |
+| **Hero composition** | Baptism — gold frame and cross |
+| **Section layout** | Hero → People → About the occasion → Ceremonies → Prayer / reading → Events → Live stream → Venue & map → Travel & stay → Dress code & palette → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A formal portrait of the child or a photograph of the church inside the frame; ornament stays in the margin. |
+| **Animation strategy** | The seal is broken, the frame draws itself in gold and the rays open behind the cross. |
+| **Interactive features** | Break the wax seal; The sacrament explained for guests of other churches; Seating and directions |
+| **Emotional tone** | Formal, ceremonial, grand |
+| **Storytelling structure** | Formal and ordered: the families, the service, the sacraments explained and the reception. |
+| **Gallery treatment** | Large photographs with gold keylines. |
+| **Transition style** | Gold lines draw between sections. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | Canon in D Major; Ascending the Vale; Heart of Nowhere (first is the default) |
+| **Library filters** | royal, traditional |
+| **Mobile behaviour** | The frame is full width; the cross and rays are centred above the name. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (14 pages need Signature or Luxury) |
+| **Accessibility** | High-contrast ivory/ink pairs; ornament is decorative-only and hidden from screen readers; every opening can be skipped. |
+| **Sample content** | `sebastian-baptism` |
+
+### Modern Minimal Grace
+
+| | |
+|---|---|
+| **Template ID** | `modern-minimal-grace` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | Nothing but a thin circle that draws itself, a hairline cross and the child’s name in large, quiet type. |
+| **Target customer** | Contemporary and city congregations; Smaller guest lists; Families who prefer restraint |
+| **Visual style** | Modern Minimal |
+| **Colour palette** | Stone & Line — paper #F4F3F0, ink #1B1B1B, main #1B1B1B, accent #A68F5E, night #111111 |
+| **Typography** | DM Sans for names and headings, DM Sans for reading text, Cormorant Garamond for flourishes |
+| **Opening** | Architectural panels |
+| **Hero composition** | Baptism — circle and line |
+| **Section layout** | Hero → About the occasion → Prayer / reading → Events → Live stream → Venue & map → People → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | One photograph at most, as a full-width band; no decoration competes with it. |
+| **Animation strategy** | Short, exact: the circle draws in one second, the cross a second later; nothing else moves. |
+| **Interactive features** | Panels slide apart to open; Numbered sections; RSVP |
+| **Emotional tone** | Calm, modern, exact |
+| **Storytelling structure** | Numbered sections: the child, the verse, the service, the place. |
+| **Gallery treatment** | A single strict grid. |
+| **Transition style** | Short fades; hairline rules draw. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | Prelude in C (BWV 846); Gymnopedie No. 1; Reawakening (first is the default) |
+| **Library filters** | minimalist |
+| **Mobile behaviour** | Left-aligned on a strict grid; the circle scales to the screen width. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | Largest text of all five directions; colour never carries meaning alone; generous tap targets. |
+| **Sample content** | `noah-baptism` |
+
+### The Little Blessing
+
+| | |
+|---|---|
+| **Template ID** | `the-little-blessing` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | Tiny footprints walk across the page toward one small candle: a quiet, small, serious invitation for a few people who matter. |
+| **Target customer** | Small family baptisms; Home or chapel blessings; Families who want it to feel like a prayer, not a party |
+| **Visual style** | Storybook |
+| **Colour palette** | Oatmeal & Blue — paper #FAF6EE, ink #3C3A33, main #587890, accent #B99A55, night #2C3640 |
+| **Typography** | Cormorant Garamond for names and headings, Nunito for reading text |
+| **Opening** | No opening |
+| **Hero composition** | Baptism — small footprints |
+| **Section layout** | Hero → About the occasion → Prayer / reading → Events → Live stream → Venue & map → People → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A single detail — a hand, a foot, a candle — rather than a portrait; there are no balloons, cakes or party marks anywhere. |
+| **Animation strategy** | The footprints appear one by one, very slowly, and the candle is lit at the end. |
+| **Interactive features** | Opens straight onto the page; Footprints and candle; RSVP |
+| **Emotional tone** | Quiet, intimate, small |
+| **Storytelling structure** | A short invitation: the blessing, who is invited, when and where. |
+| **Gallery treatment** | Not used by default. |
+| **Transition style** | Plain, soft fades. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | Reawakening; Gymnopedie No. 1; Cottages (first is the default) |
+| **Library filters** | minimalist, romantic |
+| **Mobile behaviour** | Everything sits in one narrow column, in a single screen. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | Every page is plain content in reading order; the page-turn is decoration only. |
+| **Sample content** | `ivy-baptism` |
+
+### Family in Faith
+
+| | |
+|---|---|
+| **Template ID** | `family-in-faith` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | Overlapping circles gather one by one around the child’s name — one, two, three, more — for any family, however it is made. |
+| **Target customer** | Single-parent, blended, adoptive and extended families; Families raised by grandparents or an aunt; Anyone who wants every relationship named in the family’s own words |
+| **Visual style** | Editorial |
+| **Colour palette** | Terracotta & Olive — paper #FAF1E6, ink #3A261C, main #A5502F, accent #B88B3C, night #3A1E14 |
+| **Typography** | Fraunces for names and headings, Hanken Grotesk for reading text |
+| **Opening** | Swipe up |
+| **Hero composition** | Baptism — circles of family |
+| **Section layout** | Hero → About the occasion → People → A message → Prayer / reading → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | Photographs of each person sit in the circles; a circle without a photograph shows initials. |
+| **Animation strategy** | The circles drift together and settle, one at a time, as the page opens. |
+| **Interactive features** | Swipe up to open; Relationships named in the family’s own words; RSVP and blessings |
+| **Emotional tone** | Inclusive, warm, grounded |
+| **Storytelling structure** | Every person in the child’s life, in the words the family uses for them, then the day. |
+| **Gallery treatment** | A grid of circles. |
+| **Transition style** | Circles slide together between sections. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | Almost Bliss; Simple Duet; Cottages (first is the default) |
+| **Library filters** | editorial, traditional |
+| **Mobile behaviour** | Circles stack to a single column of up to four. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | Standard contrast and tap targets. |
+| **Sample content** | `josiah-baptism` |
+
+### Celestial Promise
+
+| | |
+|---|---|
+| **Template ID** | `celestial-promise` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | A dusk sky after rain: stars come out, a soft bow of light rises over the horizon and the name is set beneath it like a promise kept. |
+| **Target customer** | Evening baptisms; Families who want the promise of God at the centre; Calm, spacious, night-time design |
+| **Visual style** | Celestial |
+| **Colour palette** | Dusk & Promise — paper #151A3A, ink #F0ECE2, main #E8CE8F, accent #E8B7A4, night #0C1030 |
+| **Typography** | Cormorant Garamond for names and headings, Inter for reading text |
+| **Opening** | Connect the stars |
+| **Hero composition** | Baptism — dusk and a bow |
+| **Section layout** | Hero → Prayer / reading → About the occasion → Events → Live stream → Venue & map → People → A message → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A dusk sky photograph or a portrait lit from below; the stars and bow are drawn and never replace a photograph. |
+| **Animation strategy** | Stars appear in three waves, the bow rises and fades in slowly; reduced-motion shows the finished sky. |
+| **Interactive features** | Connect the stars to open; The verse of the bow; RSVP |
+| **Emotional tone** | Serene, hopeful, wondering |
+| **Storytelling structure** | The covenant verse first; then the child; then the evening’s order. |
+| **Gallery treatment** | Photographs as dark-glass panels. |
+| **Transition style** | Sections rise like stars: a slow fade up. |
+| **Motion profile** | Immersive |
+| **Music recommendations** | Frozen Star; Airship Serenity; Heart of Nowhere (first is the default) |
+| **Library filters** | cinematic, romantic |
+| **Mobile behaviour** | The bow spans the width and sits above the name; stars thin out behind text. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | Text always sits on a solid-enough ground; the star field is decorative and hidden from screen readers. |
+| **Sample content** | `eden-baptism` |
+
 ## Corporate event
 
 ### Executive Conclave

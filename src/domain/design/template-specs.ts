@@ -3,6 +3,7 @@ import type { CategorySlug, EventType } from "@/domain/doc/event-types";
 import { AFTER, LIVE, layout, type Item, type TemplateSection } from "./layout";
 import type { TemplateFlavor } from "./templates";
 import { CINEMATIC_SPECS } from "./template-specs-cinematic";
+import { BAPTISM_SPECS } from "./template-specs-baptism";
 
 /**
  * The templates, one specification each. A template is a *design concept*, not a recolour: it chooses its own
@@ -635,8 +636,8 @@ const BASE_SPECS: TemplateSpec[] = [
 ];
 
 /** The sections of a template: its hero, then its flow. */
-/** Every design: the original occasions, then the twenty-five cinematic weddings. */
-export const TEMPLATE_SPECS: TemplateSpec[] = [...BASE_SPECS, ...CINEMATIC_SPECS];
+/** Every design: the original occasions, the twenty-five cinematic weddings, then the twenty baptism designs. */
+export const TEMPLATE_SPECS: TemplateSpec[] = [...BASE_SPECS, ...CINEMATIC_SPECS, ...BAPTISM_SPECS];
 
 export function specSections(spec: TemplateSpec): TemplateSection[] {
   return layout([["hero", { variant: spec.hero }], ...spec.flow]);

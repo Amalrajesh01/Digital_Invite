@@ -42,7 +42,7 @@ describe("refreshing the built-in design library on an existing database", () =>
     const second = await refreshBuiltInLibrary(admin);
     expect(second.updated).toEqual([]);
     expect(second.unchanged.length).toBe(THEME_SEEDS.length + TEMPLATE_SEEDS.length);
-  });
+  }, 120_000); // it writes every built-in twice into an in-memory database: the library has grown with every release
 
   it("never overwrites a built-in someone has edited in the studio", async () => {
     const admin = await bootstrap();

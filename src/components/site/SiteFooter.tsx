@@ -6,7 +6,7 @@ import { categoryBySlug } from "@/domain/catalogue/categories";
 import { ProductLockup } from "@/components/brand/Logo";
 import { WaIcon } from "./WaButton";
 
-const OCCASIONS = ["wedding", "engagement", "birthday", "anniversary", "housewarming", "naming-ceremony", "religious", "corporate", "conference", "funeral"] as const;
+const OCCASIONS = ["wedding", "engagement", "birthday", "anniversary", "housewarming", "naming-ceremony", "baptism", "religious", "corporate", "conference", "funeral"] as const;
 
 /** The product site’s footer: where to go, what we make it for, who makes it — and a line that goes to WhatsApp. */
 export function SiteFooter() {

@@ -103,6 +103,12 @@ export const STARTER_CEREMONIES: Record<EventType, Starter[]> = {
     { name: "The ceremony", glyph: "kalash", description: "The rites, explained so that every guest can follow along." },
     { name: "Blessings & meal", glyph: "bowl", description: "Prasad or a shared meal to close the day." },
   ],
+  baptism: [
+    { name: "Welcome and opening prayer", glyph: "lamp", description: "Family and friends gather, and the service begins with a prayer." },
+    { name: "The baptism", glyph: "none", description: "The child is welcomed into the Church with water, the Word and the blessing of the priest or pastor." },
+    { name: "Blessing of the family", glyph: "flower", description: "Parents, godparents and grandparents are blessed, and everyone prays for the child." },
+    { name: "Celebration meal", glyph: "bowl", description: "A meal together to celebrate the child’s welcome into the family of faith." },
+  ],
   cultural_event: [
     { name: "Welcome", glyph: "flower", description: "A traditional welcome for every guest." },
     { name: "Performances", glyph: "drum", description: "Music, dance and storytelling." },

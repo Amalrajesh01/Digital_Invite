@@ -1,4 +1,6 @@
 import { CINEMATIC_DEMOS } from "../scripts/demo/cinematic";
+import { BAPTISM_DEMOS } from "../scripts/demo/baptism";
+import { GENERATED } from "@/domain/baptism/generated";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
@@ -262,6 +264,7 @@ describe("the sample invitations and the shop window agree", () => {
     { cfg: MEERA, kind: "occasion" }, { cfg: IRA, kind: "occasion" }, { cfg: KABIR, kind: "occasion" }, { cfg: TWINS, kind: "occasion" }, { cfg: AARAV, kind: "occasion" }, { cfg: AADHYA, kind: "occasion" }, { cfg: CONCLAVE, kind: "occasion" }, { cfg: SUMMIT, kind: "occasion" }, { cfg: THOMAS, kind: "occasion" },
     { cfg: NANDINI, kind: "couple" }, { cfg: RIYA, kind: "couple" }, { cfg: NAIR, kind: "occasion" }, { cfg: PUJA, kind: "occasion" }, { cfg: ONAM, kind: "occasion" },
     ...CINEMATIC_DEMOS.map((cfg) => ({ cfg, kind: "couple" as const })),
+    ...BAPTISM_DEMOS.map((cfg) => ({ cfg, kind: "occasion" as const })),
   ];
   const build = (c: (typeof CONFIGS)[number]) => {
     const tpl = TEMPLATE_SEEDS.find((t) => t.slug === c.cfg.template)!;
@@ -343,16 +346,18 @@ describe("the sample invitations and the shop window agree", () => {
       for (const [, id] of c.cfg.needs) wanted.add(id);
       for (const [id] of c.cfg.gallery) wanted.add(id);
     }
-    for (const d of DEMOS) { wanted.add(d.cover); d.strip.forEach((s) => wanted.add(s)); }
+    // a baptism template whose photograph would be irrelevant has none: it shows its drawn scene instead (see src/domain/baptism/images.ts)
+    for (const d of DEMOS) { if (d.cover) wanted.add(d.cover); d.strip.forEach((s) => wanted.add(s)); }
     for (const c of CATEGORIES) if (c.cover) wanted.add(c.cover);
     for (const id of wanted) {
       expect(STOCK_ID.test(id), id).toBe(true);
       expect(existsSync(path.join("assets", "stock", `${id}.jpg`)), `${id}.jpg is in assets/stock`).toBe(true);
       expect(stockInfo(id)?.alt?.length ?? 0, `${id} has alt text`).toBeGreaterThan(15);
-      expect(credits.includes(id), `${id} has a credit row`).toBe(true);
+      // a licensed photograph has a credit row; a picture made from a baptism prompt has its provenance in generated.json instead
+      expect(credits.includes(id) || !!GENERATED[id], `${id} has a credit row`).toBe(true);
     }
     // nothing in the folder is uncredited
-    for (const f of readdirSync("assets/stock").filter((x) => x.endsWith(".jpg"))) expect(credits.includes(f.slice(0, -4)), `${f} is credited`).toBe(true);
+    for (const f of readdirSync("assets/stock").filter((x) => x.endsWith(".jpg"))) expect(credits.includes(f.slice(0, -4)) || !!GENERATED[f.slice(0, -4)], `${f} is credited`).toBe(true);
     for (const id of Object.keys(STOCK)) expect(existsSync(path.join("assets", "stock", `${id}.jpg`)), `STOCK lists ${id} but the file is missing`).toBe(true);
   });
 });

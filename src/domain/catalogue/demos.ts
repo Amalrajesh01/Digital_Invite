@@ -4,9 +4,11 @@ import { THEME_SEEDS } from "@/domain/design/themes";
 import { SECTION_META } from "@/domain/doc/sections";
 import { categoryBySlug } from "./categories";
 import { CINEMATIC_SPECS } from "@/domain/design/template-specs-cinematic";
+import { BAPTISM_SPECS } from "@/domain/design/template-specs-baptism";
 import { CASTING } from "@/domain/imagery/casting";
 import { stockInfo } from "@/domain/imagery/stock";
 import { CINEMATIC_SAMPLE_FACTS } from "./cinematic-samples";
+import { BAPTISM_SAMPLES } from "./baptism-samples";
 
 /**
  * The sample invitations shown on the public template gallery. Each one is a real, published invitation
@@ -248,7 +250,22 @@ const CINEMATIC_DEMOS: DemoDef[] = CINEMATIC_SPECS.map((s): DemoDef => {
   };
 });
 
-export const DEMOS: DemoDef[] = [...BASE_DEMOS, ...CINEMATIC_DEMOS];
+/**
+ * The shop window of the twenty baptism templates. A sample only has a cover photograph when a bundled one is genuinely right for it
+ * (see `baptism-samples.ts`); the others are shown by their drawn scene — the gallery card is a photograph of the sample itself.
+ */
+const BAPTISM_DEMOS: DemoDef[] = BAPTISM_SPECS.map((s): DemoDef => {
+  const f = BAPTISM_SAMPLES[s.slug];
+  const styles = [...new Set((s.tags ?? []).map((t) => TAG_STYLE[t]).filter((t): t is StyleTag => !!t))];
+  return {
+    slug: s.demo, name: f.child, title: s.name, eventType: s.eventType, template: s.slug, theme: s.theme, styles: styles.length ? styles : ["Traditional"],
+    cover: f.photo ?? "", coverFocal: f.photo ? stockInfo(f.photo)?.focal : undefined, strip: [],
+    tagline: s.tagline, description: s.concept, highlights: s.interactions.slice(0, 4), bestFor: s.target, languages: ["English"],
+    when: `${Number(f.date.slice(8))} ${MONTHS[Number(f.date.slice(5, 7)) - 1]} ${f.date.slice(0, 4)}`, where: f.city,
+  };
+});
+
+export const DEMOS: DemoDef[] = [...BASE_DEMOS, ...CINEMATIC_DEMOS, ...BAPTISM_DEMOS];
 
 // ── lookups ─────────────────────────────────────────────────────────────────
 const BY_SLUG = new Map(DEMOS.map((d) => [d.slug, d]));

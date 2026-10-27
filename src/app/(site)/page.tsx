@@ -30,7 +30,7 @@ export const dynamic = "force-dynamic";
 /** The three phones of the hero: three occasions, three different feelings. */
 const HERO_PHONES = ["royal-heritage", "garden-party", "sangeet-night"] as const;
 const SHOWN_CATEGORIES = ["wedding", "engagement", "birthday", "housewarming", "naming-ceremony", "anniversary"] as const;
-const WAYS = ["wedding", "engagement", "birthday", "anniversary", "housewarming", "naming-ceremony", "religious", "corporate", "conference", "funeral"] as const;
+const WAYS = ["wedding", "engagement", "birthday", "anniversary", "housewarming", "naming-ceremony", "baptism", "religious", "corporate", "conference", "funeral"] as const;
 const WAYS_LINE: Record<string, string> = {
   wedding: "Royal, minimal, cinematic, floral or full of fun — the same wedding, five ways to begin it.",
   engagement: "From a lamp-lit ring ceremony to pop-the-balloons — choose the mood of your yes.",
@@ -38,6 +38,7 @@ const WAYS_LINE: Record<string, string> = {
   anniversary: "Twenty-five years as a film, a rose garden, or a night out. Pick how you want to remember.",
   housewarming: "Open the doors to your new home — as a blessing, a story or a party.",
   "naming-ceremony": "Gentle ways to welcome a little one, each with the rituals explained.",
+  baptism: "A baptism or christening told in church light, a dove, a lamp or still water — with the verse and the family set out.",
   religious: "Pujas, festivals and community celebrations, with every rite made easy to follow.",
   corporate: "From a formal gala to a team party — registration and the programme up front.",
   conference: "Summits, forums and meetups: speakers, sessions and partners, clearly laid out.",

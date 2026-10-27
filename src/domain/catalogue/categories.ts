@@ -226,6 +226,24 @@ export const CATEGORIES: CategoryDef[] = [
     eventTypes: ["religious_ceremony"],
   },
   {
+    slug: "baptism", name: "Baptism & christening", group: "Faith & culture", cover: "ouh94xUqOHk",
+    blurb: "Beautifully crafted baptism and christening invitations celebrating faith, family, and the beginning of a spiritual journey.",
+    title: "Baptism & Christening Invitation Templates",
+    seoDescription: "Digital baptism and christening invitations for Indian Christian families: twenty designs with the family, an exact verse, the church and the day.",
+    intro: [
+      "A baptism is the day a family says out loud what it hopes for a child. The invitation should say it quietly and beautifully: who is being welcomed, who is holding them, which verse blesses them, and where and when to come.",
+      "Twenty designs, each with its own light, lettering and pace — from a Kerala church in morning sun to a candle-lit nave, from a single line of white to a garden of lilies. Add the grandparents, the godparents and the people who will pray for the child; leave out whatever your family does not need.",
+    ],
+    includes: ["The child’s name and, if you wish, a portrait", "Parents, grandparents and godparents, each with their own words", "A verse that is quoted exactly, with its reference", "The church, the service and the celebration, with directions", "RSVP, a wall of blessings and a keepsake afterwards", "Malayalam or English, in your own words"],
+    faq: [
+      { q: "Is it for Catholic, Orthodox, Mar Thoma or Protestant families?", a: "All of them. The designs are not tied to one denomination; the words, the readings and the order of the service are yours. We never put a verse or a prayer on your invitation that you did not choose." },
+      { q: "Can we include grandparents and godparents?", a: "Yes. Each person can have a name, a relationship in your own words (“Ammachan”, “Godfather”, “Valyappachan”) and a short message. A section you do not fill in simply does not appear." },
+      { q: "Where do the Bible verses come from?", a: "The suggested verses are quoted exactly from the King James Version and checked against a published text. You can choose another verse, or another translation, and type it in yourself." },
+      NO_APP,
+    ],
+    eventTypes: ["baptism"],
+  },
+  {
     slug: "cultural", name: "Cultural event", group: "Faith & culture", family: "religious", cover: "UX3-_dGbCzk",
     blurb: "Performances, exhibitions and community evenings.",
     title: "Cultural Event Invitation Templates",

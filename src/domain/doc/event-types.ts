@@ -20,7 +20,7 @@ export const EVENT_TYPES = [
   // people & family
   "birthday", "kids_birthday", "baby_shower", "naming_ceremony", "housewarming", "graduation", "retirement", "reunion", "private_party",
   // faith & culture
-  "religious_ceremony", "cultural_event", "festival",
+  "religious_ceremony", "baptism", "cultural_event", "festival",
   // business
   "corporate_event", "conclave", "conference", "product_launch",
   // remembrance
@@ -45,7 +45,7 @@ export type Voice = "wedding" | "engagement" | "anniversary" | "birthday" | "cel
 /** The categories the public site groups its templates by (`/templates/<slug>`). */
 export const CATEGORY_SLUGS = [
   "wedding", "engagement", "birthday", "anniversary", "baby-shower", "naming-ceremony", "housewarming", "graduation", "retirement", "reunion", "private-party",
-  "religious", "cultural", "festival", "corporate", "conclave", "conference", "product-launch", "funeral", "for-my-love",
+  "religious", "baptism", "cultural", "festival", "corporate", "conclave", "conference", "product-launch", "funeral", "for-my-love",
 ] as const;
 export type CategorySlug = (typeof CATEGORY_SLUGS)[number];
 
@@ -93,6 +93,8 @@ export const EVENT_TYPE_INFO: Record<EventType, EventTypeInfo> = {
   private_party: { label: "Private party", category: "private-party", subject: "occasion", tone: "celebratory", voice: "celebration", celebration: "confetti", couple: false, figures: "western", phrase: "generic", confetti: gold, cta: "Create My Party Invite", enquiry: "a party invitation" },
 
   religious_ceremony: { label: "Religious ceremony", category: "religious", subject: "occasion", tone: "celebratory", voice: "ceremony", celebration: "petals", couple: false, figures: "classic", phrase: "generic", confetti: [], cta: "Create My Ceremony Invite", enquiry: "a religious ceremony invitation" },
+  // A baptism is reverent before it is festive: nothing falls or bursts when it opens (the template's own scene supplies the movement).
+  baptism: { label: "Baptism / christening", category: "baptism", subject: "person", tone: "celebratory", voice: "ceremony", celebration: "none", couple: false, figures: "western", phrase: "generic", confetti: [], cta: "Create My Baptism Invite", enquiry: "a baptism invitation" },
   cultural_event: { label: "Cultural event", category: "cultural", subject: "occasion", tone: "celebratory", voice: "ceremony", celebration: "confetti", couple: false, figures: "classic", phrase: "generic", confetti: ["#D9B65D", "#B9606B", "#2F7D62", "#F1DFA6", "#FFFFFF", "#E8D8A8"], cta: "Create My Event Invite", enquiry: "a cultural event invitation" },
   festival: { label: "Festival", category: "festival", subject: "occasion", tone: "celebratory", voice: "ceremony", celebration: "confetti", couple: false, figures: "classic", phrase: "generic", confetti: ["#F6A21E", "#EE7C12", "#D9B65D", "#B9606B", "#FFFFFF", "#F9C23C"], cta: "Create My Festival Invite", enquiry: "a festival invitation" },
 

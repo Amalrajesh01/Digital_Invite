@@ -42,6 +42,7 @@ import { KABIR } from "./demo/kabir";
 import { TWINS } from "./demo/twins";
 import { AARAV } from "./demo/aarav";
 import { AADHYA } from "./demo/aadhya";
+import { BAPTISM_DEMOS } from "./demo/baptism";
 import { NANDINI } from "./demo/nandini";
 import { RIYA } from "./demo/riya";
 import { NAIR } from "./demo/nair";
@@ -384,7 +385,7 @@ async function seedOccasion(admin: AdminActor, c: OccasionCfg) {
   await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com", autoLifecycle: false }).where(eq(schema.weddings.id, w.id));
   const { ids, galleryIds } = await loadDemoAssets(w.id, c.slug, c.needs, c.gallery);
   await finishDemo(admin, w.id, {
-    slug: c.slug, track: c.track, galleryIds, wishes: c.wishes, label: "Launch",
+    slug: c.slug, track: c.track, libraryTrack: c.libraryTrack, galleryIds, wishes: c.wishes, label: "Launch",
     buildDoc: (base) => buildOccasionDoc(base, c, (k) => ids.get(k), brand.whatsapp),
   });
   console.log(`  ✔ ${c.slug}  (${pkg})`);
@@ -526,6 +527,7 @@ const PUBLIC_DEMOS: [slug: string, run: (admin: AdminActor) => Promise<string>][
   [NAIR.slug, (a) => seedOccasion(a, NAIR)],
   [PUJA.slug, (a) => seedOccasion(a, PUJA)],
   [ONAM.slug, (a) => seedOccasion(a, ONAM)],
+  ...BAPTISM_DEMOS.map((c): [string, (a: AdminActor) => Promise<string>] => [c.slug, (a) => seedOccasion(a, c)]),
   ...LOVE_DEMOS.map((c): [string, (a: AdminActor) => Promise<string>] => [c.slug, (a) => seedLove(a, c)]),
 ];
 

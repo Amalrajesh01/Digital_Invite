@@ -6,6 +6,7 @@ import { subjectKind, type SubjectKind } from "@/domain/doc/event-types";
 import { FormCard, Grid, Hint, LText, ListEditor } from "../forms";
 import { MediaField } from "../MediaField";
 import { useDraft } from "../draft";
+import { FamilyQuickAdd, VersePicker } from "./BaptismCards";
 
 /**
  * The studio's editor for every occasion that is not a couple: the headline, the person, what it is about,
@@ -18,12 +19,13 @@ function HeadlineCard({ kind }: { kind: SubjectKind }) {
   const { doc, update } = useDraft();
   const o = doc.occasion;
   const memorial = kind === "memorial";
+  const baptism = doc.eventType === "baptism";
   return (
     <FormCard title="The headline" description="The big words on the opening screen and at the top of the invitation.">
-      <LText label={memorial ? "Name" : kind === "person" ? "Name of the guest of honour" : "Title of the occasion"} required value={o.title} onChange={(v) => update((d) => void (d.occasion.title = v))} placeholder={memorial ? "Thomas Mathew" : kind === "person" ? "Meera" : "Leadership Conclave 2026"} hint="Falls back to the invitation title if left empty." />
+      <LText label={memorial ? "Name" : baptism ? "Name of the child" : kind === "person" ? "Name of the guest of honour" : "Title of the occasion"} required value={o.title} onChange={(v) => update((d) => void (d.occasion.title = v))} placeholder={memorial ? "Thomas Mathew" : kind === "person" ? "Meera" : "Leadership Conclave 2026"} hint="Falls back to the invitation title if left empty." />
       <Grid>
         <LText label="The line under it" value={o.subtitle} onChange={(v) => update((d) => void (d.occasion.subtitle = v))} placeholder={memorial ? "A life of faith, kindness and quiet strength" : kind === "person" ? "turns thirty" : "Where leaders shape what comes next"} />
-        <LText label="The line above it" value={o.invitation} onChange={(v) => update((d) => void (d.occasion.invitation = v))} placeholder={memorial ? "In loving memory of" : "You are invited to"} />
+        <LText label="The line above it" value={o.invitation} onChange={(v) => update((d) => void (d.occasion.invitation = v))} placeholder={memorial ? "In loving memory of" : baptism ? "You are invited to the baptism of" : "You are invited to"} />
       </Grid>
       <Grid>
         <LText label="Hosted by (optional)" value={o.hosts} onChange={(v) => update((d) => void (d.occasion.hosts = v))} placeholder="The Nair family" />
@@ -38,13 +40,14 @@ function HonoreeCard({ kind }: { kind: SubjectKind }) {
   const { doc, update } = useDraft();
   const h = doc.occasion.honoree;
   const memorial = kind === "memorial";
+  const baptism = doc.eventType === "baptism";
   return (
-    <FormCard title={memorial ? "The person being remembered" : "The guest of honour"} description={memorial ? "A portrait and the dates of a life. Shown with care, never with effects." : "Their photograph is the opening picture of the invitation."}>
+    <FormCard title={memorial ? "The person being remembered" : baptism ? "The child" : "The guest of honour"} description={memorial ? "A portrait and the dates of a life. Shown with care, never with effects." : baptism ? "Their portrait, if the family would like one, is the opening picture. Without it the template’s own drawn scene opens the invitation." : "Their photograph is the opening picture of the invitation."}>
       <Grid>
         <LText label="Name" value={h.name} onChange={(v) => update((d) => void (d.occasion.honoree.name = v))} />
         <LText label="Full name" value={h.fullName} onChange={(v) => update((d) => void (d.occasion.honoree.fullName = v))} />
       </Grid>
-      <LText label={memorial ? "Who they were to us" : "Role (optional)"} value={h.role} onChange={(v) => update((d) => void (d.occasion.honoree.role = v))} placeholder={memorial ? "Beloved husband, father, grandfather and teacher" : "Our birthday girl"} />
+      <LText label={memorial ? "Who they were to us" : "Role (optional)"} value={h.role} onChange={(v) => update((d) => void (d.occasion.honoree.role = v))} placeholder={memorial ? "Beloved husband, father, grandfather and teacher" : baptism ? "Our daughter" : "Our birthday girl"} />
       <Grid cols={3}>
         {memorial && <TextField label="Born" type="date" value={h.born} onChange={(e) => update((d) => void (d.occasion.honoree.born = e.target.value))} />}
         {memorial && <TextField label="Passed away" type="date" value={h.passed} onChange={(e) => update((d) => void (d.occasion.honoree.passed = e.target.value))} />}
@@ -219,8 +222,10 @@ function MessageCard({ kind }: { kind: SubjectKind }) {
 function PeopleCard({ kind }: { kind: SubjectKind }) {
   const { doc, update } = useDraft();
   const memorial = kind === "memorial";
+  const baptism = doc.eventType === "baptism";
   return (
-    <FormCard title={memorial ? "Survived by" : "The people"} description={memorial ? "The family left behind, in groups such as “Beloved wife”, “Children”, “Grandchildren”." : "Hosts, organisers or guests of honour, grouped under headings you choose."}>
+    <FormCard title={memorial ? "Survived by" : baptism ? "The family" : "The people"} description={memorial ? "The family left behind, in groups such as “Beloved wife”, “Children”, “Grandchildren”." : baptism ? "Parents, grandparents, godparents and anyone else who holds the child — each under a heading, and called what your family calls them. Leave out whoever you like." : "Hosts, organisers or guests of honour, grouped under headings you choose."}>
+      {baptism && <FamilyQuickAdd />}
       <ListEditor<OccasionPerson>
         items={doc.occasion.people}
         onChange={(items) => update((d) => void (d.occasion.people = items))}
@@ -234,7 +239,7 @@ function PeopleCard({ kind }: { kind: SubjectKind }) {
           <>
             <Grid>
               <LText label="Name" required value={i.name} onChange={(v) => up({ name: v })} />
-              <LText label="Group heading" value={i.group} onChange={(v) => up({ group: v })} placeholder={memorial ? "Children" : "Organising committee"} hint="People with the same heading are listed together." />
+              <LText label="Group heading" value={i.group} onChange={(v) => up({ group: v })} placeholder={memorial ? "Children" : baptism ? "Grandparents" : "Organising committee"} hint="People with the same heading are listed together." />
             </Grid>
             <Grid>
               <LText label="Relation or role" value={i.relation} onChange={(v) => up({ relation: v })} />
@@ -251,11 +256,13 @@ function PeopleCard({ kind }: { kind: SubjectKind }) {
 function PrayerCard() {
   const { doc, update } = useDraft();
   const p = doc.occasion.prayer;
+  const baptism = doc.eventType === "baptism";
   return (
-    <FormCard title="A prayer or reading" description="Optional. A verse, a prayer or a reading. Press Enter for a new line.">
+    <FormCard title={baptism ? "A verse or a prayer" : "A prayer or reading"} description="Optional. A verse, a prayer or a reading. Press Enter for a new line.">
+      {baptism && <VersePicker />}
       <LText label="Heading (optional)" value={p.title} onChange={(v) => update((d) => void (d.occasion.prayer.title = v))} placeholder="A prayer" />
       <LText label="Text" multiline rows={5} value={p.text} onChange={(v) => update((d) => void (d.occasion.prayer.text = v))} />
-      <LText label="Source (optional)" value={p.source} onChange={(v) => update((d) => void (d.occasion.prayer.source = v))} placeholder="Psalm 23" />
+      <LText label="Source (optional)" value={p.source} onChange={(v) => update((d) => void (d.occasion.prayer.source = v))} placeholder={baptism ? "Psalm 127:3 · KJV" : "Psalm 23"} hint={baptism ? "The reference and the translation, as they should be printed." : undefined} />
     </FormCard>
   );
 }
@@ -278,7 +285,7 @@ export function OccasionEditor() {
       )}
       <MessageCard kind={kind} />
       <PeopleCard kind={kind} />
-      {(kind === "occasion" || kind === "memorial") && <PrayerCard />}
+      {(kind === "occasion" || kind === "memorial" || doc.eventType === "baptism") && <PrayerCard />}
     </>
   );
 }

@@ -15,7 +15,7 @@ import { useDraft } from "../draft";
 export function CelebrationCard() {
   const { doc, update } = useDraft();
   const info = EVENT_TYPE_INFO[doc.eventType];
-  const auto = info.celebration === "petals" ? "falling petals" : "confetti from both sides";
+  const auto = info.celebration === "petals" ? "falling petals" : info.celebration === "none" ? "nothing falls or bursts" : "confetti from both sides";
   return (
     <FormCard title="The occasion" description="What kind of celebration this is decides the opening animation, the line under the names and the two small illustrated figures.">
       <Grid>
