@@ -6,6 +6,7 @@ import type { CategoryDef } from "@/domain/catalogue/categories";
 import { priceText, type PublicPackage } from "@/domain/catalogue/pricing";
 import { SiteImage } from "./SiteImage";
 import { Reel } from "./Reel";
+import { CardLink } from "./CardLink";
 import { Swatches } from "./Swatches";
 import { WaButton, SiteButton } from "./WaButton";
 import { waLink } from "@/lib/whatsapp";
@@ -41,7 +42,7 @@ export function Heading({ eyebrow, title, lede, align = "left", as: Tag = "h2", 
 export function TemplateCard({ t, priority, className }: { t: SiteTemplate; priority?: boolean; className?: string }) {
   return (
     <article className={cn("reel-card group relative", className)}>
-      <Link href={t.path} className="block rounded-2xl focus-visible:outline-offset-4" aria-label={`${t.name} — ${t.styleLabel}`}>
+      <CardLink href={t.path} preview={t.love ? undefined : `/preview/t/${t.slug}?from=gallery`} className="block rounded-2xl focus-visible:outline-offset-4" aria-label={`${t.name} — ${t.styleLabel}`}>
         <div className="relative mx-auto aspect-[9/19] w-full overflow-hidden rounded-[1.7rem] border-[5px] border-ink bg-paper-2 shadow-[0_26px_44px_-28px_rgba(23,20,31,.55)] transition duration-500 group-hover:-translate-y-1.5 group-hover:shadow-[0_40px_60px_-30px_rgba(23,20,31,.6)]">
           <Reel slug={t.slug} thumb={t.thumb} alt={`The ${t.name} invitation design, scrolling`} eager={priority} className="absolute inset-0" />
           {t.edition && <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-[0.1em] text-ink">Tradition edition</span>}
@@ -52,7 +53,7 @@ export function TemplateCard({ t, priority, className }: { t: SiteTemplate; prio
           <Swatches colors={t.theme.colors} className="shrink-0" />
         </div>
         <p className="mt-2 line-clamp-2 text-[15px] leading-snug text-ink-2/80">{t.tagline}</p>
-      </Link>
+      </CardLink>
     </article>
   );
 }

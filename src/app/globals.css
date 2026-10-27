@@ -444,3 +444,5 @@ dialog.drawer[open] {
 @media (prefers-reduced-motion: reduce) {
   .reel-img { animation: none; }
 }
+
+@media (prefers-reduced-motion: reduce) { .skeleton { animation: none; } }

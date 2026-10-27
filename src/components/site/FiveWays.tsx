@@ -6,6 +6,7 @@ import { cn } from "@/lib/cn";
 import { Reel } from "./Reel";
 import { Swatches } from "./Swatches";
 import { MobileSelect } from "./MobileSelect";
+import { CardLink } from "./CardLink";
 
 export interface WayGroup {
   slug: string;
@@ -37,13 +38,13 @@ export function FiveWays({ groups }: { groups: WayGroup[] }) {
       <ul role="tabpanel" className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 pb-6 sm:grid-cols-5" aria-label={`${g.name} designs`}>
         {g.designs.slice(0, 5).map((d) => (
           <li key={d.slug} className="min-w-0">
-            <Link href={d.path} data-track="cta_click" data-ref={`fiveways-${d.slug}`} className="reel-card group block">
+            <CardLink href={d.path} preview={d.path.includes("for-my-love") ? undefined : `/preview/t/${d.slug}?from=gallery`} data-track="cta_click" data-ref={`fiveways-${d.slug}`} className="reel-card group block">
               <div className="relative aspect-[9/19] overflow-hidden rounded-[1.5rem] border-[4px] border-ink bg-paper-2 shadow-[0_22px_36px_-26px_rgba(23,20,31,.55)] transition duration-500 group-hover:-translate-y-1.5">
                 <Reel slug={d.slug} thumb={d.thumb} alt={`${d.name}, a ${d.styleLabel} design`} className="absolute inset-0" />
               </div>
               <p className="mt-3 font-serif text-[22px] font-medium leading-tight text-ink group-hover:text-accent">{d.name}</p>
               <div className="mt-0.5 flex items-center justify-between gap-2"><p className="truncate text-[13.5px] text-muted">{d.styleLabel}</p><Swatches colors={d.colors.slice(0, 3)} /></div>
-            </Link>
+            </CardLink>
           </li>
         ))}
       </ul>

@@ -3,6 +3,7 @@ import { JsonLd, breadcrumbLd, itemListLd } from "@/lib/jsonld";
 import { WA } from "@/lib/whatsapp";
 import { categoryBySlug } from "@/domain/catalogue/categories";
 import { SITE_TEMPLATES, STYLE_FILTERS, templatesIn } from "@/domain/catalogue/templates";
+import { FromPrice } from "@/components/site/FromPrice";
 import { FinalCta, Heading, Section, TemplateCard, Wrap } from "@/components/site/blocks";
 import { TemplateFilter, type FilterGroup } from "@/components/site/TemplateFilter";
 
@@ -46,6 +47,7 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Pr
       <section className="bg-[linear-gradient(180deg,#fbf7f0,#ffffff)] pb-4 pt-12 sm:pt-20">
         <Wrap>
           <Heading as="h1" eyebrow="Choose your design" title="Find the one that feels like your celebration." lede={`${total} designs, with at least five different ones for every occasion. Tap any design to open it the way your guests will — then tell us your details and we make it yours.`} />
+          <FromPrice className="mt-4" />
         </Wrap>
       </section>
       <Section tone="white" className="!pt-8">

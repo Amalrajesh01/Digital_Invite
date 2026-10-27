@@ -6,6 +6,7 @@ import { JsonLd, breadcrumbLd, faqLd, itemListLd } from "@/lib/jsonld";
 import { WA } from "@/lib/whatsapp";
 import { CATEGORIES, categoryBySlug } from "@/domain/catalogue/categories";
 import { templatesIn } from "@/domain/catalogue/templates";
+import { FromPrice } from "@/components/site/FromPrice";
 import { CategoryCard, FaqList, FinalCta, Heading, Section, TemplateCard, Wrap } from "@/components/site/blocks";
 import { SiteButton, WaButton } from "@/components/site/WaButton";
 import { Track } from "@/components/site/SiteTracker";
@@ -61,6 +62,7 @@ export default async function CategoryPage({ params }: Props) {
 
       <Section tone="white" className="!pt-10">
         <Heading as="h2" eyebrow={`${designs.length} designs`} title={love ? "Five ways to unfold a gift." : designs.filter((d) => !d.edition).length > 5 ? `${designs.filter((d) => !d.edition).length} designs for your ${cat.name.toLowerCase()}.` : `Five different designs for your ${cat.name.toLowerCase()}.`} lede={family ? `We do not have a separate set for a ${cat.name.toLowerCase()}, so here are the five designs nearest to it. We change the wording and the details to suit — and you see it before anyone else.` : "Open any of them the way your guests will. They open differently, are laid out differently and move differently."} />
+        {!love && <FromPrice className="mt-3" />}
         <ul className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-3 lg:grid-cols-5">
           {designs.map((t, i) => (<li key={t.slug}><TemplateCard t={t} priority={i < 3} /></li>))}
         </ul>

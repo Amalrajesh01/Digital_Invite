@@ -4,6 +4,8 @@ import { loadSpecPreview } from "@/domain/wedding/public";
 import { WEDDING_STATUSES } from "@/domain/doc/constants";
 import { InvitationApp } from "@/invitation/InvitationApp";
 import { PreviewShield } from "@/invitation/PreviewShield";
+import { PreviewBar } from "@/components/site/PreviewBar";
+import { siteTemplateBySlug } from "@/domain/catalogue/templates";
 import { requestMeta } from "@/lib/session";
 import { brand } from "@/lib/brand";
 
@@ -26,6 +28,7 @@ export default async function SpecPreview({ params, searchParams }: { params: Pr
     <>
       <PreviewShield mark={`${brand.name} · sample · ${stamp}`} />
       <InvitationApp view={view} initialLocale={q.lang || view.wedding.defaultLocale} skipGate={q.gate === "0"} />
+      <PreviewBar start={`/start?template=${slug}&occasion=${siteTemplateBySlug(slug)?.category ?? ""}`} />
     </>
   );
 }

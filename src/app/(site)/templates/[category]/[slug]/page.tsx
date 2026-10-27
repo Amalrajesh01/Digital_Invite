@@ -13,6 +13,7 @@ import { DevicePreview } from "@/components/site/DevicePreview";
 import { FallbackImg } from "@/components/site/FallbackImg";
 import { SiteButton, WaButton } from "@/components/site/WaButton";
 import { Track } from "@/components/site/SiteTracker";
+import { FromPrice } from "@/components/site/FromPrice";
 import { FinalCta, Heading, PackageCards, Section, Swatches, TemplateCard, Wrap } from "@/components/site/blocks";
 
 type Props = { params: Promise<{ category: string; slug: string }> };
@@ -85,7 +86,8 @@ export default async function TemplatePage({ params }: Props) {
               </dl>
               <p className="mt-6 text-[14.5px] font-semibold text-ink">Best for</p>
               <ul className="mt-2 space-y-1.5 text-[15px] text-ink-2/85">{t.target.map((b) => (<li key={b} className="flex gap-2.5"><Check className="mt-1 size-4 shrink-0 text-accent" aria-hidden />{b}</li>))}</ul>
-              <div className="mt-7 grid gap-3">
+              {!t.love && <FromPrice className="mt-6 text-[14px]" />}
+              <div className="mt-4 grid gap-3">
                 <SiteButton href={start} data-track="cta_click" data-ref={`use-design-${t.slug}`}>{t.love ? "Make a gift like this" : "Use This Design"}</SiteButton>
                 <WaButton message={WA.template(`${t.name} (${cat.name})`)} variant="outline" trackRef={`design-${t.slug}`}>Ask about this design</WaButton>
               </div>
