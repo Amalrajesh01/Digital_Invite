@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Lock } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { ChevronDown, Lock } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 export interface TabItem { href: string; label: string; locked?: boolean; badge?: number }
@@ -9,9 +9,19 @@ export interface TabItem { href: string; label: string; locked?: boolean; badge?
 /** Horizontal, scrollable section tabs for one wedding (Super Admin). Locked = not in the package. */
 export function WorkspaceTabs({ items, base }: { items: TabItem[]; base: string }) {
   const path = usePathname();
+  const router = useRouter();
+  const current = items.filter((it) => (it.href === base ? path === base : path === it.href || path.startsWith(it.href + "/"))).sort((a, b) => b.href.length - a.href.length)[0];
   return (
-    <nav aria-label="Wedding sections" className="-mx-4 mb-8 overflow-x-auto border-b border-rule px-4 lg:-mx-8 lg:px-8">
-      <ul className="flex min-w-max gap-1">
+    <>
+    <label className="relative mb-6 block md:hidden">
+      <span className="sr-only">Wedding section</span>
+      <select value={current?.href ?? base} onChange={(e) => router.push(e.target.value)} className="h-12 w-full appearance-none rounded-xl border border-rule-strong bg-white pl-4 pr-10 text-[16px] text-ink outline-none focus:border-ink">
+        {items.map((it) => <option key={it.href} value={it.href}>{it.label}{it.locked ? " (not in package)" : ""}{it.badge ? ` · ${it.badge}` : ""}</option>)}
+      </select>
+      <ChevronDown aria-hidden className="pointer-events-none absolute right-3.5 top-1/2 size-4 -translate-y-1/2 text-muted" />
+    </label>
+    <nav aria-label="Wedding sections" className="mb-8 hidden border-b border-rule md:block">
+      <ul className="flex flex-wrap gap-1">
         {items.map((it) => {
           const active = it.href === base ? path === base : path === it.href || path.startsWith(it.href + "/");
           return (
@@ -27,5 +37,6 @@ export function WorkspaceTabs({ items, base }: { items: TabItem[]; base: string 
         })}
       </ul>
     </nav>
+    </>
   );
 }

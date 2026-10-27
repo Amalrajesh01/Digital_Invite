@@ -5,6 +5,7 @@ import { ArrowRight, Pause, Play, Search } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { Reel } from "./Reel";
 import { Swatches } from "./Swatches";
+import { MobileSelect } from "./MobileSelect";
 
 export interface DiscoveryItem {
   slug: string; name: string; tagline: string; styleLabel: string; category: string; categoryName: string; thumb: string; path: string; colors: string[]; tags: string[]; featured: boolean;
@@ -43,7 +44,8 @@ export function TemplateDiscovery({ items, occasions, tagLabels, initialOccasion
 
   return (
     <div>
-      <div role="tablist" aria-label="Occasion" className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-2 sm:mx-0 sm:flex-wrap sm:px-0">
+      <MobileSelect label="Occasion" value={occasion} options={[{ value: "", label: "All occasions" }, ...occasions.map((o) => ({ value: o.slug, label: o.name }))]} onPick={(v) => { setOccasion(v); setTag(""); }} />
+      <div role="tablist" aria-label="Occasion" className="hidden flex-wrap gap-2 sm:flex">
         {[{ slug: "", name: "All occasions" }, ...occasions].map((o) => (
           <button key={o.slug || "all"} role="tab" type="button" aria-selected={occasion === o.slug} onClick={() => { setOccasion(o.slug); setTag(""); }}
             className={cn("min-h-11 shrink-0 rounded-full border px-4 text-[15px] font-medium transition-colors", occasion === o.slug ? "border-ink bg-ink text-white" : "border-rule-strong bg-white text-ink hover:border-ink")}>
@@ -53,7 +55,8 @@ export function TemplateDiscovery({ items, occasions, tagLabels, initialOccasion
       </div>
 
       <div className="mt-5 flex flex-wrap items-end justify-between gap-4">
-        <div role="group" aria-label="Feeling" className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
+        <MobileSelect className="w-full" label="Feeling" value={tag} options={[{ value: "", label: "Any feeling" }, ...tags.map(([t, n]) => ({ value: t, label: `${tagLabels[t]} (${n})` }))]} onPick={setTag} />
+        <div role="group" aria-label="Feeling" className="hidden flex-wrap gap-2 sm:flex">
           {tags.map(([t, n]) => (
             <button key={t} type="button" aria-pressed={tag === t} onClick={() => setTag(tag === t ? "" : t)}
               className={cn("min-h-10 shrink-0 rounded-full border px-3.5 text-[14px] transition-colors", tag === t ? "border-accent bg-accent-soft/60 font-medium text-ink" : "border-rule bg-transparent text-ink-2 hover:border-ink-2")}>

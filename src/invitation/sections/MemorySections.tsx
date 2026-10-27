@@ -111,8 +111,8 @@ export function AnniversarySection({ section }: { section: SectionConfig }) {
         {L(view.doc.anniversary.message) && <Reveal delay={200}><p className="inv-lede mx-auto mt-6">{L(view.doc.anniversary.message)}</p></Reveal>}
       </div>
       {photos.length > 0 && (
-        <div className="-mx-5 mt-14 flex snap-x gap-4 overflow-x-auto px-5 pb-4 md:mx-0 md:justify-center" tabIndex={0} aria-label={t("memory.title")}>
-          {photos.map((p, i) => (<div key={p.id} className="w-[64vw] shrink-0 snap-center md:w-52" style={{ transform: `rotate(${(i - 2) * 1.8}deg) translateY(${Math.abs(i - 2) * 6}px)` }}><Photo id={p.id} ratio="aspect-[3/4]" seed={i} sizes="(max-width: 768px) 64vw, 208px" /></div>))}
+        <div className="mt-14 grid grid-cols-2 gap-4 pb-4 md:flex md:justify-center" aria-label={t("memory.title")}>
+          {photos.map((p, i) => (<div key={p.id} className="md:w-52 md:shrink-0" style={{ transform: `rotate(${(i - 2) * 1.8}deg) translateY(${Math.abs(i - 2) * 6}px)` }}><Photo id={p.id} ratio="aspect-[3/4]" seed={i} sizes="(max-width: 768px) 64vw, 208px" /></div>))}
         </div>
       )}
       {entries.length > 0 && (

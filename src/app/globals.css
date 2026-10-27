@@ -87,6 +87,19 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
+  overflow-x: clip; /* a safety net: nothing may widen the page sideways */
+}
+
+/* Tables become cards on a phone: each cell carries its column's name (StackTables copies it from the header). */
+@media (max-width: 639px) {
+  .overflow-x-auto:has(> table) { overflow-x: visible; }
+  .overflow-x-auto > table { display: block; min-width: 0 !important; width: 100%; }
+  .overflow-x-auto > table :is(thead, caption) { display: none; }
+  .overflow-x-auto > table :is(tbody, tr, td, th) { display: block; width: auto; text-align: left !important; }
+  .overflow-x-auto > table tr { padding: 0.5rem 0; border-bottom: 1px solid var(--rule-strong, #d8d4cc); }
+  .overflow-x-auto > table td, .overflow-x-auto > table tbody th { padding: 0.35rem 1rem; border: 0; overflow-wrap: anywhere; }
+  .overflow-x-auto > table td[data-label]::before { content: attr(data-label); display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.6; }
+  .overflow-x-auto > table td:empty { display: none; }
 }
 
 body {

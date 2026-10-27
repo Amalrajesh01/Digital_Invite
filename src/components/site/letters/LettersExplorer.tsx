@@ -69,7 +69,7 @@ function Strip({ cards, onPreview }: { cards: LetterCard[]; onPreview: (c: Lette
     <div className="relative" role="region" aria-roledescription="carousel" aria-label="Forever Letters, a moving preview">
       <div
         ref={box} tabIndex={0}
-        className="flex gap-4 overflow-x-auto px-5 pb-3 pt-1 [scrollbar-width:none] sm:gap-5 sm:px-8 [&::-webkit-scrollbar]:hidden [mask-image:linear-gradient(90deg,transparent,#000_5%,#000_95%,transparent)]"
+        className="flex flex-wrap justify-center gap-x-4 gap-y-6 overflow-hidden px-5 pb-3 pt-1 max-sm:[&>:nth-child(n+7)]:hidden sm:flex-nowrap sm:justify-start sm:gap-5 sm:overflow-x-auto sm:px-8 sm:[scrollbar-width:none] sm:[&::-webkit-scrollbar]:hidden sm:[mask-image:linear-gradient(90deg,transparent,#000_5%,#000_95%,transparent)]"
         onPointerEnter={(e) => { if (e.pointerType === "mouse") state.current.hovered = true; }} onPointerLeave={() => { state.current.hovered = false; }}
         onFocus={() => { state.current.focused = true; }} onBlur={() => { state.current.focused = false; }}
         onTouchStart={() => hold(6000)} onTouchEnd={() => hold(2500)} onWheel={() => hold(3000)}
@@ -91,7 +91,7 @@ function Strip({ cards, onPreview }: { cards: LetterCard[]; onPreview: (c: Lette
           );
         })}
       </div>
-      <div className="mt-3 flex items-center justify-center gap-2">
+      <div className="mt-3 hidden items-center justify-center gap-2 sm:flex">
         <button type="button" onClick={() => by(-1)} className="grid size-11 place-items-center rounded-full border border-white/25 text-white hover:bg-white/10" aria-label="Previous experiences"><ChevronLeft className="size-5" /></button>
         {!reduced && <button type="button" onClick={() => setPaused((p) => !p)} aria-pressed={paused} className="grid size-11 place-items-center rounded-full border border-white/25 text-white hover:bg-white/10" aria-label={paused ? "Play the moving preview" : "Pause the moving preview"}>{paused ? <Play className="size-4" /> : <Pause className="size-4" />}</button>}
         <button type="button" onClick={() => by(1)} className="grid size-11 place-items-center rounded-full border border-white/25 text-white hover:bg-white/10" aria-label="Next experiences"><ChevronRight className="size-5" /></button>

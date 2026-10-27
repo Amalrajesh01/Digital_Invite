@@ -47,9 +47,9 @@ function Chapters({ cards }: { cards?: boolean }) {
   if (!list.length) return null;
   if (cards) {
     return (
-      <div className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-6 md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:px-0" tabIndex={0} aria-label="Story">
+      <div className="grid justify-items-center gap-5 pb-6 md:grid-cols-3 md:justify-items-stretch" aria-label="Story">
         {list.map((c, i) => (
-          <Reveal key={c.id} delay={i * 80} className="inv-card w-[78vw] max-w-[22rem] shrink-0 snap-center overflow-hidden md:w-auto md:max-w-none">
+          <Reveal key={c.id} delay={i * 80} className="inv-card w-full max-w-[22rem] overflow-hidden md:max-w-none">
             <Photo id={c.photo} ratio="aspect-[4/3]" seed={i} sizes="(max-width: 768px) 78vw, 380px" />
             <div className="p-6">
               <p className="inv-eyebrow">{L(c.when)}</p>
@@ -130,9 +130,9 @@ function MemoryDeck() {
   return (
     <div className="mt-28">
       <p className="inv-eyebrow mb-8 text-center">{t("story.memories")}</p>
-      <div className="-mx-5 flex snap-x snap-mandatory gap-5 overflow-x-auto px-[11vw] pb-6 md:mx-0 md:justify-center md:overflow-visible md:px-0" tabIndex={0} aria-label={t("story.memories")}>
+      <div className="grid justify-items-center gap-6 pb-6 md:flex md:justify-center" aria-label={t("story.memories")}>
         {cards.map((c, i) => (
-          <article key={c.id} className="inv-card w-[78vw] max-w-[19rem] shrink-0 snap-center overflow-hidden md:w-64" style={{ transform: `rotate(${(i % 2 ? 1 : -1) * 1.6}deg)` }}>
+          <article key={c.id} className="inv-card w-full max-w-[19rem] overflow-hidden md:w-64" style={{ transform: `rotate(${(i % 2 ? 1 : -1) * 1.6}deg)` }}>
             <Photo id={c.photo} ratio="aspect-square" seed={i + 3} sizes="(max-width: 768px) 78vw, 300px" />
             <div className="p-5">
               <h4 className="inv-h4">{L(c.title)}</h4>

@@ -69,12 +69,12 @@ function Vertical({ items }: { items: Milestone[] }) {
 function Horizontal({ items, label }: { items: Milestone[]; label: string }) {
   const { L } = useInvitation();
   return (
-    <div className="-mx-5 overflow-x-auto px-5 pb-4 md:mx-0 md:px-0" tabIndex={0} aria-label={label}>
-      <ol className="relative flex min-w-max gap-10 pt-8 md:min-w-0 md:justify-between">
-        <span aria-hidden className="absolute left-0 right-0 top-[0.45rem] h-px bg-[var(--c-border)]" />
+    <div className="pb-4" aria-label={label}>
+      <ol className="relative flex flex-col gap-8 md:flex-row md:justify-between md:gap-10 md:pt-8">
+        <span aria-hidden className="absolute bottom-2 left-[0.35rem] top-2 w-px bg-[var(--c-border)] md:bottom-auto md:left-0 md:right-0 md:top-[0.45rem] md:h-px md:w-auto" />
         {items.map((m, i) => (
-          <Reveal as="li" key={m.id} delay={i * 80} className="relative w-56 shrink-0 md:w-auto md:flex-1">
-            <span aria-hidden className="absolute -top-8 left-0 size-3 rounded-full bg-[var(--c-accent)] ring-4 ring-[var(--c-bg)]" />
+          <Reveal as="li" key={m.id} delay={i * 80} className="relative pl-8 md:w-auto md:flex-1 md:pl-0">
+            <span aria-hidden className="absolute left-0 top-2 size-3 md:-top-8 rounded-full bg-[var(--c-accent)] ring-4 ring-[var(--c-bg)]" />
             <p className="inv-num text-[1.9rem] text-[var(--c-primary)]">{L(m.when)}</p>
             <p className="inv-h4 mt-1">{L(m.title)}</p>
           </Reveal>

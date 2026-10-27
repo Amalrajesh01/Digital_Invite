@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { Reel } from "./Reel";
 import { Swatches } from "./Swatches";
+import { MobileSelect } from "./MobileSelect";
 
 export interface WayGroup {
   slug: string;
@@ -24,7 +25,8 @@ export function FiveWays({ groups }: { groups: WayGroup[] }) {
   if (!g) return null;
   return (
     <div>
-      <div role="tablist" aria-label="Occasion" className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-2 sm:mx-0 sm:flex-wrap sm:px-0">
+      <MobileSelect label="Occasion" value={slug} options={groups.map((x) => ({ value: x.slug, label: x.name }))} onPick={setSlug} />
+      <div role="tablist" aria-label="Occasion" className="hidden flex-wrap gap-2 sm:flex">
         {groups.map((x) => (
           <button key={x.slug} role="tab" type="button" aria-selected={x.slug === slug} onClick={() => setSlug(x.slug)} className={cn("min-h-11 shrink-0 rounded-full border px-5 text-[15px] font-medium transition-colors", x.slug === slug ? "border-ink bg-ink text-white" : "border-rule-strong bg-white text-ink-2 hover:border-ink-2")}>
             {x.name}
@@ -32,9 +34,9 @@ export function FiveWays({ groups }: { groups: WayGroup[] }) {
         ))}
       </div>
       <p className="mt-5 max-w-2xl text-[17px] text-ink-2/85">{g.line}</p>
-      <ul role="tabpanel" className="-mx-5 mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-6 sm:mx-0 sm:grid sm:grid-cols-5 sm:gap-4 sm:overflow-visible sm:px-0" tabIndex={0} aria-label={`${g.name} designs`}>
+      <ul role="tabpanel" className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 pb-6 sm:grid-cols-5" aria-label={`${g.name} designs`}>
         {g.designs.slice(0, 5).map((d) => (
-          <li key={d.slug} className="w-[62%] shrink-0 snap-center sm:w-auto">
+          <li key={d.slug} className="min-w-0">
             <Link href={d.path} data-track="cta_click" data-ref={`fiveways-${d.slug}`} className="reel-card group block">
               <div className="relative aspect-[9/19] overflow-hidden rounded-[1.5rem] border-[4px] border-ink bg-paper-2 shadow-[0_22px_36px_-26px_rgba(23,20,31,.55)] transition duration-500 group-hover:-translate-y-1.5">
                 <Reel slug={d.slug} thumb={d.thumb} alt={`${d.name}, a ${d.styleLabel} design`} className="absolute inset-0" />

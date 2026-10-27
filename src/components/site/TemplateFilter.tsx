@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 import { cn } from "@/lib/cn";
 import { waLink, WA } from "@/lib/whatsapp";
 import { WaIcon } from "./WaButton";
+import { MobileSelect } from "./MobileSelect";
 
 export interface FilterOption { value: string; label: string }
 export interface FilterState { occasion: string; style: string }
@@ -12,7 +13,8 @@ function Chips({ label, value, options, onPick }: { label: string; value: string
   return (
     <div role="group" aria-label={label}>
       <p className="mb-2 text-[11.5px] font-semibold uppercase tracking-[0.14em] text-muted">{label}</p>
-      <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
+      <MobileSelect label={label} value={value} options={[{ value: "", label: "All" }, ...options]} onPick={onPick} />
+      <div className="hidden flex-wrap gap-2 sm:flex">
         {options.map((o) => {
           const on = value === o.value;
           return (

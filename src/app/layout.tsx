@@ -4,6 +4,7 @@ import Script from "next/script";
 import { Toaster } from "sonner";
 import { brand } from "@/lib/brand";
 import { env } from "@/lib/env";
+import { StackTables } from "@/components/shell/StackTables";
 import "./globals.css";
 
 /** Inter is the house typeface everywhere — studio, site and invitations (Malayalam etc. use Noto Sans). */
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Marks the document as script-enabled before first paint so scroll-reveal never hides content without JS. */}
         <Script id="js-flag" strategy="beforeInteractive">{"document.documentElement.classList.add('js')"}</Script>
         {children}
+        <StackTables />
         <Toaster position="bottom-center" toastOptions={{ style: { fontFamily: "var(--font-ui)", borderRadius: "8px", border: "1px solid var(--rule-strong)", background: "var(--surface)", color: "var(--ink)" } }} />
       </body>
     </html>

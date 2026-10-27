@@ -459,8 +459,8 @@ export default function GallerySection({ section }: { section: SectionConfig }) 
               ))}
             </div>
           ) : variant === "carousel" ? (
-            <div className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 md:mx-0 md:px-0" tabIndex={0} aria-label={t("gallery.title")}>
-              {shown.map((it, i) => (<div key={it.id} className="w-[82vw] shrink-0 snap-center md:w-[34rem]"><Thumb item={it} i={i} onOpen={onOpen} className="aspect-[4/5] md:aspect-[4/3]" sizes="(max-width: 768px) 82vw, 544px" /></div>))}
+            <div className="grid gap-4 md:flex md:snap-x md:snap-mandatory md:overflow-x-auto md:pb-4" tabIndex={0} aria-label={t("gallery.title")}>
+              {shown.map((it, i) => (<div key={it.id} className="md:w-[34rem] md:shrink-0 md:snap-center"><Thumb item={it} i={i} onOpen={onOpen} className="aspect-[4/5] md:aspect-[4/3]" sizes="(max-width: 768px) 82vw, 544px" /></div>))}
             </div>
           ) : (
             <div className="columns-2 gap-3 md:columns-3 md:gap-4 [&>*]:mb-3 md:[&>*]:mb-4">

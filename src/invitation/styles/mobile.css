@@ -1,0 +1,18 @@
+/* Phones never scroll sideways: every strip that swipes on a wide screen stacks instead. (.inv raises specificity, since section CSS loads lazily.) */
+@media (max-width: 899px) {
+  .inv .cer-arches { flex-direction: column; align-items: center; overflow: visible; scroll-snap-type: none; gap: 2.2rem; padding: 0; margin-inline: 0; }
+  .inv .cer-arch { flex: none; width: min(78vw, 17.5rem); }
+}
+@media (max-width: 767px) {
+  .inv .gl-reel { flex-direction: column; overflow: visible; scroll-snap-type: none; padding-bottom: 0; gap: 1.6rem; }
+  .inv .gl-reel-i { width: 100%; }
+  .inv .gl-reel-bar { display: none; }
+  .inv .filmstrip { display: grid; grid-template-columns: 1fr 1fr; overflow: visible; scroll-snap-type: none; }
+  .inv .inv-tabs { overflow-x: visible; }
+  .inv .tree-scroll { overflow: visible; }
+  .inv .tree { display: block; min-width: 0; }
+  .inv .tree ul { display: block; padding: 0 0 0 0.9rem; margin-left: 0.4rem; border-left: 1px solid var(--c-border); }
+  .inv .tree > ul { padding-left: 0; margin-left: 0; border-left: 0; }
+  .inv .tree li { align-items: flex-start; padding: 0.7rem 0 0 0.3rem; }
+  .inv .tree li::before, .inv .tree li::after { display: none; }
+}
