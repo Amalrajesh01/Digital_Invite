@@ -47,7 +47,7 @@ cd /home/deploy/apps/stackbridge-invites && set -a && . ./.env.production && set
 SEED_ONLY=public-demos SEED_DEMO_CLIENTS=false npm run db:seed   # the 25 new sample invitations (skips any that exist)
 ```
 
-The sample invitations take a few minutes: each uploads its own photographs. The gallery thumbnails of the new templates are in `public/templates/` and are committed; regenerate any of them with `npx tsx scripts/dev/tpl.mjs <slug> --thumbs --wait=3000`.
+Since the baptism release, `REFRESH_LIBRARY=1 stackbridge-deploy` also runs this seed for you (see [BAPTISM.md](BAPTISM.md)), and the seed no longer depends on Cloudinary — the cause of a template preview showing a 404 when the samples were not created. The sample invitations take a few minutes: each uploads its own photographs. The gallery thumbnails of the new templates are in `public/templates/` and are committed; regenerate any of them with `npx tsx scripts/dev/tpl.mjs <slug> --thumbs --wait=3000`.
 
 ## Honest limits
 

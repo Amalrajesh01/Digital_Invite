@@ -109,13 +109,21 @@ Super Admin (or the customer, in their own studio) does everything without editi
 ## Deploying it
 
 ```bash
-git pull   # on the server: stackbridge-deploy does this for you
-REFRESH_LIBRARY=1 stackbridge-deploy          # adds the 20 templates and 20 themes (no migration)
-cd /home/deploy/apps/stackbridge-invites && set -a && . ./.env.production && set +a
-SEED_ONLY=public-demos SEED_DEMO_CLIENTS=false npm run db:seed   # the 20 sample invitations (skips any that exist)
+ssh -i ~/.ssh/netjet_hetzner root@65.108.245.110 "REFRESH_LIBRARY=1 stackbridge-deploy"
 ```
 
-The sample invitations take a few minutes: each uploads its own photographs and a licensed track. The gallery thumbnails and the tall scrolling pictures are in `public/templates/` and `public/templates/tall/` and are committed; regenerate any of them with `npx tsx scripts/dev/tpl.mjs <slug> --thumbs --wait=6000` and `npx tsx scripts/dev/tall.mjs <slug>` (they need the samples seeded locally).
+`REFRESH_LIBRARY=1` adds the 20 templates and 20 themes (no migration) **and then creates every sample invitation the gallery needs and the server does not have yet** (the deploy script runs `SEED_ONLY=public-demos SEED_DEMO_CLIENTS=false npm run db:seed`). Without a sample, a template’s preview is a 404 — the phone on `/templates/baptism/<slug>` shows “This page could not be found”.
+
+The sample invitations take a few minutes: each uploads its own photographs and a licensed track. If any cannot be made, the deploy still succeeds (the site is live), prints which ones, and says how to retry; running the same seed again is always safe.
+
+How the seed behaves, because it was the cause of the 404 on the first deploy:
+
+* **Samples never depend on Cloudinary.** The platform’s default for a new invitation is Cloudinary when it is configured; a seed run on a server whose Cloudinary credentials are wrong (“Invalid Signature”) stopped at the first sample with a photograph and left every other sample uncreated. Samples now keep their photographs on the app’s own store (`SEED_CLOUDINARY=1` restores the platform default), and `npm run cloudinary:migrate` can move them later.
+* **A sample left half-made by an earlier run is made again**, instead of being skipped for ever as “already exists”.
+* **One sample failing no longer stops the others;** the run reports the ones it could not make and exits non-zero.
+* **A server that already has its Super Admin needs no `SEED_ADMIN_PASSWORD`** to seed samples.
+
+The gallery thumbnails and the tall scrolling pictures are in `public/templates/` and `public/templates/tall/` and are committed; regenerate any of them with `npx tsx scripts/dev/tpl.mjs <slug> --thumbs --wait=6000` and `npx tsx scripts/dev/tall.mjs <slug>` (they need the samples seeded locally).
 
 To change a sample after it exists: `npm run demo:drop -- <slug>` then `SEED_ONLY=public-demos npm run db:seed`.
 

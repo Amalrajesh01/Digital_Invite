@@ -6,7 +6,7 @@
  *   SEED_ONLY=public-demos npm run db:seed       → add every sample invitation shown on the public template gallery
  *   SEED_DEMO_CLIENTS=false                      → never create the demo client logins (use this in production)
  */
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { closeDb, getDb, schema } from "../src/db/client";
 import { ensurePackages } from "../src/domain/packages/service";
 import { ensureDesignLibrary } from "../src/domain/design/service";
@@ -142,17 +142,38 @@ interface DemoSpec {
   celebration?: "auto" | "petals" | "confetti" | "off";
 }
 
+/**
+ * Is this sample already there, and finished? A sample whose earlier seeding stopped half-way (it was never published) would otherwise be
+ * skipped for ever as "already exists" and show a 404 in the gallery: it is cleared here so that it is made again from the start.
+ */
+async function finishedSample(slug: string): Promise<string | undefined> {
+  const db = await getDb();
+  const [row] = await db.select({ id: schema.weddings.id, status: schema.weddings.status, isDemo: schema.weddings.isDemo }).from(schema.weddings).where(eq(schema.weddings.slug, slug));
+  if (!row) return undefined;
+  if (row.isDemo && row.status === "DRAFT") {
+    await db.delete(schema.weddings).where(eq(schema.weddings.id, row.id));
+    console.log(`  ↻ ${slug} was left unfinished by an earlier run — making it again`);
+    return undefined;
+  }
+  console.log(`  • ${slug} already exists — skipping`);
+  return row.id;
+}
+
+/**
+ * What every sample starts as. Sample photographs stay on the app's own store (STORAGE_DRIVER), whatever Cloudinary is configured: a
+ * seed must not depend on a third party being reachable and correctly signed, and `npm run cloudinary:migrate` can move them later.
+ * SEED_CLOUDINARY=1 keeps the default of the platform (Cloudinary when configured).
+ */
+const SAMPLE_FLAGS = { isDemo: true, contactEmail: "family@example.com", autoLifecycle: false, ...(process.env.SEED_CLOUDINARY === "1" ? {} : { mediaStorage: "legacy" as const }) };
+
 async function seedWedding(admin: AdminActor, spec: DemoSpec) {
   const db = await getDb();
-  const [existing] = await db.select({ id: schema.weddings.id }).from(schema.weddings).where(eq(schema.weddings.slug, spec.slug));
-  if (existing) {
-    console.log(`  • ${spec.slug} already exists — skipping`);
-    return existing.id;
-  }
+  const existing = await finishedSample(spec.slug);
+  if (existing) return existing;
   const [tpl] = await db.select().from(schema.templates).where(eq(schema.templates.slug, spec.template));
   const [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, spec.theme));
   const w = await createWedding(admin, { title: spec.title, slug: spec.slug, packageKey: spec.pkg, customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", weddingDate: DEMO.date });
-  await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com", autoLifecycle: false }).where(eq(schema.weddings.id, w.id));
+  await db.update(schema.weddings).set(SAMPLE_FLAGS).where(eq(schema.weddings.id, w.id));
   const art = (cache ??= await renderArt());
 
   // media — real photographs when the bundled stock is present, the procedural illustrations otherwise
@@ -240,15 +261,12 @@ async function seedWedding(admin: AdminActor, spec: DemoSpec) {
  */
 async function seedAnanya(admin: AdminActor) {
   const db = await getDb();
-  const [existing] = await db.select({ id: schema.weddings.id }).from(schema.weddings).where(eq(schema.weddings.slug, ANANYA.slug));
-  if (existing) {
-    console.log(`  • ${ANANYA.slug} already exists — skipping`);
-    return existing.id;
-  }
+  const existing = await finishedSample(ANANYA.slug);
+  if (existing) return existing;
   const [tpl] = await db.select().from(schema.templates).where(eq(schema.templates.slug, "cinematic-noir"));
   const [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, "royal-gold"));
   const w = await createWedding(admin, { title: ANANYA.title, slug: ANANYA.slug, packageKey: "LUXURY", customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", weddingDate: ANANYA.date });
-  await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com", autoLifecycle: false }).where(eq(schema.weddings.id, w.id));
+  await db.update(schema.weddings).set(SAMPLE_FLAGS).where(eq(schema.weddings.id, w.id));
   const assets = new Map<string, string>();
   const need = async (k: string, c: MediaCategory, caption?: Record<string, string>) => {
     const id = await stockAsset(w.id, k, c, assets, caption ? { caption } : {});
@@ -345,17 +363,14 @@ async function finishDemo(admin: AdminActor, weddingId: string, o: { slug: strin
 /** English-only showcase built from a ShowcaseCfg (the weddings, the engagement and the anniversary). */
 async function seedShowcase(admin: AdminActor, c: ShowcaseCfg) {
   const db = await getDb();
-  const [existing] = await db.select({ id: schema.weddings.id }).from(schema.weddings).where(eq(schema.weddings.slug, c.slug));
-  if (existing) {
-    console.log(`  • ${c.slug} already exists — skipping`);
-    return existing.id;
-  }
+  const existing = await finishedSample(c.slug);
+  if (existing) return existing;
   const [tpl] = await db.select().from(schema.templates).where(eq(schema.templates.slug, c.template));
   const [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, c.theme));
   if (!tpl || !thm) throw new Error(`Template "${c.template}" or theme "${c.theme}" is missing — run npm run library:refresh first.`);
   const pkg = c.package ?? "LUXURY";
   const w = await createWedding(admin, { title: c.title, slug: c.slug, packageKey: pkg, customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", weddingDate: c.date });
-  await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com", autoLifecycle: false }).where(eq(schema.weddings.id, w.id));
+  await db.update(schema.weddings).set(SAMPLE_FLAGS).where(eq(schema.weddings.id, w.id));
   const { ids, galleryIds } = await loadDemoAssets(w.id, c.slug, c.needs, c.gallery);
   await finishDemo(admin, w.id, {
     slug: c.slug, track: c.track, libraryTrack: c.libraryTrack, galleryIds, wishes: c.wishes, label: "Launch",
@@ -372,17 +387,14 @@ async function seedShowcase(admin: AdminActor, c: ShowcaseCfg) {
 /** English-only showcase of an occasion that is not about a couple. */
 async function seedOccasion(admin: AdminActor, c: OccasionCfg) {
   const db = await getDb();
-  const [existing] = await db.select({ id: schema.weddings.id }).from(schema.weddings).where(eq(schema.weddings.slug, c.slug));
-  if (existing) {
-    console.log(`  • ${c.slug} already exists — skipping`);
-    return existing.id;
-  }
+  const existing = await finishedSample(c.slug);
+  if (existing) return existing;
   const [tpl] = await db.select().from(schema.templates).where(eq(schema.templates.slug, c.template));
   const [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, c.theme));
   if (!tpl || !thm) throw new Error(`Template "${c.template}" or theme "${c.theme}" is missing — run npm run library:refresh first.`);
   const pkg = c.package ?? "LUXURY";
   const w = await createWedding(admin, { title: c.title, slug: c.slug, packageKey: pkg, customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", weddingDate: c.date });
-  await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com", autoLifecycle: false }).where(eq(schema.weddings.id, w.id));
+  await db.update(schema.weddings).set(SAMPLE_FLAGS).where(eq(schema.weddings.id, w.id));
   const { ids, galleryIds } = await loadDemoAssets(w.id, c.slug, c.needs, c.gallery);
   await finishDemo(admin, w.id, {
     slug: c.slug, track: c.track, libraryTrack: c.libraryTrack, galleryIds, wishes: c.wishes, label: "Launch",
@@ -395,16 +407,13 @@ async function seedOccasion(admin: AdminActor, c: OccasionCfg) {
 /** A sample love gift: the same pipeline as any invitation, with the love document in place of sections. */
 async function seedLove(admin: AdminActor, c: LoveCfg) {
   const db = await getDb();
-  const [existing] = await db.select({ id: schema.weddings.id }).from(schema.weddings).where(eq(schema.weddings.slug, c.slug));
-  if (existing) {
-    console.log(`  • ${c.slug} already exists — skipping`);
-    return existing.id;
-  }
+  const existing = await finishedSample(c.slug);
+  if (existing) return existing;
   const [tpl] = await db.select().from(schema.templates).where(eq(schema.templates.slug, c.template));
   const [thm] = await db.select().from(schema.themes).where(eq(schema.themes.slug, c.theme));
   if (!tpl || !thm) throw new Error(`Template "${c.template}" or theme "${c.theme}" is missing — run npm run library:refresh first.`);
   const w = await createWedding(admin, { title: c.title, slug: c.slug, packageKey: "ESSENTIAL", customerClass: "FREE_PORTFOLIO", templateId: tpl.id, themeId: thm.id, defaultLocale: "en", weddingDate: c.date });
-  await db.update(schema.weddings).set({ isDemo: true, contactEmail: "family@example.com", autoLifecycle: false }).where(eq(schema.weddings.id, w.id));
+  await db.update(schema.weddings).set(SAMPLE_FLAGS).where(eq(schema.weddings.id, w.id));
   const { ids } = await loadDemoAssets(w.id, c.slug, c.needs, []);
   await finishDemo(admin, w.id, { slug: c.slug, track: c.track, galleryIds: [], label: "Launch", buildDoc: (base) => buildLoveDoc(base, c, (k) => ids.get(k)) });
   console.log(`  ✔ ${c.slug}  (love gift sample)`);
@@ -555,21 +564,35 @@ async function tidyDemo(admin: AdminActor, slug: string) {
 }
 
 async function seedPublicDemos(admin: AdminActor, only?: string) {
+  const failed: string[] = [];
   for (const [slug, run] of PUBLIC_DEMOS) {
     if (only && only !== slug) continue;
-    await run(admin);
-    await tidyDemo(admin, slug);
+    try {
+      await run(admin);
+      await tidyDemo(admin, slug);
+    } catch (e) {
+      failed.push(slug);
+      console.error(`  ✗ ${slug}: ${e instanceof Error ? e.message : e}`);
+    }
+  }
+  if (failed.length) {
+    console.error(`\n${failed.length} sample invitation(s) could not be made: ${failed.join(", ")}. The others are done; run the same command again to retry these.`);
+    process.exitCode = 1;
   }
 }
 
 async function main() {
+  const adminEmail = process.env.SEED_ADMIN_EMAIL || "admin@stackbridgelab.com";
   if (process.env.NODE_ENV === "production" && (process.env.SEED_ADMIN_PASSWORD ?? "").length < 12) {
-    throw new Error("Set SEED_ADMIN_PASSWORD (12+ characters) before seeding a production database.");
+    // the password is only used to create the Super Admin: a database that has one (the sample invitations of a release) needs none
+    const db = await getDb();
+    const [have] = await db.select({ id: schema.users.id }).from(schema.users).where(sql`lower(${schema.users.email}) = ${adminEmail.toLowerCase()}`);
+    if (!have) throw new Error("Set SEED_ADMIN_PASSWORD (12+ characters) before seeding a production database.");
   }
   console.log("→ Seeding platform data");
   await ensurePackages();
   await ensureDesignLibrary();
-  const adminUser = await ensureSuperAdmin(process.env.SEED_ADMIN_EMAIL || "admin@stackbridgelab.com", process.env.SEED_ADMIN_PASSWORD || "ChangeMe-Now-123", process.env.SEED_ADMIN_NAME || "Amal");
+  const adminUser = await ensureSuperAdmin(adminEmail, process.env.SEED_ADMIN_PASSWORD || "ChangeMe-Now-123", process.env.SEED_ADMIN_NAME || "Amal");
   const admin = (await loadActorForUser(adminUser.id)) as AdminActor;
   console.log(`  ✔ super admin: ${adminUser.email}`);
   console.log(`  ✔ packages: ${PACKAGE_DEFAULTS.map((p) => p.name).join(", ")}`);

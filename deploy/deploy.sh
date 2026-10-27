@@ -7,7 +7,7 @@
 #
 # Zero risk to the data: the database is only dumped (and migrated, when the commit adds migrations); nothing is
 # deleted. Optional: REFRESH_LIBRARY=1 also runs `npm run library:refresh` (updates built-in templates/themes that
-# nobody edited in the studio). FORCE=1 deploys even when the commit is not newer than the one that is live.
+# nobody edited in the studio) and then creates any sample invitation the gallery needs and does not have yet. FORCE=1 deploys even when the commit is not newer than the one that is live.
 set -Eeuo pipefail
 
 SRC=${SRC:-/home/deploy/src/stackbridge-invites}
@@ -133,6 +133,10 @@ echo "$FULL" > "$LIVE/.deployed-sha"; chown "$RUN_AS:$RUN_AS" "$LIVE/.deployed-s
 if [ -n "${REFRESH_LIBRARY:-}" ]; then
   log "library:refresh"
   as_app "cd '$LIVE' && $load_env && npm run library:refresh 2>&1 | tail -6"
+  # A release that adds templates adds their sample invitations too; without them a template's preview is a 404. Idempotent: samples that
+  # exist are skipped, one left half-made by an earlier run is made again, and a failure here never undoes the deploy.
+  log "sample invitations"
+  as_app "set -o pipefail; cd '$LIVE' && $load_env && SEED_ONLY=public-demos SEED_DEMO_CLIENTS=false npm run db:seed 2>&1 | grep -v 'already exists' | tail -60"     || echo "!! some sample invitations could not be made (see above). The site is live; run the seed again: SEED_ONLY=public-demos SEED_DEMO_CLIENTS=false npm run db:seed (in $LIVE, with .env.production loaded)"
 fi
 for kind in db storage src; do ls -1t "$BK"/$kind-*.* 2>/dev/null | tail -n +$((KEEP + 1)) | xargs -r rm -f; done
 
