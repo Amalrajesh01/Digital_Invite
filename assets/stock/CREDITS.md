@@ -307,3 +307,50 @@ Fetched with `scripts/dev/commons.mjs` (CC0, public domain, CC BY and CC BY-SA o
 | `wc-95942753` | Blessin2 | CC BY-SA 4.0 — [Alma Lake 1.jpg](https://commons.wikimedia.org/wiki/File:Alma_Lake_1.jpg) |
 | `wc-96589866` | Eddie basler | CC BY-SA 4.0 — [Starry night sky.jpg](https://commons.wikimedia.org/wiki/File:Starry_night_sky.jpg) |
 | `wc-98214138` | Roman Eisele | CC BY-SA 4.0 — [Östringen - Tiefenbach - Kreuzbergkapelle - Situationsansicht von Osten bei Sonnenuntergang.jpg](https://commons.wikimedia.org/wiki/File:%C3%96stringen_-_Tiefenbach_-_Kreuzbergkapelle_-_Situationsansicht_von_Osten_bei_Sonnenuntergang.jpg) |
+
+<!-- baptism-photos:start -->
+## Wikimedia Commons photographs for the baptism templates (babies, hands, feet, parents, a baptism)
+
+Fetched with `scripts/dev/commons.mjs` (CC0, public domain, CC BY and CC BY-SA only) and described in `src/domain/baptism/photos.ts`. The sample invitations of the baptism category use them as stand-ins (see [docs/BAPTISM-PHOTOS.md](../../docs/BAPTISM-PHOTOS.md)). CC BY and CC BY-SA require this credit; **CC BY-SA 4.0/2.0 requires the resized copy to stay under the same licence.** Click the file name for the original, its author and the licence text.
+
+| Photo id | Author | Licence and original |
+|---|---|---|
+| `wc-47372743` | Pixabay | CC0 — [Young boy.jpg](https://commons.wikimedia.org/wiki/File:Young_boy.jpg) |
+| `wc-61856876` | Janko Ferlič (Unsplash) | CC0 — [Monochrome baby face in boras (Unsplash).jpg](https://commons.wikimedia.org/wiki/File:Monochrome_baby_face_in_boras_(Unsplash).jpg) |
+| `wc-61856883` | Colin Maynard (Unsplash) | CC0 — [Baby Toys (Unsplash).jpg](https://commons.wikimedia.org/wiki/File:Baby_Toys_(Unsplash).jpg) |
+| `wc-61847580` | Mindy Olson (Unsplash) | CC0 — [Newborn Baby (Unsplash).jpg](https://commons.wikimedia.org/wiki/File:Newborn_Baby_(Unsplash).jpg) |
+| `wc-85446402` | Victoria Borodinova | CC0 — [Baby wearing hat and babygrow.jpg](https://commons.wikimedia.org/wiki/File:Baby_wearing_hat_and_babygrow.jpg) |
+| `wc-71916143` | Stephanie Pratt | CC0 — [Sleeping-baby.jpg](https://commons.wikimedia.org/wiki/File:Sleeping-baby.jpg) |
+| `wc-61851715` | Dakota Corbin (Unsplash) | CC0 — [Sleeping baby (Unsplash).jpg](https://commons.wikimedia.org/wiki/File:Sleeping_baby_(Unsplash).jpg) |
+| `wc-61847035` | Carlo Navarro (Unsplash) | CC0 — [Carlo Navarro 2017 (Unsplash).jpg](https://commons.wikimedia.org/wiki/File:Carlo_Navarro_2017_(Unsplash).jpg) |
+| `wc-89085515` | PublicDomainPictures (Pixabay) | CC0 — [Baby (20339).jpg](https://commons.wikimedia.org/wiki/File:Baby_(20339).jpg) |
+| `wc-61851789` | Chiến Phạm (Unsplash) | CC0 — [Baby (Unsplash).jpg](https://commons.wikimedia.org/wiki/File:Baby_(Unsplash).jpg) |
+| `wc-125854992` | Elizabeth | CC0 — [Newborn baby sleeps in a basket.jpg](https://commons.wikimedia.org/wiki/File:Newborn_baby_sleeps_in_a_basket.jpg) |
+| `wc-89085674` | Pixabay (user 1041483) | CC0 — [Baby (784608).jpg](https://commons.wikimedia.org/wiki/File:Baby_(784608).jpg) |
+| `wc-71383191` | Vanessa Kay | CC BY 3.0 — [Baby Bear (55142474).jpeg](https://commons.wikimedia.org/wiki/File:Baby_Bear_(55142474).jpeg) |
+| `wc-81580667` | PublicDomainPictures (Pixabay) | CC0 — [Closed up of a sleeping baby.jpg](https://commons.wikimedia.org/wiki/File:Closed_up_of_a_sleeping_baby.jpg) |
+| `wc-24332292` | Andrés Nieto Porras | CC BY-SA 2.0 — [Sleeping newborn infant.jpg](https://commons.wikimedia.org/wiki/File:Sleeping_newborn_infant.jpg) |
+| `wc-73502717` | trestletech (Pixabay) | CC0 — [Baby-Parenthood-Finger-Father-Hand-Love-Mother-1271742.jpg](https://commons.wikimedia.org/wiki/File:Baby-Parenthood-Finger-Father-Hand-Love-Mother-1271742.jpg) |
+| `wc-36462961` | Nikasucha (Pixabay) | CC0 — [Hand-444159 640.jpg](https://commons.wikimedia.org/wiki/File:Hand-444159_640.jpg) |
+| `wc-36474237` | jelly (Pixabay) | CC0 — [Baby-200760 640.jpg](https://commons.wikimedia.org/wiki/File:Baby-200760_640.jpg) |
+| `wc-71608893` | Wayne Evans (Pixabay) | CC0 — [Adult-baby-bed-225744.jpg](https://commons.wikimedia.org/wiki/File:Adult-baby-bed-225744.jpg) |
+| `wc-71608930` | Rene Asmussen (Pixabay) | CC0 — [Baby-baby-feet-bed-325690.jpg](https://commons.wikimedia.org/wiki/File:Baby-baby-feet-bed-325690.jpg) |
+| `wc-61705068` | Bonnie Kittle (Unsplash) | CC0 — [Baby's feet (Unsplash).jpg](https://commons.wikimedia.org/wiki/File:Baby's_feet_(Unsplash).jpg) |
+| `wc-61847060` | Janko Ferlič (Unsplash) | CC0 — [Newborn baby feet (Unsplash).jpg](https://commons.wikimedia.org/wiki/File:Newborn_baby_feet_(Unsplash).jpg) |
+| `wc-61706089` | Benji Aird (Unsplash) | CC0 — [Memphis, United States (Unsplash).jpg](https://commons.wikimedia.org/wiki/File:Memphis%2C_United_States_(Unsplash).jpg) |
+| `wc-61903702` | Alex Pasarelu (Unsplash) | CC0 — [Momma's support your future (Unsplash).jpg](https://commons.wikimedia.org/wiki/File:Momma's_support_your_future_(Unsplash).jpg) |
+| `wc-61857511` | Gabby Orcutt (Unsplash) | CC0 — [Baby in a wicker basket (Unsplash).jpg](https://commons.wikimedia.org/wiki/File:Baby_in_a_wicker_basket_(Unsplash).jpg) |
+| `wc-71608793` | bruce mars (Pixabay) | CC0 — [Adult-affection-baby-755028.jpg](https://commons.wikimedia.org/wiki/File:Adult-affection-baby-755028.jpg) |
+| `wc-61855196` | Dakota Corbin (Unsplash) | CC0 — [Summer in France with baby (Unsplash).jpg](https://commons.wikimedia.org/wiki/File:Summer_in_France_with_baby_(Unsplash).jpg) |
+| `wc-138836814` | Vyacheslav Argenberg | CC BY 4.0 — [Newborn baby girl, Infant, Moscow, Russia.jpg](https://commons.wikimedia.org/wiki/File:Newborn_baby_girl%2C_Infant%2C_Moscow%2C_Russia.jpg) |
+| `wc-70993227` | PublicDomainPictures (Pixabay) | CC0 — [Baby-boy-child-67663.jpg](https://commons.wikimedia.org/wiki/File:Baby-boy-child-67663.jpg) |
+| `wc-131739330` | PublicDomainPictures (Pixabay) | CC0 — [Congé parental.png](https://commons.wikimedia.org/wiki/File:Cong%C3%A9_parental.png) |
+| `wc-190844210` | Hadassah Photostorie group | CC BY-SA 4.0 — [Baby's naming ceremony 202.jpg](https://commons.wikimedia.org/wiki/File:Baby's_naming_ceremony_202.jpg) |
+| `wc-190843747` | Hadassah Photostorie group | CC BY-SA 4.0 — [Baby's naming ceremony 149.jpg](https://commons.wikimedia.org/wiki/File:Baby's_naming_ceremony_149.jpg) |
+| `wc-160054700` | Jerryjacob999 | CC BY-SA 4.0 — [Kerala Christian Baptism.jpg](https://commons.wikimedia.org/wiki/File:Kerala_Christian_Baptism.jpg) |
+| `wc-61767624` | Priscilla Du Preez (Unsplash) | CC0 — [Priscilla Du Preez 2017-04-05 (Unsplash).jpg](https://commons.wikimedia.org/wiki/File:Priscilla_Du_Preez_2017-04-05_(Unsplash).jpg) |
+| `wc-86627271` | State Government Photographer | CC0 — [Grandmother with baby on knee sitting in garden(GN00432).jpg](https://commons.wikimedia.org/wiki/File:Grandmother_with_baby_on_knee_sitting_in_garden(GN00432).jpg) |
+| `wc-190844335` | Hadassah Photostorie group | CC BY-SA 4.0 — [Baby's naming ceremony 245.jpg](https://commons.wikimedia.org/wiki/File:Baby's_naming_ceremony_245.jpg) |
+| `wc-41870506` | keskieve (Pixabay) | CC0 — [Lutheran baptism.jpg](https://commons.wikimedia.org/wiki/File:Lutheran_baptism.jpg) |
+| `wc-90920879` | Cograng | CC BY-SA 4.0 — [Christening in St Dunstan-in-the-West.jpg](https://commons.wikimedia.org/wiki/File:Christening_in_St_Dunstan-in-the-West.jpg) |
+<!-- baptism-photos:end -->

@@ -245,7 +245,7 @@ function PeopleCard({ kind }: { kind: SubjectKind }) {
               <LText label="Relation or role" value={i.relation} onChange={(v) => up({ relation: v })} />
               <LText label="A line (optional)" value={i.note} onChange={(v) => up({ note: v })} />
             </Grid>
-            <MediaField label="Photograph (optional)" value={i.photo} category="PEOPLE" aspect="aspect-square" className="max-w-xs" onChange={(id) => up({ photo: id })} />
+            <MediaField label="Photograph (optional)" value={i.photo} category="PEOPLE" aspect="aspect-square" className="max-w-xs" onChange={(id) => up({ photo: id })} hint={baptism ? "If only the first person under a heading has a photograph, it is shown as that group’s photograph — the parents together, the grandparents together." : undefined} />
           </>
         )}
       />

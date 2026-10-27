@@ -1,7 +1,7 @@
 import type { ThemeSeed } from "./themes";
 
 /**
- * The palettes and type pairings of the twenty baptism templates. Each one is drawn from the light its template is named for — a
+ * The palettes and type pairings of the baptism templates. Each one is drawn from the light its template is named for — a
  * pale sky, a candle-lit nave, a kasavu border, morning gold, a lily — and tuned until text, buttons and photographs read cleanly on it.
  * Every theme can still be duplicated and recoloured in the Themes library.
  */
@@ -109,5 +109,30 @@ export const BAPTISM_THEMES: ThemeSeed[] = [
     slug: "bp-new-dawn", name: "New Dawn",
     description: "Deep navy, dawn peach and warm gold over cream. Night giving way, door by door.",
     tokens: tk(c("#1F2E5C", "#E9A97A", "#C99B3F", "#FBF5EC", "#FFFDF8", "#1F2742", "#686D8C", "#EADFCB", "#FFFFFF", "#111A3B", "#FBF1DD"), { heading: "Playfair Display", body: "Inter", script: "Cormorant Garamond" }, { radius: "soft", button: "solid", card: "outlined", divider: "ornament", decor: "minimal", motion: "standard", grain: true, dark: false }),
+  },
+  {
+    slug: "bp-candlelight", name: "Candlelight",
+    description: "Warm ivory, amber and muted gold over deep brown shadow. A room with one candle lit in it.",
+    tokens: tk(c("#8A4E1E", "#D9B26A", "#C48A2C", "#FBF2E2", "#FFF9EC", "#3A2616", "#7E6850", "#EBD9B8", "#FFFFFF", "#26170D", "#FBEBD0"), { heading: "Cormorant Garamond", body: "Mulish", script: "Cormorant Garamond" }, { radius: "soft", button: "solid", card: "paper", divider: "ornament", decor: "minimal", motion: "calm", grain: true, dark: false }),
+  },
+  {
+    slug: "bp-white-rose", name: "White Rose",
+    description: "Cream, white roses and a soft sage green, in natural light. Nothing is brighter than the flowers.",
+    tokens: tk(c("#587A5E", "#E9DFC9", "#B89B63", "#FCF9F3", "#FFFFFF", "#2B352C", "#6B7A6B", "#E6E1D2", "#FFFFFF", "#243127", "#F6F1E4"), { heading: "Bodoni Moda", body: "Hanken Grotesk", script: "Great Vibes" }, { radius: "soft", button: "pill", card: "flat", divider: "ornament", decor: "floral", motion: "calm", grain: false, dark: false }),
+  },
+  {
+    slug: "bp-nursery-pastel", name: "Nursery Pastel",
+    description: "Butter, powder blue, blush and mint on warm white. A mobile turning slowly over a cot.",
+    tokens: tk(c("#5E83AA", "#F4D9A6", "#E39A94", "#FBF8F1", "#FFFFFF", "#35405A", "#7B86A0", "#E8E4DA", "#FFFFFF", "#27324B", "#F6F1E4"), { heading: "Fraunces", body: "Nunito", script: "Sacramento" }, { radius: "round", button: "pill", card: "outlined", divider: "dots", decor: "minimal", motion: "standard", grain: false, dark: false }),
+  },
+  {
+    slug: "bp-gilt-ivory", name: "Gilt & Ivory",
+    description: "Ivory and a single restrained gold. A line drawn once, carefully, by hand.",
+    tokens: tk(c("#8C6B1F", "#E9DEC0", "#C9A24B", "#FBF7EE", "#FFFEF9", "#2D2616", "#78705A", "#E9DFC4", "#FFFFFF", "#231D0F", "#F7EFD9"), { heading: "Cinzel", body: "Jost", script: "Cormorant Garamond" }, { radius: "none", button: "outline", card: "flat", divider: "line", decor: "geometric", motion: "calm", grain: true, dark: false }),
+  },
+  {
+    slug: "bp-cloud-nine", name: "Cloud Nine",
+    description: "Pale sky blue, cloud white and a little gold. The soft layers of a morning above the hills.",
+    tokens: tk(c("#4F86B3", "#BBD5EA", "#D0AE5C", "#F3F8FC", "#FFFFFF", "#213349", "#5F7690", "#D9E6F2", "#FFFFFF", "#17283F", "#EEF5FB"), { heading: "Fraunces", body: "Nunito", script: "Great Vibes" }, { radius: "round", button: "outline", card: "flat", divider: "line", decor: "minimal", motion: "calm", grain: false, dark: false }),
   },
 ];

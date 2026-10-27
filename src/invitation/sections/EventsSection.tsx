@@ -9,7 +9,7 @@ import { Reveal } from "../engine/motion";
 import { buildIcs, downloadText, eventStart, fmtDate, fmtRange, mapsUrl } from "../engine/format";
 import { Shell, SectionHead, useCopy } from "./shared";
 
-function useEventParts(e: WeddingEvent) {
+export function useEventParts(e: WeddingEvent) {
   const { view, L, locale, t } = useInvitation();
   const venue: Venue | undefined = view.doc.venues.find((v) => v.id === e.venueId);
   const tz = view.wedding.timezone;

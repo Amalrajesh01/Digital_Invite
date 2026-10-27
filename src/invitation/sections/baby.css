@@ -1,0 +1,217 @@
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+   The child’s story: the gallery layouts (GallerySection), the viewer, the finale (FinaleSection), the blessing card (GuestbookSection),
+   the portrait beside “about”, the family’s group photograph and the scripture reveal (OccasionSections).
+   Everything reads the theme variables (--c-*, --f-*, --r). Motion is transform, scale and opacity only, starts when a thing is scrolled
+   into view, and is switched off for prefers-reduced-motion — the resting state of every element is the finished picture.
+   ───────────────────────────────────────────────────────────────────────────────────────────────── */
+
+/* ── shared gallery pieces ─────────────────────────────────────────────────────────────────────── */
+.gl-wrap { position: relative; }
+.gl-fill { position: absolute; inset: 0; display: block; background-color: var(--c-border); background-size: cover; background-position: center; }
+.gl-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.9s var(--ease), scale 6s var(--ease); }
+.gl-img.in { opacity: 1; }
+.gl-tile { position: relative; display: block; width: 100%; aspect-ratio: var(--ar, 4 / 5); padding: 0; border: 0; overflow: hidden; background: var(--c-border); border-radius: var(--r); cursor: zoom-in; -webkit-tap-highlight-color: transparent; }
+.gl-tile:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 3px; }
+.gl-cap { display: grid; gap: 0.25rem; margin: 0; text-align: center; }
+.gl-cap-title { font-family: var(--f-heading); font-size: 1.12rem; line-height: 1.2; color: var(--c-text); text-wrap: balance; }
+.gl-cap-line { font-size: 0.92rem; line-height: 1.55; color: var(--c-muted); text-wrap: pretty; }
+.inv-night .gl-cap-title { color: inherit; }
+.inv[data-locale]:not([data-locale="en"]) :is(.gl-cap-title, .gl-chap-title) { font-family: var(--f-local); letter-spacing: 0; text-transform: none; }
+
+/* the floating memories: a few motes of gold rise once, as the story begins */
+.gl-drift { position: absolute; left: 0; right: 0; top: -4.5rem; z-index: 2; height: 10rem; pointer-events: none; }
+.gl-drift span { position: absolute; inset: 0; display: block; }
+.gl-drift i { position: absolute; left: var(--x); bottom: 0; width: calc(5px * var(--s)); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, #fff8dc 0 30%, var(--c-accent) 58%, transparent 72%); opacity: 0; }
+html.js .gl-drift.in i { animation: gl-drift var(--d) ease-out var(--l) 1 both; }
+@keyframes gl-drift { 0% { transform: translate(0, 0); opacity: 0; } 20% { opacity: 0.9; } 100% { transform: translate(calc(var(--s) * 18px - 10px), -9rem); opacity: 0; } }
+
+/* ── A · cinematic vertical story ──────────────────────────────────────────────────────────────── */
+.gl-story { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(3.4rem, 12vw, 7rem); }
+.gl-chap { display: grid; gap: 1.6rem; justify-items: center; }
+.gl-chap-media { width: min(100%, 26rem); }
+.gl-chap .gl-tile { border-radius: 0; box-shadow: 0 30px 50px -34px rgba(0, 0, 0, 0.55); }
+.gl-chap-text { display: grid; gap: 0.55rem; justify-items: center; max-width: 24rem; text-align: center; }
+.gl-no { font-size: 0.82rem; letter-spacing: 0.32em; color: var(--c-accent); }
+.gl-chap-title { margin: 0; font-family: var(--f-heading); font-weight: 400; font-size: clamp(1.8rem, 7vw, 2.7rem); line-height: 1.08; text-wrap: balance; }
+.gl-chap-line { margin: 0; font-family: var(--f-script); font-style: var(--f-script-style, normal); font-size: clamp(1.25rem, 4.6vw, 1.6rem); line-height: 1.3; color: var(--c-muted); text-wrap: balance; }
+@media (min-width: 900px) {
+  .gl-chap { grid-template-columns: 1fr 1fr; align-items: center; gap: 4rem; }
+  .gl-chap-media { justify-self: end; }
+  .gl-chap-text { justify-self: start; justify-items: start; text-align: left; }
+  .gl-chap-flip .gl-chap-media { order: 2; justify-self: start; }
+  .gl-chap-flip .gl-chap-text { justify-self: end; justify-items: end; text-align: right; }
+}
+/* the photograph settles as it is revealed — a small cinematic zoom. `scale` is its own property, so it never fights the parallax below */
+html.js .gl-ken .gl-img { scale: 1.12; }
+html.js .rv-mask.in .gl-ken .gl-img { scale: 1; }
+@supports (animation-timeline: view()) {
+  .gl-chap-media .gl-img { inset: -6% 0; height: 112%; animation: gl-par linear both; animation-timeline: view(); animation-range: cover; }
+}
+@keyframes gl-par { from { translate: 0 -4%; } to { translate: 0 4%; } }
+
+/* ── C · royal portraits ───────────────────────────────────────────────────────────────────────── */
+.gl-frames { list-style: none; margin: 0 auto; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.2rem 1rem; max-width: 56rem; }
+.gl-fr-fig { display: grid; gap: 0.9rem; margin: 0; }
+.gl-fr-frame { position: relative; padding: 0.5rem; background: linear-gradient(145deg, color-mix(in srgb, var(--c-accent) 70%, #fff), var(--c-accent) 42%, color-mix(in srgb, var(--c-accent) 70%, #4a360a)); box-shadow: 0 20px 32px -20px rgba(0, 0, 0, 0.55); }
+.gl-fr-frame::before { content: ""; position: absolute; inset: 0.24rem; border: 1px solid color-mix(in srgb, #fff 60%, transparent); pointer-events: none; z-index: 2; }
+.gl-fr-mat { padding: 0.42rem; background: var(--c-surface); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c-accent) 45%, transparent); }
+.gl-fr-mat .gl-tile { border-radius: 0; }
+.gl-fr-cap .gl-cap-title { font-family: var(--f-body); font-size: 0.66rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--c-accent); }
+@media (min-width: 768px) { .gl-frames { grid-template-columns: repeat(3, 1fr); gap: 3rem 2rem; } }
+
+/* ── D · floating memory cards ─────────────────────────────────────────────────────────────────── */
+.gl-cards { list-style: none; margin: 0 auto; padding: 0.6rem 0 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.6rem 1rem; max-width: 60rem; }
+.gl-cards > li:nth-child(even) { margin-top: 1.6rem; }
+.gl-card { display: grid; gap: 0.7rem; margin: 0; padding: 0.55rem 0.55rem 0.9rem; background: var(--c-surface); border: 1px solid var(--c-border); border-radius: calc(var(--r) + 4px); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 22px 34px -22px rgba(0, 0, 0, 0.45), 0 4px 10px -6px rgba(0, 0, 0, 0.25); transform: rotate(var(--tilt, 0deg)); animation: gl-float 8s ease-in-out var(--fd, 0s) infinite alternate; }
+.gl-card .gl-tile { border-radius: var(--r); }
+.gl-card .gl-cap { padding-inline: 0.3rem; }
+.gl-card .gl-cap-title { font-size: 1.02rem; }
+.gl-card .gl-cap-line { font-size: 0.82rem; }
+.gl-card:hover, .gl-card:focus-within { animation-play-state: paused; }
+@keyframes gl-float { from { transform: translateY(0) rotate(var(--tilt, 0deg)); } to { transform: translateY(-7px) rotate(calc(var(--tilt, 0deg) * 0.4)); } }
+@media (min-width: 768px) { .gl-cards { grid-template-columns: repeat(3, 1fr); gap: 2.4rem 1.6rem; } }
+
+/* ── E · floral ────────────────────────────────────────────────────────────────────────────────── */
+.gl-flo { --leaf: color-mix(in srgb, var(--c-secondary, #6f8f72) 45%, #5f8a62); list-style: none; margin: 0 auto; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.4rem 1rem; max-width: 56rem; }
+.gl-flo > li:nth-child(even) { margin-top: 2.2rem; }
+.gl-flo-fig { display: grid; gap: 0.9rem; margin: 0; }
+.gl-flo-frame { position: relative; }
+.gl-flo-frame .gl-tile { border-radius: 999px 999px 0.6rem 0.6rem; box-shadow: 0 0 0 0.3rem var(--c-bg), 0 0 0 0.38rem color-mix(in srgb, var(--c-accent) 70%, transparent), 0 18px 30px -20px rgba(0, 0, 0, 0.4); }
+.gl-sprig { position: absolute; z-index: 2; width: 30%; height: auto; color: var(--leaf); pointer-events: none; transform-origin: 20% 90%; }
+.gl-sprig.a { left: -9%; top: 2%; }
+.gl-sprig.b { right: -9%; bottom: 3%; rotate: 180deg; }
+html.js .gl-sprig { scale: 0.3; opacity: 0; transition: scale 1.4s var(--ease) 0.3s, opacity 1s ease 0.3s; }
+html.js .rv.in .gl-sprig { scale: 1; opacity: 1; }
+@media (min-width: 768px) { .gl-flo { grid-template-columns: repeat(3, 1fr); gap: 3rem 2rem; } }
+
+/* ── F · minimal ───────────────────────────────────────────────────────────────────────────────── */
+.gl-min { list-style: none; margin: 0 auto; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.6rem 0.8rem; max-width: 60rem; }
+.gl-min .gl-tile { border-radius: 0; }
+.gl-min .gl-cap { margin-top: 0.6rem; padding-top: 0.5rem; border-top: 1px solid var(--c-border); text-align: left; }
+.gl-min .gl-cap-title { font-family: var(--f-body); font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--c-muted); }
+@media (min-width: 768px) { .gl-min { grid-template-columns: repeat(3, 1fr); gap: 2.4rem 1.4rem; } }
+
+/* ── G · horizontal cinematic reel ─────────────────────────────────────────────────────────────── */
+.gl-reel-wrap { margin-inline: -1.25rem; }
+.gl-reel { display: flex; gap: 0.9rem; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 1.25rem 1.1rem; scrollbar-width: none; overscroll-behavior-x: contain; }
+.gl-reel::-webkit-scrollbar { display: none; }
+.gl-reel:focus-visible { outline: 2px solid var(--c-accent); outline-offset: -2px; }
+.gl-reel-i { flex: none; display: grid; gap: 0.9rem; width: min(78vw, 24rem); margin: 0; scroll-snap-align: center; }
+.gl-reel-i .gl-tile { border-radius: 0; box-shadow: 0 26px 40px -28px rgba(0, 0, 0, 0.6); }
+.gl-reel-bar { display: flex; align-items: center; gap: 0.9rem; padding: 0.4rem 1.25rem 0; }
+.gl-reel-count { font-size: 0.78rem; letter-spacing: 0.18em; color: var(--c-muted); }
+.gl-reel-track { position: relative; flex: 1; height: 2px; background: color-mix(in srgb, currentColor 18%, transparent); --p: 0; }
+.gl-reel-track::after { content: ""; position: absolute; left: 0; top: 0; height: 100%; width: calc(max(var(--p), 0.05) * 100%); background: var(--c-accent); transition: width 0.2s linear; }
+.gl-reel-hint { display: none; font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-muted); }
+.gl-reel-btn { display: grid; place-items: center; width: 2.4rem; height: 2.4rem; border-radius: 50%; border: 1px solid color-mix(in srgb, currentColor 30%, transparent); background: transparent; color: inherit; cursor: pointer; }
+.gl-reel-btn:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
+@media (hover: none) { .gl-reel-btn { display: none; } .gl-reel-hint { display: block; } }
+@media (min-width: 1100px) { .gl-reel-wrap { margin-inline: 0; } .gl-reel { padding-inline: 0; } .gl-reel-bar { padding-inline: 0; } }
+
+/* ── H · magazine ──────────────────────────────────────────────────────────────────────────────── */
+.gl-mag { list-style: none; margin: 0 auto; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.4rem 0.9rem; align-items: start; max-width: 62rem; }
+.gl-mag > li:nth-child(4n + 1), .gl-mag > li:nth-child(4n), .gl-mag > li:last-child:nth-child(4n + 2) { grid-column: 1 / -1; }
+.gl-mag .gl-tile { aspect-ratio: var(--ar-m); border-radius: 0; }
+.gl-mag-cap { margin-top: 0.7rem; text-align: left; }
+.gl-mag-cap .gl-cap-title { font-size: 1.3rem; }
+@media (min-width: 768px) {
+  .gl-mag { grid-template-columns: repeat(6, 1fr); gap: 2rem 1.4rem; }
+  .gl-mag > li { grid-column: auto; }
+  .gl-mag > li:nth-child(4n + 1), .gl-mag > li:nth-child(4n) { grid-column: span 4; }
+  .gl-mag > li:nth-child(4n + 2), .gl-mag > li:nth-child(4n + 3) { grid-column: span 2; }
+  .gl-mag > li:last-child:nth-child(4n + 1), .gl-mag > li:last-child:nth-child(4n + 3) { grid-column: 1 / -1; }
+  .gl-mag .gl-tile { aspect-ratio: var(--ar-d); }
+}
+
+/* ── the viewer ────────────────────────────────────────────────────────────────────────────────── */
+html.inv-lb-open { overflow: hidden; scrollbar-gutter: stable; }
+.gl-lb { overscroll-behavior: contain; }
+.gl-lb-img { touch-action: none; will-change: transform; }
+.gl-lb-img[data-dir="n"] { animation: gl-lb-n 0.4s var(--ease, ease) both; }
+.gl-lb-img[data-dir="p"] { animation: gl-lb-p 0.4s var(--ease, ease) both; }
+@keyframes gl-lb-n { from { opacity: 0; transform: translateX(7%); } to { opacity: 1; transform: none; } }
+@keyframes gl-lb-p { from { opacity: 0; transform: translateX(-7%); } to { opacity: 1; transform: none; } }
+.gl-lb-title { margin: 0; font-family: var(--f-heading, serif); font-size: 1.15rem; line-height: 1.25; color: #fff; text-wrap: balance; }
+@media (hover: none) { .gl-lb-nav { opacity: 0.55; } }
+
+/* ── the portrait beside “our little story”, and a family’s photograph ─────────────────────────── */
+.occ-kid { width: min(15.5rem, 66vw); margin: 0 auto clamp(1.8rem, 5vw, 2.8rem); }
+.occ-kid-frame { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 999px 999px 0 0; box-shadow: 0 0 0 0.35rem var(--c-bg), 0 0 0 0.42rem color-mix(in srgb, var(--c-accent) 70%, transparent), 0 26px 44px -26px rgba(0, 0, 0, 0.45); }
+.occ-groupphoto { width: min(100%, 27rem); margin: 0 auto 1.6rem; }
+.occ-groupphoto-frame { position: relative; overflow: hidden; border-radius: var(--r); box-shadow: 0 22px 36px -24px rgba(0, 0, 0, 0.5); }
+
+/* ── the scripture, drawn in: a fine line, the verse line by line, its reference, a small cross ── */
+.scr { display: grid; justify-items: center; text-align: center; }
+.scr-rule { display: block; width: 0; height: 1px; margin: 0 auto 2.2rem; background: linear-gradient(90deg, transparent, var(--c-accent), transparent); }
+.scr-verse { margin: 0; }
+.scr-verse p { margin: 0 0 0.35rem; font-family: var(--f-heading); font-style: var(--f-script-style, normal); font-size: clamp(1.4rem, 5vw, 2.15rem); line-height: 1.4; text-wrap: balance; }
+.scr-ref { margin: 1.6rem 0 0; }
+.scr-cross { width: 1.4rem; height: auto; margin: 1.6rem auto 0; color: var(--c-accent); }
+html.js .scr-rule { transition: width 1.8s var(--ease); }
+html.js .scr-verse p { opacity: 0; transform: translateY(0.7rem); transition: opacity 1.1s var(--ease) calc(0.9s + var(--i, 0) * 0.45s), transform 1.1s var(--ease) calc(0.9s + var(--i, 0) * 0.45s); }
+html.js .scr-ref, html.js .scr-cross { opacity: 0; transition: opacity 1.1s ease calc(1.6s + var(--n, 1) * 0.45s); }
+html.js .scr-cross path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.6s ease calc(2s + var(--n, 1) * 0.45s); }
+html.js .rv.in .scr-rule { width: min(70%, 16rem); }
+html.js .rv.in .scr-verse p { opacity: 1; transform: none; }
+html.js .rv.in .scr-ref, html.js .rv.in .scr-cross { opacity: 1; }
+html.js .rv.in .scr-cross path { stroke-dashoffset: 0; }
+
+/* ── the grand finale ──────────────────────────────────────────────────────────────────────────── */
+.fin { position: relative; display: grid; justify-items: center; gap: 1.5rem; padding-block: 0.5rem; text-align: center; isolation: isolate; }
+.fin-eyebrow { margin: 0; }
+.fin-portrait { position: relative; width: min(68vw, 17rem); }
+.fin-portrait::before { content: ""; position: absolute; inset: -18% -28%; z-index: -1; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--fin-glow, var(--c-accent)) 52%, transparent), transparent 72%); }
+.fin-frame { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--c-border); box-shadow: 0 0 0 0.35rem color-mix(in srgb, var(--c-bg) 70%, transparent), 0 0 0 0.42rem color-mix(in srgb, var(--c-accent) 75%, transparent), 0 30px 54px -26px rgba(0, 0, 0, 0.6); }
+[data-fin="heavenly"] .fin-frame { border-radius: 50% / 46%; }
+[data-fin="royal"] .fin-frame { border-radius: 999px 999px 0 0; box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-accent) 85%, #fff), 0 0 0 7px color-mix(in srgb, var(--c-inverse) 80%, transparent), 0 0 0 8px var(--c-accent), 0 28px 50px -22px rgba(0, 0, 0, 0.65); }
+[data-fin="floral"] .fin-frame { border-radius: 999px 999px 1rem 1rem; }
+[data-fin="floral"] .fin { --fin-glow: #f3c4ca; }
+[data-fin="minimal"] .fin-frame { border-radius: 0; aspect-ratio: 1; box-shadow: none; }
+[data-fin="minimal"] .fin-portrait::before { display: none; }
+html.js .fin .fin-frame .gl-img, html.js .fin .fin-frame img { scale: 1.14; transition: scale 9s var(--ease); }
+html.js .fin.in .fin-frame img { scale: 1; }
+.fin-name { margin: 0; font-family: var(--f-heading); font-weight: 400; font-size: clamp(3.1rem, 15vw, 6.4rem); line-height: 0.96; letter-spacing: -0.012em; text-wrap: balance; }
+.fin-name[data-len="medium"] { font-size: clamp(2.6rem, 12vw, 5rem); }
+.fin-name[data-len="long"] { font-size: clamp(2.1rem, 9vw, 3.8rem); }
+.fin-blessing { margin: 0; max-width: 26rem; font-family: var(--f-script); font-style: var(--f-script-style, normal); font-size: clamp(1.4rem, 5.4vw, 2.1rem); line-height: 1.3; color: var(--c-accent); white-space: pre-line; text-wrap: balance; }
+.fin-details { display: grid; gap: 0.25rem; margin: 0; font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.9; }
+.fin-details strong { font-weight: 500; font-size: 0.98rem; letter-spacing: 0.12em; }
+.fin-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7rem; margin-top: 0.4rem; }
+.fin-motes { position: absolute; left: 50%; top: 6%; z-index: 3; width: min(92vw, 24rem); height: 70%; margin-left: calc(min(92vw, 24rem) / -2); pointer-events: none; }
+.fin-motes i { position: absolute; left: calc(var(--x) * 0.14); bottom: 0; width: calc(5px * var(--s)); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, #fff8dc 0 30%, var(--c-accent) 58%, transparent 72%); opacity: 0; }
+.fin-motes i:nth-child(even) { left: auto; right: calc(var(--x) * 0.14); }
+[data-fin="minimal"] .fin-motes { display: none; }
+html.js .fin.in .fin-motes i { animation: gl-drift var(--d) ease-out var(--l) infinite; }
+.inv[data-locale]:not([data-locale="en"]) :is(.fin-name, .fin-blessing) { font-family: var(--f-local); letter-spacing: 0; font-style: normal; }
+.inv[data-locale]:not([data-locale="en"]) .fin-details { letter-spacing: 0.04em; text-transform: none; }
+
+/* ── the blessing card ─────────────────────────────────────────────────────────────────────────── */
+.bc { max-width: 30rem; margin: 0 auto; perspective: 1400px; }
+.bc-cover { position: relative; display: grid; align-content: center; justify-items: center; gap: 0.7rem; width: 100%; aspect-ratio: 4 / 3; padding: 1.6rem; border: 0; border-radius: calc(var(--r) + 2px); color: var(--c-inverse); text-align: center; cursor: pointer; background: linear-gradient(150deg, color-mix(in srgb, var(--c-accent) 62%, #fff), var(--c-accent) 48%, color-mix(in srgb, var(--c-accent) 70%, #3a2a08)); box-shadow: 0 26px 44px -26px rgba(0, 0, 0, 0.55), inset 0 0 0 1px color-mix(in srgb, #fff 45%, transparent); transform-origin: 50% 0; }
+.bc-cover::before { content: ""; position: absolute; inset: 0.55rem; border: 1px solid color-mix(in srgb, #fff 55%, transparent); border-radius: calc(var(--r)); pointer-events: none; }
+.bc-cover-mark { width: 2.2rem; height: auto; opacity: 0.9; }
+.bc-cover-title { font-family: var(--f-heading); font-size: clamp(1.4rem, 5.4vw, 1.9rem); line-height: 1.15; text-wrap: balance; }
+.bc-cover-open { font-size: 0.7rem; letter-spacing: 0.26em; text-transform: uppercase; opacity: 0.85; }
+.bc-cover:hover { filter: brightness(1.03); }
+.bc-cover:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 4px; }
+.bc-cover[data-out="1"] { animation: bc-out 0.7s cubic-bezier(0.5, 0, 0.2, 1) both; pointer-events: none; }
+@keyframes bc-out { to { transform: rotateX(-96deg); opacity: 0; } }
+.bc-inside { display: grid; gap: 1rem; padding: 1.4rem 1.3rem 1.5rem; border: 1px solid var(--c-border); border-radius: calc(var(--r) + 2px); background: var(--c-surface); box-shadow: 0 26px 44px -30px rgba(0, 0, 0, 0.45); transform-origin: 50% 0; animation: bc-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+@keyframes bc-in { from { opacity: 0; transform: rotateX(70deg) scaleY(0.6); } to { opacity: 1; transform: none; } }
+.bc-ideas { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0; padding: 0; list-style: none; }
+.bc-idea { padding: 0.4rem 0.8rem; border: 1px solid var(--c-border); border-radius: 999px; background: transparent; color: var(--c-muted); font: inherit; font-size: 0.82rem; line-height: 1.3; text-align: left; cursor: pointer; transition: border-color 0.2s, color 0.2s, background 0.2s; }
+.bc-idea:hover, .bc-idea:focus-visible { border-color: var(--c-accent); color: var(--c-text); background: color-mix(in srgb, var(--c-accent) 8%, transparent); }
+.bc-thanks { display: grid; gap: 1rem; justify-items: center; padding: 2rem 1.4rem; text-align: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gl-card { animation: none; }
+  .gl-drift, .fin-motes { display: none; }
+  .gl-lb-img[data-dir] { animation: none; }
+  .bc-cover[data-out="1"], .bc-inside { animation: none; }
+  html.js .gl-ken .gl-img, html.js .fin .fin-frame img, html.js .fin .fin-frame .gl-img { scale: 1; transition: none; }
+  html.js .gl-sprig { scale: 1; opacity: 1; transition: none; }
+  html.js .scr-rule { width: min(70%, 16rem); transition: none; }
+  html.js .scr-verse p, html.js .scr-ref, html.js .scr-cross { opacity: 1; transform: none; transition: none; }
+  html.js .scr-cross path { stroke-dashoffset: 0; transition: none; }
+  .gl-chap-media .gl-img { animation: none; }
+}

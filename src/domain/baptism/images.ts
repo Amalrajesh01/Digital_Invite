@@ -2,6 +2,7 @@ import { BAPTISM_SAMPLES } from "@/domain/catalogue/baptism-samples";
 import { BAPTISM_SPECS } from "@/domain/design/template-specs-baptism";
 import { stockInfo } from "@/domain/imagery/stock";
 import { GENERATED } from "./generated";
+import { STORY } from "./story";
 
 /**
  * The image manifest of the baptism templates: for every template, every place a photograph can go, what belongs there, and what is
@@ -112,7 +113,7 @@ const LOOK: Record<string, Look> = {
   },
   "little-prince-of-grace": {
     place: "a Latin Catholic church in Pune, the Church of the Good Shepherd, wooden pews and a small side altar", light: "soft midday window light, calm", palette: "navy, powder blue, small touches of gold",
-    baby: "a four-month-old Indian baby boy in a white christening suit with a navy ribbon sash, sitting on his father’s lap, wide-eyed",
+    baby: "an eleven-month-old Indian baby boy in a white christening suit with a navy ribbon sash, sitting on his father’s lap, wide-eyed",
     mother: "an Indian Catholic mother in a navy dress with a white lace collar, smiling at the baby",
     father: "an Indian Catholic father in a navy suit and white shirt, his hand around the baby",
     grandparents: "an elderly Indian Catholic couple — he in a grey suit with a tie, she in a pale blue dress with a cardigan — seated close, holding a rosary",
@@ -172,7 +173,7 @@ const LOOK: Record<string, Look> = {
   },
   "the-open-bible": {
     place: "a Church of South India church in Hyderabad, plain wooden pews, a pulpit and a baptistry", light: "clean, even daylight from tall windows, calm and studious", palette: "parchment, walnut, burgundy",
-    baby: "an eleven-year-old Indian boy in a simple white baptismal robe, standing in a baptistry up to his waist in water, hands folded, serious and glad",
+    baby: "a seven-month-old Indian baby boy in a white christening gown, held by his father beside the pulpit, a worn Bible open on the rail in front of them",
     mother: "an Indian Christian mother in a maroon saree, hand on her son’s shoulder, proud and calm",
     father: "an Indian Christian father in a white shirt and dark trousers, standing beside his son",
     grandparents: "an elderly Telugu Christian couple, he in a white shirt and veshti, she in a green saree, with a worn Bible between them",
@@ -302,6 +303,66 @@ const LOOK: Record<string, Look> = {
     frame: "a pointed, door-shaped crop: a path leading out through open doors toward a sunrise; the figures small",
     heroSubject: "an open church door and a path into the sunrise",
   },
+  "candle-of-faith": {
+    place: "inside St. Andrew’s Church in Bengaluru at the evening service, the Paschal candle beside the font", light: "a single warm candle glow on faces, the rest of the nave in soft amber shadow", palette: "warm ivory, amber, muted gold, deep brown",
+    baby: "a five-month-old Indian baby boy in a white christening gown, held by his father, looking at the small flame of a baptismal candle",
+    mother: "a Malayali mother in a cream saree with a thin gold border, her face lit from below by candle glow",
+    father: "a Malayali father in a white shirt holding the baby close, the candle’s light in his glasses",
+    grandparents: "an elderly couple lighting each other’s small candles in a dim church, smiling gently",
+    godparents: "a woman in a soft gold saree and a man in a cream shirt standing at the font with a lit candle between them",
+    church: "a Bengaluru church interior at dusk, rows of small candles glowing before the altar",
+    detail: "a baptismal candle with a white ribbon, its flame blurred into gold",
+    frame: "an oval portrait of the baby in warm light, with room below for a candle",
+    heroSubject: "the baby by candlelight",
+  },
+  "white-roses": {
+    place: "a Latin Catholic church in Alappuzha with a rose garden behind the parish house, soft morning light", light: "natural window and garden light, soft and bright", palette: "cream, white, sage green, a trace of blush",
+    baby: "a four-month-old Indian baby girl in a white christening dress and a small white flower headband, held among white roses",
+    mother: "a Malayali mother in a white-and-sage saree holding the baby beside a rose bush",
+    father: "a Malayali father in a white shirt and cream mundu, gently holding a white rose stem",
+    grandparents: "an elderly Malayali grandmother in a white chatta-and-mundu pruning a white rose bush in her garden, her husband beside her",
+    godparents: "a woman in a pale green saree and a man in a white shirt holding white roses",
+    church: "a whitewashed church beside a rose garden in full bloom",
+    detail: "a single white rose in close-up, dew on the petals, on a pale ground",
+    frame: "a round portrait of the baby with space around it for a wreath of roses",
+    heroSubject: "the baby among white roses",
+  },
+  "little-miracle": {
+    place: "a Roman Catholic church in Visakhapatnam, sea air and soft daylight through coloured glass", light: "soft diffused daylight, pastel and cheerful", palette: "butter yellow, powder blue, blush, mint",
+    baby: "an eleven-month-old Indian baby girl in a white christening dress with a pink bow, standing while her father’s hands hold hers",
+    mother: "a mother in a pale blue dress laughing as her daughter takes a first step",
+    father: "a father in a pale shirt kneeling to hold his daughter’s hands",
+    grandparents: "an elderly couple holding a small teddy bear and a baby’s shoe, smiling at the camera",
+    godparents: "a doctor in a soft blue saree and a man in a light jacket kneeling beside the child",
+    church: "the whitewashed façade of Holy Family Church with a small bell tower, sky blue behind it",
+    detail: "a small hanging mobile of felt stars over a cot, soft light",
+    frame: "a round portrait of the child, face centred, a soft plain background",
+    heroSubject: "the little girl taking a first step",
+  },
+  "golden-cross": {
+    place: "the nave of Our Lady of Grace Church in Vasai, an old Portuguese-era church with white arches", light: "clear morning light falling in a shaft from a high window, quiet", palette: "ivory, restrained gold, warm white",
+    baby: "a three-month-old Indian baby boy in a white christening gown, asleep, held at the church door",
+    mother: "an East Indian Catholic mother in an ivory dress with a lace mantilla, her eyes on her sleeping son",
+    father: "an East Indian Catholic father in a pale grey suit, his hand on his wife’s shoulder",
+    grandparents: "an elderly East Indian Catholic couple in formal clothes holding a rosary between them, in a front pew",
+    godparents: "a formally dressed man and woman at the church door, the man holding the baby’s white shawl",
+    church: "the white façade of an old Portuguese-era church with a large stone cross above the door",
+    detail: "a plain gold cross on a white linen cloth, side light",
+    frame: "a round portrait of the sleeping baby with a thin gold ring",
+    heroSubject: "the sleeping baby at the church door",
+  },
+  "cloud-nine": {
+    place: "Holy Spirit Church in Shillong on a cold December morning, clouds low over the pine hills behind", light: "soft white morning light through mist, bright and cool", palette: "pale blue, cloud white, a little gold",
+    baby: "a six-month-old baby boy of a Khasi family in a white christening gown and a knitted white cap, in his mother’s arms",
+    mother: "a Khasi mother in a traditional jainsem wrap with a white shawl, kissing her baby’s cheek",
+    father: "a Khasi father in a dark jacket and a white scarf, holding his son up toward the misty sky",
+    grandparents: "an elderly Khasi couple in warm shawls on the church steps, mist behind them",
+    godparents: "a man in a dark coat and a woman in a pale shawl at the church porch",
+    church: "a hill church with a simple bell tower and pine trees, low cloud at its feet",
+    detail: "morning mist lying between pine-covered hills, seen from a church yard",
+    frame: "an oval portrait of the baby with plenty of pale sky around it",
+    heroSubject: "the baby above the clouds",
+  },
 };
 
 export interface SlotRow {
@@ -358,10 +419,10 @@ function promptFor(templateId: string, slot: Slot): string {
 
 function rowFor(templateId: string, slot: Slot): SlotRow {
   const l = LOOK[templateId];
-  const sample = BAPTISM_SAMPLES[templateId];
   const id = assetIdFor(templateId, slot);
   const gen = GENERATED[id];
-  const standIn = slot === "hero" ? sample.photo : slot === "detail" ? DETAIL_STANDINS[templateId] : undefined;
+  const st = STORY[templateId];
+  const standIn: string | undefined = { hero: st.hero, parents: st.people?.parents, grandparents: st.people?.grandparents, church: st.church }[slot as "hero" | "parents" | "grandparents" | "church"];
   const status: Status = gen ? "generated" : standIn ? "stand-in" : "pending";
   const subject: Record<Slot, string> = {
     hero: l.heroSubject, parents: "The child’s parents with the baby", grandparents: "The child’s grandparents together", godparents: "The child’s godparents together", church: l.church, detail: l.detail,
@@ -377,9 +438,6 @@ function rowFor(templateId: string, slot: Slot): SlotRow {
     prompt: promptFor(templateId, slot),
   };
 }
-
-/** Bundled photographs that are genuinely about a template’s “detail” slot (a candle, a flame, a baby’s hand). */
-export const DETAIL_STANDINS: Record<string, string> = { "church-of-light": "GAscwTkEOy8" };
 
 export const MANIFEST: SlotRow[] = BAPTISM_SPECS.flatMap((s) => SLOTS.map((slot) => rowFor(s.slug, slot)));
 export const manifestOf = (templateId: string) => MANIFEST.filter((r) => r.templateId === templateId);

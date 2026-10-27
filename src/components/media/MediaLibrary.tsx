@@ -54,6 +54,7 @@ function SortableCard({ row, selected, onOpen, sortable, pick }: { row: MediaRow
         <span className="absolute inset-x-0 bottom-0 truncate bg-gradient-to-t from-black/60 to-transparent px-2 pb-1 pt-5 text-left text-[11.5px] text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">{row.title || row.filename}</span>
         {row.moderation !== "APPROVED" && <span className="absolute left-1.5 top-1.5"><ModerationChip status={row.moderation} /></span>}
         {row.retention === "PERMANENT" && <span title="Kept forever" className="absolute right-1.5 top-1.5 rounded-full bg-brass px-1.5 py-0.5 text-[10px] font-semibold text-white">∞</span>}
+        {row.sample && <span title="A demonstration photograph from the template — replace it with your own" className="absolute bottom-1.5 left-1.5 rounded-full bg-ink/80 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-paper group-hover:opacity-0">Sample</span>}
       </button>
     </li>
   );
@@ -100,6 +101,39 @@ function CropDialog({ row, weddingId, onClose, onDone }: { row: MediaRow; weddin
   );
 }
 
+/** A picture is cropped to many frames (a portrait, a circle, a wide band). The focal point is the part that must always stay in view — the face. */
+function FocalPicker({ row, value, onChange }: { row: MediaRow; value: { x: number; y: number }; onChange: (v: { x: number; y: number }) => void }) {
+  const box = useRef<HTMLDivElement>(null);
+  const set = (clientX: number, clientY: number) => {
+    const r = box.current?.getBoundingClientRect();
+    if (!r?.width || !r.height) return;
+    onChange({ x: Math.round(Math.min(100, Math.max(0, ((clientX - r.left) / r.width) * 100))), y: Math.round(Math.min(100, Math.max(0, ((clientY - r.top) / r.height) * 100))) });
+  };
+  const nudge = (e: React.KeyboardEvent) => {
+    const d = e.shiftKey ? 8 : 2;
+    const m: Record<string, [number, number]> = { ArrowLeft: [-d, 0], ArrowRight: [d, 0], ArrowUp: [0, -d], ArrowDown: [0, d] };
+    const k = m[e.key];
+    if (!k) return;
+    e.preventDefault();
+    onChange({ x: Math.min(100, Math.max(0, value.x + k[0])), y: Math.min(100, Math.max(0, value.y + k[1])) });
+  };
+  const crop = (ratio: string, round = false) => (
+    <div className="w-20 shrink-0 overflow-hidden border border-rule bg-paper-2" style={{ aspectRatio: ratio, borderRadius: round ? "9999px" : 4, backgroundImage: `url(${sized(row.url, "md")})`, backgroundSize: "cover", backgroundPosition: `${value.x}% ${value.y}%` }} />
+  );
+  return (
+    <div className="space-y-2">
+      <p className="text-[13.5px] font-medium text-ink-2">Face position</p>
+      <div ref={box} role="slider" tabIndex={0} aria-label="Focal point — tap the face, or use the arrow keys" aria-valuetext={`${value.x}% across, ${value.y}% down`} aria-valuenow={value.x} aria-valuemin={0} aria-valuemax={100}
+        className="relative mx-auto block w-fit max-w-full cursor-crosshair touch-none overflow-hidden rounded-md border border-rule outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        onPointerDown={(e) => { e.currentTarget.setPointerCapture(e.pointerId); set(e.clientX, e.clientY); }} onPointerMove={(e) => { if (e.buttons) set(e.clientX, e.clientY); }} onKeyDown={nudge}>
+        <img src={sized(row.url, "lg")} alt="" draggable={false} className="block max-h-72 max-w-full select-none" />
+        <span aria-hidden className="pointer-events-none absolute size-8 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-[0_0_0_1.5px_rgba(0,0,0,0.6)]" style={{ left: `${value.x}%`, top: `${value.y}%` }} />
+      </div>
+      <div className="flex items-end gap-3" aria-label="How it will be cropped">{crop("4 / 5")}{crop("1 / 1", true)}{crop("16 / 9")}<span className="text-[12.5px] text-muted">The portrait, round and wide crops follow the point you set.</span></div>
+    </div>
+  );
+}
+
 function Detail({ row, weddingId, onClose, onChanged, canModerate }: { row: MediaRow; weddingId: string; onClose: () => void; onChanged: () => void; canModerate: boolean }) {
   const ask = useConfirm();
   const [title, setTitle] = useState(row.title);
@@ -108,6 +142,24 @@ function Detail({ row, weddingId, onClose, onChanged, canModerate }: { row: Medi
   const [category, setCategory] = useState(row.category);
   const [busy, start] = useTransition();
   const [crop, setCrop] = useState(false);
+  const [focal, setFocal] = useState(row.focal ?? { x: 50, y: 50 });
+  const focalChanged = focal.x !== (row.focal?.x ?? 50) || focal.y !== (row.focal?.y ?? 50);
+  const file = useRef<HTMLInputElement>(null);
+  const [replacing, setReplacing] = useState(false);
+  // a new file goes into the same place: every slot, gallery position and caption that used the old one now shows it
+  const replace = async (f: File) => {
+    setReplacing(true);
+    try {
+      await uploadFile({ weddingId, file: f, category: row.category, replaceId: row.id });
+      await updateMediaAction(weddingId, row.id, { focalX: null, focalY: null });
+      toast.success("Photo replaced — it keeps its place everywhere it is used");
+      onChanged();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not replace that photo.");
+    } finally {
+      setReplacing(false);
+    }
+  };
   const call = (fn: () => Promise<{ ok: boolean; error?: { message: string } }>, msg?: string, close = false) =>
     start(async () => {
       const r = await fn();
@@ -120,8 +172,9 @@ function Detail({ row, weddingId, onClose, onChanged, canModerate }: { row: Medi
   return (
     <>
       <Sheet open onClose={onClose} variant="drawer" title={row.title || row.filename} description={`${row.kind.toLowerCase()} · ${(row.sizeBytes / 1024 / 1024).toFixed(2)} MB${row.width ? ` · ${row.width}×${row.height}` : ""}`}
-        footer={<><Button variant="danger" size="sm" icon={<Trash2 className="size-4" />} onClick={async () => { if (await ask({ title: "Delete this file?", message: "It will be removed from everywhere it is used. This cannot be undone.", confirmLabel: "Delete", tone: "danger" })) call(() => deleteMediaAction(weddingId, row.id), "Deleted", true); }}>Delete</Button><span className="flex-1" /><Button variant="quiet" onClick={onClose}>Close</Button><Button loading={busy} onClick={() => call(() => updateMediaAction(weddingId, row.id, { title, alt, caption, category }), "Saved")}>Save</Button></>}>
+        footer={<><Button variant="danger" size="sm" icon={<Trash2 className="size-4" />} onClick={async () => { if (await ask({ title: "Delete this file?", message: "It will be removed from everywhere it is used. This cannot be undone.", confirmLabel: "Delete", tone: "danger" })) call(() => deleteMediaAction(weddingId, row.id), "Deleted", true); }}>Delete</Button><span className="flex-1" /><Button variant="quiet" onClick={onClose}>Close</Button><Button loading={busy} onClick={() => call(() => updateMediaAction(weddingId, row.id, { title, alt, caption, category, ...(focalChanged ? { focalX: focal.x, focalY: focal.y } : {}) }), "Saved")}>Save</Button></>}>
         <div className="space-y-5">
+          {row.sample && <p className="rounded-md bg-brass-soft px-3 py-2.5 text-[13.5px] text-[#1f3f9e]"><strong className="font-semibold">A sample photograph.</strong> It came with the template to show how the invitation looks. “Replace photo” swaps it for your own and keeps its place, caption and layout.</p>}
           <div className="overflow-hidden rounded-md border border-rule bg-paper-2">
             {row.kind === "IMAGE" ? <img src={row.url} alt="" className="max-h-80 w-full object-contain" /> : row.kind === "VIDEO" ? <video src={row.url} controls className="max-h-80 w-full" /> : <div className="p-6"><audio src={row.url} controls className="w-full" /></div>}
           </div>
@@ -130,8 +183,11 @@ function Detail({ row, weddingId, onClose, onChanged, canModerate }: { row: Medi
               <Button size="sm" variant="quiet" icon={<RotateCcw className="size-4" />} loading={busy} onClick={() => call(() => rotateMediaAction(weddingId, row.id, 270), "Rotated")}>Rotate left</Button>
               <Button size="sm" variant="quiet" icon={<RotateCw className="size-4" />} loading={busy} onClick={() => call(() => rotateMediaAction(weddingId, row.id, 90), "Rotated")}>Rotate right</Button>
               <Button size="sm" variant="quiet" icon={<Crop className="size-4" />} onClick={() => setCrop(true)}>Crop…</Button>
+              <Button size="sm" variant="quiet" icon={<ImagePlus className="size-4" />} loading={replacing} onClick={() => file.current?.click()}>Replace photo…</Button>
+              <input ref={file} type="file" accept="image/*" hidden onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ""; if (f) void replace(f); }} />
             </div>
           )}
+          {row.kind === "IMAGE" && <FocalPicker row={row} value={focal} onChange={setFocal} />}
           <TextField label="Name" value={title} onChange={(e) => setTitle(e.target.value)} hint="Only you see this. It helps you find the photo later." />
           <SelectField label="Belongs to" value={category} onChange={(e) => setCategory(e.target.value)}>{MEDIA_CATEGORIES.map((c) => (<option key={c.key} value={c.key}>{c.label}</option>))}</SelectField>
           {row.kind === "IMAGE" && <LText label="Photo description (for screen readers)" value={alt} onChange={setAlt} hint="Describe what is in the picture, e.g. “Meenakshi and Aravind on the jetty at sunset”." />}

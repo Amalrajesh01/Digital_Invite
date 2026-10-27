@@ -7,6 +7,7 @@ import "./sections/occasion.css";
 import "./styles/directions.css";
 import "./styles/motion.css";
 import "./sections/variants.css";
+import "./sections/baby.css";
 import "./sections/heroes.css";
 import "./sections/heroes2.css";
 import { useEffect, useState } from "react";

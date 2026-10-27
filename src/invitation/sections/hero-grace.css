@@ -29,13 +29,14 @@
 .inv[data-locale]:not([data-locale="en"]) :is(.gh-eyebrow, .gh-meta) { letter-spacing: 0.04em; text-transform: none; }
 
 /* frames for a family's photograph */
-.gh-frame { position: relative; overflow: hidden; flex: none; width: min(62vw, 15rem, 25svh); aspect-ratio: 4 / 5; background: color-mix(in srgb, var(--c-accent) 14%, var(--c-surface)); box-shadow: 0 0 0 0.35rem color-mix(in srgb, var(--c-bg) 70%, transparent), 0 0 0 0.42rem color-mix(in srgb, var(--c-accent) 70%, transparent), 0 24px 50px -22px rgba(20, 20, 40, 0.45); }
+.gh-frame { position: relative; overflow: hidden; flex: none; width: min(70vw, 18rem, 36svh); aspect-ratio: 4 / 5; background: color-mix(in srgb, var(--c-accent) 14%, var(--c-surface)); box-shadow: 0 0 0 0.35rem color-mix(in srgb, var(--c-bg) 70%, transparent), 0 0 0 0.42rem color-mix(in srgb, var(--c-accent) 70%, transparent), 0 24px 50px -22px rgba(20, 20, 40, 0.45); }
 .gh-frame.oval { border-radius: 50% / 46%; }
-.gh-frame.circle { aspect-ratio: 1; width: min(46vw, 11.5rem, 22svh); border-radius: 50%; }
-.gh-frame.arch { width: min(66vw, 18rem, 29svh); aspect-ratio: 3 / 4; border-radius: 999px 999px 0 0; }
+.gh-frame.circle { aspect-ratio: 1; width: min(56vw, 14rem, 30svh); border-radius: 50%; }
+.gh-frame.arch { width: min(72vw, 19rem, 36svh); aspect-ratio: 3 / 4; border-radius: 999px 999px 0 0; }
 .gh-frame.pointed { clip-path: url(#gh-pointed); border-radius: 0; box-shadow: none; width: 100%; height: 100%; aspect-ratio: auto; }
-.gh-frame.band { width: 100%; max-width: 36rem; aspect-ratio: 16 / 7; border-radius: 0; box-shadow: none; }
-.gh-frame.rounded { aspect-ratio: 1; width: min(44vw, 11rem, 20svh); border-radius: 1.4rem; }
+.gh-frame.band { width: 100%; max-width: 36rem; aspect-ratio: 5 / 4; border-radius: 0; box-shadow: none; }
+@media (min-width: 700px) { .gh-frame.band { aspect-ratio: 16 / 9; } }
+.gh-frame.rounded { aspect-ratio: 1; width: min(58vw, 14rem, 28svh); border-radius: 1.4rem; }
 .gh-frame.sepia img { filter: sepia(0.55) saturate(0.8) contrast(1.02); }
 .gh-frame.soft { box-shadow: 0 0 0 0.3rem color-mix(in srgb, var(--c-bg) 60%, transparent), 0 20px 40px -22px rgba(20, 20, 40, 0.3); }
 .gh-frame.plain { box-shadow: none; }
@@ -90,6 +91,16 @@
 .gh-dove-glide { top: 17%; left: -26%; width: min(30vw, 10rem); opacity: 0; transform: translate(0, 0); animation: gh-glide 30s linear 1s infinite; }
 @keyframes gh-glide { 0% { transform: translate(0, 18svh) rotate(-4deg); opacity: 0; } 8% { opacity: 0.95; } 55% { opacity: 0.95; } 100% { transform: translate(165vw, -14svh) rotate(-8deg); opacity: 0; } }
 
+/* Heaven’s Gate: two banks of cloud cover the scene, then part to the sides and leave the portrait in the light. Their resting state is open. */
+.gh-veil { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+.gh-veil i { position: absolute; top: -8%; bottom: -8%; width: 84%; filter: blur(14px); opacity: 0.2; background: radial-gradient(ellipse 62% 20% at 70% 12%, #fff 56%, transparent 100%), radial-gradient(ellipse 72% 18% at 58% 34%, #fff 56%, transparent 100%), radial-gradient(ellipse 66% 22% at 74% 58%, #fff 56%, transparent 100%), radial-gradient(ellipse 70% 20% at 60% 84%, #fff 56%, transparent 100%); }
+.gh-veil i.l { left: 0; transform: translateX(-108%); animation: gh-part-l 4.8s cubic-bezier(0.6, 0, 0.2, 1) 0.9s backwards; }
+.gh-veil i.r { right: 0; transform: translateX(108%) scaleX(-1); animation: gh-part-r 4.8s cubic-bezier(0.6, 0, 0.2, 1) 0.9s backwards; }
+@keyframes gh-part-l { from { transform: translateX(-30%); opacity: 0.96; } 60% { opacity: 0.9; } }
+@keyframes gh-part-r { from { transform: translateX(30%) scaleX(-1); opacity: 0.96; } 60% { opacity: 0.9; } }
+.hv-grace.gr-heavenly[data-photo="1"]:not([data-reveal="none"]) .gh-frame { animation-delay: 2.3s; }
+.hv-grace.gr-heavenly[data-photo="1"]:not([data-reveal="none"]) .gh-frame img { animation-delay: 2.5s; }
+
 /* ── 2 · A Blessing from Above ─────────────────────────────────────────────────────────────────── */
 .gr-beam { --gh-bg: var(--c-inverse); --gh-ink: var(--c-on-inverse); --gh-sub: color-mix(in srgb, var(--c-on-inverse) 72%, transparent); --gh-gold: color-mix(in srgb, var(--c-accent) 70%, #fff); --gh-sky: radial-gradient(120% 90% at 50% 100%, color-mix(in srgb, var(--c-primary) 45%, var(--c-inverse)) 0%, var(--c-inverse) 70%); }
 .gh-beam { left: 50%; top: -4%; width: min(78vw, 36rem); height: 82%; translate: -50% 0; clip-path: polygon(40% 0, 60% 0, 100% 100%, 0 100%); background: linear-gradient(180deg, rgba(255, 244, 214, 0.95) 0%, rgba(255, 232, 190, 0.5) 46%, rgba(255, 224, 180, 0) 100%); animation: gh-beam-in 3.4s cubic-bezier(0.3, 0, 0.2, 1) both, gh-breathe 7s ease-in-out 3.4s infinite alternate; transform-origin: 50% 0; }
@@ -126,11 +137,12 @@
 .gh-badge svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
 .gh-badge span { font-family: var(--f-script); font-style: var(--f-script-style, normal); font-size: clamp(3.6rem, 14vw, 5.4rem); line-height: 1; animation: gh-rise-in 2s ease-out 0.5s both; text-shadow: 0 0 22px color-mix(in srgb, var(--c-accent) 55%, transparent); }
 .gh-badge .gh-frame.circle { width: 82%; box-shadow: none; }
+.hv-grace[data-photo="1"] .gh-badge { width: min(64vw, 15.5rem, 33svh); }
 
 /* ── 6 · Little Princess of Heaven ─────────────────────────────────────────────────────────────── */
 .gr-princess { --gh-sky: linear-gradient(180deg, color-mix(in srgb, var(--c-secondary) 55%, #fff), color-mix(in srgb, var(--c-secondary) 14%, var(--c-bg)) 60%, var(--c-bg)); --gh-petal: #f3c4ca; --gh-leaf: #8fae8c; --gh-bud: #f0b9c0; }
 .gr-princess .gh-crown { color: var(--c-accent); }
-.gh-wreath { position: relative; width: min(74vw, 19rem, 31svh); padding: 9% 9% 0; }
+.gh-wreath { position: relative; width: min(84vw, 21rem, 38svh); padding: 9% 9% 0; }
 .gh-wreath .gh-garland { position: absolute; inset: 0; width: 100%; height: auto; z-index: 2; overflow: visible; }
 .gh-wreath .gh-frame { width: 100%; box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c-accent) 55%, transparent); }
 .gh-flw { transform-box: fill-box; transform-origin: center; animation: gh-bloom 1.6s ease-out calc(0.6s + var(--i) * 0.09s) both; }
@@ -143,6 +155,7 @@
 .gh-paper { inset: 0; background: radial-gradient(110% 80% at 50% 38%, transparent 40%, color-mix(in srgb, var(--c-secondary) 20%, transparent) 100%), repeating-linear-gradient(0deg, transparent 0 3px, rgba(120, 90, 40, 0.035) 3px 4px), color-mix(in srgb, var(--c-bg) 90%, var(--c-secondary)); }
 .gh-paper.soft { background: radial-gradient(90% 60% at 50% 30%, color-mix(in srgb, var(--c-accent) 14%, var(--c-bg)), var(--c-bg) 72%); }
 .gh-tree { width: min(66vw, 17rem, 25svh); height: auto; color: var(--c-primary); }
+.hv-grace[data-photo="1"] .gh-tree { width: min(46vw, 11rem, 15svh); }
 .gh-node { fill: var(--c-bg); stroke: currentColor; stroke-width: 1.6; animation: gh-fade 0.9s ease-out calc(1.2s + var(--i) * 0.5s) both; }
 .gh-node:last-child { fill: var(--c-accent); stroke: none; }
 .gh-tree-halo { animation: gh-fade 1.4s ease-out 4.2s both; }
@@ -154,10 +167,10 @@
 .gr-nave { --gh-sky: radial-gradient(70% 60% at 50% 36%, color-mix(in srgb, var(--c-accent) 38%, var(--c-bg)) 0%, color-mix(in srgb, var(--c-secondary) 18%, var(--c-bg)) 46%, var(--c-bg) 90%); }
 .gr-nave .gh-stack { justify-content: flex-start; padding-top: clamp(1rem, 6svh, 3.2rem); }
 .gh-nave { left: 50%; top: 3svh; width: min(100vw, 46rem); height: 68svh; translate: -50% 0; color: var(--c-accent); opacity: 0.6; -webkit-mask-image: linear-gradient(180deg, #000 52%, transparent 70%); mask-image: linear-gradient(180deg, #000 52%, transparent 70%); }
-.gh-endwindow { position: relative; width: min(44vw, 12.5rem, 25svh); aspect-ratio: 0.68; clip-path: url(#gh-pointed); filter: drop-shadow(0 0 22px color-mix(in srgb, var(--c-accent) 55%, transparent)); background: #1a1f33; animation: gh-glow 6s ease-in-out infinite alternate; }
+.gh-endwindow { position: relative; width: min(62vw, 17rem, 38svh); aspect-ratio: 0.68; clip-path: url(#gh-pointed); filter: drop-shadow(0 0 22px color-mix(in srgb, var(--c-accent) 55%, transparent)); background: #1a1f33; animation: gh-glow 6s ease-in-out infinite alternate; }
 @keyframes gh-glow { from { filter: drop-shadow(0 0 12px color-mix(in srgb, var(--c-accent) 35%, transparent)); } to { filter: drop-shadow(0 0 30px color-mix(in srgb, var(--c-accent) 70%, transparent)); } }
 .gh-endwindow .gh-glass { position: absolute; inset: 0; width: 100%; height: 100%; }
-.gh-endwindow .gh-frame { position: absolute; inset: 0; }
+.gh-endwindow .gh-frame { position: absolute; inset: 0; -webkit-mask-image: linear-gradient(180deg, #000 74%, transparent 100%); mask-image: linear-gradient(180deg, #000 74%, transparent 100%); }
 .gh-rays.from-window { inset: 2% -20% 20% -20%; transform-origin: 50% 8%; opacity: 0.38; mix-blend-mode: screen; background: conic-gradient(from 160deg at 50% 8%, transparent 0deg, rgba(255, 230, 170, 0.7) 6deg, transparent 14deg 22deg, rgba(255, 230, 170, 0.5) 30deg, transparent 40deg 320deg, rgba(255, 230, 170, 0.5) 330deg, transparent 340deg 360deg); }
 .gr-nave .gh-text { margin-top: 1rem; }
 .hv-grace[data-layout="window"] .gh-stack { padding-bottom: 6.4rem; }
@@ -167,7 +180,8 @@
 .gh-dove-big { width: min(88vw, 30rem, 54svh); margin-bottom: -1rem; animation: gh-arrive 7s cubic-bezier(0.2, 0.6, 0.2, 1) both, gh-hover 6s ease-in-out 7s infinite alternate; }
 @keyframes gh-arrive { from { transform: translate(-46vw, 8svh) rotate(-4deg) scale(0.8); opacity: 0; } 25% { opacity: 1; } to { transform: none; opacity: 1; } }
 @keyframes gh-hover { from { transform: translateY(0); } to { transform: translateY(-10px); } }
-.gr-dove .gh-frame.circle { margin-top: 0.4rem; width: min(30vw, 7.5rem); }
+.gr-dove .gh-frame.circle { margin-top: 0.4rem; width: min(54vw, 13rem, 28svh); }
+.hv-grace[data-photo="1"] .gh-dove-big { width: min(70vw, 22rem, 28svh); }
 
 /* ── 10 · The Open Bible ───────────────────────────────────────────────────────────────────────── */
 .gr-bible { --gh-bg: var(--c-inverse); --gh-ink: var(--c-on-inverse); --gh-sub: color-mix(in srgb, var(--c-on-inverse) 70%, transparent); --gh-gold: color-mix(in srgb, var(--c-accent) 75%, #fff); --gh-cover: var(--c-primary); --gh-ribbon: #b3283e; }
@@ -180,7 +194,8 @@
 @keyframes gh-page { from { transform: scaleX(0.04) skewY(-6deg); } to { transform: none; } }
 .gh-book .gh-ribbon { transform-origin: 156px 40px; animation: gh-ribbon 2s ease-out 2.4s both; }
 @keyframes gh-ribbon { from { transform: scaleY(0); } to { transform: none; } }
-.gr-bible .gh-frame.oval { width: min(30vw, 7.5rem); margin-bottom: 0.4rem; }
+.gr-bible .gh-frame.oval { width: min(48vw, 11.5rem, 25svh); margin-bottom: 0.4rem; }
+.hv-grace[data-photo="1"] .gh-book { width: min(76vw, 22rem, 28svh); }
 
 /* ── 11 · Floral Grace ─────────────────────────────────────────────────────────────────────────── */
 .gr-lily { --gh-sky: radial-gradient(90% 70% at 50% 36%, #fff 0%, var(--c-bg) 70%); --gh-leaf: #6f8f72; --gh-petal: #fff; --gh-gold: color-mix(in srgb, var(--c-accent) 90%, #5a3a2a); }
@@ -190,7 +205,7 @@
 .gh-lily-c { right: 6%; top: -9%; width: min(30vw, 11rem); rotate: 164deg; opacity: 0.9; animation: gh-sway-lily 13s ease-in-out -6s infinite alternate; }
 @keyframes gh-sway-lily { from { transform: rotate(-1.6deg); } to { transform: rotate(1.8deg); } }
 .gh-bloom { transform-box: fill-box; transform-origin: center; animation: gh-bloom 3s cubic-bezier(0.3, 0, 0.2, 1) 0.4s both; }
-.gr-lily .gh-frame.oval { width: min(42vw, 10rem); }
+.gr-lily .gh-frame.oval { width: min(62vw, 15rem, 32svh); }
 
 /* ── 12 · Golden Morning ───────────────────────────────────────────────────────────────────────── */
 .gr-morning { --gh-sky: linear-gradient(180deg, color-mix(in srgb, var(--c-secondary) 50%, #fff) 0%, color-mix(in srgb, var(--c-secondary) 80%, #fff) 38%, color-mix(in srgb, var(--c-accent) 55%, #ffd9a0) 66%, color-mix(in srgb, var(--c-accent) 85%, #ffb35a) 100%); --gh-gold: color-mix(in srgb, var(--c-primary) 100%, #3a1d00); }
@@ -204,6 +219,10 @@
 .gh-land { left: 0; right: 0; bottom: 0; height: 46%; overflow: hidden; -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 34%); mask-image: linear-gradient(180deg, transparent 0%, #000 34%); }
 .gh-land > .relative { inset: 0; }
 .gh-land.dusk { height: 40%; opacity: 0.75; }
+.gh-risen { position: relative; display: grid; place-items: center; animation: gh-risen 7s cubic-bezier(0.3, 0, 0.2, 1) both; }
+.gh-risen .gh-frame { z-index: 1; }
+.gh-sundisc { position: absolute; inset: -26%; border-radius: 50%; background: radial-gradient(circle, #fffbe8 0 44%, #ffe49a 58%, rgba(255, 214, 120, 0.5) 69%, transparent 73%); box-shadow: 0 0 90px 36px rgba(255, 214, 120, 0.5); }
+@keyframes gh-risen { from { transform: translateY(24svh); opacity: 0.2; } 35% { opacity: 1; } to { transform: none; } }
 .gh-birds { left: 0; right: 0; top: 30%; height: 20%; color: color-mix(in srgb, var(--c-primary) 70%, #000); }
 .gh-birds svg { position: absolute; left: -10%; top: calc(var(--i) * 26%); width: 1.6rem; opacity: 0; animation: gh-bird 22s linear calc(var(--i) * 2.2s + 3s) infinite; }
 @keyframes gh-bird { 0% { transform: translate(0, 0); opacity: 0; } 8% { opacity: 0.8; } 90% { opacity: 0.7; } 100% { transform: translate(125vw, -6svh); opacity: 0; } }
@@ -217,11 +236,12 @@
 @keyframes gh-drift { from { transform: translate(0, 0) scale(1); } to { transform: translate(5%, -4%) scale(1.08); } }
 .gh-hands { width: min(60vw, 15rem, 31svh); height: auto; color: var(--c-primary); overflow: visible; }
 .gh-flame { transform-origin: 110px 90px; animation: gh-flicker 2.4s ease-in-out infinite alternate; filter: drop-shadow(0 0 10px rgba(255, 190, 80, 0.8)); }
-.gr-hands .gh-frame.oval { width: min(36vw, 9rem); }
+.gr-hands .gh-frame.oval { width: min(58vw, 14rem, 30svh); }
+.hv-grace[data-photo="1"] .gh-hands { width: min(44vw, 11rem, 17svh); }
 
 /* ── 14 · A Garden of Blessings ────────────────────────────────────────────────────────────────── */
 .gr-garden { --gh-sky: linear-gradient(180deg, color-mix(in srgb, var(--c-secondary) 38%, #fff), var(--c-bg) 70%); --gh-leaf: #4f7a45; --gh-wood: #fbf8ee; --gh-rose: #e49aa4; --gh-gold: color-mix(in srgb, var(--c-accent) 85%, #4a3a00); }
-.gh-trellis { position: relative; width: min(76vw, 19rem, 31svh); aspect-ratio: 240 / 300; }
+.gh-trellis { position: relative; width: min(86vw, 22rem, 41svh); aspect-ratio: 240 / 300; }
 .gh-trellis .gh-frame { position: absolute; left: 12%; right: 12%; top: 9%; bottom: 0; width: auto; aspect-ratio: auto; border-radius: 999px 999px 0 0; box-shadow: none; }
 .gh-trellis .gh-vine { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 6px 10px rgba(30, 50, 30, 0.2)); }
 .gh-lawn { left: -10%; right: -10%; bottom: 0; height: 56%; border-radius: 50% 50% 0 0; background: linear-gradient(180deg, color-mix(in srgb, var(--c-secondary) 80%, #fff), color-mix(in srgb, var(--c-primary) 55%, #fff)); }
@@ -246,7 +266,7 @@
 .gh-corner.c4 { left: clamp(0.7rem, 2.4vw, 1.4rem); bottom: clamp(0.7rem, 2.4vw, 1.4rem); rotate: 270deg; }
 .gh-rcross { width: min(60vw, 15rem, 30svh); height: auto; color: var(--gh-gold); filter: drop-shadow(0 0 16px color-mix(in srgb, var(--c-accent) 45%, transparent)); }
 .gh-rcross-rays { transform-origin: 0 0; animation: gh-spin 180s linear infinite; }
-.gr-crest .gh-frame.arch { width: min(52vw, 12.5rem, 27svh); }
+.gr-crest .gh-frame.arch { width: min(64vw, 16rem, 34svh); }
 .gr-crest .gh-name { font-size: clamp(2.5rem, 11vw, 5rem); letter-spacing: 0.06em; text-transform: uppercase; }
 .gr-crest .gh-name[data-len="medium"] { font-size: clamp(2.1rem, 9vw, 4rem); } .gr-crest .gh-name[data-len="long"] { font-size: clamp(1.7rem, 7vw, 3.2rem); }
 
@@ -283,7 +303,7 @@
 .gh-ring.r3 { left: 50%; top: var(--rt); width: calc(40 * var(--u)); aspect-ratio: 1; margin: calc(-12 * var(--u)) 0 0 calc(-40 * var(--u)); background: color-mix(in srgb, var(--c-accent) 42%, #fff); --fx: calc(-26 * var(--u)); --fy: calc(24 * var(--u)); animation-delay: 0.8s; }
 .gh-ring.r4 { left: 50%; top: var(--rt); width: calc(34 * var(--u)); aspect-ratio: 1; margin: calc(-10 * var(--u)) 0 0 calc(2 * var(--u)); background: color-mix(in srgb, var(--c-secondary) 20%, var(--c-bg)); --fx: calc(26 * var(--u)); --fy: calc(22 * var(--u)); animation-delay: 1.2s; }
 @keyframes gh-gather { from { transform: translate(var(--fx), var(--fy)) scale(0.6); opacity: 0; } 30% { opacity: 0.8; } to { transform: none; } }
-.gr-rings .gh-frame.circle { width: min(36vw, 8.6rem); }
+.gr-rings .gh-frame.circle { width: min(54vw, 13rem, 28svh); }
 
 /* ── 19 · Celestial Promise ────────────────────────────────────────────────────────────────────── */
 .gr-promise { --gh-sky: linear-gradient(180deg, var(--c-inverse) 0%, var(--c-bg) 52%, color-mix(in srgb, var(--c-bg) 62%, #6b4a62) 78%, color-mix(in srgb, var(--c-accent) 55%, #6b4a62) 100%); --gh-gold: color-mix(in srgb, var(--c-primary) 100%, #fff); }
@@ -291,14 +311,15 @@
 .gh-bow { left: 50%; top: 11svh; width: min(88vw, 32rem, 52svh); height: auto; translate: -50% 0; }
 .gh-bow .gh-draw { animation-duration: 4.2s; animation-delay: calc(1.6s + var(--i) * 0.35s); }
 .gr-promise .gh-clouds i { top: 56%; opacity: 0.22; }
-.gr-promise .gh-land { height: 38%; }
+.gr-promise .gh-stack { gap: clamp(0.6rem, 2svh, 1.2rem); }
+.gr-promise .gh-frame.oval { width: min(54vw, 14rem, 30svh); }
 
 /* ── 20 · A New Beginning ──────────────────────────────────────────────────────────────────────── */
 .gr-dawn { --gh-bg: var(--c-inverse); --gh-ink: var(--c-on-inverse); --gh-sub: color-mix(in srgb, var(--c-on-inverse) 72%, transparent); --gh-gold: color-mix(in srgb, var(--c-accent) 75%, #fff); --gh-sky: linear-gradient(180deg, var(--c-inverse) 0%, color-mix(in srgb, var(--c-primary) 70%, var(--c-inverse)) 50%, color-mix(in srgb, var(--c-secondary) 70%, var(--c-primary)) 100%); }
 .gr-dawn .gh-stack { justify-content: flex-end; padding-block-end: clamp(2rem, 8svh, 5rem); }
 .gh-rays.from-door { inset: 6% -20% 30% -20%; transform-origin: 50% 70%; mix-blend-mode: screen; opacity: 0; animation: gh-floodlight 5s ease-out 1.6s both, gh-sway 18s ease-in-out 6s infinite alternate; background: conic-gradient(from 150deg at 50% 70%, transparent 0deg, rgba(255, 224, 170, 0.7) 6deg, transparent 15deg 22deg, rgba(255, 224, 170, 0.5) 30deg, transparent 40deg 320deg, rgba(255, 224, 170, 0.5) 330deg, transparent 340deg 360deg); }
 @keyframes gh-floodlight { from { opacity: 0; } to { opacity: 0.55; } }
-.gh-doorway { position: relative; width: min(64vw, 16.5rem, 28svh); aspect-ratio: 0.68; margin-bottom: 0.4rem; }
+.gh-doorway { position: relative; width: min(70vw, 18rem, 36svh); aspect-ratio: 0.68; margin-bottom: 0.4rem; }
 .gh-edge { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--gh-gold); opacity: 0.9; pointer-events: none; }
 .gh-spill { position: absolute; left: -30%; right: -30%; bottom: -14%; height: 40%; border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 214, 140, 0.55), transparent); animation: gh-breathe 6s ease-in-out infinite alternate; }
 .gh-beyond { position: absolute; inset: 0; clip-path: url(#gh-pointed); overflow: hidden; background: linear-gradient(180deg, #ffe9be, #ffcf94 60%, #f6b27a); }
@@ -322,6 +343,109 @@
 @keyframes gh-up { 0% { transform: translate(0, 0) scale(0.5); opacity: 0; } 12% { opacity: 1; } 100% { transform: translate(-70%, -230%) scale(1.1) rotate(-8deg); opacity: 0; } }
 @keyframes gh-up-b { 0% { transform: translate(0, 0) scale(0.5); opacity: 0; } 12% { opacity: 1; } 100% { transform: translate(110%, -280%) scale(1) rotate(-10deg); opacity: 0; } }
 
+/* ── 21 · Candle of Faith ──────────────────────────────────────────────────────────────────────── */
+.gr-candle { --gh-gold: color-mix(in srgb, var(--c-accent) 85%, #4a2a08); --gh-glow: #ffcf7a; }
+.gh-warm { inset: 0; background: radial-gradient(70% 55% at 50% 60%, rgba(255, 196, 110, 0.55), transparent 70%), radial-gradient(120% 90% at 50% 110%, color-mix(in srgb, var(--c-primary) 28%, transparent), transparent 70%); opacity: 0.45; transition: opacity 2.4s ease; }
+.hv-grace[data-lit="1"] .gh-warm { opacity: 1; }
+.gh-candlebox { display: grid; justify-items: center; gap: 0.5rem; }
+.gh-wickbtn { display: block; padding: 0.2rem 0.8rem; border: 0; background: transparent; cursor: pointer; border-radius: 0.6rem; -webkit-tap-highlight-color: transparent; }
+.gh-wickbtn:disabled { cursor: default; }
+.gh-wickbtn:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 4px; }
+.gh-bigcandle { display: block; width: clamp(2.1rem, 9vw, 2.8rem); height: auto; overflow: visible; filter: drop-shadow(0 10px 12px rgba(60, 40, 10, 0.25)); }
+.gh-cflame { transform-box: fill-box; transform-origin: 50% 92%; opacity: 0; transform: scale(0.3); filter: drop-shadow(0 0 7px rgba(255, 190, 80, 0.95)); transition: opacity 0.9s ease, transform 1.1s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.hv-grace[data-lit="1"] .gh-cflame { opacity: 1; transform: none; animation: gh-flicker 1.9s ease-in-out 1.1s infinite alternate; }
+.gh-lit-hint { margin: 0; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gh-sub); animation: gh-pulse 2.8s ease-in-out infinite alternate; }
+@keyframes gh-pulse { from { opacity: 0.55; } to { opacity: 1; } }
+.gh-lit-msg { margin: 0; max-width: 18rem; font-family: var(--f-script); font-style: var(--f-script-style, normal); font-size: clamp(1.15rem, 4.6vw, 1.5rem); line-height: 1.25; color: var(--gh-gold); opacity: 0; transform: translateY(0.4rem); transition: opacity 1.4s ease 0.6s, transform 1.4s ease 0.6s; }
+.hv-grace[data-lit="1"] .gh-lit-msg { opacity: 1; transform: none; }
+.hv-grace[data-lit="1"] .gh-fig::before { animation-duration: 1.6s, 5s; }
+.gr-candle .gh-bigcandle + * { margin: 0; }
+
+/* ── 22 · White Roses ──────────────────────────────────────────────────────────────────────────── */
+.gr-roses { --gh-sky: radial-gradient(90% 70% at 50% 40%, #fff 0%, var(--c-bg) 72%); --gh-leaf: #6f8f72; --gh-petal: #fffaf3; --gh-glow: #fff4e0; --gh-gold: color-mix(in srgb, var(--c-accent) 90%, #4a3a1a); }
+.gh-rosering { position: relative; display: grid; place-items: center; width: min(88vw, 22rem, 42svh); aspect-ratio: 1; }
+.gh-rosewreath { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 8px 12px rgba(60, 70, 50, 0.16)); }
+.gh-rosering .gh-frame.circle { width: 58%; box-shadow: 0 0 0 0.3rem color-mix(in srgb, var(--c-bg) 70%, transparent), 0 0 0 0.36rem color-mix(in srgb, var(--c-accent) 65%, transparent); }
+.gr-roses .gh-fall-petal i { box-shadow: 0 1px 2px rgba(60, 60, 40, 0.1); }
+@supports (animation-timeline: scroll()) { .gh-rosewreath { animation: gh-wreath linear both; animation-timeline: scroll(root block); animation-range: 0 100svh; } }
+@keyframes gh-wreath { to { transform: rotate(16deg) scale(1.07); } }
+
+/* ── 23 · Little Miracle ───────────────────────────────────────────────────────────────────────── */
+.gr-mobile { --gh-sky: linear-gradient(180deg, color-mix(in srgb, var(--c-secondary) 60%, #fff) 0%, color-mix(in srgb, var(--c-accent) 14%, var(--c-bg)) 48%, var(--c-bg) 100%); --gh-gold: color-mix(in srgb, var(--c-accent) 75%, #6a3a30); --gh-glow: #ffe6b0; }
+.gr-mobile .gh-stack { justify-content: flex-start; padding-top: clamp(0.4rem, 3svh, 2rem); }
+.gr-mobile .gh-fig { gap: 0.1rem; width: 100%; }
+.gh-mobile { width: min(100%, 26rem); height: auto; color: color-mix(in srgb, var(--c-primary) 55%, #fff); overflow: visible; }
+.gh-orn { transform-origin: 0 0; animation: gh-swing var(--d, 6s) ease-in-out calc(var(--i) * -0.8s) infinite alternate; }
+@keyframes gh-swing { from { transform: rotate(-4.5deg); } to { transform: rotate(4.5deg); } }
+.gr-mobile .gh-frame.circle { width: min(60vw, 14.5rem, 31svh); }
+.gr-mobile .gh-stars i { background: #fff7d6; box-shadow: 0 0 7px 1px rgba(255, 223, 150, 0.9); }
+
+/* ── 24 · The Golden Cross ─────────────────────────────────────────────────────────────────────── */
+.gr-cross { --gh-gold: var(--c-accent); --gh-glow: #ffe9ad; }
+.gh-glowfield { inset: 0; background: radial-gradient(70% 46% at 50% 38%, color-mix(in srgb, var(--c-accent) 20%, transparent), transparent 72%), repeating-linear-gradient(90deg, transparent 0 28px, color-mix(in srgb, var(--c-accent) 6%, transparent) 28px 29px); }
+.gh-xwrap { position: relative; width: min(84vw, 21rem, 46svh); aspect-ratio: 200 / 240; color: var(--c-accent); }
+.gh-goldcross { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 0 8px color-mix(in srgb, var(--c-accent) 45%, transparent)); }
+.gh-terms { animation: gh-fade 1.2s ease-out 3.2s both; }
+.gh-xwrap .gh-frame.circle { position: absolute; left: 50%; top: 40%; width: 52%; translate: -50% -50%; box-shadow: 0 0 0 0.3rem var(--c-bg), 0 0 0 0.38rem var(--c-accent), 0 18px 34px -18px rgba(60, 40, 10, 0.5); }
+.gr-cross .gh-fig { margin-bottom: 0.4rem; }
+
+/* ── 25 · Cloud Nine ───────────────────────────────────────────────────────────────────────────── */
+.gr-clouds { --gh-sky: linear-gradient(180deg, color-mix(in srgb, var(--c-secondary) 80%, #fff) 0%, color-mix(in srgb, var(--c-secondary) 36%, #fff) 46%, #fff 100%); --gh-gold: color-mix(in srgb, var(--c-accent) 90%, #5a4210); --gh-glow: #fff; }
+.gh-cl-a, .gh-cl-b { position: absolute; inset: 0; }
+.gh-cl-a { opacity: 0.55; filter: blur(2px); transform: scale(1.35); }
+.gh-cl-b .gh-clouds i { top: calc(var(--y) + 14%); }
+.gr-clouds .gh-fig { margin-bottom: 1.2rem; }
+.gh-puffs { position: absolute; left: -16%; right: -16%; top: calc(100% - 1.6rem); height: 4.6rem; z-index: 3; pointer-events: none; }
+.gh-puffs i { position: absolute; bottom: 0; left: calc(var(--i) * 25% - 6%); width: calc(42% - var(--i) * 3%); aspect-ratio: 2.4; filter: blur(5px); background: radial-gradient(ellipse 14% 36% at 14% 66%, #fff 56%, transparent 100%), radial-gradient(ellipse 20% 62% at 34% 54%, #fff 56%, transparent 100%), radial-gradient(ellipse 24% 86% at 56% 42%, #fff 56%, transparent 100%), radial-gradient(ellipse 18% 56% at 78% 58%, #fff 56%, transparent 100%), radial-gradient(ellipse 44% 24% at 50% 88%, #fff 60%, transparent 100%); animation: gh-puff 9s ease-in-out calc(var(--i) * -2.2s) infinite alternate; }
+@keyframes gh-puff { from { transform: translateX(-5%); } to { transform: translateX(7%); } }
+@supports (animation-timeline: scroll()) {
+  .gh-cl-a { animation: gh-cl-a linear both; animation-timeline: scroll(root block); animation-range: 0 100svh; }
+  .gh-cl-b { animation: gh-cl-b linear both; animation-timeline: scroll(root block); animation-range: 0 100svh; }
+}
+@keyframes gh-cl-a { to { transform: scale(1.35) translateY(-3svh); } }
+@keyframes gh-cl-b { to { transform: translateY(-9svh); } }
+
+/* ── the baby’s portrait reveal ──────────────────────────────────────────────────────────────────────
+   One system for every scene (data-reveal on the hero decides the style): the glow gathers behind the frame, the frame arrives, the
+   photograph settles into it with a slow, small zoom, and a few motes of gold rise around it. Transform and opacity only; the resting
+   state of every layer is the finished picture, so reduced motion shows it still. */
+.hv-grace[data-photo="1"] .gh-fig { position: relative; isolation: isolate; }
+.hv-grace[data-photo="1"]:not([data-reveal="none"], [data-reveal="minimal"]) .gh-fig::before { content: ""; position: absolute; inset: -14% -24%; z-index: -1; border-radius: 50%; pointer-events: none; background: radial-gradient(closest-side, color-mix(in srgb, var(--gh-glow, var(--c-accent)) 48%, transparent), transparent 74%); animation: gh-aura 2.6s ease-out 0.15s both, gh-breathe 7s ease-in-out 2.8s infinite alternate; }
+@keyframes gh-aura { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: none; } }
+.hv-grace[data-photo="1"]:not([data-reveal="none"]) .gh-frame { animation: gh-frame-in 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+@keyframes gh-frame-in { from { opacity: 0; transform: scale(0.93); } to { opacity: 1; transform: none; } }
+.hv-grace[data-photo="1"]:not([data-reveal="none"]) :is(.gh-frame, .gh-beyond) img { animation: gh-settle 11s cubic-bezier(0.2, 0.6, 0.2, 1) 0.4s both; }
+@keyframes gh-settle { from { transform: scale(1.16); } to { transform: scale(1); } }
+.gh-aura { position: absolute; inset: -8% -14%; z-index: 3; pointer-events: none; }
+.gh-aura .gh-motes { inset: 0; }
+.gh-aura .gh-motes i { bottom: 8%; left: calc(var(--x) * 0.11); animation: gh-aura-mote calc(var(--d) * 0.55) ease-out var(--l) infinite; }
+.gh-aura .gh-motes i:nth-child(even) { left: auto; right: calc(var(--x) * 0.11); }
+@keyframes gh-aura-mote { 0% { transform: translate(0, 0); opacity: 0; } 18% { opacity: 0.95; } 80% { opacity: 0.5; } 100% { transform: translate(calc(var(--s) * 12px - 8px), -150%); opacity: 0; } }
+/* royal: the gold frame arrives first and glows once around its edge; nothing passes over the photograph */
+.hv-grace[data-reveal="royal"] { --gh-glow: color-mix(in srgb, var(--c-accent) 92%, #fff); }
+.hv-grace[data-reveal="royal"][data-photo="1"] .gh-frame { animation: gh-frame-in 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) both, gh-gild 3.4s ease-out 0.5s both; }
+@keyframes gh-gild { from { filter: drop-shadow(0 0 0 rgba(255, 220, 140, 0)); } 40% { filter: drop-shadow(0 0 20px rgba(255, 220, 140, 0.9)); } to { filter: drop-shadow(0 0 8px rgba(255, 220, 140, 0.3)); } }
+/* floral: a rose glow, and petals instead of motes */
+.hv-grace[data-reveal="floral"] { --gh-glow: var(--gh-petal, #f3c4ca); }
+.hv-grace[data-reveal="floral"] .gh-aura .gh-motes i { width: calc(9px * var(--s)); height: calc(6px * var(--s)); border-radius: 80% 0 80% 0; background: linear-gradient(135deg, #fff, var(--gh-petal, #f3c4ca)); }
+/* minimal: no glow, no motes; the portrait is drawn in by a clean wipe */
+.hv-grace[data-reveal="minimal"][data-photo="1"] .gh-frame { animation: gh-wipe 1.7s cubic-bezier(0.6, 0, 0.2, 1) 0.2s both; }
+@keyframes gh-wipe { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(-24px); } }
+.hv-grace[data-reveal="none"] .gh-aura { display: none; }
+/* parallax, restrained: the portrait lifts a little faster than the words as the page scrolls (browsers without scroll-driven animation simply skip it) */
+@supports (animation-timeline: scroll()) {
+  .hv-grace .gh-fig { animation: gh-lift linear both; animation-timeline: scroll(root block); animation-range: 0 90svh; }
+  .hv-grace .gh-text { animation: gh-lift-s linear both; animation-timeline: scroll(root block); animation-range: 0 90svh; }
+}
+@keyframes gh-lift { to { transform: translateY(-5svh); } }
+@keyframes gh-lift-s { to { transform: translateY(-2svh); } }
+
+/* with a portrait in the doorway the doves rise beside it, never across the child’s face */
+.hv-grace[data-photo="1"] .gh-dove-rise { left: -20%; bottom: 34%; width: 15%; margin-left: 0; animation-name: gh-up-l; }
+.hv-grace[data-photo="1"] .gh-dove-rise.b { left: auto; right: -20%; width: 13%; animation-name: gh-up-r; }
+@keyframes gh-up-l { 0% { transform: translate(0, 0) scale(0.5); opacity: 0; } 12% { opacity: 1; } 100% { transform: translate(-30%, -380%) scale(1.1) rotate(-8deg); opacity: 0; } }
+@keyframes gh-up-r { 0% { transform: translate(0, 0) scale(0.5); opacity: 0; } 12% { opacity: 1; } 100% { transform: translate(30%, -440%) scale(1) rotate(10deg); opacity: 0; } }
+
 /* ── larger screens ────────────────────────────────────────────────────────────────────────────── */
 @media (min-width: 900px) {
   .gr-minimal .gh-halo { left: auto; right: 10%; top: 8svh; width: min(30rem, 52svh); }
@@ -329,7 +453,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .hv-grace :is(*, *::before, *::after) { animation: none !important; transition: none !important; }
-  .gh-motes, .gh-fall, .gh-dove-glide, .gh-birds, .gh-fly, .gh-dove-rise { display: none; }
+  .gh-motes, .gh-fall, .gh-dove-glide, .gh-birds, .gh-fly, .gh-dove-rise, .gh-aura, .gh-veil { display: none; }
+  .gh-cflame { opacity: 1; transform: none; } .gh-lit-msg { opacity: 1; transform: none; } .gh-warm { opacity: 1; } .gh-lit-hint { display: none; }
+  .hv-grace[data-photo="1"] .gh-fig::before { opacity: 0.8; }
   .gh-drop { opacity: 0; }
   .gh-ripples i { opacity: 0.55; transform: translate(-50%, -50%) scale(0.3); }
   .gh-ripples i:nth-child(2) { transform: translate(-50%, -50%) scale(0.55); opacity: 0.4; }

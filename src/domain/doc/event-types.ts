@@ -69,6 +69,8 @@ export interface EventTypeInfo {
   cta: string;
   /** What the pre-filled WhatsApp message to Stack Bridge Labs says. */
   enquiry: string;
+  /** The invitation is about a child: “about” shows the child’s second portrait (the `story` photograph) beside the words. */
+  portraitStory?: boolean;
 }
 
 const gold = ["#D9B65D", "#F1DFA6", "#FFFFFF", "#E8D8A8", "#C9CED6", "#B9606B"];
@@ -94,7 +96,7 @@ export const EVENT_TYPE_INFO: Record<EventType, EventTypeInfo> = {
 
   religious_ceremony: { label: "Religious ceremony", category: "religious", subject: "occasion", tone: "celebratory", voice: "ceremony", celebration: "petals", couple: false, figures: "classic", phrase: "generic", confetti: [], cta: "Create My Ceremony Invite", enquiry: "a religious ceremony invitation" },
   // A baptism is reverent before it is festive: nothing falls or bursts when it opens (the template's own scene supplies the movement).
-  baptism: { label: "Baptism / christening", category: "baptism", subject: "person", tone: "celebratory", voice: "ceremony", celebration: "none", couple: false, figures: "western", phrase: "generic", confetti: [], cta: "Create My Baptism Invite", enquiry: "a baptism invitation" },
+  baptism: { label: "Baptism / christening", category: "baptism", subject: "person", tone: "celebratory", voice: "ceremony", celebration: "none", couple: false, figures: "western", phrase: "generic", confetti: [], cta: "Create My Baptism Invite", enquiry: "a baptism invitation", portraitStory: true },
   cultural_event: { label: "Cultural event", category: "cultural", subject: "occasion", tone: "celebratory", voice: "ceremony", celebration: "confetti", couple: false, figures: "classic", phrase: "generic", confetti: ["#D9B65D", "#B9606B", "#2F7D62", "#F1DFA6", "#FFFFFF", "#E8D8A8"], cta: "Create My Event Invite", enquiry: "a cultural event invitation" },
   festival: { label: "Festival", category: "festival", subject: "occasion", tone: "celebratory", voice: "ceremony", celebration: "confetti", couple: false, figures: "classic", phrase: "generic", confetti: ["#F6A21E", "#EE7C12", "#D9B65D", "#B9606B", "#FFFFFF", "#F9C23C"], cta: "Create My Festival Invite", enquiry: "a festival invitation" },
 

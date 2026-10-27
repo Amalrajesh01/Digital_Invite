@@ -1711,13 +1711,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | Playfair Display for names and headings, Inter for reading text, Cormorant Garamond for flourishes |
 | **Opening** | Film title sequence |
 | **Hero composition** | Baptism — doors open on dawn |
-| **Section layout** | Hero → About the occasion → Prayer / reading → People → A message → Ceremonies → Countdown → Events → Live stream → Venue & map → Travel & stay → Gallery → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | Everything is drawn and lit; a photograph of the church or the child is dropped into the dawn and lit by it. |
+| **Section layout** | Hero → About the occasion → Gallery → Prayer / reading → People → A message → Ceremonies → Countdown → Events → Live stream → Venue & map → Travel & stay → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | The child’s portrait fills the doorway the doors open on, lit by the dawn; the gallery is a cinematic reel of the first months. |
 | **Animation strategy** | A short title sequence, the doors open, light floods in over four seconds, two doves rise and gold dust drifts upward; then it settles. |
 | **Interactive features** | A film title sequence opens it; Verse, family and service in order; Livestream for family far away; A keepsake wall afterwards |
 | **Emotional tone** | Cinematic, hopeful, complete |
 | **Storytelling structure** | The full story: the child, the verse, the family, the service, the day, the livestream for those far away and a keepsake afterwards. |
-| **Gallery treatment** | A film strip of photographs from the day, afterwards. |
+| **Gallery treatment** | A horizontal cinematic reel: swipe through large frames, each with its chapter, in the dark of the film. |
 | **Transition style** | Scene-by-scene: each section arrives like the next shot. |
 | **Motion profile** | Cinematic |
 | **Music recommendations** | Immersed; Eternal Hope; Ascending the Vale (first is the default) |
@@ -1741,13 +1741,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | Italiana for names and headings, Inter for reading text, Cormorant Garamond for flourishes |
 | **Opening** | Swipe up |
 | **Hero composition** | Baptism — clouds and a dove |
-| **Section layout** | Hero → Prayer / reading → About the occasion → People → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | A portrait of the child sits in a soft oval of cloud, or the scene stands alone; nothing is cropped hard. |
+| **Section layout** | Hero → Prayer / reading → About the occasion → Gallery → People → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | The child’s portrait in a large oval of light, revealed as the clouds part; a second portrait above “our little story”; floating memory cards. |
 | **Animation strategy** | Clouds drift at two speeds, the ray breathes, a dove crosses once and gold dust rises slowly. |
 | **Interactive features** | Lift the sky to open; Verse set large; RSVP and a wall of blessings |
 | **Emotional tone** | Gentle, bright, reverent |
 | **Storytelling structure** | The verse comes straight after the opening; then the child, the people who hold them, and the day. |
-| **Gallery treatment** | Photographs sit on soft white cards with generous space. |
+| **Gallery treatment** | Floating memory cards on soft white: they drift very gently, each with a line beneath. |
 | **Transition style** | Sections rise out of the clouds with a slow fade. |
 | **Motion profile** | Elegant |
 | **Music recommendations** | Heart of Nowhere; Ascending the Vale; Airship Serenity (first is the default) |
@@ -1771,13 +1771,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | Prata for names and headings, Jost for reading text, Pinyon Script for flourishes |
 | **Opening** | A spotlight finds the names |
 | **Hero composition** | Baptism — a beam of light |
-| **Section layout** | Hero → Prayer / reading → About the occasion → A message → Events → Live stream → Venue & map → People → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | The beam is the only decoration; a portrait, if there is one, is lit by it and shown full height. |
+| **Section layout** | Hero → Prayer / reading → About the occasion → Gallery → A message → Events → Live stream → Venue & map → People → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A large oval portrait lit by the falling beam; the gallery is a quiet vertical story, one photograph at a time. |
 | **Animation strategy** | The light descends in two seconds and then only breathes; feathers fall once, slowly. |
 | **Interactive features** | A spotlight finds the name; Blessing read in full; RSVP at the end |
 | **Emotional tone** | Tender, hushed, luminous |
 | **Storytelling structure** | The priestly blessing first, then the letter from the family, then the order of the day. |
-| **Gallery treatment** | A quiet row of photographs under the same light. |
+| **Gallery treatment** | A quiet vertical story: one photograph at a time, each settling into the light as it arrives. |
 | **Transition style** | Each section is lit from above as it arrives. |
 | **Motion profile** | Cinematic |
 | **Music recommendations** | Canon in D for Two Harps; Heart of Nowhere; Gymnopedie No. 1 (first is the default) |
@@ -1801,13 +1801,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | Jost for names and headings, Karla for reading text, Cormorant Garamond for flourishes |
 | **Opening** | The tide rolls in |
 | **Hero composition** | Baptism — still water |
-| **Section layout** | Hero → About the occasion → Ceremonies → Prayer / reading → Events → Live stream → Venue & map → People → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | Water is drawn, not photographed; the family’s photograph sits in a round frame on the surface. |
+| **Section layout** | Hero → About the occasion → Gallery → Ceremonies → Prayer / reading → Events → Live stream → Venue & map → People → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A round portrait on the water, ringed by rings of light; the gallery flows sideways like a tide. |
 | **Animation strategy** | One drop falls and rings widen for as long as the page is open, very slowly; reduced-motion shows the rings still. |
 | **Interactive features** | The tide rolls in to open; Each step of the service explained; RSVP and blessings |
 | **Emotional tone** | Calm, clear, renewing |
 | **Storytelling structure** | The sacrament explained step by step, then the verse, then the day. |
-| **Gallery treatment** | Photographs float on pale glass-like cards. |
+| **Gallery treatment** | A reel of photographs that flows sideways, like a tide. |
 | **Transition style** | Sections surface from below like something rising through water. |
 | **Motion profile** | Immersive |
 | **Music recommendations** | Northern Glade; Skye Cuillin; Heart of Nowhere (first is the default) |
@@ -1831,13 +1831,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | Marcellus for names and headings, Mulish for reading text, Cormorant Garamond for flourishes |
 | **Opening** | Light the lamp |
 | **Hero composition** | Baptism — kasavu arch and church |
-| **Section layout** | Hero → People → A message → About the occasion → Prayer / reading → Ceremonies → Events → Live stream → Venue & map → Dress code & palette → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | The parish church or the child in an arch edged with a kasavu band; a second photograph of the grandparents beside the family section. |
+| **Section layout** | Hero → People → A message → About the occasion → Gallery → Prayer / reading → Ceremonies → Events → Live stream → Venue & map → Dress code & palette → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | The family’s portrait with the child in a kasavu-edged arch; the gallery in gilded frames; the parish church beside the venue. |
 | **Animation strategy** | The lamp is lit, the kasavu band draws in, and the cross rises into place; nothing else moves. |
 | **Interactive features** | Light the lamp to open; Family introduced by their own names for each other; Service explained for guests of other churches |
 | **Emotional tone** | Rooted, warm, ceremonial |
 | **Storytelling structure** | The family first — Appachan, Ammachi, parents, godparents — then the letter, the verse and the service. |
-| **Gallery treatment** | Photographs in cream cards with gold keylines. |
+| **Gallery treatment** | Gilded portrait frames with a plaque under each, hung together. |
 | **Transition style** | Kasavu lines draw between sections. |
 | **Motion profile** | Elegant |
 | **Music recommendations** | Ascending the Vale; Canon in D for Two Harps; Heart of Nowhere (first is the default) |
@@ -1861,13 +1861,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | DM Serif Display for names and headings, Nunito for reading text, Sacramento for flourishes |
 | **Opening** | Monogram drawn in light |
 | **Hero composition** | Baptism — crown and stars |
-| **Section layout** | Hero → About the occasion → The beginning (timeline) → People → Prayer / reading → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | A portrait of the little prince in a crowned oval; otherwise the crown and stars carry the page. |
+| **Section layout** | Hero → About the occasion → The beginning (timeline) → Gallery → People → Prayer / reading → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A round portrait under a small gold crown; the gallery tells the first months as storybook pages. |
 | **Animation strategy** | The initial draws itself in light, the crown settles, the stars come out one at a time and twinkle. |
 | **Interactive features** | Monogram drawn in light; A small timeline of the first weeks; RSVP and wishes |
 | **Emotional tone** | Warm, storybook, proud |
 | **Storytelling structure** | The weeks of waiting set as a short timeline, then the people who love him, then the day. |
-| **Gallery treatment** | Photographs as storybook plates with a thin gold rule. |
+| **Gallery treatment** | A storybook told page by page: a large photograph and the line that goes with it. |
 | **Transition style** | Sections turn in like pages. |
 | **Motion profile** | Elegant |
 | **Music recommendations** | Simple Duet; Morning; Eternal Hope (first is the default) |
@@ -1891,13 +1891,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | Playfair Display for names and headings, Mulish for reading text, Great Vibes for flourishes |
 | **Opening** | Curtains part |
 | **Hero composition** | Baptism — flower garland |
-| **Section layout** | Hero → About the occasion → Prayer / reading → People → A message → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | An arch of flowers frames a portrait of the little princess; the garland is drawn, so it never covers her face. |
+| **Section layout** | Hero → About the occasion → Gallery → Prayer / reading → People → A message → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | An arched portrait inside a garland of tiny flowers; the gallery in arched frames with a sprig at each corner. |
 | **Animation strategy** | Curtains part, the garland grows from the base of the arch and petals drift once. |
 | **Interactive features** | Curtains part to open; Verse in script; RSVP and wishes |
 | **Emotional tone** | Sweet, graceful, light |
 | **Storytelling structure** | The child and her name first; the family and the verse follow. |
-| **Gallery treatment** | Photographs in arched frames. |
+| **Gallery treatment** | Arched frames with a sprig and a white flower at two corners, which open as each frame arrives. |
 | **Transition style** | Petals drift between sections, once. |
 | **Motion profile** | Elegant |
 | **Music recommendations** | Simple Duet; There is Romance; Cottages (first is the default) |
@@ -1921,13 +1921,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | Libre Caslon Display for names and headings, Karla for reading text, EB Garamond for flourishes |
 | **Opening** | Wax-sealed envelope |
 | **Hero composition** | Baptism — the family tree |
-| **Section layout** | Hero → A message → People → About the occasion → Prayer / reading → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | An old photograph of the grandparents, or the hands of three generations, set as a sepia plate. |
+| **Section layout** | Hero → A message → People → About the occasion → Gallery → Prayer / reading → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | An old photograph of the grandparents with the child, as a sepia plate; the gallery as snapshots in an album. |
 | **Animation strategy** | The tree draws itself from the roots up; names appear as each branch reaches them. |
 | **Interactive features** | Open the envelope — a letter from the grandparents; The family tree draws in; A wall of blessings |
 | **Emotional tone** | Rooted, nostalgic, grateful |
 | **Storytelling structure** | The elders first, with a letter in their own words; then the parents; then the child they are praying for. |
-| **Gallery treatment** | Plates with a thin paper border, like an album. |
+| **Gallery treatment** | Snapshots, tilted a little, like an album left open on an old table. |
 | **Transition style** | Pages turn with a soft shadow. |
 | **Motion profile** | Elegant |
 | **Music recommendations** | Canon in D Major; Cottages; Prelude in C (BWV 846) (first is the default) |
@@ -1951,13 +1951,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | Cormorant Garamond for names and headings, Inter for reading text |
 | **Opening** | Doors open |
 | **Hero composition** | Baptism — the nave at night |
-| **Section layout** | Hero → Ceremonies → Prayer / reading → Events → Live stream → Venue & map → About the occasion → People → A message → Gallery → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | Architecture first: a photograph of the church itself, or the drawn nave; the child’s portrait appears later, in a lit niche. |
+| **Section layout** | Hero → Ceremonies → Prayer / reading → Events → Live stream → Venue & map → About the occasion → Gallery → People → A message → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | The child in a pointed nave window, candle-lit; the gallery in gold frames on a dark wall. |
 | **Animation strategy** | Doors part, arches recede, the window brightens and candles are lit left to right; then only the flames move. |
 | **Interactive features** | Open the church doors; Order of service set like a missal; Directions to the church |
 | **Emotional tone** | Hushed, sacred, grand |
 | **Storytelling structure** | The order of service first, as in a missal; then the verse, then the people. |
-| **Gallery treatment** | Photographs set as niches in a dark wall. |
+| **Gallery treatment** | Gold frames on a dark wall, as if lit by the candles below them. |
 | **Transition style** | Each section is lit by candle: a slow rise from dark. |
 | **Motion profile** | Cinematic |
 | **Music recommendations** | Heart of Nowhere; Ascending the Vale; Immersed (first is the default) |
@@ -1981,13 +1981,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | Tenor Sans for names and headings, Jost for reading text, Allura for flourishes |
 | **Opening** | Ink and wash |
 | **Hero composition** | Baptism — dove and olive branch |
-| **Section layout** | Hero → Prayer / reading → About the occasion → Events → Live stream → Venue & map → People → A message → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | A stained-glass or sky photograph if the family has one; otherwise the drawn dove stands alone. |
+| **Section layout** | Hero → Prayer / reading → About the occasion → Gallery → Events → Live stream → Venue & map → People → A message → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A round portrait under the dove; the gallery a clean grid on white. |
 | **Animation strategy** | The dove glides in from the left over eight seconds, then hovers; two feathers fall. |
 | **Interactive features** | Ink and wash fade to open; Verse about the dove; RSVP and blessings |
 | **Emotional tone** | Peaceful, airy, hopeful |
 | **Storytelling structure** | The verse of the Spirit descending, then the child, then the practical details. |
-| **Gallery treatment** | Photographs on white with a pencil-thin border. |
+| **Gallery treatment** | A strict, clean grid on white with pencil-thin captions: air around every photograph. |
 | **Transition style** | Sections drift in sideways like a feather. |
 | **Motion profile** | Elegant |
 | **Music recommendations** | Skye Cuillin; Northern Glade; Ascending the Vale (first is the default) |
@@ -2011,13 +2011,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | EB Garamond for names and headings, Inter for reading text |
 | **Opening** | Open the storybook |
 | **Hero composition** | Baptism — the open book |
-| **Section layout** | Hero → Prayer / reading → About the occasion → Ceremonies → Events → Live stream → Venue & map → People → A message → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | The book is drawn with no legible text; a photograph, if used, is a portrait of the child beside the verse. |
+| **Section layout** | Hero → Prayer / reading → About the occasion → Gallery → Ceremonies → Events → Live stream → Venue & map → People → A message → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | An oval portrait above the open book; the gallery as editorial plates. |
 | **Animation strategy** | The pages ruffle open, light rises from the gutter and the ribbon falls into place. |
 | **Interactive features** | Open the book; A verse set large, with its reference and translation; RSVP |
 | **Emotional tone** | Studious, devout, warm |
 | **Storytelling structure** | The verse first and largest; then the child, the order of service and the day. |
-| **Gallery treatment** | Photographs as book plates. |
+| **Gallery treatment** | Editorial spreads, like plates in an old book. |
 | **Transition style** | Pages turn between sections. |
 | **Motion profile** | Elegant |
 | **Music recommendations** | Prelude in C (BWV 846); Gymnopedie No. 1; Immersed (first is the default) |
@@ -2041,13 +2041,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | Bodoni Moda for names and headings, Hanken Grotesk for reading text, Pinyon Script for flourishes |
 | **Opening** | A flower blooms |
 | **Hero composition** | Baptism — lilies |
-| **Section layout** | Hero → About the occasion → Prayer / reading → People → Events → Live stream → Venue & map → Gallery → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | A lily photograph or a portrait of the child, framed by drawn stems; photographs are never covered by a flower. |
+| **Section layout** | Hero → About the occasion → Gallery → Prayer / reading → People → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | An oval portrait among lilies that grow up the page; the gallery in arched frames with leaves and a white flower. |
 | **Animation strategy** | The stems grow upward, the lilies open one at a time and petals drift down. |
 | **Interactive features** | A flower blooms to open; A verse about lilies; RSVP and wishes |
 | **Emotional tone** | Fresh, fragrant, graceful |
 | **Storytelling structure** | The child’s name and a verse about the lilies; then the family, then the day. |
-| **Gallery treatment** | Photographs in tall frames with a hairline. |
+| **Gallery treatment** | Arched frames with leaves and white flowers that open as the page is scrolled. |
 | **Transition style** | A single stem grows between sections. |
 | **Motion profile** | Elegant |
 | **Music recommendations** | Cottages; There is Romance; Skye Cuillin (first is the default) |
@@ -2071,13 +2071,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | Fraunces for names and headings, Nunito for reading text, Sacramento for flourishes |
 | **Opening** | The sun rises |
 | **Hero composition** | Baptism — sunrise |
-| **Section layout** | Hero → About the occasion → Events → Live stream → Prayer / reading → Venue & map → People → A message → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | A sunlit landscape or the child’s portrait warmed by the light; the sun is drawn and never replaces a photograph. |
+| **Section layout** | Hero → About the occasion → Gallery → Events → Live stream → Prayer / reading → Venue & map → People → A message → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | The portrait rises as the sun does; the gallery is a vertical story lit like the morning. |
 | **Animation strategy** | The sun rises for six seconds and then only breathes; light rays turn very slowly; birds cross once. |
 | **Interactive features** | The sun rises to open; The morning as a timeline; RSVP |
 | **Emotional tone** | Warm, hopeful, new |
 | **Storytelling structure** | The morning as a timeline: the service, the blessing, breakfast. |
-| **Gallery treatment** | Photographs with a warm wash. |
+| **Gallery treatment** | A vertical story lit like the morning: each photograph brightens as it arrives. |
 | **Transition style** | Each section is lit from the horizon. |
 | **Motion profile** | Cinematic |
 | **Music recommendations** | Morning; Wholesome; Inspired (first is the default) |
@@ -2101,13 +2101,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | Instrument Serif for names and headings, Mulish for reading text |
 | **Opening** | Title card |
 | **Hero composition** | Baptism — open hands |
-| **Section layout** | Hero → Prayer / reading → About the occasion → People → Ceremonies → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | The artwork is symbolic — hands and light — so no depiction of Jesus is needed; a portrait of the child may sit above the hands. |
+| **Section layout** | Hero → Prayer / reading → About the occasion → Gallery → People → Ceremonies → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A soft oval portrait above two open hands and a small flame; the gallery of floating cards begins with a small hand holding a finger. |
 | **Animation strategy** | The hands are drawn in a single stroke, the flame is lit and the hillside colours wash in. |
 | **Interactive features** | A title card opens it; Gospel verse set large; RSVP |
 | **Emotional tone** | Tender, reverent, simple |
 | **Storytelling structure** | The Gospel verse first; then the child; then the people who bring them. |
-| **Gallery treatment** | Photographs with a watercolour edge. |
+| **Gallery treatment** | Soft floating cards, with the first one a small hand holding a finger. |
 | **Transition style** | Sections wash in from the side. |
 | **Motion profile** | Elegant |
 | **Music recommendations** | Heart of Nowhere; Canon in D for Two Harps; Eternal Hope (first is the default) |
@@ -2131,13 +2131,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | Gloock for names and headings, Karla for reading text, Parisienne for flourishes |
 | **Opening** | Magazine cover |
 | **Hero composition** | Baptism — trellis garden |
-| **Section layout** | Hero → About the occasion → Prayer / reading → People → Events → Live stream → Venue & map → Dress code & palette → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | A garden photograph or the child’s portrait under the arch; leaves are drawn around, never over, a photograph. |
+| **Section layout** | Hero → About the occasion → Gallery → Prayer / reading → People → Events → Live stream → Venue & map → Dress code & palette → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | An arched portrait under a rose trellis; the gallery in arched frames among leaves. |
 | **Animation strategy** | The vine grows over the arch, roses open and one butterfly crosses. |
 | **Interactive features** | Open the garden journal; Verse about the tree by the water; RSVP and a wall of blessings |
 | **Emotional tone** | Fresh, growing, joyful |
 | **Storytelling structure** | A garden journal: the verse about the tree by the water, then the child, then the people and the day. |
-| **Gallery treatment** | Photographs in garden-tag frames. |
+| **Gallery treatment** | Arched frames in a garden of leaves, a flower at each corner. |
 | **Transition style** | Vines draw between sections. |
 | **Motion profile** | Elegant |
 | **Music recommendations** | Farm; Northern Glade; Wholesome (first is the default) |
@@ -2161,13 +2161,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | Cinzel for names and headings, Mulish for reading text, Cormorant Garamond for flourishes |
 | **Opening** | Wax seal |
 | **Hero composition** | Baptism — gold frame and cross |
-| **Section layout** | Hero → People → About the occasion → Ceremonies → Prayer / reading → Events → Live stream → Venue & map → Travel & stay → Dress code & palette → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | A formal portrait of the child or a photograph of the church inside the frame; ornament stays in the margin. |
+| **Section layout** | Hero → People → About the occasion → Gallery → Ceremonies → Prayer / reading → Events → Live stream → Venue & map → Travel & stay → Dress code & palette → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A formal portrait of the child in a gold arch; the gallery in gilded frames on burgundy. |
 | **Animation strategy** | The seal is broken, the frame draws itself in gold and the rays open behind the cross. |
 | **Interactive features** | Break the wax seal; The sacrament explained for guests of other churches; Seating and directions |
 | **Emotional tone** | Formal, ceremonial, grand |
 | **Storytelling structure** | Formal and ordered: the families, the service, the sacraments explained and the reception. |
-| **Gallery treatment** | Large photographs with gold keylines. |
+| **Gallery treatment** | Gilded frames on burgundy: formal, ceremonial, each with its plaque. |
 | **Transition style** | Gold lines draw between sections. |
 | **Motion profile** | Elegant |
 | **Music recommendations** | Canon in D Major; Ascending the Vale; Heart of Nowhere (first is the default) |
@@ -2191,13 +2191,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | DM Sans for names and headings, DM Sans for reading text, Cormorant Garamond for flourishes |
 | **Opening** | Architectural panels |
 | **Hero composition** | Baptism — circle and line |
-| **Section layout** | Hero → About the occasion → Prayer / reading → Events → Live stream → Venue & map → People → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | One photograph at most, as a full-width band; no decoration competes with it. |
+| **Section layout** | Hero → About the occasion → Gallery → Prayer / reading → Events → Live stream → Venue & map → People → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | One photograph as a full-width band under the name; the gallery a single strict grid. |
 | **Animation strategy** | Short, exact: the circle draws in one second, the cross a second later; nothing else moves. |
 | **Interactive features** | Panels slide apart to open; Numbered sections; RSVP |
 | **Emotional tone** | Calm, modern, exact |
 | **Storytelling structure** | Numbered sections: the child, the verse, the service, the place. |
-| **Gallery treatment** | A single strict grid. |
+| **Gallery treatment** | A single strict grid with hairline captions and almost no motion. |
 | **Transition style** | Short fades; hairline rules draw. |
 | **Motion profile** | Elegant |
 | **Music recommendations** | Prelude in C (BWV 846); Gymnopedie No. 1; Reawakening (first is the default) |
@@ -2221,13 +2221,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | Cormorant Garamond for names and headings, Nunito for reading text |
 | **Opening** | No opening |
 | **Hero composition** | Baptism — small footprints |
-| **Section layout** | Hero → About the occasion → Prayer / reading → Events → Live stream → Venue & map → People → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | A single detail — a hand, a foot, a candle — rather than a portrait; there are no balloons, cakes or party marks anywhere. |
+| **Section layout** | Hero → About the occasion → Gallery → Prayer / reading → Events → Live stream → Venue & map → People → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A small rounded portrait among small footprints; six quiet photographs — a hand, a foot, a candle. |
 | **Animation strategy** | The footprints appear one by one, very slowly, and the candle is lit at the end. |
 | **Interactive features** | Opens straight onto the page; Footprints and candle; RSVP |
 | **Emotional tone** | Quiet, intimate, small |
 | **Storytelling structure** | A short invitation: the blessing, who is invited, when and where. |
-| **Gallery treatment** | Not used by default. |
+| **Gallery treatment** | A small, quiet grid of six: a hand, a foot, a candle. |
 | **Transition style** | Plain, soft fades. |
 | **Motion profile** | Elegant |
 | **Music recommendations** | Reawakening; Gymnopedie No. 1; Cottages (first is the default) |
@@ -2251,13 +2251,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | Fraunces for names and headings, Hanken Grotesk for reading text |
 | **Opening** | Swipe up |
 | **Hero composition** | Baptism — circles of family |
-| **Section layout** | Hero → About the occasion → People → A message → Prayer / reading → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | Photographs of each person sit in the circles; a circle without a photograph shows initials. |
+| **Section layout** | Hero → About the occasion → People → Gallery → A message → Prayer / reading → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A round portrait among circles of family; the gallery a magazine spread of the family. |
 | **Animation strategy** | The circles drift together and settle, one at a time, as the page opens. |
 | **Interactive features** | Swipe up to open; Relationships named in the family’s own words; RSVP and blessings |
 | **Emotional tone** | Inclusive, warm, grounded |
 | **Storytelling structure** | Every person in the child’s life, in the words the family uses for them, then the day. |
-| **Gallery treatment** | A grid of circles. |
+| **Gallery treatment** | A magazine spread of the family: large and small photographs, captioned like an article. |
 | **Transition style** | Circles slide together between sections. |
 | **Motion profile** | Elegant |
 | **Music recommendations** | Almost Bliss; Simple Duet; Cottages (first is the default) |
@@ -2281,13 +2281,13 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Typography** | Cormorant Garamond for names and headings, Inter for reading text |
 | **Opening** | Connect the stars |
 | **Hero composition** | Baptism — dusk and a bow |
-| **Section layout** | Hero → Prayer / reading → About the occasion → Events → Live stream → Venue & map → People → A message → RSVP → Guestbook & wishes → Guest pass → Video & voice wishes → Time capsule → Contacts |
-| **Image strategy** | A dusk sky photograph or a portrait lit from below; the stars and bow are drawn and never replace a photograph. |
+| **Section layout** | Hero → Prayer / reading → About the occasion → Gallery → Events → Live stream → Venue & map → People → A message → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A portrait under the bow and the first stars; floating cards of dark glass. |
 | **Animation strategy** | Stars appear in three waves, the bow rises and fades in slowly; reduced-motion shows the finished sky. |
 | **Interactive features** | Connect the stars to open; The verse of the bow; RSVP |
 | **Emotional tone** | Serene, hopeful, wondering |
 | **Storytelling structure** | The covenant verse first; then the child; then the evening’s order. |
-| **Gallery treatment** | Photographs as dark-glass panels. |
+| **Gallery treatment** | Floating cards of dark glass under the first stars. |
 | **Transition style** | Sections rise like stars: a slow fade up. |
 | **Motion profile** | Immersive |
 | **Music recommendations** | Frozen Star; Airship Serenity; Heart of Nowhere (first is the default) |
@@ -2297,6 +2297,156 @@ Twenty-five weddings, each with its own opening scene, hero composition, directi
 | **Package compatibility** | All packages (13 pages need Signature or Luxury) |
 | **Accessibility** | Text always sits on a solid-enough ground; the star field is decorative and hidden from screen readers. |
 | **Sample content** | `eden-baptism` |
+
+### Candle of Faith
+
+| | |
+|---|---|
+| **Template ID** | `candle-of-faith` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | One unlit candle waits beneath the child’s portrait. Light it, and a warm glow gathers, the flame flickers and a short blessing appears — and if the guest never touches it, everything is still there. |
+| **Target customer** | Evening services and candle-lit baptisms; Families who want a small ritual in the invitation itself; Any church that gives the child a baptismal candle |
+| **Visual style** | Vintage Film |
+| **Colour palette** | Candlelight — paper #FBF2E2, ink #3A2616, main #8A4E1E, accent #C48A2C, night #26170D |
+| **Typography** | Cormorant Garamond for names and headings, Mulish for reading text |
+| **Opening** | No opening |
+| **Hero composition** | Baptism — a candle to light |
+| **Section layout** | Hero → About the occasion → Gallery → Prayer / reading → Ceremonies → People → Events → Live stream → Venue & map → A message → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | The child’s portrait in a soft oval, warmed by the candle; the gallery is warm, intimate family photographs. |
+| **Animation strategy** | The flame appears on a tap, flickers gently and warms the page; a guest who never taps misses nothing, and reduced motion shows it lit. |
+| **Interactive features** | Light the candle (optional); A closing blessing revealed by the flame; Blessing cards and RSVP |
+| **Emotional tone** | Warm, intimate, reverent |
+| **Storytelling structure** | The service explained step by step, then the child, then the people who hold the light. |
+| **Gallery treatment** | A vertical story in the dark: each photograph arrives as though the candle had found it. |
+| **Transition style** | Sections warm up as they arrive. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | Prelude in C (BWV 846); Gymnopedie No. 1; Reawakening (first is the default) |
+| **Library filters** | traditional, romantic |
+| **Mobile behaviour** | The candle sits beneath the portrait and the whole candle is the tap target; the name is never behind it. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | Grain is faint and removed for reduced motion; captions never rely on the texture for legibility. |
+| **Sample content** | `caleb-baptism` |
+
+### White Roses
+
+| | |
+|---|---|
+| **Template ID** | `white-roses` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | A wreath of white roses opens around the child’s portrait; as the page is scrolled the wreath turns and the roses open a little more, and white petals fall once, slowly. |
+| **Target customer** | Spring and garden baptisms; Families with a rose garden or a grandmother who grows them; Daytime services with a garden lunch |
+| **Visual style** | Architectural |
+| **Colour palette** | White Rose — paper #FCF9F3, ink #2B352C, main #587A5E, accent #B89B63, night #243127 |
+| **Typography** | Bodoni Moda for names and headings, Hanken Grotesk for reading text, Great Vibes for flourishes |
+| **Opening** | A flower blooms |
+| **Hero composition** | Baptism — a wreath of white roses |
+| **Section layout** | Hero → About the occasion → A message → Gallery → Prayer / reading → People → Events → Live stream → Venue & map → Dress code & palette → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A round portrait ringed by roses; arched frames in the gallery with a sprig and a white flower at their corners. |
+| **Animation strategy** | The roses open one by one when the page opens, then turn and open further as the guest scrolls; petals fall once. |
+| **Interactive features** | A bloom to open; A letter from the grandmother; Blessing cards and RSVP |
+| **Emotional tone** | Fresh, fragrant, gentle |
+| **Storytelling structure** | The child first, a letter from the grandmother who grew the roses, then the day. |
+| **Gallery treatment** | Arched frames with leaves and white flowers that open as the page is scrolled. |
+| **Transition style** | A single petal drifts between sections. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | There is Romance; Cottages; Simple Duet (first is the default) |
+| **Library filters** | romantic, editorial |
+| **Mobile behaviour** | The wreath fills the width and the portrait is the centre of it; petals thin out behind the name. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | High-contrast stone and charcoal; no decorative information. |
+| **Sample content** | `rebecca-baptism` |
+
+### Little Miracle
+
+| | |
+|---|---|
+| **Template ID** | `little-miracle` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | A nursery mobile of pastel stars, a moon and a cloud turns slowly over the child’s portrait, and the first stars come out behind it: a small world made for one very new person. |
+| **Target customer** | A child who came after a long wait; Families who want something gentle and gender-neutral; Baptisms followed by a children’s lunch |
+| **Visual style** | Storybook |
+| **Colour palette** | Nursery Pastel — paper #FBF8F1, ink #35405A, main #5E83AA, accent #E39A94, night #27324B |
+| **Typography** | Fraunces for names and headings, Nunito for reading text, Sacramento for flourishes |
+| **Opening** | Connect the stars |
+| **Hero composition** | Baptism — a nursery mobile |
+| **Section layout** | Hero → About the occasion → The beginning (timeline) → Gallery → Prayer / reading → People → Events → Live stream → Venue & map → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A round portrait under the mobile; floating memory cards of the first months. |
+| **Animation strategy** | The ornaments swing on their strings at their own pace, stars twinkle, and the portrait glows once as it arrives. |
+| **Interactive features** | Connect the stars to open; A timeline of the waiting; Blessing cards and RSVP |
+| **Emotional tone** | Soft, wondering, grateful |
+| **Storytelling structure** | The years of waiting as a short timeline, then the child, then everyone who prayed. |
+| **Gallery treatment** | Memory cards that drift very gently, like the ornaments above. |
+| **Transition style** | Sections rise like stars, slowly. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | Simple Duet; Morning; Airship Serenity (first is the default) |
+| **Library filters** | animated, romantic |
+| **Mobile behaviour** | The mobile spans the width above the portrait; nothing hangs over the child’s face. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | Every page is plain content in reading order; the page-turn is decoration only. |
+| **Sample content** | `miriam-baptism` |
+
+### The Golden Cross
+
+| | |
+|---|---|
+| **Template ID** | `golden-cross` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | Two fine lines of gold draw a cross, slowly and once, and the child’s portrait is set in a ring where they meet; only then do the words arrive. |
+| **Target customer** | Catholic and Orthodox families who want the cross to lead; Formal but unfussy services; Anyone who prefers one beautiful gesture to many |
+| **Visual style** | Modern Minimal |
+| **Colour palette** | Gilt & Ivory — paper #FBF7EE, ink #2D2616, main #8C6B1F, accent #C9A24B, night #231D0F |
+| **Typography** | Cinzel for names and headings, Jost for reading text, Cormorant Garamond for flourishes |
+| **Opening** | Monogram drawn in light |
+| **Hero composition** | Baptism — a golden cross drawn in a line |
+| **Section layout** | Hero → About the occasion → Prayer / reading → Gallery → Ceremonies → People → Events → Live stream → Venue & map → A message → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | A round portrait at the crossing of the lines; framed portraits in the gallery. |
+| **Animation strategy** | The vertical line draws, then the horizontal, then the ends are set with small diamonds; the portrait fades in last. Nothing else moves. |
+| **Interactive features** | A monogram drawn in light opens it; The service explained step by step; RSVP |
+| **Emotional tone** | Reverent, exact, quiet |
+| **Storytelling structure** | The sign of the cross first, then the verse, then the order of the day. |
+| **Gallery treatment** | Gilded frames, each with its plaque. |
+| **Transition style** | A fine gold line draws between sections. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | Canon in D Major; Prelude in C (BWV 846); Heart of Nowhere (first is the default) |
+| **Library filters** | minimalist, traditional |
+| **Mobile behaviour** | The cross is centred and sized to the width; the circle holds the portrait and the lines never cross the face. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (13 pages need Signature or Luxury) |
+| **Accessibility** | Largest text of all five directions; colour never carries meaning alone; generous tap targets. |
+| **Sample content** | `matthew-baptism` |
+
+### Cloud Nine
+
+| | |
+|---|---|
+| **Template ID** | `cloud-nine` |
+| **Occasion** | Baptism & christening (starts as: baptism) |
+| **Creative concept** | Layers of soft cloud drift at their own speeds behind the child’s portrait, which rests on a cloud of its own; as the page is scrolled the layers part company and the portrait stays still. |
+| **Target customer** | Hill-station and mountain baptisms; Families who want light and air rather than ornament; Christmas-week and winter services |
+| **Visual style** | Watercolour |
+| **Colour palette** | Cloud Nine — paper #F3F8FC, ink #213349, main #4F86B3, accent #D0AE5C, night #17283F |
+| **Typography** | Fraunces for names and headings, Nunito for reading text, Great Vibes for flourishes |
+| **Opening** | Curtains part |
+| **Hero composition** | Baptism — layers of cloud |
+| **Section layout** | Hero → About the occasion → Gallery → Prayer / reading → People → Events → Live stream → Venue & map → Travel & stay → RSVP → Guestbook & wishes → Grand finale → Guest pass → Video & voice wishes → Time capsule → Contacts |
+| **Image strategy** | An oval portrait resting on a cloud; each photograph in the gallery arrives between two layers of sky. |
+| **Animation strategy** | Two layers of cloud drift sideways; on scroll the farther layer moves slowly and the nearer one faster; the portrait is the fixed point. |
+| **Interactive features** | Curtains of cloud part to open; Directions and travel for guests from afar; Blessing cards and RSVP |
+| **Emotional tone** | Light, airy, joyful |
+| **Storytelling structure** | The child, the verse, the family, and how to reach the hills. |
+| **Gallery treatment** | A vertical story, each photograph revealed between cloud scenes. |
+| **Transition style** | Sections lift out of the cloud. |
+| **Motion profile** | Elegant |
+| **Music recommendations** | Airship Serenity; Frozen Star; Heart of Nowhere (first is the default) |
+| **Library filters** | cinematic, animated |
+| **Mobile behaviour** | The portrait is centred above the fold; the cloud layers are simplified and sit behind the text, never in front of it. |
+| **Languages** | One language per invitation: the customer's own words, in any language |
+| **Package compatibility** | All packages (14 pages need Signature or Luxury) |
+| **Accessibility** | Text is always set on a plain ground; washes are decorative and low-contrast by design. |
+| **Sample content** | `luke-baptism` |
 
 ## Corporate event
 

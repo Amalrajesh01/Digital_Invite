@@ -3,7 +3,7 @@ import { SelectField, Switch, TextField } from "@/components/ui/Field";
 import { newId } from "@/lib/id";
 import { EVENT_TYPES, EVENT_TYPE_INFO, type EventType } from "@/domain/doc/event-types";
 import { CEREMONY_GLYPHS, type Ceremony } from "@/domain/doc/schema";
-import { IMAGE_SLOT_KEYS, IMAGE_SLOTS, assignSlot, ownSlotValue } from "@/domain/imagery/slots";
+import { assignSlot, ownSlotValue, slotDef, slotsFor } from "@/domain/imagery/slots";
 import { filmSourceFromUrl } from "@/invitation/engine/format";
 import { STREAM_PROVIDER_LABEL, streamLink } from "@/domain/live/stream";
 import { Glyph } from "@/invitation/engine/Glyphs";
@@ -79,8 +79,8 @@ export function KeyPhotos() {
   const { doc, update } = useDraft();
   return (
     <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
-      {IMAGE_SLOT_KEYS.map((slot) => {
-        const def = IMAGE_SLOTS[slot];
+      {slotsFor(doc.eventType).map((slot) => {
+        const def = slotDef(slot, doc.eventType);
         const noVenue = slot === "venue" && doc.venues.length === 0;
         return (
           <MediaField

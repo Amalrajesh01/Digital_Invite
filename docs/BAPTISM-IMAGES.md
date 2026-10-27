@@ -39,26 +39,31 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | # | Template | Sample | Hero | Details |
 |---|---|---|---|---|
-| 01 | [A New Beginning](#a-new-beginning) | Elias Abraham, Pala | stand-in: `UpNwL3hTcRg` | 1 stand-in · 0 generated · 5 pending |
-| 02 | [Heavenly Grace](#heavenly-grace) | Anya Mariam, Kochi | drawn scene only | 0 stand-in · 0 generated · 6 pending |
-| 03 | [A Blessing from Above](#blessing-from-above) | Nathan Varghese, Kottayam | drawn scene only | 0 stand-in · 0 generated · 6 pending |
-| 04 | [The Sacred Waters](#sacred-waters) | Ezra Samuel, Chennai | drawn scene only | 0 stand-in · 0 generated · 6 pending |
-| 05 | [Kerala Christian Heritage](#kerala-christian-heritage) | Maria Elizabeth, Thiruvalla | stand-in: `ouh94xUqOHk` | 1 stand-in · 0 generated · 5 pending |
-| 06 | [Little Prince of Grace](#little-prince-of-grace) | Aaron Joseph, Pune | drawn scene only | 0 stand-in · 0 generated · 6 pending |
-| 07 | [Little Princess of Heaven](#little-princess-of-heaven) | Hannah Grace, Bengaluru | drawn scene only | 0 stand-in · 0 generated · 6 pending |
-| 08 | [Generations of Faith](#generations-of-faith) | Isaac George, Pala | stand-in: `y0OAmd_COUM` | 1 stand-in · 0 generated · 5 pending |
-| 09 | [The Church of Light](#church-of-light) | Elena Rose, Mumbai | stand-in: `G5a1RNy55pw` | 2 stand-in · 0 generated · 4 pending |
-| 10 | [White Dove Blessing](#white-dove-blessing) | Gabriel Joseph, Panaji | drawn scene only | 0 stand-in · 0 generated · 6 pending |
-| 11 | [The Open Bible](#the-open-bible) | Daniel Abraham, Hyderabad | drawn scene only | 0 stand-in · 0 generated · 6 pending |
-| 12 | [Floral Grace](#floral-grace) | Liya Maria, Ernakulam | stand-in: `aauHMskRPa8` | 1 stand-in · 0 generated · 5 pending |
-| 13 | [Golden Morning](#golden-morning) | Ethan Christopher, Munnar | stand-in: `R9tPheZuGnA` | 1 stand-in · 0 generated · 5 pending |
-| 14 | [Jesus and the Little Child](#jesus-and-the-little-child) | Immanuel David, Thrissur | drawn scene only | 0 stand-in · 0 generated · 6 pending |
-| 15 | [A Garden of Blessings](#garden-of-blessings) | Naomi Ann, Kozhikode | stand-in: `4KkTFccuZ0M` | 1 stand-in · 0 generated · 5 pending |
-| 16 | [Royal Catholic Elegance](#royal-catholic-elegance) | Sebastian Xavier, Mangaluru | stand-in: `QPL_171Kf5Q` | 1 stand-in · 0 generated · 5 pending |
-| 17 | [Modern Minimal Grace](#modern-minimal-grace) | Noah Philip, New Delhi | stand-in: `zx0Xt9u1ekw` | 1 stand-in · 0 generated · 5 pending |
-| 18 | [The Little Blessing](#the-little-blessing) | Ivy Joseph, Thiruvananthapuram | stand-in: `ybvTwLSBtSY` | 1 stand-in · 0 generated · 5 pending |
-| 19 | [Family in Faith](#family-in-faith) | Josiah Peter, Kolkata | stand-in: `ZLmLOclfeE4` | 1 stand-in · 0 generated · 5 pending |
-| 20 | [Celestial Promise](#celestial-promise) | Eden Abigail, Coimbatore | stand-in: `3pW91fGAKiE` | 1 stand-in · 0 generated · 5 pending |
+| 01 | [A New Beginning](#a-new-beginning) | Elias Abraham, Pala | stand-in: `wc-61851789` | 3 stand-in · 0 generated · 3 pending |
+| 02 | [Heavenly Grace](#heavenly-grace) | Anya Mariam, Kochi | stand-in: `wc-71916143` | 3 stand-in · 0 generated · 3 pending |
+| 03 | [A Blessing from Above](#blessing-from-above) | Nathan Varghese, Kottayam | stand-in: `wc-125854992` | 3 stand-in · 0 generated · 3 pending |
+| 04 | [The Sacred Waters](#sacred-waters) | Ezra Samuel, Chennai | stand-in: `ZzlLBmKFxpA` | 2 stand-in · 0 generated · 4 pending |
+| 05 | [Kerala Christian Heritage](#kerala-christian-heritage) | Maria Elizabeth, Thiruvalla | stand-in: `wc-160054700` | 4 stand-in · 0 generated · 2 pending |
+| 06 | [Little Prince of Grace](#little-prince-of-grace) | Aaron Joseph, Pune | stand-in: `wc-47372743` | 2 stand-in · 0 generated · 4 pending |
+| 07 | [Little Princess of Heaven](#little-princess-of-heaven) | Hannah Grace, Bengaluru | stand-in: `wc-89085674` | 2 stand-in · 0 generated · 4 pending |
+| 08 | [Generations of Faith](#generations-of-faith) | Isaac George, Pala | stand-in: `wc-86627271` | 2 stand-in · 0 generated · 4 pending |
+| 09 | [The Church of Light](#church-of-light) | Elena Rose, Mumbai | stand-in: `wc-89085515` | 3 stand-in · 0 generated · 3 pending |
+| 10 | [White Dove Blessing](#white-dove-blessing) | Gabriel Joseph, Panaji | stand-in: `wc-61851715` | 2 stand-in · 0 generated · 4 pending |
+| 11 | [The Open Bible](#the-open-bible) | Daniel Abraham, Hyderabad | stand-in: `wc-81580667` | 2 stand-in · 0 generated · 4 pending |
+| 12 | [Floral Grace](#floral-grace) | Liya Maria, Ernakulam | stand-in: `wc-138836814` | 3 stand-in · 0 generated · 3 pending |
+| 13 | [Golden Morning](#golden-morning) | Ethan Christopher, Munnar | stand-in: `wc-24332292` | 3 stand-in · 0 generated · 3 pending |
+| 14 | [Jesus and the Little Child](#jesus-and-the-little-child) | Immanuel David, Thrissur | stand-in: `wc-61847580` | 2 stand-in · 0 generated · 4 pending |
+| 15 | [A Garden of Blessings](#garden-of-blessings) | Naomi Ann, Kozhikode | stand-in: `wc-85446402` | 3 stand-in · 0 generated · 3 pending |
+| 16 | [Royal Catholic Elegance](#royal-catholic-elegance) | Sebastian Xavier, Mangaluru | stand-in: `wc-61856883` | 3 stand-in · 0 generated · 3 pending |
+| 17 | [Modern Minimal Grace](#modern-minimal-grace) | Noah Philip, New Delhi | stand-in: `wc-61856876` | 2 stand-in · 0 generated · 4 pending |
+| 18 | [The Little Blessing](#the-little-blessing) | Ivy Joseph, Thiruvananthapuram | stand-in: `wDGrvGUWOpE` | 2 stand-in · 0 generated · 4 pending |
+| 19 | [Family in Faith](#family-in-faith) | Josiah Peter, Kolkata | stand-in: `wc-190843747` | 3 stand-in · 0 generated · 3 pending |
+| 20 | [Celestial Promise](#celestial-promise) | Eden Abigail, Coimbatore | stand-in: `wc-71383191` | 3 stand-in · 0 generated · 3 pending |
+| 21 | [Candle of Faith](#candle-of-faith) | Caleb Mathew, Bengaluru | stand-in: `wc-131739330` | 3 stand-in · 0 generated · 3 pending |
+| 22 | [White Roses](#white-roses) | Rebecca Rose, Alappuzha | stand-in: `wc-71608793` | 3 stand-in · 0 generated · 3 pending |
+| 23 | [Little Miracle](#little-miracle) | Miriam Joy, Visakhapatnam | stand-in: `wc-61767624` | 2 stand-in · 0 generated · 4 pending |
+| 24 | [The Golden Cross](#golden-cross) | Matthew Peter, Vasai | stand-in: `qx7ZQwbgm1c` | 3 stand-in · 0 generated · 3 pending |
+| 25 | [Cloud Nine](#cloud-nine) | Luke Emmanuel, Shillong | stand-in: `wc-70993227` | 3 stand-in · 0 generated · 3 pending |
 
 ## A New Beginning
 <a id="a-new-beginning"></a>
@@ -67,11 +72,11 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | stand-in | `bp-anewbegi-hero` | `UpNwL3hTcRg` (licensed) | an open church door and a path into the sunrise · Syro-Malabar Catholic, Pala | 3:4 · 50/55 | yes · no |
-| parents | pending | `bp-anewbegi-pa` | — | The child’s parents with the baby · Syro-Malabar Catholic, Pala | 1:1 · 50/45 | no · no |
+| hero | stand-in | `bp-anewbegi-hero` | `wc-61851789` (licensed) | an open church door and a path into the sunrise · Syro-Malabar Catholic, Pala | 3:4 · 50/48 | yes · no |
+| parents | stand-in | `bp-anewbegi-pa` | `wc-131739330` (licensed) | The child’s parents with the baby · Syro-Malabar Catholic, Pala | 1:1 · 50/42 | yes · no |
 | grandparents | pending | `bp-anewbegi-gp` | — | The child’s grandparents together · Syro-Malabar Catholic, Pala | 1:1 · 50/45 | no · no |
 | godparents | pending | `bp-anewbegi-gd` | — | The child’s godparents together · Syro-Malabar Catholic, Pala | 1:1 · 50/45 | no · no |
-| church | pending | `bp-anewbegi-ch` | — | tall wooden church doors thrown open on a bright dawn, a path leading out into the light · Syro-Malabar Catholic, Pala | 16:9 · 50/45 | no · no |
+| church | stand-in | `bp-anewbegi-ch` | `ouh94xUqOHk` (licensed) | tall wooden church doors thrown open on a bright dawn, a path leading out into the light · Syro-Malabar Catholic, Pala | 16:9 · 50/50 | yes · no |
 | detail | pending | `bp-anewbegi-dt` | — | the shadow of a doorway on stone steps, the first sunlight just touching the threshold · Syro-Malabar Catholic, Pala | 4:5 · 50/45 | no · no |
 
 **Prompts**
@@ -90,9 +95,9 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | pending | `bp-heavgrac-hero` | — | the sleeping baby in her mother’s arms · Syro-Malabar Catholic, Kochi | 3:4 · 50/40 | no · no |
-| parents | pending | `bp-heavgrac-pa` | — | The child’s parents with the baby · Syro-Malabar Catholic, Kochi | 1:1 · 50/45 | no · no |
-| grandparents | pending | `bp-heavgrac-gp` | — | The child’s grandparents together · Syro-Malabar Catholic, Kochi | 1:1 · 50/45 | no · no |
+| hero | stand-in | `bp-heavgrac-hero` | `wc-71916143` (licensed) | the sleeping baby in her mother’s arms · Syro-Malabar Catholic, Kochi | 3:4 · 78/46 | yes · no |
+| parents | stand-in | `bp-heavgrac-pa` | `wc-71608793` (licensed) | The child’s parents with the baby · Syro-Malabar Catholic, Kochi | 1:1 · 62/42 | yes · no |
+| grandparents | stand-in | `bp-heavgrac-gp` | `y0OAmd_COUM` (licensed) | The child’s grandparents together · Syro-Malabar Catholic, Kochi | 1:1 · 55/62 | yes · no |
 | godparents | pending | `bp-heavgrac-gd` | — | The child’s godparents together · Syro-Malabar Catholic, Kochi | 1:1 · 50/45 | no · no |
 | church | pending | `bp-heavgrac-ch` | — | the white façade of a Kerala Syro-Malabar church with a tall cross, steps and coconut palms, morning sun · Syro-Malabar Catholic, Kochi | 16:9 · 50/45 | no · no |
 | detail | pending | `bp-heavgrac-dt` | — | a white lace christening gown hung over a wooden pew, with a single beam of light · Syro-Malabar Catholic, Kochi | 4:5 · 50/45 | no · no |
@@ -113,9 +118,9 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | pending | `bp-blesfromabov-hero` | — | the baby lifted into a beam of light · Malankara Orthodox, Kottayam | 3:4 · 50/40 | no · no |
-| parents | pending | `bp-blesfromabov-pa` | — | The child’s parents with the baby · Malankara Orthodox, Kottayam | 1:1 · 50/45 | no · no |
-| grandparents | pending | `bp-blesfromabov-gp` | — | The child’s grandparents together · Malankara Orthodox, Kottayam | 1:1 · 50/45 | no · no |
+| hero | stand-in | `bp-blesfromabov-hero` | `wc-125854992` (licensed) | the baby lifted into a beam of light · Malankara Orthodox, Kottayam | 3:4 · 46/46 | yes · no |
+| parents | stand-in | `bp-blesfromabov-pa` | `wc-70993227` (licensed) | The child’s parents with the baby · Malankara Orthodox, Kottayam | 1:1 · 52/40 | yes · no |
+| grandparents | stand-in | `bp-blesfromabov-gp` | `ZLmLOclfeE4` (licensed) | The child’s grandparents together · Malankara Orthodox, Kottayam | 1:1 · 52/52 | yes · no |
 | godparents | pending | `bp-blesfromabov-gd` | — | The child’s godparents together · Malankara Orthodox, Kottayam | 1:1 · 50/45 | no · no |
 | church | pending | `bp-blesfromabov-ch` | — | the interior of an Orthodox church: carved wooden altar screen, brass hanging lamps, a beam of light from a high window · Malankara Orthodox, Kottayam | 16:9 · 50/45 | no · no |
 | detail | pending | `bp-blesfromabov-dt` | — | a brass hanging lamp lit in a dim church, one ray of light across it · Malankara Orthodox, Kottayam | 4:5 · 50/45 | no · no |
@@ -136,8 +141,8 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | pending | `bp-sacrwate-hero` | — | water poured over the child’s head at the font · Church of South India, Chennai | 3:4 · 50/40 | no · no |
-| parents | pending | `bp-sacrwate-pa` | — | The child’s parents with the baby · Church of South India, Chennai | 1:1 · 50/45 | no · no |
+| hero | stand-in | `bp-sacrwate-hero` | `ZzlLBmKFxpA` (licensed) | water poured over the child’s head at the font · Church of South India, Chennai | 3:4 · 28/42 | yes · no |
+| parents | stand-in | `bp-sacrwate-pa` | `wc-61855196` (licensed) | The child’s parents with the baby · Church of South India, Chennai | 1:1 · 68/55 | yes · no |
 | grandparents | pending | `bp-sacrwate-gp` | — | The child’s grandparents together · Church of South India, Chennai | 1:1 · 50/45 | no · no |
 | godparents | pending | `bp-sacrwate-gd` | — | The child’s godparents together · Church of South India, Chennai | 1:1 · 50/45 | no · no |
 | church | pending | `bp-sacrwate-ch` | — | a CSI church with a white arched doorway and a small water garden, midday light · Church of South India, Chennai | 16:9 · 50/45 | no · no |
@@ -159,11 +164,11 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | stand-in | `bp-kerachriheri-hero` | `ouh94xUqOHk` (licensed) | the parish church in morning sun · Mar Thoma, Thiruvalla | 3:4 · 50/50 | yes · no |
-| parents | pending | `bp-kerachriheri-pa` | — | The child’s parents with the baby · Mar Thoma, Thiruvalla | 1:1 · 50/45 | no · no |
-| grandparents | pending | `bp-kerachriheri-gp` | — | The child’s grandparents together · Mar Thoma, Thiruvalla | 1:1 · 50/45 | no · no |
+| hero | stand-in | `bp-kerachriheri-hero` | `wc-160054700` (licensed) | the parish church in morning sun · Mar Thoma, Thiruvalla | 3:4 · 50/62 | yes · no |
+| parents | stand-in | `bp-kerachriheri-pa` | `wc-160054700` (licensed) | The child’s parents with the baby · Mar Thoma, Thiruvalla | 1:1 · 50/62 | yes · no |
+| grandparents | stand-in | `bp-kerachriheri-gp` | `wc-190844335` (licensed) | The child’s grandparents together · Mar Thoma, Thiruvalla | 1:1 · 48/50 | yes · no |
 | godparents | pending | `bp-kerachriheri-gd` | — | The child’s godparents together · Mar Thoma, Thiruvalla | 1:1 · 50/45 | no · no |
-| church | pending | `bp-kerachriheri-ch` | — | the façade of a Kerala parish church with a tall central gable, twin turrets and wide red steps, under a blue sky · Mar Thoma, Thiruvalla | 16:9 · 50/45 | no · no |
+| church | stand-in | `bp-kerachriheri-ch` | `ouh94xUqOHk` (licensed) | the façade of a Kerala parish church with a tall central gable, twin turrets and wide red steps, under a blue sky · Mar Thoma, Thiruvalla | 16:9 · 50/50 | yes · no |
 | detail | pending | `bp-kerachriheri-dt` | — | a brass nilavilakku lamp lit beside a Nasrani cross on a white cloth · Mar Thoma, Thiruvalla | 4:5 · 50/45 | no · no |
 
 **Prompts**
@@ -182,8 +187,8 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | pending | `bp-littprinofgrac-hero` | — | the baby in his christening suit · Latin Catholic, Pune | 3:4 · 50/40 | no · no |
-| parents | pending | `bp-littprinofgrac-pa` | — | The child’s parents with the baby · Latin Catholic, Pune | 1:1 · 50/45 | no · no |
+| hero | stand-in | `bp-littprinofgrac-hero` | `wc-47372743` (licensed) | the baby in his christening suit · Latin Catholic, Pune | 3:4 · 55/40 | yes · no |
+| parents | stand-in | `bp-littprinofgrac-pa` | `wc-70993227` (licensed) | The child’s parents with the baby · Latin Catholic, Pune | 1:1 · 52/40 | yes · no |
 | grandparents | pending | `bp-littprinofgrac-gp` | — | The child’s grandparents together · Latin Catholic, Pune | 1:1 · 50/45 | no · no |
 | godparents | pending | `bp-littprinofgrac-gd` | — | The child’s godparents together · Latin Catholic, Pune | 1:1 · 50/45 | no · no |
 | church | pending | `bp-littprinofgrac-ch` | — | the exterior of a stone Catholic church with a bell tower and a small garden, Pune · Latin Catholic, Pune | 16:9 · 50/45 | no · no |
@@ -191,7 +196,7 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 **Prompts**
 
-- **hero** — A natural, documentary-quality photograph. the baby in his christening suit. a four-month-old Indian baby boy in a white christening suit with a navy ribbon sash, sitting on his father’s lap, wide-eyed. Setting: a Latin Catholic church in Pune, the Church of the Good Shepherd, wooden pews and a small side altar. Light: soft midday window light, calm. Colours: navy, powder blue, small touches of gold. Composition: a round portrait of the baby, head and shoulders, with a plain dark-blue background to sit under a small gold crown. Aspect ratio 3:4.
+- **hero** — A natural, documentary-quality photograph. the baby in his christening suit. an eleven-month-old Indian baby boy in a white christening suit with a navy ribbon sash, sitting on his father’s lap, wide-eyed. Setting: a Latin Catholic church in Pune, the Church of the Good Shepherd, wooden pews and a small side altar. Light: soft midday window light, calm. Colours: navy, powder blue, small touches of gold. Composition: a round portrait of the baby, head and shoulders, with a plain dark-blue background to sit under a small gold crown. Aspect ratio 3:4.
 - **parents** — A natural, documentary-quality photograph. an Indian Catholic mother in a navy dress with a white lace collar, smiling at the baby; an Indian Catholic father in a navy suit and white shirt, his hand around the baby. They are shown together, warm and unposed, with their baby in the mother’s arms. Setting: a Latin Catholic church in Pune, the Church of the Good Shepherd, wooden pews and a small side altar. Light: soft midday window light, calm. Colours: navy, powder blue, small touches of gold. Composition: head-and-shoulders, centred, eyes on the baby, a soft out-of-focus background. Aspect ratio 1:1.
 - **grandparents** — A natural, documentary-quality photograph. an elderly Indian Catholic couple — he in a grey suit with a tie, she in a pale blue dress with a cardigan — seated close, holding a rosary. Setting: a Latin Catholic church in Pune, the Church of the Good Shepherd, wooden pews and a small side altar. Light: soft midday window light, calm. Colours: navy, powder blue, small touches of gold. Composition: seated or standing close together, head-and-shoulders to waist, a soft out-of-focus background. Aspect ratio 1:1.
 - **godparents** — A natural, documentary-quality photograph. a woman in a blue dress and a man in a blazer, godparents, in a church pew with a candle. Setting: a Latin Catholic church in Pune, the Church of the Good Shepherd, wooden pews and a small side altar. Light: soft midday window light, calm. Colours: navy, powder blue, small touches of gold. Composition: standing close together, waist-up, a soft out-of-focus background. Aspect ratio 1:1.
@@ -205,8 +210,8 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | pending | `bp-littprinofheav-hero` | — | the baby girl in her christening dress · Methodist, Bengaluru | 3:4 · 50/40 | no · no |
-| parents | pending | `bp-littprinofheav-pa` | — | The child’s parents with the baby · Methodist, Bengaluru | 1:1 · 50/45 | no · no |
+| hero | stand-in | `bp-littprinofheav-hero` | `wc-89085674` (licensed) | the baby girl in her christening dress · Methodist, Bengaluru | 3:4 · 42/55 | yes · no |
+| parents | stand-in | `bp-littprinofheav-pa` | `wc-138836814` (licensed) | The child’s parents with the baby · Methodist, Bengaluru | 1:1 · 40/40 | yes · no |
 | grandparents | pending | `bp-littprinofheav-gp` | — | The child’s grandparents together · Methodist, Bengaluru | 1:1 · 50/45 | no · no |
 | godparents | pending | `bp-littprinofheav-gd` | — | The child’s godparents together · Methodist, Bengaluru | 1:1 · 50/45 | no · no |
 | church | pending | `bp-littprinofheav-ch` | — | a white Methodist church entrance with pink bougainvillea over the porch · Methodist, Bengaluru | 16:9 · 50/45 | no · no |
@@ -228,9 +233,9 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | stand-in | `bp-geneoffait-hero` | `y0OAmd_COUM` (licensed) | four generations together · Jacobite Syrian, Pala | 3:4 · 50/60 | yes · no |
+| hero | stand-in | `bp-geneoffait-hero` | `wc-86627271` (licensed) | four generations together · Jacobite Syrian, Pala | 3:4 · 48/42 | yes · no |
 | parents | pending | `bp-geneoffait-pa` | — | The child’s parents with the baby · Jacobite Syrian, Pala | 1:1 · 50/45 | no · no |
-| grandparents | pending | `bp-geneoffait-gp` | — | The child’s grandparents together · Jacobite Syrian, Pala | 1:1 · 50/45 | no · no |
+| grandparents | stand-in | `bp-geneoffait-gp` | `wc-86627271` (licensed) | The child’s grandparents together · Jacobite Syrian, Pala | 1:1 · 48/42 | yes · no |
 | godparents | pending | `bp-geneoffait-gd` | — | The child’s godparents together · Jacobite Syrian, Pala | 1:1 · 50/45 | no · no |
 | church | pending | `bp-geneoffait-ch` | — | an old Jacobite church with a stone cross in the courtyard, laterite walls and a tiled roof · Jacobite Syrian, Pala | 16:9 · 50/45 | no · no |
 | detail | pending | `bp-geneoffait-dt` | — | an old family Bible with a brass clasp and a ribbon, text out of focus, on a carved wooden table · Jacobite Syrian, Pala | 4:5 · 50/45 | no · no |
@@ -251,12 +256,12 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | stand-in | `bp-churofligh-hero` | `G5a1RNy55pw` (licensed) | the lit window at the end of the nave · Roman Catholic, Mumbai | 3:4 · 50/40 | yes · no |
-| parents | pending | `bp-churofligh-pa` | — | The child’s parents with the baby · Roman Catholic, Mumbai | 1:1 · 50/45 | no · no |
+| hero | stand-in | `bp-churofligh-hero` | `wc-89085515` (licensed) | the lit window at the end of the nave · Roman Catholic, Mumbai | 3:4 · 76/42 | yes · no |
+| parents | stand-in | `bp-churofligh-pa` | `wc-131739330` (licensed) | The child’s parents with the baby · Roman Catholic, Mumbai | 1:1 · 50/42 | yes · no |
 | grandparents | pending | `bp-churofligh-gp` | — | The child’s grandparents together · Roman Catholic, Mumbai | 1:1 · 50/45 | no · no |
 | godparents | pending | `bp-churofligh-gd` | — | The child’s godparents together · Roman Catholic, Mumbai | 1:1 · 50/45 | no · no |
-| church | pending | `bp-churofligh-ch` | — | the interior of a gothic church: pointed arches, a coloured-glass window glowing at the far end, candles in front · Roman Catholic, Mumbai | 16:9 · 50/45 | no · no |
-| detail | stand-in | `bp-churofligh-dt` | `GAscwTkEOy8` (licensed) | rows of small candles glowing in a dark church, blurred into gold · Roman Catholic, Mumbai | 4:5 · 50/40 | yes · no |
+| church | stand-in | `bp-churofligh-ch` | `wc-90920879` (licensed) | the interior of a gothic church: pointed arches, a coloured-glass window glowing at the far end, candles in front · Roman Catholic, Mumbai | 16:9 · 50/55 | yes · no |
+| detail | pending | `bp-churofligh-dt` | — | rows of small candles glowing in a dark church, blurred into gold · Roman Catholic, Mumbai | 4:5 · 50/45 | no · no |
 
 **Prompts**
 
@@ -274,8 +279,8 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | pending | `bp-whitdovebles-hero` | — | the baby against open sky · Goan Catholic, Panaji | 3:4 · 50/40 | no · no |
-| parents | pending | `bp-whitdovebles-pa` | — | The child’s parents with the baby · Goan Catholic, Panaji | 1:1 · 50/45 | no · no |
+| hero | stand-in | `bp-whitdovebles-hero` | `wc-61851715` (licensed) | the baby against open sky · Goan Catholic, Panaji | 3:4 · 52/62 | yes · no |
+| parents | stand-in | `bp-whitdovebles-pa` | `wc-71608793` (licensed) | The child’s parents with the baby · Goan Catholic, Panaji | 1:1 · 62/42 | yes · no |
 | grandparents | pending | `bp-whitdovebles-gp` | — | The child’s grandparents together · Goan Catholic, Panaji | 1:1 · 50/45 | no · no |
 | godparents | pending | `bp-whitdovebles-gd` | — | The child’s godparents together · Goan Catholic, Panaji | 1:1 · 50/45 | no · no |
 | church | pending | `bp-whitdovebles-ch` | — | the iconic white baroque façade of a Goan church with twin towers and a zig-zag staircase against a blue sky · Goan Catholic, Panaji | 16:9 · 50/45 | no · no |
@@ -297,8 +302,8 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | pending | `bp-theopenbibl-hero` | — | an open Bible on a lectern, text unreadable · Church of South India, Hyderabad | 3:4 · 50/40 | no · no |
-| parents | pending | `bp-theopenbibl-pa` | — | The child’s parents with the baby · Church of South India, Hyderabad | 1:1 · 50/45 | no · no |
+| hero | stand-in | `bp-theopenbibl-hero` | `wc-81580667` (licensed) | an open Bible on a lectern, text unreadable · Church of South India, Hyderabad | 3:4 · 50/47 | yes · no |
+| parents | stand-in | `bp-theopenbibl-pa` | `wc-71608793` (licensed) | The child’s parents with the baby · Church of South India, Hyderabad | 1:1 · 62/42 | yes · no |
 | grandparents | pending | `bp-theopenbibl-gp` | — | The child’s grandparents together · Church of South India, Hyderabad | 1:1 · 50/45 | no · no |
 | godparents | pending | `bp-theopenbibl-gd` | — | The child’s godparents together · Church of South India, Hyderabad | 1:1 · 50/45 | no · no |
 | church | pending | `bp-theopenbibl-ch` | — | a plain, tall CSI church interior: wooden pews, a pulpit with an open Bible whose text is out of focus, tall windows · Church of South India, Hyderabad | 16:9 · 50/45 | no · no |
@@ -306,7 +311,7 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 **Prompts**
 
-- **hero** — A natural, documentary-quality photograph. an open Bible on a lectern, text unreadable. an eleven-year-old Indian boy in a simple white baptismal robe, standing in a baptistry up to his waist in water, hands folded, serious and glad. Setting: a Church of South India church in Hyderabad, plain wooden pews, a pulpit and a baptistry. Light: clean, even daylight from tall windows, calm and studious. Colours: parchment, walnut, burgundy. Composition: a lectern with an open book whose words cannot be read, soft focus, room above for the title. Aspect ratio 3:4.
+- **hero** — A natural, documentary-quality photograph. an open Bible on a lectern, text unreadable. a seven-month-old Indian baby boy in a white christening gown, held by his father beside the pulpit, a worn Bible open on the rail in front of them. Setting: a Church of South India church in Hyderabad, plain wooden pews, a pulpit and a baptistry. Light: clean, even daylight from tall windows, calm and studious. Colours: parchment, walnut, burgundy. Composition: a lectern with an open book whose words cannot be read, soft focus, room above for the title. Aspect ratio 3:4.
 - **parents** — A natural, documentary-quality photograph. an Indian Christian mother in a maroon saree, hand on her son’s shoulder, proud and calm; an Indian Christian father in a white shirt and dark trousers, standing beside his son. They are shown together, warm and unposed, with their baby in the mother’s arms. Setting: a Church of South India church in Hyderabad, plain wooden pews, a pulpit and a baptistry. Light: clean, even daylight from tall windows, calm and studious. Colours: parchment, walnut, burgundy. Composition: head-and-shoulders, centred, eyes on the baby, a soft out-of-focus background. Aspect ratio 1:1.
 - **grandparents** — A natural, documentary-quality photograph. an elderly Telugu Christian couple, he in a white shirt and veshti, she in a green saree, with a worn Bible between them. Setting: a Church of South India church in Hyderabad, plain wooden pews, a pulpit and a baptistry. Light: clean, even daylight from tall windows, calm and studious. Colours: parchment, walnut, burgundy. Composition: seated or standing close together, head-and-shoulders to waist, a soft out-of-focus background. Aspect ratio 1:1.
 - **godparents** — A natural, documentary-quality photograph. a pastor in a white shirt and a Sunday-school teacher in a blue saree, beside the baptistry. Setting: a Church of South India church in Hyderabad, plain wooden pews, a pulpit and a baptistry. Light: clean, even daylight from tall windows, calm and studious. Colours: parchment, walnut, burgundy. Composition: standing close together, waist-up, a soft out-of-focus background. Aspect ratio 1:1.
@@ -320,11 +325,11 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | stand-in | `bp-florgrac-hero` | `aauHMskRPa8` (licensed) | a white lily, or the baby with a lily · Syro-Malabar Catholic, Ernakulam | 3:4 · 50/40 | yes · no |
-| parents | pending | `bp-florgrac-pa` | — | The child’s parents with the baby · Syro-Malabar Catholic, Ernakulam | 1:1 · 50/45 | no · no |
+| hero | stand-in | `bp-florgrac-hero` | `wc-138836814` (licensed) | a white lily, or the baby with a lily · Syro-Malabar Catholic, Ernakulam | 3:4 · 40/40 | yes · no |
+| parents | stand-in | `bp-florgrac-pa` | `wc-70993227` (licensed) | The child’s parents with the baby · Syro-Malabar Catholic, Ernakulam | 1:1 · 52/40 | yes · no |
 | grandparents | pending | `bp-florgrac-gp` | — | The child’s grandparents together · Syro-Malabar Catholic, Ernakulam | 1:1 · 50/45 | no · no |
 | godparents | pending | `bp-florgrac-gd` | — | The child’s godparents together · Syro-Malabar Catholic, Ernakulam | 1:1 · 50/45 | no · no |
-| church | pending | `bp-florgrac-ch` | — | a small Kerala chapel with white walls and a red-tiled roof, framed by lilies in a garden bed · Syro-Malabar Catholic, Ernakulam | 16:9 · 50/45 | no · no |
+| church | stand-in | `bp-florgrac-ch` | `aauHMskRPa8` (licensed) | a small Kerala chapel with white walls and a red-tiled roof, framed by lilies in a garden bed · Syro-Malabar Catholic, Ernakulam | 16:9 · 50/40 | yes · no |
 | detail | pending | `bp-florgrac-dt` | — | a single white lily in close-up on a pale background, petals with soft veins · Syro-Malabar Catholic, Ernakulam | 4:5 · 50/45 | no · no |
 
 **Prompts**
@@ -343,11 +348,11 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | stand-in | `bp-goldmorn-hero` | `R9tPheZuGnA` (licensed) | the sun coming over the hills at the chapel · Church of South India, Munnar | 3:4 · 50/50 | yes · no |
-| parents | pending | `bp-goldmorn-pa` | — | The child’s parents with the baby · Church of South India, Munnar | 1:1 · 50/45 | no · no |
+| hero | stand-in | `bp-goldmorn-hero` | `wc-24332292` (licensed) | the sun coming over the hills at the chapel · Church of South India, Munnar | 3:4 · 38/52 | yes · no |
+| parents | stand-in | `bp-goldmorn-pa` | `wc-70993227` (licensed) | The child’s parents with the baby · Church of South India, Munnar | 1:1 · 52/40 | yes · no |
 | grandparents | pending | `bp-goldmorn-gp` | — | The child’s grandparents together · Church of South India, Munnar | 1:1 · 50/45 | no · no |
 | godparents | pending | `bp-goldmorn-gd` | — | The child’s godparents together · Church of South India, Munnar | 1:1 · 50/45 | no · no |
-| church | pending | `bp-goldmorn-ch` | — | a small white hillside chapel with a tin roof among tea bushes, morning mist and low sun · Church of South India, Munnar | 16:9 · 50/45 | no · no |
+| church | stand-in | `bp-goldmorn-ch` | `G5a1RNy55pw` (licensed) | a small white hillside chapel with a tin roof among tea bushes, morning mist and low sun · Church of South India, Munnar | 16:9 · 50/40 | yes · no |
 | detail | pending | `bp-goldmorn-dt` | — | a brass pot of tea steaming on a stone wall in morning light · Church of South India, Munnar | 4:5 · 50/45 | no · no |
 
 **Prompts**
@@ -366,8 +371,8 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | pending | `bp-jesuandthelitt-hero` | — | open hands and a child’s small hands · Malankara Orthodox, Thrissur | 3:4 · 50/40 | no · no |
-| parents | pending | `bp-jesuandthelitt-pa` | — | The child’s parents with the baby · Malankara Orthodox, Thrissur | 1:1 · 50/45 | no · no |
+| hero | stand-in | `bp-jesuandthelitt-hero` | `wc-61847580` (licensed) | open hands and a child’s small hands · Malankara Orthodox, Thrissur | 3:4 · 47/50 | yes · no |
+| parents | stand-in | `bp-jesuandthelitt-pa` | `wc-190844210` (licensed) | The child’s parents with the baby · Malankara Orthodox, Thrissur | 1:1 · 58/50 | yes · no |
 | grandparents | pending | `bp-jesuandthelitt-gp` | — | The child’s grandparents together · Malankara Orthodox, Thrissur | 1:1 · 50/45 | no · no |
 | godparents | pending | `bp-jesuandthelitt-gd` | — | The child’s godparents together · Malankara Orthodox, Thrissur | 1:1 · 50/45 | no · no |
 | church | pending | `bp-jesuandthelitt-ch` | — | an Orthodox church courtyard in Thrissur with a stone cross and a group of children walking in · Malankara Orthodox, Thrissur | 16:9 · 50/45 | no · no |
@@ -389,11 +394,11 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | stand-in | `bp-gardofbles-hero` | `4KkTFccuZ0M` (licensed) | the rose garden of the parish house · Latin Catholic, Kozhikode | 3:4 · 50/55 | yes · no |
-| parents | pending | `bp-gardofbles-pa` | — | The child’s parents with the baby · Latin Catholic, Kozhikode | 1:1 · 50/45 | no · no |
+| hero | stand-in | `bp-gardofbles-hero` | `wc-85446402` (licensed) | the rose garden of the parish house · Latin Catholic, Kozhikode | 3:4 · 42/32 | yes · no |
+| parents | stand-in | `bp-gardofbles-pa` | `wc-70993227` (licensed) | The child’s parents with the baby · Latin Catholic, Kozhikode | 1:1 · 52/40 | yes · no |
 | grandparents | pending | `bp-gardofbles-gp` | — | The child’s grandparents together · Latin Catholic, Kozhikode | 1:1 · 50/45 | no · no |
 | godparents | pending | `bp-gardofbles-gd` | — | The child’s godparents together · Latin Catholic, Kozhikode | 1:1 · 50/45 | no · no |
-| church | pending | `bp-gardofbles-ch` | — | a Latin Catholic church with a flower garden and a white pergola, Kozhikode · Latin Catholic, Kozhikode | 16:9 · 50/45 | no · no |
+| church | stand-in | `bp-gardofbles-ch` | `4KkTFccuZ0M` (licensed) | a Latin Catholic church with a flower garden and a white pergola, Kozhikode · Latin Catholic, Kozhikode | 16:9 · 50/55 | yes · no |
 | detail | pending | `bp-gardofbles-dt` | — | a white pergola with climbing roses in soft morning light, a bench below · Latin Catholic, Kozhikode | 4:5 · 50/45 | no · no |
 
 **Prompts**
@@ -412,11 +417,11 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | stand-in | `bp-royacatheleg-hero` | `QPL_171Kf5Q` (licensed) | the cathedral façade, symmetrical · Latin Catholic, Mangaluru | 3:4 · 50/40 | yes · no |
+| hero | stand-in | `bp-royacatheleg-hero` | `wc-61856883` (licensed) | the cathedral façade, symmetrical · Latin Catholic, Mangaluru | 3:4 · 50/38 | yes · no |
 | parents | pending | `bp-royacatheleg-pa` | — | The child’s parents with the baby · Latin Catholic, Mangaluru | 1:1 · 50/45 | no · no |
-| grandparents | pending | `bp-royacatheleg-gp` | — | The child’s grandparents together · Latin Catholic, Mangaluru | 1:1 · 50/45 | no · no |
+| grandparents | stand-in | `bp-royacatheleg-gp` | `wc-190844335` (licensed) | The child’s grandparents together · Latin Catholic, Mangaluru | 1:1 · 48/50 | yes · no |
 | godparents | pending | `bp-royacatheleg-gd` | — | The child’s godparents together · Latin Catholic, Mangaluru | 1:1 · 50/45 | no · no |
-| church | pending | `bp-royacatheleg-ch` | — | a gothic cathedral façade in white, spires and pointed windows, seen from low down against a dark-blue sky · Latin Catholic, Mangaluru | 16:9 · 50/45 | no · no |
+| church | stand-in | `bp-royacatheleg-ch` | `QPL_171Kf5Q` (licensed) | a gothic cathedral façade in white, spires and pointed windows, seen from low down against a dark-blue sky · Latin Catholic, Mangaluru | 16:9 · 50/40 | yes · no |
 | detail | pending | `bp-royacatheleg-dt` | — | a gold-edged baptismal shell and a white linen cloth on a marble altar rail · Latin Catholic, Mangaluru | 4:5 · 50/45 | no · no |
 
 **Prompts**
@@ -435,8 +440,8 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | stand-in | `bp-modeminigrac-hero` | `zx0Xt9u1ekw` (licensed) | a baby’s foot in a parent’s hand · Church of North India, New Delhi | 3:4 · 45/55 | yes · no |
-| parents | pending | `bp-modeminigrac-pa` | — | The child’s parents with the baby · Church of North India, New Delhi | 1:1 · 50/45 | no · no |
+| hero | stand-in | `bp-modeminigrac-hero` | `wc-61856876` (licensed) | a baby’s foot in a parent’s hand · Church of North India, New Delhi | 3:4 · 55/42 | yes · no |
+| parents | stand-in | `bp-modeminigrac-pa` | `wc-131739330` (licensed) | The child’s parents with the baby · Church of North India, New Delhi | 1:1 · 50/42 | yes · no |
 | grandparents | pending | `bp-modeminigrac-gp` | — | The child’s grandparents together · Church of North India, New Delhi | 1:1 · 50/45 | no · no |
 | godparents | pending | `bp-modeminigrac-gd` | — | The child’s godparents together · Church of North India, New Delhi | 1:1 · 50/45 | no · no |
 | church | pending | `bp-modeminigrac-ch` | — | a minimalist white church with one tall narrow window and a simple wooden cross, empty · Church of North India, New Delhi | 16:9 · 50/45 | no · no |
@@ -458,8 +463,8 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | stand-in | `bp-thelittbles-hero` | `ybvTwLSBtSY` (licensed) | a tiny foot under a knitted blanket · Latin Catholic, Thiruvananthapuram | 3:4 · 60/70 | yes · no |
-| parents | pending | `bp-thelittbles-pa` | — | The child’s parents with the baby · Latin Catholic, Thiruvananthapuram | 1:1 · 50/45 | no · no |
+| hero | stand-in | `bp-thelittbles-hero` | `wDGrvGUWOpE` (licensed) | a tiny foot under a knitted blanket · Latin Catholic, Thiruvananthapuram | 3:4 · 46/42 | yes · no |
+| parents | stand-in | `bp-thelittbles-pa` | `wc-131739330` (licensed) | The child’s parents with the baby · Latin Catholic, Thiruvananthapuram | 1:1 · 50/42 | yes · no |
 | grandparents | pending | `bp-thelittbles-gp` | — | The child’s grandparents together · Latin Catholic, Thiruvananthapuram | 1:1 · 50/45 | no · no |
 | godparents | pending | `bp-thelittbles-gd` | — | The child’s godparents together · Latin Catholic, Thiruvananthapuram | 1:1 · 50/45 | no · no |
 | church | pending | `bp-thelittbles-ch` | — | a very small whitewashed chapel with a wooden door and a single window, afternoon light · Latin Catholic, Thiruvananthapuram | 16:9 · 50/45 | no · no |
@@ -481,9 +486,9 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | stand-in | `bp-famiinfait-hero` | `ZLmLOclfeE4` (licensed) | hands of many ages around a baby’s hand · Baptist Union, Kolkata | 3:4 · 50/50 | yes · no |
-| parents | pending | `bp-famiinfait-pa` | — | The child’s parents with the baby · Baptist Union, Kolkata | 1:1 · 50/45 | no · no |
-| grandparents | pending | `bp-famiinfait-gp` | — | The child’s grandparents together · Baptist Union, Kolkata | 1:1 · 50/45 | no · no |
+| hero | stand-in | `bp-famiinfait-hero` | `wc-190843747` (licensed) | hands of many ages around a baby’s hand · Baptist Union, Kolkata | 3:4 · 55/50 | yes · no |
+| parents | stand-in | `bp-famiinfait-pa` | `wc-190843747` (licensed) | The child’s parents with the baby · Baptist Union, Kolkata | 1:1 · 55/50 | yes · no |
+| grandparents | stand-in | `bp-famiinfait-gp` | `y0OAmd_COUM` (licensed) | The child’s grandparents together · Baptist Union, Kolkata | 1:1 · 55/62 | yes · no |
 | godparents | pending | `bp-famiinfait-gd` | — | The child’s godparents together · Baptist Union, Kolkata | 1:1 · 50/45 | no · no |
 | church | pending | `bp-famiinfait-ch` | — | a Kolkata church hall with a mixed group of ages gathering in the afternoon light · Baptist Union, Kolkata | 16:9 · 50/45 | no · no |
 | detail | pending | `bp-famiinfait-dt` | — | many hands of different ages, all resting on one small baby’s blanket · Baptist Union, Kolkata | 4:5 · 50/45 | no · no |
@@ -504,11 +509,11 @@ and we never paint invitation wording, names, dates or scripture into an image.
 
 | Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
 |---|---|---|---|---|---|---|
-| hero | stand-in | `bp-celeprom-hero` | `3pW91fGAKiE` (licensed) | the church at blue hour under the first stars · Church of South India, Coimbatore | 3:4 · 50/50 | yes · no |
-| parents | pending | `bp-celeprom-pa` | — | The child’s parents with the baby · Church of South India, Coimbatore | 1:1 · 50/45 | no · no |
+| hero | stand-in | `bp-celeprom-hero` | `wc-71383191` (licensed) | the church at blue hour under the first stars · Church of South India, Coimbatore | 3:4 · 60/52 | yes · no |
+| parents | stand-in | `bp-celeprom-pa` | `wc-131739330` (licensed) | The child’s parents with the baby · Church of South India, Coimbatore | 1:1 · 50/42 | yes · no |
 | grandparents | pending | `bp-celeprom-gp` | — | The child’s grandparents together · Church of South India, Coimbatore | 1:1 · 50/45 | no · no |
 | godparents | pending | `bp-celeprom-gd` | — | The child’s godparents together · Church of South India, Coimbatore | 1:1 · 50/45 | no · no |
-| church | pending | `bp-celeprom-ch` | — | a CSI church lit from within against an indigo dusk sky, a few stars out · Church of South India, Coimbatore | 16:9 · 50/45 | no · no |
+| church | stand-in | `bp-celeprom-ch` | `G5a1RNy55pw` (licensed) | a CSI church lit from within against an indigo dusk sky, a few stars out · Church of South India, Coimbatore | 16:9 · 50/40 | yes · no |
 | detail | pending | `bp-celeprom-dt` | — | an evening sky after rain with a faint band of colour near the horizon, no figures · Church of South India, Coimbatore | 4:5 · 50/45 | no · no |
 
 **Prompts**
@@ -519,4 +524,119 @@ and we never paint invitation wording, names, dates or scripture into an image.
 - **godparents** — A natural, documentary-quality photograph. a woman in a lilac saree and a man in a dark shirt, godparents, with a lit lantern between them. Setting: a CSI church in Coimbatore at dusk, the sky turning indigo behind the roof. Light: blue-hour dusk with a warm glow from windows, the last band of orange on the horizon. Colours: indigo, candle gold, rose. Composition: standing close together, waist-up, a soft out-of-focus background. Aspect ratio 1:1.
 - **church** — A natural, documentary-quality photograph. a CSI church lit from within against an indigo dusk sky, a few stars out. Light: blue-hour dusk with a warm glow from windows, the last band of orange on the horizon. Colours: indigo, candle gold, rose. Composition: wide, level, symmetrical where the architecture is; no people in the foreground. Aspect ratio 16:9.
 - **detail** — A natural, documentary-quality photograph. an evening sky after rain with a faint band of colour near the horizon, no figures. Setting: a CSI church in Coimbatore at dusk, the sky turning indigo behind the roof. Light: blue-hour dusk with a warm glow from windows, the last band of orange on the horizon. Colours: indigo, candle gold, rose. Composition: close, one subject, shallow depth of field, a clear area of calm background. Aspect ratio 4:5.
+
+## Candle of Faith
+<a id="candle-of-faith"></a>
+
+*One unlit candle waits beneath the child’s portrait. Light it, and a warm glow gathers, the flame flickers and a short blessing appears — and if the guest never touches it, everything is still there.*
+
+| Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
+|---|---|---|---|---|---|---|
+| hero | stand-in | `bp-candoffait-hero` | `wc-131739330` (licensed) | the baby by candlelight · Church of North India, Bengaluru | 3:4 · 50/42 | yes · no |
+| parents | stand-in | `bp-candoffait-pa` | `wc-70993227` (licensed) | The child’s parents with the baby · Church of North India, Bengaluru | 1:1 · 52/40 | yes · no |
+| grandparents | pending | `bp-candoffait-gp` | — | The child’s grandparents together · Church of North India, Bengaluru | 1:1 · 50/45 | no · no |
+| godparents | pending | `bp-candoffait-gd` | — | The child’s godparents together · Church of North India, Bengaluru | 1:1 · 50/45 | no · no |
+| church | stand-in | `bp-candoffait-ch` | `G5a1RNy55pw` (licensed) | a Bengaluru church interior at dusk, rows of small candles glowing before the altar · Church of North India, Bengaluru | 16:9 · 50/40 | yes · no |
+| detail | pending | `bp-candoffait-dt` | — | a baptismal candle with a white ribbon, its flame blurred into gold · Church of North India, Bengaluru | 4:5 · 50/45 | no · no |
+
+**Prompts**
+
+- **hero** — A natural, documentary-quality photograph. the baby by candlelight. a five-month-old Indian baby boy in a white christening gown, held by his father, looking at the small flame of a baptismal candle. Setting: inside St. Andrew’s Church in Bengaluru at the evening service, the Paschal candle beside the font. Light: a single warm candle glow on faces, the rest of the nave in soft amber shadow. Colours: warm ivory, amber, muted gold, deep brown. Composition: an oval portrait of the baby in warm light, with room below for a candle. Aspect ratio 3:4.
+- **parents** — A natural, documentary-quality photograph. a Malayali mother in a cream saree with a thin gold border, her face lit from below by candle glow; a Malayali father in a white shirt holding the baby close, the candle’s light in his glasses. They are shown together, warm and unposed, with their baby in the mother’s arms. Setting: inside St. Andrew’s Church in Bengaluru at the evening service, the Paschal candle beside the font. Light: a single warm candle glow on faces, the rest of the nave in soft amber shadow. Colours: warm ivory, amber, muted gold, deep brown. Composition: head-and-shoulders, centred, eyes on the baby, a soft out-of-focus background. Aspect ratio 1:1.
+- **grandparents** — A natural, documentary-quality photograph. an elderly couple lighting each other’s small candles in a dim church, smiling gently. Setting: inside St. Andrew’s Church in Bengaluru at the evening service, the Paschal candle beside the font. Light: a single warm candle glow on faces, the rest of the nave in soft amber shadow. Colours: warm ivory, amber, muted gold, deep brown. Composition: seated or standing close together, head-and-shoulders to waist, a soft out-of-focus background. Aspect ratio 1:1.
+- **godparents** — A natural, documentary-quality photograph. a woman in a soft gold saree and a man in a cream shirt standing at the font with a lit candle between them. Setting: inside St. Andrew’s Church in Bengaluru at the evening service, the Paschal candle beside the font. Light: a single warm candle glow on faces, the rest of the nave in soft amber shadow. Colours: warm ivory, amber, muted gold, deep brown. Composition: standing close together, waist-up, a soft out-of-focus background. Aspect ratio 1:1.
+- **church** — A natural, documentary-quality photograph. a Bengaluru church interior at dusk, rows of small candles glowing before the altar. Light: a single warm candle glow on faces, the rest of the nave in soft amber shadow. Colours: warm ivory, amber, muted gold, deep brown. Composition: wide, level, symmetrical where the architecture is; no people in the foreground. Aspect ratio 16:9.
+- **detail** — A natural, documentary-quality photograph. a baptismal candle with a white ribbon, its flame blurred into gold. Setting: inside St. Andrew’s Church in Bengaluru at the evening service, the Paschal candle beside the font. Light: a single warm candle glow on faces, the rest of the nave in soft amber shadow. Colours: warm ivory, amber, muted gold, deep brown. Composition: close, one subject, shallow depth of field, a clear area of calm background. Aspect ratio 4:5.
+
+## White Roses
+<a id="white-roses"></a>
+
+*A wreath of white roses opens around the child’s portrait; as the page is scrolled the wreath turns and the roses open a little more, and white petals fall once, slowly.*
+
+| Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
+|---|---|---|---|---|---|---|
+| hero | stand-in | `bp-whitrose-hero` | `wc-71608793` (licensed) | the baby among white roses · Latin Catholic, Alappuzha | 3:4 · 62/42 | yes · no |
+| parents | stand-in | `bp-whitrose-pa` | `wc-138836814` (licensed) | The child’s parents with the baby · Latin Catholic, Alappuzha | 1:1 · 40/40 | yes · no |
+| grandparents | pending | `bp-whitrose-gp` | — | The child’s grandparents together · Latin Catholic, Alappuzha | 1:1 · 50/45 | no · no |
+| godparents | pending | `bp-whitrose-gd` | — | The child’s godparents together · Latin Catholic, Alappuzha | 1:1 · 50/45 | no · no |
+| church | stand-in | `bp-whitrose-ch` | `4KkTFccuZ0M` (licensed) | a whitewashed church beside a rose garden in full bloom · Latin Catholic, Alappuzha | 16:9 · 50/55 | yes · no |
+| detail | pending | `bp-whitrose-dt` | — | a single white rose in close-up, dew on the petals, on a pale ground · Latin Catholic, Alappuzha | 4:5 · 50/45 | no · no |
+
+**Prompts**
+
+- **hero** — A natural, documentary-quality photograph. the baby among white roses. a four-month-old Indian baby girl in a white christening dress and a small white flower headband, held among white roses. Setting: a Latin Catholic church in Alappuzha with a rose garden behind the parish house, soft morning light. Light: natural window and garden light, soft and bright. Colours: cream, white, sage green, a trace of blush. Composition: a round portrait of the baby with space around it for a wreath of roses. Aspect ratio 3:4.
+- **parents** — A natural, documentary-quality photograph. a Malayali mother in a white-and-sage saree holding the baby beside a rose bush; a Malayali father in a white shirt and cream mundu, gently holding a white rose stem. They are shown together, warm and unposed, with their baby in the mother’s arms. Setting: a Latin Catholic church in Alappuzha with a rose garden behind the parish house, soft morning light. Light: natural window and garden light, soft and bright. Colours: cream, white, sage green, a trace of blush. Composition: head-and-shoulders, centred, eyes on the baby, a soft out-of-focus background. Aspect ratio 1:1.
+- **grandparents** — A natural, documentary-quality photograph. an elderly Malayali grandmother in a white chatta-and-mundu pruning a white rose bush in her garden, her husband beside her. Setting: a Latin Catholic church in Alappuzha with a rose garden behind the parish house, soft morning light. Light: natural window and garden light, soft and bright. Colours: cream, white, sage green, a trace of blush. Composition: seated or standing close together, head-and-shoulders to waist, a soft out-of-focus background. Aspect ratio 1:1.
+- **godparents** — A natural, documentary-quality photograph. a woman in a pale green saree and a man in a white shirt holding white roses. Setting: a Latin Catholic church in Alappuzha with a rose garden behind the parish house, soft morning light. Light: natural window and garden light, soft and bright. Colours: cream, white, sage green, a trace of blush. Composition: standing close together, waist-up, a soft out-of-focus background. Aspect ratio 1:1.
+- **church** — A natural, documentary-quality photograph. a whitewashed church beside a rose garden in full bloom. Light: natural window and garden light, soft and bright. Colours: cream, white, sage green, a trace of blush. Composition: wide, level, symmetrical where the architecture is; no people in the foreground. Aspect ratio 16:9.
+- **detail** — A natural, documentary-quality photograph. a single white rose in close-up, dew on the petals, on a pale ground. Setting: a Latin Catholic church in Alappuzha with a rose garden behind the parish house, soft morning light. Light: natural window and garden light, soft and bright. Colours: cream, white, sage green, a trace of blush. Composition: close, one subject, shallow depth of field, a clear area of calm background. Aspect ratio 4:5.
+
+## Little Miracle
+<a id="little-miracle"></a>
+
+*A nursery mobile of pastel stars, a moon and a cloud turns slowly over the child’s portrait, and the first stars come out behind it: a small world made for one very new person.*
+
+| Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
+|---|---|---|---|---|---|---|
+| hero | stand-in | `bp-littmira-hero` | `wc-61767624` (licensed) | the little girl taking a first step · Roman Catholic, Visakhapatnam | 3:4 · 50/42 | yes · no |
+| parents | stand-in | `bp-littmira-pa` | `wc-61855196` (licensed) | The child’s parents with the baby · Roman Catholic, Visakhapatnam | 1:1 · 68/55 | yes · no |
+| grandparents | pending | `bp-littmira-gp` | — | The child’s grandparents together · Roman Catholic, Visakhapatnam | 1:1 · 50/45 | no · no |
+| godparents | pending | `bp-littmira-gd` | — | The child’s godparents together · Roman Catholic, Visakhapatnam | 1:1 · 50/45 | no · no |
+| church | pending | `bp-littmira-ch` | — | the whitewashed façade of Holy Family Church with a small bell tower, sky blue behind it · Roman Catholic, Visakhapatnam | 16:9 · 50/45 | no · no |
+| detail | pending | `bp-littmira-dt` | — | a small hanging mobile of felt stars over a cot, soft light · Roman Catholic, Visakhapatnam | 4:5 · 50/45 | no · no |
+
+**Prompts**
+
+- **hero** — A natural, documentary-quality photograph. the little girl taking a first step. an eleven-month-old Indian baby girl in a white christening dress with a pink bow, standing while her father’s hands hold hers. Setting: a Roman Catholic church in Visakhapatnam, sea air and soft daylight through coloured glass. Light: soft diffused daylight, pastel and cheerful. Colours: butter yellow, powder blue, blush, mint. Composition: a round portrait of the child, face centred, a soft plain background. Aspect ratio 3:4.
+- **parents** — A natural, documentary-quality photograph. a mother in a pale blue dress laughing as her daughter takes a first step; a father in a pale shirt kneeling to hold his daughter’s hands. They are shown together, warm and unposed, with their baby in the mother’s arms. Setting: a Roman Catholic church in Visakhapatnam, sea air and soft daylight through coloured glass. Light: soft diffused daylight, pastel and cheerful. Colours: butter yellow, powder blue, blush, mint. Composition: head-and-shoulders, centred, eyes on the baby, a soft out-of-focus background. Aspect ratio 1:1.
+- **grandparents** — A natural, documentary-quality photograph. an elderly couple holding a small teddy bear and a baby’s shoe, smiling at the camera. Setting: a Roman Catholic church in Visakhapatnam, sea air and soft daylight through coloured glass. Light: soft diffused daylight, pastel and cheerful. Colours: butter yellow, powder blue, blush, mint. Composition: seated or standing close together, head-and-shoulders to waist, a soft out-of-focus background. Aspect ratio 1:1.
+- **godparents** — A natural, documentary-quality photograph. a doctor in a soft blue saree and a man in a light jacket kneeling beside the child. Setting: a Roman Catholic church in Visakhapatnam, sea air and soft daylight through coloured glass. Light: soft diffused daylight, pastel and cheerful. Colours: butter yellow, powder blue, blush, mint. Composition: standing close together, waist-up, a soft out-of-focus background. Aspect ratio 1:1.
+- **church** — A natural, documentary-quality photograph. the whitewashed façade of Holy Family Church with a small bell tower, sky blue behind it. Light: soft diffused daylight, pastel and cheerful. Colours: butter yellow, powder blue, blush, mint. Composition: wide, level, symmetrical where the architecture is; no people in the foreground. Aspect ratio 16:9.
+- **detail** — A natural, documentary-quality photograph. a small hanging mobile of felt stars over a cot, soft light. Setting: a Roman Catholic church in Visakhapatnam, sea air and soft daylight through coloured glass. Light: soft diffused daylight, pastel and cheerful. Colours: butter yellow, powder blue, blush, mint. Composition: close, one subject, shallow depth of field, a clear area of calm background. Aspect ratio 4:5.
+
+## The Golden Cross
+<a id="golden-cross"></a>
+
+*Two fine lines of gold draw a cross, slowly and once, and the child’s portrait is set in a ring where they meet; only then do the words arrive.*
+
+| Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
+|---|---|---|---|---|---|---|
+| hero | stand-in | `bp-goldcros-hero` | `qx7ZQwbgm1c` (licensed) | the sleeping baby at the church door · East Indian Catholic, Vasai | 3:4 · 35/42 | yes · no |
+| parents | pending | `bp-goldcros-pa` | — | The child’s parents with the baby · East Indian Catholic, Vasai | 1:1 · 50/45 | no · no |
+| grandparents | stand-in | `bp-goldcros-gp` | `ZLmLOclfeE4` (licensed) | The child’s grandparents together · East Indian Catholic, Vasai | 1:1 · 52/52 | yes · no |
+| godparents | pending | `bp-goldcros-gd` | — | The child’s godparents together · East Indian Catholic, Vasai | 1:1 · 50/45 | no · no |
+| church | stand-in | `bp-goldcros-ch` | `QPL_171Kf5Q` (licensed) | the white façade of an old Portuguese-era church with a large stone cross above the door · East Indian Catholic, Vasai | 16:9 · 50/40 | yes · no |
+| detail | pending | `bp-goldcros-dt` | — | a plain gold cross on a white linen cloth, side light · East Indian Catholic, Vasai | 4:5 · 50/45 | no · no |
+
+**Prompts**
+
+- **hero** — A natural, documentary-quality photograph. the sleeping baby at the church door. a three-month-old Indian baby boy in a white christening gown, asleep, held at the church door. Setting: the nave of Our Lady of Grace Church in Vasai, an old Portuguese-era church with white arches. Light: clear morning light falling in a shaft from a high window, quiet. Colours: ivory, restrained gold, warm white. Composition: a round portrait of the sleeping baby with a thin gold ring. Aspect ratio 3:4.
+- **parents** — A natural, documentary-quality photograph. an East Indian Catholic mother in an ivory dress with a lace mantilla, her eyes on her sleeping son; an East Indian Catholic father in a pale grey suit, his hand on his wife’s shoulder. They are shown together, warm and unposed, with their baby in the mother’s arms. Setting: the nave of Our Lady of Grace Church in Vasai, an old Portuguese-era church with white arches. Light: clear morning light falling in a shaft from a high window, quiet. Colours: ivory, restrained gold, warm white. Composition: head-and-shoulders, centred, eyes on the baby, a soft out-of-focus background. Aspect ratio 1:1.
+- **grandparents** — A natural, documentary-quality photograph. an elderly East Indian Catholic couple in formal clothes holding a rosary between them, in a front pew. Setting: the nave of Our Lady of Grace Church in Vasai, an old Portuguese-era church with white arches. Light: clear morning light falling in a shaft from a high window, quiet. Colours: ivory, restrained gold, warm white. Composition: seated or standing close together, head-and-shoulders to waist, a soft out-of-focus background. Aspect ratio 1:1.
+- **godparents** — A natural, documentary-quality photograph. a formally dressed man and woman at the church door, the man holding the baby’s white shawl. Setting: the nave of Our Lady of Grace Church in Vasai, an old Portuguese-era church with white arches. Light: clear morning light falling in a shaft from a high window, quiet. Colours: ivory, restrained gold, warm white. Composition: standing close together, waist-up, a soft out-of-focus background. Aspect ratio 1:1.
+- **church** — A natural, documentary-quality photograph. the white façade of an old Portuguese-era church with a large stone cross above the door. Light: clear morning light falling in a shaft from a high window, quiet. Colours: ivory, restrained gold, warm white. Composition: wide, level, symmetrical where the architecture is; no people in the foreground. Aspect ratio 16:9.
+- **detail** — A natural, documentary-quality photograph. a plain gold cross on a white linen cloth, side light. Setting: the nave of Our Lady of Grace Church in Vasai, an old Portuguese-era church with white arches. Light: clear morning light falling in a shaft from a high window, quiet. Colours: ivory, restrained gold, warm white. Composition: close, one subject, shallow depth of field, a clear area of calm background. Aspect ratio 4:5.
+
+## Cloud Nine
+<a id="cloud-nine"></a>
+
+*Layers of soft cloud drift at their own speeds behind the child’s portrait, which rests on a cloud of its own; as the page is scrolled the layers part company and the portrait stays still.*
+
+| Slot | Status | Asset id | Picture | Subject · culture | Aspect · focal | Reviewed · approved |
+|---|---|---|---|---|---|---|
+| hero | stand-in | `bp-clounine-hero` | `wc-70993227` (licensed) | the baby above the clouds · Roman Catholic, Shillong | 3:4 · 52/40 | yes · no |
+| parents | stand-in | `bp-clounine-pa` | `wc-71608793` (licensed) | The child’s parents with the baby · Roman Catholic, Shillong | 1:1 · 62/42 | yes · no |
+| grandparents | pending | `bp-clounine-gp` | — | The child’s grandparents together · Roman Catholic, Shillong | 1:1 · 50/45 | no · no |
+| godparents | pending | `bp-clounine-gd` | — | The child’s godparents together · Roman Catholic, Shillong | 1:1 · 50/45 | no · no |
+| church | stand-in | `bp-clounine-ch` | `wc-90920879` (licensed) | a hill church with a simple bell tower and pine trees, low cloud at its feet · Roman Catholic, Shillong | 16:9 · 50/55 | yes · no |
+| detail | pending | `bp-clounine-dt` | — | morning mist lying between pine-covered hills, seen from a church yard · Roman Catholic, Shillong | 4:5 · 50/45 | no · no |
+
+**Prompts**
+
+- **hero** — A natural, documentary-quality photograph. the baby above the clouds. a six-month-old baby boy of a Khasi family in a white christening gown and a knitted white cap, in his mother’s arms. Setting: Holy Spirit Church in Shillong on a cold December morning, clouds low over the pine hills behind. Light: soft white morning light through mist, bright and cool. Colours: pale blue, cloud white, a little gold. Composition: an oval portrait of the baby with plenty of pale sky around it. Aspect ratio 3:4.
+- **parents** — A natural, documentary-quality photograph. a Khasi mother in a traditional jainsem wrap with a white shawl, kissing her baby’s cheek; a Khasi father in a dark jacket and a white scarf, holding his son up toward the misty sky. They are shown together, warm and unposed, with their baby in the mother’s arms. Setting: Holy Spirit Church in Shillong on a cold December morning, clouds low over the pine hills behind. Light: soft white morning light through mist, bright and cool. Colours: pale blue, cloud white, a little gold. Composition: head-and-shoulders, centred, eyes on the baby, a soft out-of-focus background. Aspect ratio 1:1.
+- **grandparents** — A natural, documentary-quality photograph. an elderly Khasi couple in warm shawls on the church steps, mist behind them. Setting: Holy Spirit Church in Shillong on a cold December morning, clouds low over the pine hills behind. Light: soft white morning light through mist, bright and cool. Colours: pale blue, cloud white, a little gold. Composition: seated or standing close together, head-and-shoulders to waist, a soft out-of-focus background. Aspect ratio 1:1.
+- **godparents** — A natural, documentary-quality photograph. a man in a dark coat and a woman in a pale shawl at the church porch. Setting: Holy Spirit Church in Shillong on a cold December morning, clouds low over the pine hills behind. Light: soft white morning light through mist, bright and cool. Colours: pale blue, cloud white, a little gold. Composition: standing close together, waist-up, a soft out-of-focus background. Aspect ratio 1:1.
+- **church** — A natural, documentary-quality photograph. a hill church with a simple bell tower and pine trees, low cloud at its feet. Light: soft white morning light through mist, bright and cool. Colours: pale blue, cloud white, a little gold. Composition: wide, level, symmetrical where the architecture is; no people in the foreground. Aspect ratio 16:9.
+- **detail** — A natural, documentary-quality photograph. morning mist lying between pine-covered hills, seen from a church yard. Setting: Holy Spirit Church in Shillong on a cold December morning, clouds low over the pine hills behind. Light: soft white morning light through mist, bright and cool. Colours: pale blue, cloud white, a little gold. Composition: close, one subject, shallow depth of field, a clear area of calm background. Aspect ratio 4:5.
 

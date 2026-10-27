@@ -10,7 +10,7 @@ export const SECTION_TYPES = [
   "photowall", "guestupload", "wishes", "qrpass", "checkin", "livesched", "liveupdate", "livestream",
   "timecapsule", "memory", "anniversary", "thankyou", "contact",
   // for occasions that are not about a couple
-  "about", "tribute", "speakers", "agenda", "sponsors", "message", "people", "prayer",
+  "about", "tribute", "speakers", "agenda", "sponsors", "message", "people", "prayer", "finale",
 ] as const;
 export type SectionType = (typeof SECTION_TYPES)[number];
 

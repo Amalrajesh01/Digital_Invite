@@ -7,15 +7,21 @@ import { BAPTISM_SAMPLES } from "@/domain/catalogue/baptism-samples";
 import { STOCK, STOCK_ID } from "@/domain/imagery/stock";
 import { GENERATED } from "./generated";
 import { MANIFEST, NEVER, OFF_TOPIC, SLOTS, looks, type SlotRow } from "./images";
+import { ALLOWED_LICENCES, PHOTOS } from "./photos";
+import { STORY, chapterCaption } from "./story";
 
 /**
- * The gate for the baptism photography: every slot of every template is accounted for, every prompt is its own, and no picture
- * stands where it does not belong. `npm run baptism:check` prints the findings; the test suite fails on errors.
+ * The gate for the baptism photography: every slot of every template is accounted for, every prompt is its own, every baby that opens a
+ * template is a face, every gallery is a story of five to eight pictures that no other template tells in the same way, and every picture
+ * is licensed and credited. `npm run baptism:check` prints the findings; the test suite fails on errors.
  */
 export interface Finding { level: "error" | "warn"; templateId?: string; slot?: string; message: string }
 
 /** An alt text that describes a wedding, a couple or bridal clothing: such a picture never belongs on a baptism. */
 const WEDDINGISH = /\b(bride|groom|wedding|couple|newlywed|lehenga|sherwani|veil|honeymoon|engagement)\b/i;
+/** A hero is a portrait; a gallery is five to eight pictures. */
+export const GALLERY_MIN = 5;
+export const GALLERY_MAX = 8;
 
 export const promptSha = (row: Pick<SlotRow, "prompt">) => createHash("sha256").update(`${row.prompt}\n${NEVER}`).digest("hex").slice(0, 16);
 
@@ -36,16 +42,16 @@ export async function checkBaptism(opts: { dir?: string; credits?: string } = {}
   const add = (level: Finding["level"], message: string, row?: { templateId: string; slot: string }) => out.push({ level, message, templateId: row?.templateId, slot: row?.slot });
 
   const slugs = BAPTISM_SPECS.map((s) => s.slug);
-  if (slugs.length !== 20) add("error", `${slugs.length} baptism templates; the brief asks for exactly twenty`);
+  if (slugs.length < 20) add("error", `${slugs.length} baptism templates; there must be at least twenty`);
   for (const s of slugs) {
     if (!looks[s]) add("error", "no art-direction brief (LOOK) for this template", { templateId: s, slot: "-" });
     if (!BAPTISM_SAMPLES[s]) add("error", "no sample facts (baptism-samples.ts)", { templateId: s, slot: "-" });
+    if (!STORY[s]) add("error", "no baby story (story.ts): a portrait, a gallery and a church", { templateId: s, slot: "-" });
     for (const slot of SLOTS) if (!MANIFEST.some((r) => r.templateId === s && r.slot === slot)) add("error", `slot "${slot}" is not in the manifest`, { templateId: s, slot });
   }
 
   const ids = new Set<string>();
   const prompts = new Map<string, string>();
-  const stockOwner = new Map<string, string>();
   for (const r of MANIFEST) {
     if (ids.has(r.assetId)) add("error", `asset id ${r.assetId} is used twice`, r);
     ids.add(r.assetId);
@@ -60,31 +66,60 @@ export async function checkBaptism(opts: { dir?: string; credits?: string } = {}
 
     if (r.status === "pending") continue;
     const id = r.stock!;
+    if (r.status === "stand-in") continue; // stand-ins are checked once, below, as the story that uses them
     const info = STOCK[id];
     if (!info) { add("error", `${id}: not in the stock catalogue`, r); continue; }
-    if (!info.alt.trim()) add("error", `${id}: no alternative text`, r);
-    if (WEDDINGISH.test(info.alt)) add("error", `${id}: its description mentions a wedding (“${info.alt.match(WEDDINGISH)?.[0]}”) — it does not belong on a baptism`, r);
-    const owner = stockOwner.get(id);
-    if (owner && owner !== r.templateId) add("error", `${id} is also used by “${owner}” — a picture is never reused to fill another template’s gap`, r);
-    stockOwner.set(id, r.templateId);
-    const s = await sizeOf(dir, id);
-    if (!s) { add("error", `${id}: the file is missing or not a readable image`, r); continue; }
-    const long = Math.max(s.w, s.h);
-    if (r.slot === "hero" && long < 1200) add("error", `${id}: ${s.w}×${s.h} is too small for a hero`, r);
-    const ratio = s.w / s.h;
-    if (ratio < 0.45 || ratio > 2.4) add("warn", `${id}: ratio ${ratio.toFixed(2)} will crop hard`, r);
-    if (r.status === "stand-in") {
-      if (!credited.has(id)) add("error", `${id}: licence not recorded in assets/stock/CREDITS.md`, r);
-    } else {
-      const g = GENERATED[id];
-      if (!g || !g.tool || !g.date) add("error", `${id}: no provenance in generated.json (tool and date)`, r);
-      else if (g.promptSha !== promptSha(r)) add("warn", `${id}: made from an earlier version of its prompt`, r);
-    }
+    const g = GENERATED[id];
+    if (!g || !g.tool || !g.date) add("error", `${id}: no provenance in generated.json (tool and date)`, r);
+    else if (g.promptSha !== promptSha(r)) add("warn", `${id}: made from an earlier version of its prompt`, r);
   }
 
-  for (const [slug, f] of Object.entries(BAPTISM_SAMPLES)) {
-    const hero = MANIFEST.find((r) => r.templateId === slug && r.slot === "hero");
-    if ((f.photo ?? "") !== (hero?.stock ?? "") && hero?.status !== "generated") add("error", "the sample’s photograph and the manifest’s hero disagree", { templateId: slug, slot: "hero" });
+  // ── the baby of every template ───────────────────────────────────────────────────────────────────
+  const heroOwner = new Map<string, string>();
+  const gallerySet = new Map<string, string>();
+  const checked = new Set<string>();
+  const checkPhoto = async (id: string, templateId: string, slot: string) => {
+    const where = { templateId, slot };
+    const ph = PHOTOS[id];
+    if (!ph) { add("error", `${id}: not in the baptism photo pool (photos.ts)`, where); return; }
+    if (checked.has(id)) return;
+    checked.add(id);
+    const info = STOCK[id];
+    if (!info?.alt.trim()) add("error", `${id}: no alternative text`, where);
+    if (WEDDINGISH.test(ph.alt)) add("error", `${id}: its description mentions a wedding (“${ph.alt.match(WEDDINGISH)?.[0]}”) — it does not belong on a baptism`, where);
+    if (!(ALLOWED_LICENCES as readonly string[]).includes(ph.licence)) add("error", `${id}: licence “${ph.licence}” is not one we may use`, where);
+    if (!ph.by.trim()) add("error", `${id}: no author recorded`, where);
+    if (!credited.has(id)) add("error", `${id}: not credited in assets/stock/CREDITS.md`, where);
+    const s = await sizeOf(dir, id);
+    if (!s) { add("error", `${id}: the file is missing or not a readable image`, where); return; }
+    if (Math.max(s.w, s.h) < 1200) add("error", `${id}: ${s.w}×${s.h} is too small`, where);
+    const ratio = s.w / s.h;
+    if (ratio < 0.45 || ratio > 2.4) add("warn", `${id}: ratio ${ratio.toFixed(2)} will crop hard`, where);
+  };
+  for (const [slug, st] of Object.entries(STORY)) {
+    const hero = PHOTOS[st.hero];
+    await checkPhoto(st.hero, slug, "hero");
+    if (hero && !hero.face) add("error", `${st.hero}: the picture that opens a template must show a face`, { templateId: slug, slot: "hero" });
+    const owner = heroOwner.get(st.hero);
+    if (owner) add("error", `${st.hero} also opens “${owner}” — every template opens on a different baby`, { templateId: slug, slot: "hero" });
+    heroOwner.set(st.hero, slug);
+    await checkPhoto(st.story, slug, "story");
+    for (const id of [st.people?.parents, st.people?.grandparents, st.church]) if (id) await checkPhoto(id, slug, "people");
+
+    const ph = st.gallery.map(([id]) => id);
+    if (ph.length < GALLERY_MIN || ph.length > GALLERY_MAX) add("error", `a gallery is ${GALLERY_MIN}–${GALLERY_MAX} pictures, this one has ${ph.length}`, { templateId: slug, slot: "gallery" });
+    if (new Set(ph).size !== ph.length) add("error", "a picture appears twice in the gallery", { templateId: slug, slot: "gallery" });
+    if (ph.includes(st.hero)) add("error", "the portrait that opens the template is not repeated in its gallery", { templateId: slug, slot: "gallery" });
+    for (const [id, chapter] of st.gallery) {
+      await checkPhoto(id, slug, "gallery");
+      const cap = chapterCaption(slug, chapter);
+      if (!/ — /.test(cap) || cap.length > 120) add("error", `the caption “${cap}” is not “Title — a line” of a sensible length`, { templateId: slug, slot: "gallery" });
+    }
+    const key = [...ph].sort().join("|");
+    const same = gallerySet.get(key);
+    if (same) add("error", `the gallery is the same set of pictures as “${same}”`, { templateId: slug, slot: "gallery" });
+    gallerySet.set(key, slug);
+    if (!st.gallery.some(([id]) => PHOTOS[id]?.face)) add("error", "a baby’s face never appears in the gallery", { templateId: slug, slot: "gallery" });
   }
   return out;
 }

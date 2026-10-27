@@ -19,6 +19,8 @@ export interface MediaRow {
   moderation: string; visibility: string; retention: string; source: string; albumId: string | null; sortOrder: number; createdAt: string; sizeBytes: number; alt: LocalizedText; caption: LocalizedText;
   focal?: { x: number; y: number };
   face?: { x: number; y: number; size: number } | null;
+  /** A demonstration photograph that came with the template; the family replaces it with their own. */
+  sample?: boolean;
 }
 
 export const listMediaAction = async (weddingId: string, filter: MediaFilter = {}) =>
@@ -26,7 +28,7 @@ export const listMediaAction = async (weddingId: string, filter: MediaFilter = {
     const rows = await listMedia(a, weddingId, { ...filter, limit: 400 });
     return rows.map<MediaRow>((r) => {
       const m = toResolved(r);
-      return { id: r.id, kind: r.kind, category: r.category, filename: r.filename, title: r.title, url: m.url, srcSet: m.srcSet, width: r.width ?? undefined, height: r.height ?? undefined, blur: m.blur, face: m.face, moderation: r.moderation, visibility: r.visibility, retention: r.retention, source: r.source, albumId: r.albumId, sortOrder: r.sortOrder, createdAt: r.createdAt.toISOString(), sizeBytes: r.sizeBytes, alt: r.alt, caption: r.caption, focal: m.focal };
+      return { id: r.id, kind: r.kind, category: r.category, filename: r.filename, title: r.title, url: m.url, srcSet: m.srcSet, width: r.width ?? undefined, height: r.height ?? undefined, blur: m.blur, face: m.face, moderation: r.moderation, visibility: r.visibility, retention: r.retention, source: r.source, albumId: r.albumId, sortOrder: r.sortOrder, createdAt: r.createdAt.toISOString(), sizeBytes: r.sizeBytes, alt: r.alt, caption: r.caption, focal: m.focal, sample: (r.metadata as { sample?: boolean } | null)?.sample === true };
     });
   }, { weddingId });
 

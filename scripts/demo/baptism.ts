@@ -5,16 +5,17 @@ import { BAPTISM_SAMPLES } from "../../src/domain/catalogue/baptism-samples";
 import { verseById, verseSource, verseText } from "../../src/domain/baptism/scripture";
 import { GENERATED } from "../../src/domain/baptism/generated";
 import { assetIdFor, type Slot } from "../../src/domain/baptism/images";
+import { STORY, finaleBlessing, galleryHeading, galleryOf } from "../../src/domain/baptism/story";
 
 /**
- * The sample invitation behind each of the twenty baptism templates. The children, families, churches and addresses are fictional and
+ * The sample invitation behind each of the baptism templates. The children, families, churches and addresses are fictional and
  * written in the voice of their template (a letter, a missal, a storybook, a garden journal); the verse each one quotes is exact
  * (`src/domain/baptism/scripture.ts`). What the gallery says about a sample — the child, the date, the church, the city — lives in
  * `src/domain/catalogue/baptism-samples.ts`, which this file is built from, so the two can never disagree.
  *
- * Photographs: only where a bundled photograph is genuinely right for the template (see `samples.photo` and
- * `src/domain/baptism/images.ts`). Nobody’s face is ever stood in for a family’s: a template without a relevant photograph
- * shows its drawn scene, and the family, godparents and grandparents are introduced by name with a monogram.
+ * Photographs: every sample shows the baby that opens its template, a gallery told as chapters and (where the pool has one) a picture of
+ * the parents or the grandparents — licensed stand-ins chosen in `src/domain/baptism/story.ts`. They stand in for a family’s own, which
+ * replace them in the studio; godparents, who have no stand-in, are introduced by name with a monogram.
  */
 type Glyph = "lamp" | "kalash" | "flame" | "rings" | "drum" | "flower" | "bowl" | "knot" | "none";
 interface Data {
@@ -35,7 +36,6 @@ interface Data {
   meal?: string[];
   thanks: string;
   wishes: [name: string, relationship: string, message: string][];
-  gallery?: [stock: string, caption: string][];
   music: string;
 }
 
@@ -98,13 +98,13 @@ const DATA: Record<string, Data> = {
     wishes: [["Latha Mathew", "Great-aunt", "Welcome, Maria Mol. May you be as good as your names."], ["Fr. Philip Kuruvilla", "Family priest", "We pray for you at every Sunday service."]],
   },
   "little-prince-of-grace": {
-    full: "Aaron Joseph D’Souza", role: "Our son", age: "4 months", born: "20 November 2026",
+    full: "Aaron Joseph D’Souza", role: "Our son", age: "11 months", born: "20 April 2026",
     subtitle: "our little prince", invited: "Once upon a time… you are invited to the baptism of", hosts: "Neha & Rohan D’Souza",
     start: "11:00", end: "12:15", service: "Holy Mass and baptism", serviceNote: "The baptism takes place after the homily at the 11 o’clock Sunday Mass.",
     address: "Church of the Good Shepherd, Camp Road, Pune 411001", lat: 18.5204, lng: 73.8567, parking: "Parking in the church compound; overflow on Camp Road after 10:30.", road: "Fifteen minutes from Pune station by auto.",
     after: { name: "Lunch at home", start: "13:00", end: "15:30", description: "Biryani and cake at the family flat — a short drive from the church.", hall: { name: "The D’Souza home", address: "Flat 7, Rose Court, Koregaon Park, Pune 411001", lat: 18.5362, lng: 73.8937 } },
-    about: { eyebrow: "A new chapter", title: "Aaron", body: "He arrived six pounds nine ounces, with a full head of hair and no interest in sleeping. We are told the story of a family is written one page at a time.\n\nWe would like you to be on the page where he is baptised.", facts: [["11 am", "Sunday Mass"], ["1 pm", "Lunch at home"], ["4 months", "Aaron’s age on the day"]] },
-    milestones: [["March 2026", "The news", "A held breath, a test, and a long phone call to both grandmothers."], ["November 2026", "He arrived", "A little after midnight, to the sound of the night nurse humming a hymn."], ["March 2027", "His baptism", "Sunday morning, with everyone who prayed for him."]],
+    about: { eyebrow: "A new chapter", title: "Aaron", body: "He arrived six pounds nine ounces, with a full head of hair and no interest in sleeping. We are told the story of a family is written one page at a time.\n\nWe would like you to be on the page where he is baptised.", facts: [["11 am", "Sunday Mass"], ["1 pm", "Lunch at home"], ["11 months", "Aaron’s age on the day"]] },
+    milestones: [["July 2025", "The news", "A held breath, a test, and a long phone call to both grandmothers."], ["April 2026", "He arrived", "A little after midnight, to the sound of the night nurse humming a hymn."], ["March 2027", "His baptism", "Sunday morning, with everyone who prayed for him."]],
     people: [["His parents", "Neha D’Souza", "Mother"], ["His parents", "Rohan D’Souza", "Father"], ["His grandparents", "Francis & Lorna D’Souza", "Grandpa and Grandma"], ["His grandparents", "Anil & Meena Sequeira", "Nanu and Nani"], ["His godparents", "Cynthia Fernandes", "Godmother"], ["His godparents", "Joel Pinto", "Godfather"]],
     copy: { people: ["The people in his story", "Who is holding him"], events: ["Sunday 21 March", "The day"] },
     meal: ["Vegetarian", "Non-vegetarian"], music: "simple-duet",
@@ -152,7 +152,6 @@ const DATA: Record<string, Data> = {
     copy: { ceremonies: ["The order of service", "What will happen"], people: ["Standing with her", "Her family"], events: ["Sunday 2 May", "The evening"], message: ["A word"] },
     meal: ["Vegetarian", "Non-vegetarian"], music: "ascending-the-vale",
     thanks: "Thank you for sharing the light with us. We will keep the candle.\n\nSharon, Neil & Elena",
-    gallery: [["G5a1RNy55pw", "Light through the window of the church"], ["GAscwTkEOy8", "Candles in the nave"], ["B5AmTy1K6mk", "A single flame"]],
     wishes: [["Fr. Anthony D’Silva", "Parish priest", "Welcome to the family, Elena. The church is glad of you."], ["Melissa Dias", "Cousin", "I will be the one in the front row with a handkerchief."]],
   },
   "white-dove-blessing": {
@@ -170,19 +169,19 @@ const DATA: Record<string, Data> = {
     wishes: [["Fr. Ignatius", "Parish priest", "Welcome to the Church, Gabriel."], ["Flavia Lobo", "Family friend", "Peace be with him, now and always."]],
   },
   "the-open-bible": {
-    full: "Daniel Abraham Cherian", role: "Our son", age: "11 years", born: "22 July 2016",
-    subtitle: "a boy who asked to be baptised", invited: "You are invited to the baptism of", hosts: "Sheela & Suresh Cherian",
-    start: "10:00", end: "12:00", service: "Sunday service and baptism", serviceNote: "Daniel will share a few words, and read his chosen passage, before he is baptised.",
+    full: "Daniel Abraham Cherian", role: "Our son", age: "7 months", born: "28 October 2026",
+    subtitle: "a verse for Daniel", invited: "You are invited to the baptism of", hosts: "Sheela & Suresh Cherian",
+    start: "10:00", end: "12:00", service: "Sunday service and baptism", serviceNote: "The baptism follows the sermon. His godparents will read the passage we chose for Daniel before he is baptised.",
     address: "Grace Community Church, Tarnaka, Secunderabad 500017", lat: 17.4399, lng: 78.4983, parking: "The church compound and the school ground next door.", road: "Ten minutes from Tarnaka metro station.",
     after: { name: "Fellowship lunch", start: "12:15", end: "14:00", description: "Lunch in the hall, with the whole church." },
-    about: { eyebrow: "His own choice", title: "Daniel", body: "Daniel has been reading his Bible every morning since he was nine. This year, he told us he wanted to be baptised himself.\n\nOn Sunday, he will read a passage he chose, say a few words, and go down into the water. Please come and listen.", facts: [["11", "Years old"], ["10 am", "The service"], ["12:15", "Lunch together"]] },
-    ceremonies: [["His testimony", "10:30 am", "Daniel says, in his own words, why he wants to be baptised.", "none"], ["The reading", "10:40 am", "He reads the passage he has chosen.", "flame"], ["The baptism", "10:50 am", "He is baptised by immersion in the name of the Father, the Son and the Holy Spirit.", "bowl"], ["The welcome", "11:10 am", "The church welcomes him, and prays for him.", "lamp"]],
+    about: { eyebrow: "A verse for Daniel", title: "Daniel", body: "We chose his name from the book of Daniel, and his verse before he was born: a lamp for his feet and a light for his path.\n\nOn Sunday, in front of the church, we will promise to teach him to read it for himself. Please come and listen.", facts: [["7", "Months old"], ["10 am", "The service"], ["12:15", "Lunch together"]] },
+    ceremonies: [["The reading", "10:30 am", "The passage we chose for Daniel is read aloud.", "flame"], ["The promises", "10:40 am", "Sheela and Suresh, with his godparents, promise to bring him up in the faith.", "none"], ["The baptism", "10:50 am", "He is baptised in the name of the Father, the Son and the Holy Spirit.", "bowl"], ["The welcome", "11:10 am", "The church welcomes him, and prays for him.", "lamp"]],
     people: [["His parents", "Sheela Cherian", "Mother"], ["His parents", "Suresh Cherian", "Father"], ["His grandparents", "Thatha and Paati", "Suresh’s parents"], ["His church", "Pastor Joel", "His pastor"], ["His church", "Sunday-school teacher", "Mrs. Annie Thomas"]],
-    message: { title: "From his mother", body: "We did not ask him to do this. He asked us. That is why we are inviting you.", from: "Sheela", role: "Daniel’s mother" },
-    copy: { people: ["Who stands with him", "His family and church"], prayer: ["His chosen passage"], ceremonies: ["The service", "What he will do"], events: ["Sunday 30 May", "The morning"] },
+    message: { title: "From his mother", body: "We read him this verse every night. He has not understood a word of it yet, which is exactly why we are inviting you.", from: "Sheela", role: "Daniel’s mother" },
+    copy: { people: ["Who stands with him", "His family and church"], prayer: ["His chosen passage"], ceremonies: ["The service", "What will happen"], events: ["Sunday 30 May", "The morning"] },
     meal: ["Vegetarian", "Non-vegetarian"], music: "gymnopedie-1",
-    thanks: "Thank you for coming to hear Daniel. It meant more than he will say.\n\nSheela & Suresh",
-    wishes: [["Pastor Joel", "Pastor", "Daniel, you are a brave young man. I am honoured to baptise you."], ["Paati", "Grandmother", "I have prayed for this day since the day you were born."]],
+    thanks: "Thank you for coming to hear Daniel’s verse read. We will read it to him again tonight.\n\nSheela & Suresh",
+    wishes: [["Pastor Joel", "Pastor", "Daniel, may you grow to love this book as your parents do."], ["Paati", "Grandmother", "I have prayed for this day since the day you were born."]],
   },
   "floral-grace": {
     full: "Liya Maria Chacko", role: "Our daughter", age: "6 months", born: "9 December 2026",
@@ -323,6 +322,77 @@ const DATA: Record<string, Data> = {
     thanks: "Thank you — in the church, in the hall, and on the screen. Elias will hear, many times, who was there.\n\nNeethu, Joseph & Elias",
     wishes: [["Lissy Chacko", "Great-aunt, Dubai", "We watched at 6 in the morning, all together, with tea."], ["Fr. Thomas Joseph", "Parish priest", "A new beginning. God bless Elias."]],
   },
+  "candle-of-faith": {
+    full: "Caleb Mathew Thomas", role: "Our son", age: "5 months", born: "31 May 2027",
+    subtitle: "a light for Caleb", invited: "We invite you to light a candle with us at the baptism of", hosts: "Anu & Mathew Thomas",
+    start: "17:00", end: "18:15", service: "Evening service and baptism", serviceNote: "The baptism takes place in the evening service, when the baptismal candle is lit from the Paschal candle. Please be seated by 4:45.",
+    address: "St. Andrew’s Church, Richmond Road, Bengaluru 560025", lat: 12.9646, lng: 77.5993, parking: "Parking in the church compound and along Richmond Road.", road: "Ten minutes from Trinity metro station.",
+    after: { name: "Tea and cake in the hall", start: "18:30", end: "20:00", description: "Tea, cake and a quiet half hour, with the candles still burning." },
+    about: { eyebrow: "A candle for Caleb", title: "Caleb", body: "We lit a candle the night we brought Caleb home, and we have not let it go out since.\n\nOn Sunday evening the church will give him a candle of his own, lit from the one flame that has lit every baptism here. Come and watch it being passed on.", facts: [["5 pm", "Evening service"], ["5:40", "The baptismal candle is lit"], ["6:30", "Tea in the hall"]] },
+    ceremonies: [["The Paschal candle", "5:30 pm", "The great candle is lit at the font, and the church stands.", "flame"], ["The baptism", "5:40 pm", "Caleb is baptised in the name of the Father, the Son and the Holy Spirit.", "bowl"], ["His candle", "5:50 pm", "His own candle is lit from the Paschal candle and handed to his godfather to hold.", "lamp"]],
+    message: { title: "From his parents", body: "We have been told that the light a child is given at the font is the one he carries out of the church. We would like you there to see it lit.", from: "Anu & Mathew", role: "Caleb’s parents" },
+    people: [["His parents", "Anu Thomas", "Mother"], ["His parents", "Mathew Thomas", "Father"], ["His grandparents", "T. K. & Aleyamma Thomas", "Appachan and Ammachi"], ["His grandparents", "P. J. & Rachel Joseph", "Appachan and Ammachi"], ["His godparents", "Sheba Koshy", "Godmother"], ["His godparents", "Joel Varghese", "Godfather"]],
+    copy: { people: ["Who holds the light", "His family"], ceremonies: ["The evening", "How the light is passed"], events: ["Sunday 31 October", "The evening"], message: ["A few words"] },
+    meal: ["Vegetarian", "Non-vegetarian"], music: "prelude-in-c",
+    thanks: "Thank you for carrying the light with us. We still have the candle.\n\nAnu, Mathew & Caleb",
+    wishes: [["Fr. Samuel George", "Parish priest", "May the light you were given tonight never go out, Caleb."], ["Priya Chandy", "Godmother’s sister", "I will be the one with the matches."]],
+  },
+  "white-roses": {
+    full: "Rebecca Rose Joseph", role: "Our daughter", age: "4 months", born: "14 July 2027",
+    subtitle: "a rose for Rebecca", invited: "You are invited to the baptism of", hosts: "Meera & Jacob Joseph",
+    start: "10:00", end: "11:15", service: "Holy Mass and baptism", serviceNote: "The baptism is celebrated within the 10 o’clock Sunday Mass.",
+    address: "St. Michael’s Church, Church Road, Alappuzha 688001", lat: 9.4981, lng: 76.3388, parking: "Parking on the church ground.", road: "Eight minutes from Alappuzha railway station.",
+    after: { name: "Lunch in the garden", start: "11:30", end: "13:30", description: "A long lunch among the roses behind the parish house." },
+    about: { eyebrow: "A rose for Rebecca", title: "Rebecca", body: "Her grandmother planted a white rose the day Rebecca was born. It has opened in time for Sunday.\n\nWe would be so glad if you came to the church, and then to the garden, to see them both.", facts: [["10 am", "Holy Mass and baptism"], ["11:30", "Lunch in the garden"], ["4 months", "Rebecca’s age on the day"]] },
+    message: { title: "From Ammachi", body: "The rose bush was a cutting from my mother’s garden. It has lived in four gardens, and now it is in bloom for Rebecca.", from: "Thresiamma Pulickal", role: "Rebecca’s grandmother" },
+    people: [["Her parents", "Meera Joseph", "Mother"], ["Her parents", "Jacob Joseph", "Father"], ["Her grandparents", "Joseph & Thresiamma Pulickal", "Appachan and Ammachi"], ["Her grandparents", "Mathew & Annie Kalathil", "Appachan and Ammachi"], ["Her godparents", "Reshma Antony", "Godmother"], ["Her godparents", "Vinu Varghese", "Godfather"]],
+    copy: { people: ["Gathered round her", "Her family"], events: ["Sunday 14 November", "The day"], message: ["From the garden"] },
+    meal: ["Vegetarian", "Non-vegetarian"], dress: "White, ivory or soft green; flowers in the hair are very welcome.", music: "there-is-romance",
+    thanks: "Thank you for coming to the garden. The roses are still in bloom, and we have kept you a few.\n\nMeera, Jacob & Rebecca",
+    wishes: [["Fr. Antony Lobo", "Parish priest", "Welcome, little Rebecca Rose."], ["Sr. Lilly", "Great-aunt", "I have prayed for her every day since she was a seed."]],
+  },
+  "little-miracle": {
+    full: "Miriam Joy Abraham", role: "Our daughter", age: "11 months", born: "28 December 2026",
+    subtitle: "our little miracle", invited: "A miracle, and you are invited to the baptism of", hosts: "Susan & Roy Abraham",
+    start: "11:00", end: "12:15", service: "Holy Mass and baptism", serviceNote: "The baptism takes place after the Gospel at the 11 o’clock Sunday Mass.",
+    address: "Holy Family Church, Beach Road, Visakhapatnam 530001", lat: 17.7231, lng: 83.3012, parking: "Parking in the church compound and on Beach Road.", road: "Ten minutes from Visakhapatnam station.",
+    after: { name: "Lunch in the hall", start: "12:30", end: "15:00", description: "Lunch in the parish hall, with cake for everyone and a small teddy bear for every child." },
+    about: { eyebrow: "After a long wait", title: "Miriam", body: "We waited nine years for her, and we prayed on every one of them.\n\nShe is eleven months old, she has just learned to stand, and on Sunday she will be baptised. We call her our little miracle; the priest says that is what every child is.", facts: [["11 am", "Holy Mass and baptism"], ["12:30", "Lunch in the hall"], ["11 months", "Miriam’s age on the day"]] },
+    milestones: [["2017", "We began to hope", "The first year of waiting, and the first of many prayers."], ["2025", "The news", "A small, shaking phone call to both grandmothers."], ["December 2026", "Miriam arrived", "In the early morning, to a ward full of nurses singing."], ["November 2027", "Her baptism", "Sunday, with everyone who prayed for her."]],
+    people: [["Her parents", "Susan Abraham", "Mother"], ["Her parents", "Roy Abraham", "Father"], ["Her grandparents", "K. V. & Mariamma Abraham", "Appachan and Ammachi"], ["Her grandparents", "Chacko & Leelamma Thomas", "Appachan and Ammachi"], ["Her godparents", "Dr. Nisha Varghese", "Godmother"], ["Her godparents", "Binu Mathew", "Godfather"]],
+    copy: { people: ["Everyone who prayed", "Her family"], events: ["Sunday 28 November", "The day"] },
+    meal: ["Vegetarian", "Non-vegetarian"], music: "simple-duet",
+    thanks: "Thank you for praying with us for so long. Miriam has already learned to wave goodbye.\n\nSusan, Roy & Miriam",
+    wishes: [["Fr. Joseph Reddy", "Parish priest", "A child is always the Lord’s doing. Welcome, Miriam."], ["Sheela Kurian", "Friend", "We cried when you called. We will cry again on Sunday."]],
+  },
+  "golden-cross": {
+    full: "Matthew Peter D’Cunha", role: "Our son", age: "3 months", born: "12 September 2027",
+    subtitle: "signed with the cross", invited: "In the name of the Father, and of the Son, and of the Holy Spirit, we invite you to the baptism of", hosts: "Lynn & Peter D’Cunha",
+    start: "09:00", end: "10:15", service: "Holy Mass and baptism", serviceNote: "The child is received at the church door, where the priest traces the cross on his forehead; the baptism follows the homily.",
+    address: "Our Lady of Grace Church, Giriz, Vasai 401201", lat: 19.3919, lng: 72.8397, parking: "Parking on the church ground and at the school beside it.", road: "Twenty minutes from Vasai Road station.",
+    after: { name: "Breakfast in the hall", start: "10:30", end: "12:30", description: "Breakfast with the family in the parish hall." },
+    about: { eyebrow: "The sign of the cross", title: "Matthew", body: "The first thing the Church does for a child is to trace the cross on his forehead; the last thing it will do is the same.\n\nOn Sunday morning, at the door of the church, we will ask for it for Matthew.", facts: [["9 am", "Holy Mass"], ["9:40", "The baptism"], ["10:30", "Breakfast in the hall"]] },
+    ceremonies: [["At the door", "9:00 am", "The priest meets Matthew at the church door and traces the sign of the cross on his forehead.", "none"], ["The baptism", "9:40 am", "Water is poured three times, in the name of the Father, the Son and the Holy Spirit.", "bowl"], ["The anointing", "9:50 am", "He is anointed with the oil of Chrism and clothed in white.", "flower"]],
+    message: { title: "From his godfather", body: "I will make the sign of the cross over him every night he is in my care. It is the only prayer I know by heart.", from: "Vincent Fernandes", role: "Matthew’s godfather" },
+    people: [["His parents", "Lynn D’Cunha", "Mother"], ["His parents", "Peter D’Cunha", "Father"], ["His grandparents", "Joaquim & Maria D’Cunha", "Avô and Avó"], ["His grandparents", "Francis & Rita Rodrigues", "Avô and Avó"], ["His godparents", "Vincent Fernandes", "Godfather"], ["His godparents", "Sheryl Pereira", "Godmother"]],
+    copy: { people: ["Gathered round him", "His family and godparents"], ceremonies: ["The sacrament", "How it unfolds"], events: ["Sunday 12 December", "The morning"], message: ["A few words"] },
+    meal: ["Vegetarian", "Non-vegetarian"], music: "canon-in-d-major",
+    thanks: "Thank you for standing with us at the door of the church. We will tell Matthew who was there.\n\nLynn, Peter & Matthew",
+    wishes: [["Fr. Anthony Gonsalves", "Parish priest", "In the name of the Father, and of the Son, and of the Holy Spirit. Welcome, Matthew."], ["Marian Dias", "Aunt", "Sunday morning, first row, with a handkerchief."]],
+  },
+  "cloud-nine": {
+    full: "Luke Emmanuel Kharkongor", role: "Our son", age: "6 months", born: "26 June 2027",
+    subtitle: "on cloud nine", invited: "With our heads in the clouds and our hearts full, we invite you to the baptism of", hosts: "Daphne & Samuel Kharkongor",
+    start: "10:30", end: "11:45", service: "Christmas-week service and baptism", serviceNote: "The baptism is part of the 10:30 Sunday service in Christmas week. Please bring a warm shawl: it is cold in Shillong in December.",
+    address: "Holy Spirit Church, Laitumkhrah, Shillong 793003", lat: 25.5788, lng: 91.8933, parking: "Parking at the church and along the main road.", road: "Ten minutes from Police Bazaar.",
+    after: { name: "Lunch in the hall", start: "12:00", end: "14:30", description: "A hot lunch in the hall — jadoh, dohneiiong and plenty of tea — for everyone." },
+    about: { eyebrow: "Heads in the clouds", title: "Luke", body: "Luke was born in the monsoon, with the clouds down in the valley and our whole house shining.\n\nWe are baptising him in Christmas week, in a church the clouds sit over. Come early; the view is part of the prayer.", facts: [["10:30", "Sunday service and baptism"], ["12", "Lunch in the hall"], ["6 months", "Luke’s age on the day"]] },
+    people: [["His parents", "Daphne Kharkongor", "Mother"], ["His parents", "Samuel Kharkongor", "Father"], ["His grandparents", "Iban & Phibi Kharkongor", "Kong and Pa"], ["His grandparents", "Dr. Rani Syiem", "Kong"], ["His godparents", "Bah Donbok Lyngdoh", "Godfather"], ["His godparents", "Kong Wanda Nongrum", "Godmother"]],
+    copy: { people: ["Beneath the same sky", "His family"], events: ["Sunday 26 December", "The morning"] },
+    meal: ["Vegetarian", "Non-vegetarian"], music: "airship-serenity",
+    thanks: "Thank you for climbing the hill to be with us. The clouds were kind.\n\nDaphne, Samuel & Luke",
+    wishes: [["Rev. Banshan Marbaniang", "Pastor", "Welcome, little Luke. May you always walk above the clouds."], ["Kong Ibaha", "Great-aunt", "I will bring the shawls."]],
+  },
 };
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -353,21 +423,23 @@ function build(slug: string): OccasionCfg {
   const events: OccasionCfg["events"] = [{ name: d.service, date, start: d.start, end: d.end, venue: churchKey, description: d.serviceNote, dress: d.dress ?? "", colors: [], main: true }];
   if (d.after) events.push({ name: d.after.name, date, start: d.after.start, end: d.after.end, venue: d.after.hall ? "hall" : churchKey, description: d.after.description, dress: "", colors: [] });
 
-  const photoKey = sample.photo ? "hero" : undefined;
-  const needs: OccasionCfg["needs"] = sample.photo ? [["hero", sample.photo, "COUPLE"]] : [];
-  // pictures made from the prompts (docs/BAPTISM-IMAGES.md) join the sample as they are ingested; until then these slots stay empty
+  // the baby that opens the template, the picture beside “our little story”, and the family: all stand-ins (baptism/story.ts, photos.ts)
+  const st = STORY[slug];
+  const needs: OccasionCfg["needs"] = [["hero", st.hero, "COUPLE"], ["story", st.story, "COUPLE"]];
+  // pictures made from the prompts (docs/BAPTISM-IMAGES.md) join the sample as they are ingested and win over the stand-in
   const made = (slot: Slot) => (GENERATED[assetIdFor(slug, slot)] ? assetIdFor(slug, slot) : undefined);
+  const familyPhoto = (slot: Slot) => made(slot) ?? (slot === "parents" ? st.people?.parents : slot === "grandparents" ? st.people?.grandparents : undefined);
   const slotOf = (group: string): Slot | undefined => (/grand|appachan/i.test(group) ? "grandparents" : /godparent/i.test(group) ? "godparents" : /parent/i.test(group) ? "parents" : undefined);
   const shown = new Set<Slot>();
   const people = d.people.map(([group, name, relation, note]) => {
     const slot = slotOf(group);
-    const id = slot && !shown.has(slot) ? made(slot) : undefined;
-    if (slot && id) { shown.add(slot); needs.push([`people:${slot}`, id, "PEOPLE"]); }
+    const id = slot && !shown.has(slot) ? familyPhoto(slot) : undefined;
+    if (slot && id) { shown.add(slot); needs.push([`people:${slot}`, id, "FAMILY"]); }
     return { group, name, relation, note: note ?? "", photo: slot && id ? `people:${slot}` : undefined };
   });
-  const church = made("church");
+  const church = made("church") ?? st.church;
   if (church) { needs.push(["church", church, "VENUE"]); venues[0].photo = "church"; }
-  const gallery = [...(d.gallery ?? [])];
+  const gallery = galleryOf(slug);
   const detail = made("detail");
   if (detail && !gallery.some(([g]) => g === detail)) gallery.push([detail, "A quiet detail of the day"]);
 
@@ -379,7 +451,7 @@ function build(slug: string): OccasionCfg {
     people,
     message: d.message,
     prayer: { title: d.prayerTitle ?? "", text: verseText(verse), source: verseSource(verse) },
-    images: { couple: photoKey },
+    images: { couple: "hero", story: "story" },
     venues, events,
     milestones: d.milestones?.map(([year, title, caption]) => [year, title, caption] as [string, string, string]),
     ceremonies: d.ceremonies?.map(([name, when, description, glyph]) => [name, when, description, glyph] as [string, string, string, Glyph]),
@@ -389,14 +461,14 @@ function build(slug: string): OccasionCfg {
     palette: d.palette ? { colors: d.palette, note: d.dress ?? "" } : undefined,
     opening: { sealText: sample.child.trim().charAt(0).toUpperCase(), invited: d.invited },
     thankYou: { message: d.thanks, signature: d.hosts },
-    seo: { title: `${sample.child}’s baptism — Invitation`, description: `A baptism invitation for ${sample.child}, in the “${spec.name}” design. A sample by Invites by Stack Bridge Labs.`, og: photoKey },
+    seo: { title: `${sample.child}’s baptism — Invitation`, description: `A baptism invitation for ${sample.child}, in the “${spec.name}” design. A sample by Invites by Stack Bridge Labs.`, og: "hero" },
     needs,
     gallery,
     wishes: d.wishes,
     extra(doc) {
       const c = d.copy ?? {};
       const set = (t: Parameters<typeof sectionCopy>[1], v?: [string?, string?]) => v && sectionCopy(doc, t, { eyebrow: v[0], title: v[1] });
-      set("people", c.people); set("events", c.events); set("ceremonies", c.ceremonies); set("message", c.message); set("prayer", c.prayer); set("venue", c.venue); set("rsvp", c.rsvp);
+      set("people", c.people); set("events", c.events); set("gallery", galleryHeading(slug)); sectionCopy(doc, "finale", { intro: finaleBlessing(slug) }); set("ceremonies", c.ceremonies); set("message", c.message); set("prayer", c.prayer); set("venue", c.venue); set("rsvp", c.rsvp);
     },
   };
 }
@@ -407,6 +479,7 @@ const VERSE: Record<string, string> = {
   "little-princess-of-heaven": "ps-139-14", "generations-of-faith": "ps-145-4", "church-of-light": "john-8-12", "white-dove-blessing": "matt-3-16", "the-open-bible": "ps-119-105",
   "floral-grace": "matt-6-28", "golden-morning": "lam-3-22", "jesus-and-the-little-child": "matt-19-14", "garden-of-blessings": "ps-1-3", "royal-catholic-elegance": "matt-28-19",
   "modern-minimal-grace": "isa-43-1", "the-little-blessing": "mark-10-16", "family-in-faith": "josh-24-15", "celestial-promise": "gen-9-13", "a-new-beginning": "2cor-5-17",
+  "candle-of-faith": "matt-5-16", "white-roses": "isa-35-1", "little-miracle": "ps-118-23", "golden-cross": "john-3-16", "cloud-nine": "ps-36-5",
 };
 
 export const BAPTISM_DEMOS: OccasionCfg[] = BAPTISM_SPECS.map((s) => build(s.slug));

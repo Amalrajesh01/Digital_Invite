@@ -53,6 +53,7 @@ const REGISTRY: Record<SectionType, React.ComponentType<{ section: SectionConfig
   message: dynamic(() => import("../sections/OccasionSections").then((m) => m.MessageSection)),
   people: dynamic(() => import("../sections/OccasionSections").then((m) => m.PeopleSection)),
   prayer: dynamic(() => import("../sections/OccasionSections").then((m) => m.PrayerSection)),
+  finale: dynamic(() => import("../sections/FinaleSection")),
 };
 
 export function getVisitorId(): string {

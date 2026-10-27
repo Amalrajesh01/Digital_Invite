@@ -68,6 +68,9 @@ export function sampleTokens(doc: InvitationDoc, date: string | null): string[] 
   add(doc.family.brideFamilyName.en); add(doc.family.groomFamilyName.en);
   for (const m of [...doc.family.members, ...doc.family.party]) add(m.name.en);
   add(doc.occasion.honoree.name.en); add(doc.occasion.honoree.fullName.en); add(doc.occasion.title.en);
+  // the family that hosts, the people named, the letter’s writer: all the sample’s until the family replaces them
+  add(doc.occasion.hosts.en); add(doc.occasion.message.from.en);
+  for (const p of doc.occasion.people) add(p.name.en);
   for (const v of doc.venues) { add(v.name.en); add(v.address.en); }
   if (date && ISO.test(date)) {
     const d = new Date(`${date}T00:00:00Z`);
@@ -204,7 +207,13 @@ export async function createFromTemplate(actor: Actor | null, input: FromTemplat
   const sa = src.couple.bride, sb = src.couple.groom, ho = src.occasion.honoree;
   const pairs: [string, string][] = couple
     ? [[sa.fullName.en ?? "", nameA || sa.fullName.en || ""], [sa.name.en ?? "", first(nameA) || sa.name.en || ""], [sb.fullName.en ?? "", nameB || sb.fullName.en || ""], [sb.name.en ?? "", first(nameB) || sb.name.en || ""]]
-    : [[ho.fullName.en ?? "", nameA || ho.fullName.en || ""], [ho.name.en ?? "", first(nameA) || ho.name.en || ""], [src.occasion.title.en ?? "", input.title.trim()]];
+    : (() => {
+        // a sample’s display name may be a first and a middle name (“Anya Mariam”) while its sentences use the first alone (“Anya”): all three are replaced
+        const given = (ho.name.en ?? "").trim().split(/\s+/).filter(Boolean).length || 1;
+        const head = nameA.trim().split(/\s+/).filter(Boolean).slice(0, given).join(" ");
+        const firstName = first(nameA) || first(ho.name.en ?? "");
+        return [[ho.fullName.en ?? "", nameA || ho.fullName.en || ""], [ho.name.en ?? "", head || ho.name.en || ""], [first(ho.fullName.en ?? ""), firstName], [first(ho.name.en ?? ""), firstName], [src.occasion.title.en ?? "", input.title.trim()]] as [string, string][];
+      })();
   const rename = renamer(pairs);
   const delta = sample.weddingDate ? days(sample.weddingDate, input.date) : 0;
   doc = mapStrings(doc, (s) => {

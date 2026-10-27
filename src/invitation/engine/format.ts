@@ -110,3 +110,17 @@ export function filmSourceFromUrl(url: string): { kind: "embed" | "file"; src: s
   if (direct && direct.startsWith("https://") && /.(mp4|webm|mov)$/i.test(new URL(direct).pathname)) return { kind: "file", src: direct };
   return null;
 }
+
+/** A gallery caption is “Title — a line”: the title is set large, the line beneath it. A caption without the dash is only a title. */
+export function splitCaption(caption: string): { title: string; line: string } {
+  const i = caption.indexOf(" — ");
+  return i < 0 ? { title: caption.trim(), line: "" } : { title: caption.slice(0, i).trim(), line: caption.slice(i + 3).trim() };
+}
+
+const ROMAN: [number, string][] = [[10, "X"], [9, "IX"], [5, "V"], [4, "IV"], [1, "I"]];
+/** 1 → I, 4 → IV: the chapter numbers of a story gallery. */
+export function roman(n: number): string {
+  let out = "";
+  for (const [v, r] of ROMAN) while (n >= v) { out += r; n -= v; }
+  return out;
+}

@@ -1,4 +1,5 @@
-import type { CSSProperties, ReactElement, ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactElement, type ReactNode } from "react";
+import type { PortraitReveal } from "@/domain/design/reveals";
 
 /**
  * The drawn scenes of the twenty baptism heroes (`HeroGrace.tsx`). Everything here is plain SVG and CSS: nothing is a photograph,
@@ -371,34 +372,142 @@ export const Birds = () => (
   <div className="gh-birds" aria-hidden>{seq(3).map((i) => <svg key={i} viewBox="0 0 30 12" style={S({ "--i": i })}><path d="M1 8 C 6 0, 11 0, 15 7 C 19 0, 24 0, 29 8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>)}</div>
 );
 
+// ── Candle of Faith: a candle a guest may light. Nothing depends on it: the child’s name, the day and the place are on the page whether or not it is lit. ──
+export function CandleLight({ label, message }: { label: string; message: string }) {
+  const box = useRef<HTMLDivElement>(null);
+  const [lit, setLit] = useState(false);
+  const light = () => {
+    setLit(true);
+    box.current?.closest(".hv-grace")?.setAttribute("data-lit", "1");
+  };
+  // a guest who prefers reduced motion is shown it lit (the stylesheet does the same for the glow)
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) light();
+  }, []);
+  return (
+    <div ref={box} className="gh-candlebox">
+      <button type="button" className="gh-wickbtn" aria-pressed={lit} aria-label={label} onClick={light} disabled={lit}>
+        <svg className="gh-bigcandle" viewBox="0 0 40 124" aria-hidden focusable="false">
+          <defs>
+            <linearGradient id="gh-wax" x1="0" x2="1"><stop offset="0" stopColor="#e6d7b8" /><stop offset=".45" stopColor="#fffaf0" /><stop offset="1" stopColor="#e2d1ae" /></linearGradient>
+            <radialGradient id="gh-fl" cx=".5" cy=".72" r=".6"><stop offset="0" stopColor="#fffbe6" /><stop offset=".42" stopColor="#ffd36a" /><stop offset=".8" stopColor="#f4902a" /><stop offset="1" stopColor="#f4902a" stopOpacity="0" /></radialGradient>
+          </defs>
+          <rect x="11" y="48" width="18" height="72" rx="2.2" fill="url(#gh-wax)" stroke="rgba(80,55,20,.18)" strokeWidth=".6" />
+          <ellipse cx="20" cy="48" rx="9" ry="2.6" fill="#fff7e2" stroke="rgba(80,55,20,.18)" strokeWidth=".5" />
+          <path d="M20 48 V40" stroke="#3a2b1a" strokeWidth="1.5" strokeLinecap="round" />
+          <g className="gh-cflame"><path d="M20 10 C 27 19, 28 31, 20 40 C 12 31, 13 19, 20 10 Z" fill="url(#gh-fl)" /></g>
+        </svg>
+      </button>
+      {!lit && <p className="gh-lit-hint">{label}</p>}
+      <p className="gh-lit-msg" aria-live="polite">{message}</p>
+    </div>
+  );
+}
+
+// ── White Roses: a wreath of white roses round the portrait; they open as the page is scrolled ──
+export function RoseWreath() {
+  const roses = [0, 45, 90, 135, 180, 225, 270, 315];
+  return (
+    <svg className="gh-rosewreath" viewBox="-100 -100 200 200" aria-hidden focusable="false">
+      <defs>
+        <symbol id="gh-rose" viewBox="-20 -20 40 40" overflow="visible">
+          <circle r="18" fill="#fff" stroke="#e6dccb" strokeWidth=".7" />
+          <path d="M-15 -6 C -10 -17, 10 -17, 15 -6 M-16 4 C -10 15, 10 15, 16 4" fill="none" stroke="#e6dccb" strokeWidth=".6" />
+          <circle r="11.5" fill="#fffdf8" stroke="#e3d8c4" strokeWidth=".6" />
+          <path d="M-9 -3 C -6 -10, 6 -10, 9 -3 M-8 5 C -4 10, 5 10, 8 4" fill="none" stroke="#e0d3bb" strokeWidth=".5" />
+          <circle r="6.4" fill="#fff" stroke="#dccfb5" strokeWidth=".5" />
+          <path d="M-3.8 -1 C -2 -4.6, 4.2 -4, 4 0.4 C 3.8 4.2, -2.4 4.8, -4 1.6" fill="none" stroke="#d3c4a6" strokeWidth=".7" strokeLinecap="round" />
+        </symbol>
+      </defs>
+      <g fill="var(--gh-leaf, #6f8f72)" opacity=".92">
+        {roses.map((a) => <path key={a} transform={`rotate(${a + 22.5}) translate(0 -87)`} d="M0 0 C 8 -6, 8 -20, 0 -27 C -8 -20, -8 -6, 0 0Z" />)}
+      </g>
+      <g>
+        {roses.map((a, i) => (
+          <g key={a} transform={`rotate(${a}) translate(0 -88)`}><use href="#gh-rose" className="gh-flw" x="-19" y="-19" width="38" height="38" style={S({ "--i": i })} /></g>
+        ))}
+      </g>
+    </svg>
+  );
+}
+
+// ── Little Miracle: a nursery mobile — pastel stars, a moon and a cloud on strings, turning very slowly ──
+const ORN: { x: number; len: number; kind: "star" | "moon" | "cloud"; fill: string }[] = [
+  { x: 32, len: 46, kind: "star", fill: "#F4D9A6" }, { x: 104, len: 78, kind: "moon", fill: "#BBD5EA" }, { x: 180, len: 40, kind: "cloud", fill: "#F7D5D2" },
+  { x: 256, len: 84, kind: "star", fill: "#CFE6D5" }, { x: 328, len: 52, kind: "moon", fill: "#F4D9A6" },
+];
+const SHAPE = { star: "M0 -9 L2.6 -3 L9 -2.8 L4 1.6 L5.6 8 L0 4.4 L-5.6 8 L-4 1.6 L-9 -2.8 L-2.6 -3Z", moon: "M-5 -8 A 9 9 0 1 0 6 6 A 7 7 0 1 1 -5 -8Z", cloud: "M-10 5 a5 5 0 0 1 2 -9 a6 6 0 0 1 11 -2 a5 5 0 0 1 6 11 Z" };
+export function NurseryMobile() {
+  return (
+    <svg className="gh-mobile" viewBox="0 0 360 136" aria-hidden focusable="false">
+      <path d="M6 6 Q 180 -4 354 6" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+      {ORN.map((o, i) => (
+        <g key={i} transform={`translate(${o.x} 4)`}>
+          <g className="gh-orn" style={S({ "--i": i, "--d": `${5 + i * 0.9}s` })}>
+            <line x1="0" y1="0" x2="0" y2={o.len} stroke="currentColor" strokeWidth=".8" />
+            <path transform={`translate(0 ${o.len + 9})`} d={SHAPE[o.kind]} fill={o.fill} stroke="rgba(80,90,120,.28)" strokeWidth=".8" strokeLinejoin="round" />
+          </g>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+// ── The Golden Cross: two fine gold lines draw a cross, and the child’s portrait is set where they meet ──
+export function GoldCross() {
+  return (
+    <svg className="gh-goldcross" viewBox="0 0 200 240" aria-hidden focusable="false">
+      <g fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1">
+        <path className="gh-draw" pathLength={1} d="M98 8 V236" />
+        <path className="gh-draw d2" pathLength={1} d="M102 8 V236" />
+        <path className="gh-draw d2" pathLength={1} d="M8 94 H192" />
+        <path className="gh-draw d3" pathLength={1} d="M8 98 H192" />
+      </g>
+      <g fill="currentColor" className="gh-terms">
+        <path d="M100 0 l4 8 -4 8 -4 -8z" /><path d="M100 224 l4 8 -4 8 -4 -8z" /><path d="M0 96 l8 -4 8 4 -8 4z" /><path d="M184 96 l8 -4 8 4 -8 4z" />
+      </g>
+    </svg>
+  );
+}
+
+// ── Cloud Nine: soft puffs the portrait rests on, over two layers of cloud that drift at their own speeds ──
+export const Puffs = () => <span className="gh-puffs" aria-hidden>{seq(4).map((i) => <i key={i} style={S({ "--i": i })} />)}</span>;
+
 // ── the twenty scenes ────────────────────────────────────────────────────────────────────────────────
 export type Layout = "centre" | "arch" | "window" | "horizon" | "poster";
-export interface SceneProps { photo?: ReactNode; initial: string }
-export interface Scene { layout: Layout; back: (p: SceneProps) => ReactElement; figure?: (p: SceneProps) => ReactElement }
+export interface SceneProps { photo?: ReactNode; initial: string; /** The words of the candle that a guest may light (Candle of Faith). */ candle?: { label: string; message: string } }
+export interface Scene { layout: Layout; reveal: PortraitReveal; back: (p: SceneProps) => ReactElement; figure?: (p: SceneProps) => ReactElement; /** The scene has a candle a guest may light: the hero starts unlit (data-lit="0") and the glow arrives on a tap. */ lights?: boolean; /** A layer that covers the scene at first and then parts (Heaven’s Gate: two banks of cloud). Its resting state is open. */ veil?: () => ReactElement }
 
 const Frame = ({ children, className = "" }: { children: ReactNode; className?: string }) => <div className={`gh-frame ${className}`}>{children}</div>;
 
+export const Veil = () => <div className="gh-veil" aria-hidden><i className="l" /><i className="r" /></div>;
+
 export const SCENES: Record<string, Scene> = {
-  "gr-heavenly": { layout: "centre", back: () => <><Sky /><Rays /><Clouds n={4} /><Dove className="gh-dove-glide" /><Motes n={10} /></>, figure: ({ photo }) => <>{photo && <Frame className="oval">{photo}</Frame>}</> },
-  "gr-beam": { layout: "centre", back: () => <><Sky /><div className="gh-beam" /><div className="gh-pool" /><Fall n={9} kind="feather" /><Motes n={8} /></>, figure: ({ photo }) => <>{photo && <Frame className="oval">{photo}</Frame>}</> },
-  "gr-waters": { layout: "horizon", back: () => <><Sky /><div className="gh-sea" /><div className="gh-shimmer" /><Ripples n={5} /><Drop /><Motes n={7} /></>, figure: ({ photo }) => <>{photo && <Frame className="circle">{photo}</Frame>}</> },
-  "gr-kerala": { layout: "arch", back: () => <><Sky /><Motes n={8} /></>, figure: ({ photo }) => <><NasraniCross /><Frame className="arch kasavu"><div className="gh-view">{photo ?? <><Sky /><Church /><div className="gh-lampglow" /></>}</div></Frame></> },
-  "gr-prince": { layout: "centre", back: () => <><Sky /><Stars n={34} /></>, figure: ({ photo, initial }) => <><Crown /><div className="gh-badge"><svg viewBox="0 0 120 120" aria-hidden><circle className="gh-draw" pathLength={1} cx="60" cy="60" r="56" fill="none" stroke="currentColor" strokeWidth="1.6" /></svg>{photo ? <Frame className="circle">{photo}</Frame> : <span aria-hidden>{initial}</span>}</div></> },
-  "gr-princess": { layout: "arch", back: () => <><Sky /><Fall n={9} kind="petal" /></>, figure: ({ photo }) => <><Crown /><div className="gh-wreath"><Garland /><Frame className="arch soft"><div className="gh-view">{photo ?? <><Sky /><div className="gh-cloudy" /><SmallCross className="gh-arch-cross" /></>}</div></Frame></div></> },
-  "gr-generations": { layout: "centre", back: () => <><div className="gh-paper" /></>, figure: ({ photo }) => <><Tree />{photo && <Frame className="oval sepia">{photo}</Frame>}</> },
-  "gr-nave": { layout: "window", back: () => <><Sky /><Rays className="from-window" /><Nave /><Candles n={9} /><Motes n={9} /></>, figure: ({ photo }) => <div className="gh-endwindow">{photo ? <Frame className="pointed">{photo}</Frame> : <Glass />}</div> },
-  "gr-dove": { layout: "centre", back: () => <><Sky /><Clouds n={3} /><Fall n={5} kind="feather" /></>, figure: ({ photo }) => <><Dove className="gh-dove-big" olive />{photo && <Frame className="circle">{photo}</Frame>}</> },
-  "gr-bible": { layout: "centre", back: () => <><div className="gh-lectern" /><Motes n={10} /></>, figure: ({ photo }) => <>{photo && <Frame className="oval">{photo}</Frame>}<Book /></> },
-  "gr-lily": { layout: "centre", back: () => <><Sky /><Lily className="gh-lily-a" /><Lily className="gh-lily-b" /><Lily className="gh-lily-c" /><Fall n={9} kind="petal" /></>, figure: ({ photo }) => <>{photo && <Frame className="oval">{photo}</Frame>}</> },
-  "gr-morning": { layout: "horizon", back: ({ photo }) => <><Sky /><div className="gh-sunrays" /><div className="gh-sun" />{photo ? <div className="gh-land">{photo}</div> : <Hills />}<Birds /><Motes n={9} /></> },
-  "gr-hands": { layout: "centre", back: () => <><div className="gh-wash w1" /><div className="gh-wash w2" /><div className="gh-wash w3" /><Motes n={6} /></>, figure: ({ photo }) => <>{photo && <Frame className="oval soft">{photo}</Frame>}<Hands /></> },
-  "gr-garden": { layout: "arch", back: () => <><Sky /><Motes n={8} /></>, figure: ({ photo }) => <div className="gh-trellis"><Frame className="arch plain"><div className="gh-view">{photo ?? <><Sky /><div className="gh-lawn" /><div className="gh-path" /></>}</div></Frame><Vine /><Butterfly /></div> },
-  "gr-crest": { layout: "window", back: () => <><div className="gh-velvet" /><Corner className="c1" /><Corner className="c2" /><Corner className="c3" /><Corner className="c4" /><div className="gh-keyline" /><Motes n={8} /></>, figure: ({ photo }) => <>{photo ? <Frame className="arch gold">{photo}</Frame> : <RayedCross />}</> },
-  "gr-minimal": { layout: "poster", back: () => <><svg className="gh-halo" viewBox="0 0 200 200" aria-hidden><circle className="gh-draw" pathLength={1} cx="100" cy="100" r="98" fill="none" stroke="currentColor" strokeWidth=".6" /><path className="gh-draw d2" pathLength={1} d="M100 56 V150 M66 88 H134" fill="none" stroke="currentColor" strokeWidth=".8" /></svg></>, figure: ({ photo }) => <>{photo && <Frame className="band">{photo}</Frame>}</> },
-  "gr-footprints": { layout: "poster", back: () => <><div className="gh-paper soft" /><Footprints n={8} /><Candle className="gh-lone" /></>, figure: ({ photo }) => <>{photo && <Frame className="rounded">{photo}</Frame>}</> },
-  "gr-rings": { layout: "centre", back: () => <><div className="gh-ring r1" /><div className="gh-ring r2" /><div className="gh-ring r3" /><div className="gh-ring r4" /></>, figure: ({ photo }) => <>{photo && <Frame className="circle">{photo}</Frame>}</> },
-  "gr-promise": { layout: "horizon", back: ({ photo }) => <><Sky /><Stars n={36} />{photo && <div className="gh-land dusk">{photo}</div>}<Bow /><Clouds n={2} /></> },
-  "gr-dawn": { layout: "horizon", back: () => <><Sky /><Stars n={14} /><Rays className="from-door" /><Motes n={14} /></>, figure: ({ photo }) => <div className="gh-doorway"><div className="gh-spill" /><div className="gh-beyond">{photo ?? <><Sky className="dawn" /><div className="gh-sun low" /><Hills /></>}<Ripples n={3} /></div><Doors /><svg className="gh-edge" viewBox="0 0 100 150" preserveAspectRatio="none" aria-hidden><path d="M0 150 V66 C0 33 30 10.5 50 0 C70 10.5 100 33 100 66 V150" fill="none" stroke="currentColor" strokeWidth="2" vectorEffect="non-scaling-stroke" /></svg><Dove className="gh-dove-rise a" /><Dove className="gh-dove-rise b" /></div> },
+  "gr-heavenly": { veil: () => <Veil />, reveal: "heavenly", layout: "centre", back: () => <><Sky /><Rays /><Clouds n={4} /><Dove className="gh-dove-glide" /><Motes n={10} /></>, figure: ({ photo }) => <>{photo && <Frame className="oval">{photo}</Frame>}</> },
+  "gr-beam": { reveal: "heavenly", layout: "centre", back: () => <><Sky /><div className="gh-beam" /><div className="gh-pool" /><Fall n={9} kind="feather" /><Motes n={8} /></>, figure: ({ photo }) => <>{photo && <Frame className="oval">{photo}</Frame>}</> },
+  "gr-waters": { reveal: "heavenly", layout: "horizon", back: () => <><Sky /><div className="gh-sea" /><div className="gh-shimmer" /><Ripples n={5} /><Drop /><Motes n={7} /></>, figure: ({ photo }) => <>{photo && <Frame className="circle">{photo}</Frame>}</> },
+  "gr-kerala": { reveal: "royal", layout: "arch", back: () => <><Sky /><Motes n={8} /></>, figure: ({ photo }) => <><NasraniCross /><Frame className="arch kasavu"><div className="gh-view">{photo ?? <><Sky /><Church /><div className="gh-lampglow" /></>}</div></Frame></> },
+  "gr-prince": { reveal: "royal", layout: "centre", back: () => <><Sky /><Stars n={34} /></>, figure: ({ photo, initial }) => <><Crown /><div className="gh-badge"><svg viewBox="0 0 120 120" aria-hidden><circle className="gh-draw" pathLength={1} cx="60" cy="60" r="56" fill="none" stroke="currentColor" strokeWidth="1.6" /></svg>{photo ? <Frame className="circle">{photo}</Frame> : <span aria-hidden>{initial}</span>}</div></> },
+  "gr-princess": { reveal: "floral", layout: "arch", back: () => <><Sky /><Fall n={9} kind="petal" /></>, figure: ({ photo }) => <><Crown /><div className="gh-wreath"><Garland /><Frame className="arch soft"><div className="gh-view">{photo ?? <><Sky /><div className="gh-cloudy" /><SmallCross className="gh-arch-cross" /></>}</div></Frame></div></> },
+  "gr-generations": { reveal: "minimal", layout: "centre", back: () => <><div className="gh-paper" /></>, figure: ({ photo }) => <><Tree />{photo && <Frame className="oval sepia">{photo}</Frame>}</> },
+  "gr-nave": { reveal: "heavenly", layout: "window", back: () => <><Sky /><Rays className="from-window" /><Nave /><Candles n={9} /><Motes n={9} /></>, figure: ({ photo }) => <div className="gh-endwindow">{photo ? <Frame className="pointed">{photo}</Frame> : <Glass />}</div> },
+  "gr-dove": { reveal: "heavenly", layout: "centre", back: () => <><Sky /><Clouds n={3} /><Fall n={5} kind="feather" /></>, figure: ({ photo }) => <><Dove className="gh-dove-big" olive />{photo && <Frame className="circle">{photo}</Frame>}</> },
+  "gr-bible": { reveal: "minimal", layout: "centre", back: () => <><div className="gh-lectern" /><Motes n={10} /></>, figure: ({ photo }) => <>{photo && <Frame className="oval">{photo}</Frame>}<Book /></> },
+  "gr-lily": { reveal: "floral", layout: "centre", back: () => <><Sky /><Lily className="gh-lily-a" /><Lily className="gh-lily-b" /><Lily className="gh-lily-c" /><Fall n={9} kind="petal" /></>, figure: ({ photo }) => <>{photo && <Frame className="oval">{photo}</Frame>}</> },
+  "gr-morning": { reveal: "heavenly", layout: "horizon", back: ({ photo }) => <><Sky /><div className="gh-sunrays" />{!photo && <div className="gh-sun" />}<Hills /><Birds /><Motes n={9} /></>, figure: ({ photo }) => <>{photo && <div className="gh-risen"><span className="gh-sundisc" aria-hidden /><Frame className="circle">{photo}</Frame></div>}</> },
+  "gr-hands": { reveal: "heavenly", layout: "centre", back: () => <><div className="gh-wash w1" /><div className="gh-wash w2" /><div className="gh-wash w3" /><Motes n={6} /></>, figure: ({ photo }) => <>{photo && <Frame className="oval soft">{photo}</Frame>}<Hands /></> },
+  "gr-garden": { reveal: "floral", layout: "arch", back: () => <><Sky /><Motes n={8} /></>, figure: ({ photo }) => <div className="gh-trellis"><Frame className="arch plain"><div className="gh-view">{photo ?? <><Sky /><div className="gh-lawn" /><div className="gh-path" /></>}</div></Frame><Vine /><Butterfly /></div> },
+  "gr-crest": { reveal: "royal", layout: "window", back: () => <><div className="gh-velvet" /><Corner className="c1" /><Corner className="c2" /><Corner className="c3" /><Corner className="c4" /><div className="gh-keyline" /><Motes n={8} /></>, figure: ({ photo }) => <>{photo ? <Frame className="arch gold">{photo}</Frame> : <RayedCross />}</> },
+  "gr-minimal": { reveal: "minimal", layout: "poster", back: () => <><svg className="gh-halo" viewBox="0 0 200 200" aria-hidden><circle className="gh-draw" pathLength={1} cx="100" cy="100" r="98" fill="none" stroke="currentColor" strokeWidth=".6" /><path className="gh-draw d2" pathLength={1} d="M100 56 V150 M66 88 H134" fill="none" stroke="currentColor" strokeWidth=".8" /></svg></>, figure: ({ photo }) => <>{photo && <Frame className="band">{photo}</Frame>}</> },
+  "gr-footprints": { reveal: "minimal", layout: "poster", back: () => <><div className="gh-paper soft" /><Footprints n={8} /><Candle className="gh-lone" /></>, figure: ({ photo }) => <>{photo && <Frame className="rounded">{photo}</Frame>}</> },
+  "gr-rings": { reveal: "minimal", layout: "centre", back: () => <><div className="gh-ring r1" /><div className="gh-ring r2" /><div className="gh-ring r3" /><div className="gh-ring r4" /></>, figure: ({ photo }) => <>{photo && <Frame className="circle">{photo}</Frame>}</> },
+  "gr-promise": { reveal: "heavenly", layout: "horizon", back: () => <><Sky /><Stars n={36} /><Bow /><Clouds n={2} /></>, figure: ({ photo }) => <>{photo && <Frame className="oval soft">{photo}</Frame>}</> },
+  "gr-candle": { reveal: "heavenly", lights: true, layout: "centre", back: () => <><div className="gh-warm" /><Motes n={9} /></>, figure: ({ photo, candle }) => <>{photo && <Frame className="oval">{photo}</Frame>}{candle && <CandleLight label={candle.label} message={candle.message} />}</> },
+  "gr-roses": { reveal: "floral", layout: "centre", back: () => <><Sky /><Fall n={11} kind="petal" /><Motes n={6} /></>, figure: ({ photo }) => <div className="gh-rosering"><RoseWreath />{photo && <Frame className="circle">{photo}</Frame>}</div> },
+  "gr-mobile": { reveal: "heavenly", layout: "centre", back: () => <><Sky /><Stars n={22} /><Clouds n={2} /></>, figure: ({ photo }) => <><NurseryMobile />{photo && <Frame className="circle">{photo}</Frame>}</> },
+  "gr-cross": { reveal: "royal", layout: "centre", back: () => <><div className="gh-glowfield" /><Motes n={7} /></>, figure: ({ photo }) => <div className="gh-xwrap"><GoldCross />{photo && <Frame className="circle">{photo}</Frame>}</div> },
+  "gr-clouds": { reveal: "heavenly", layout: "centre", back: () => <><Sky /><div className="gh-cl-a"><Clouds n={4} /></div><div className="gh-cl-b"><Clouds n={3} /></div><Motes n={7} /></>, figure: ({ photo }) => <>{photo && <Frame className="oval">{photo}</Frame>}<Puffs /></> },
+  "gr-dawn": { reveal: "heavenly", layout: "horizon", back: () => <><Sky /><Stars n={14} /><Rays className="from-door" /><Motes n={14} /></>, figure: ({ photo }) => <div className="gh-doorway"><div className="gh-spill" /><div className="gh-beyond">{photo ?? <><Sky className="dawn" /><div className="gh-sun low" /><Hills /></>}<Ripples n={3} /></div><Doors /><svg className="gh-edge" viewBox="0 0 100 150" preserveAspectRatio="none" aria-hidden><path d="M0 150 V66 C0 33 30 10.5 50 0 C70 10.5 100 33 100 66 V150" fill="none" stroke="currentColor" strokeWidth="2" vectorEffect="non-scaling-stroke" /></svg><Dove className="gh-dove-rise a" /><Dove className="gh-dove-rise b" /></div> },
 };
 
 export const isGraceVariant = (v: string | undefined): v is string => !!v && v in SCENES;

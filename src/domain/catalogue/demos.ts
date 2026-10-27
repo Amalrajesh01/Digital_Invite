@@ -9,6 +9,7 @@ import { CASTING } from "@/domain/imagery/casting";
 import { stockInfo } from "@/domain/imagery/stock";
 import { CINEMATIC_SAMPLE_FACTS } from "./cinematic-samples";
 import { BAPTISM_SAMPLES } from "./baptism-samples";
+import { STORY } from "@/domain/baptism/story";
 
 /**
  * The sample invitations shown on the public template gallery. Each one is a real, published invitation
@@ -259,7 +260,7 @@ const BAPTISM_DEMOS: DemoDef[] = BAPTISM_SPECS.map((s): DemoDef => {
   const styles = [...new Set((s.tags ?? []).map((t) => TAG_STYLE[t]).filter((t): t is StyleTag => !!t))];
   return {
     slug: s.demo, name: f.child, title: s.name, eventType: s.eventType, template: s.slug, theme: s.theme, styles: styles.length ? styles : ["Traditional"],
-    cover: f.photo ?? "", coverFocal: f.photo ? stockInfo(f.photo)?.focal : undefined, strip: [],
+    cover: STORY[s.slug].hero, coverFocal: stockInfo(STORY[s.slug].hero)?.focal, strip: [],
     tagline: s.tagline, description: s.concept, highlights: s.interactions.slice(0, 4), bestFor: s.target, languages: ["English"],
     when: `${Number(f.date.slice(8))} ${MONTHS[Number(f.date.slice(5, 7)) - 1]} ${f.date.slice(0, 4)}`, where: f.city,
   };

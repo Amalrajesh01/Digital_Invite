@@ -14,7 +14,8 @@ import { FamilyStep } from "@/components/admin/steps/FamilyStep";
 import { AlbumsPanel } from "@/components/media/AlbumsPanel";
 import { StoryStep } from "@/components/admin/steps/StoryStep";
 import { CeremoniesEditor, FilmEditor, LiveStreamEditor } from "@/components/admin/steps/ExperienceSteps";
-import { assignSlot, ownSlotValue } from "@/domain/imagery/slots";
+import { assignSlot, ownSlotValue, slotDef } from "@/domain/imagery/slots";
+import { REVEALS } from "@/domain/design/reveals";
 import { VenueStep } from "@/components/admin/steps/VenueStep";
 import { RsvpSetupStep } from "@/components/admin/steps/SetupSteps";
 import { GamesSetup } from "@/components/workspace/GamesSetup";
@@ -33,7 +34,7 @@ const PHASES = WEDDING_STATUSES.filter((s) => s !== "DRAFT" && s !== "PREVIEW");
 const PHASE_LABEL: Record<string, string> = { PUBLISHED: "Before the wedding", LIVE_EVENT: "On the wedding day", POST_EVENT: "Just after (thank-you)", MEMORY: "Memories", ANNIVERSARY: "Anniversary" };
 
 /** Sections whose “Words & photos” tab has real content to edit; the others only have layout and wording. */
-export const HAS_CONTENT = new Set<string>(["hero", "couple", "story", "timeline", "ceremonies", "film", "livestream", "family", "events", "countdown", "livesched", "dresscode", "menu", "venue", "travel", "rsvp", "gallery", "photowall", "memory", "games", "quiz", "scavenger"]);
+export const HAS_CONTENT = new Set<string>(["hero", "about", "finale", "couple", "story", "timeline", "ceremonies", "film", "livestream", "family", "events", "countdown", "livesched", "dresscode", "menu", "venue", "travel", "rsvp", "gallery", "photowall", "memory", "games", "quiz", "scavenger"]);
 
 export function SectionPanel({ section, tab, weddingId }: { section: SectionConfig; tab: "section" | "content"; weddingId: string }) {
   const { update, has, groups, doc } = useDraft();
@@ -47,7 +48,11 @@ export function SectionPanel({ section, tab, weddingId }: { section: SectionConf
 
   if (tab === "content") {
     switch (section.type) {
-      case "hero": return <div className="space-y-5"><MediaField label="Couple photograph (the hero)" value={ownSlotValue(doc, "couple")} category="COUPLE" onChange={(id) => update((d) => assignSlot(d, "couple", id))} aspect="aspect-[2/3]" hint="Portrait, faces in the upper half. The same photograph is used in “Our story” and the link preview." /><MediaField label="Landscape version for desktop (optional)" value={ownSlotValue(doc, "coupleWide")} category="COUPLE" onChange={(id) => update((d) => assignSlot(d, "coupleWide", id))} aspect="aspect-[16/10]" hint="Used on tablets and desktops so a wide screen never crops the two of you." />{section.variant === "fullbleed" && <MediaField label="Background video (optional)" kinds={["VIDEO"]} category="VIDEO" value={section.content.video as string | undefined} onChange={(id) => set((s) => void (s.content = { ...s.content, video: id }))} />}<Hint>Names, date and tagline come from the couple’s details.</Hint><CoupleStep /></div>;
+      case "hero": return <div className="space-y-5"><MediaField label={doc.eventType === "baptism" ? `${slotDef("couple", doc.eventType).label} (the opening picture)` : "Couple photograph (the hero)"} value={ownSlotValue(doc, "couple")} category="COUPLE" onChange={(id) => update((d) => assignSlot(d, "couple", id))} aspect="aspect-[2/3]" hint={doc.eventType === "baptism" ? "Portrait, the face in the upper half. The same portrait closes the invitation and is used in the link preview. Set the face position in the Media library so every crop keeps it." : "Portrait, faces in the upper half. The same photograph is used in “Our story” and the link preview."} /><MediaField label="Landscape version for desktop (optional)" value={ownSlotValue(doc, "coupleWide")} category="COUPLE" onChange={(id) => update((d) => assignSlot(d, "coupleWide", id))} aspect="aspect-[16/10]" hint="Used on tablets and desktops so a wide screen never crops the two of you." />{section.variant === "fullbleed" && <MediaField label="Background video (optional)" kinds={["VIDEO"]} category="VIDEO" value={section.content.video as string | undefined} onChange={(id) => set((s) => void (s.content = { ...s.content, video: id }))} />}<Hint>Names, date and tagline come from the couple’s details.</Hint><CoupleStep /></div>;
+      case "about": return doc.eventType === "baptism"
+        ? <div className="space-y-5"><MediaField label={`${slotDef("story", doc.eventType).label} (above the words)`} value={ownSlotValue(doc, "story")} category="COUPLE" onChange={(id) => update((d) => assignSlot(d, "story", id))} aspect="aspect-[4/5]" hint="A second portrait of the child — a tiny hand, a sleeping face. It appears in an arch above the words. Leave it empty and the words stand alone." /><Hint>The words and the facts at a glance are in the child’s details.</Hint><CoupleStep /></div>
+        : <Hint>This section has no separate content to edit. Use the ‘Section’ tab for its wording and layout.<br /><Link className="underline" href={`/admin/weddings/${weddingId}/setup/couple`}>Open the full setup wizard</Link></Hint>;
+      case "finale": return <Hint>The portrait is the child’s opening photograph (Media → Key photographs); the name comes from the child’s details; the date, time and place from the main event. The closing blessing is the “Introduction” on the Section tab, and the look is its Layout.</Hint>;
       case "couple": return <CoupleStep />;
       case "story": case "timeline": return <StoryStep />;
       case "ceremonies": return <CeremoniesEditor />;
@@ -88,6 +93,13 @@ export function SectionPanel({ section, tab, weddingId }: { section: SectionConf
             ))}
           </div>
         </div>
+      )}
+
+      {section.type === "hero" && section.variant?.startsWith("gr-") && (
+        <SelectField label="How the portrait arrives" value={(section.settings.reveal as string) ?? "auto"} onChange={(e) => set((s) => void (s.settings = { ...s.settings, reveal: e.target.value === "auto" ? undefined : e.target.value }))} hint="The glow, the frame and the slow settle of the child’s portrait. Automatic is the one this design was made with.">
+          <option value="auto">Automatic</option>
+          {REVEALS.map((r) => <option key={r.key} value={r.key}>{r.label}</option>)}
+        </SelectField>
       )}
 
       <SelectField label="Background" value={(section.settings.tone as string) ?? "auto"} onChange={(e) => set((s) => void (s.settings = { ...s.settings, tone: e.target.value === "auto" ? undefined : e.target.value }))} hint="Alternate light and dark sections for rhythm.">

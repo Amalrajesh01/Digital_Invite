@@ -9,6 +9,7 @@
  * sample invitations say so in their footer.
  */
 import { GENERATED } from "@/domain/baptism/generated";
+import { PHOTO_STOCK } from "@/domain/baptism/photos";
 
 export interface StockInfo {
   /** Plain-language description (used as alt text). */
@@ -265,6 +266,8 @@ export const STOCK: Record<string, StockInfo> = {
 
 // Images brought in from the baptism prompts (`npm run baptism:ingest`) sit beside the licensed photographs and are described the same way.
 for (const [id, g] of Object.entries(GENERATED)) STOCK[id] = { alt: g.alt, focal: g.focal };
+// the baptism photographs (`baptism/photos.ts`) carry their own alt text and focal point
+for (const [id, s] of Object.entries(PHOTO_STOCK)) STOCK[id] = s;
 
 export function stockInfo(id: string): StockInfo | undefined {
   return Object.prototype.hasOwnProperty.call(STOCK, id) ? STOCK[id] : undefined;

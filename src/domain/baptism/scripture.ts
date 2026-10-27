@@ -9,7 +9,7 @@
  */
 export const TRANSLATION = { id: "kjv", name: "King James Version", abbr: "KJV", licence: "Public domain" } as const;
 
-export const VERIFIED = { source: "https://bible-api.com/ (translation=kjv)", on: "2026-10-26" } as const;
+export const VERIFIED = { source: "https://bible-api.com/ (translation=kjv)", on: "2026-10-27" } as const;
 
 export interface Verse {
   id: string;
@@ -45,6 +45,11 @@ export const VERSES: Verse[] = [
   { id: "2cor-5-17", ref: "2 Corinthians 5:17", text: "Therefore if any man be in Christ, he is a new creature: old things are passed away; behold, all things are become new.", themes: ["new beginning"] },
   { id: "prov-22-6", ref: "Proverbs 22:6", text: "Train up a child in the way he should go: and when he is old, he will not depart from it.", themes: ["upbringing","family"] },
   { id: "jer-1-5", ref: "Jeremiah 1:5", text: "Before I formed thee in the belly I knew thee", excerpt: true, themes: ["known by God"] },
+  { id: "matt-5-16", ref: "Matthew 5:16", text: "Let your light so shine before men, that they may see your good works, and glorify your Father which is in heaven.", themes: ["light","candle"] },
+  { id: "isa-35-1", ref: "Isaiah 35:1", text: "The wilderness and the solitary place shall be glad for them; and the desert shall rejoice, and blossom as the rose.", themes: ["flowers","joy"] },
+  { id: "ps-118-23", ref: "Psalm 118:23", text: "This is the LORD’S doing; it is marvellous in our eyes.", themes: ["miracle","gratitude"] },
+  { id: "john-3-16", ref: "John 3:16", text: "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.", themes: ["love","cross"] },
+  { id: "ps-36-5", ref: "Psalm 36:5", text: "Thy mercy, O LORD, is in the heavens; and thy faithfulness reacheth unto the clouds.", themes: ["clouds","mercy"] },
 ];
 
 const BY_ID = new Map(VERSES.map((v) => [v.id, v]));

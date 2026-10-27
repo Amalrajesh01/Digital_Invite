@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import { cn } from "@/lib/cn";
 import type { AgendaItem, Highlight, OccasionPerson, SectionConfig, Sponsor } from "@/domain/doc/schema";
 import { useInvitation } from "../engine/context";
@@ -8,7 +8,8 @@ import { Reveal } from "../engine/motion";
 import { fmtDate, fmtTime } from "../engine/format";
 import { Divider } from "../engine/Ornament";
 import { initialsOf } from "../engine/subject";
-import { Shell, SectionHead, useCopy } from "./shared";
+import { EVENT_TYPE_INFO } from "@/domain/doc/event-types";
+import { Shell, SectionHead, useCopy, type Tone } from "./shared";
 
 /**
  * The sections of occasions that are not about a couple: what it is (about), the people on stage (speakers), the
@@ -48,6 +49,18 @@ function FactList({ facts, className }: { facts: Highlight[]; className?: string
   );
 }
 
+/** The child’s second portrait, in an arch above “our little story” — only for occasions about a child, and only when the family has chosen one (the “Our little story” photograph). */
+function KidPortrait() {
+  const { view, L } = useInvitation();
+  const id = view.doc.images.story ?? view.doc.story.introPhoto;
+  if (!EVENT_TYPE_INFO[view.doc.eventType].portraitStory || !id) return null;
+  return (
+    <Reveal variant="mask" className="occ-kid">
+      <div className="occ-kid-frame"><Photo id={id} className="absolute inset-0 h-full w-full" sizes="(max-width: 768px) 66vw, 250px" seed={2} alt={L(view.doc.occasion.honoree.name) || undefined} /></div>
+    </Reveal>
+  );
+}
+
 export function AboutSection({ section }: { section: SectionConfig }) {
   const { view, L } = useInvitation();
   const a = view.doc.occasion.about;
@@ -68,6 +81,7 @@ export function AboutSection({ section }: { section: SectionConfig }) {
   if (v === "statement") {
     return (
       <Shell section={section} wide={false}>
+        <KidPortrait />
         <SectionHead eyebrow={copy.eyebrow} title={copy.title || undefined} />
         {body[0] && <Reveal><p className="inv-serif-lede text-center">{body[0]}</p></Reveal>}
         {body.length > 1 && <div className="occ-body mx-auto mt-8 max-w-xl text-center">{body.slice(1).map((p, i) => (<Reveal key={i} delay={i * 80}><p>{p}</p></Reveal>))}</div>}
@@ -79,6 +93,7 @@ export function AboutSection({ section }: { section: SectionConfig }) {
   if (v === "facts") {
     return (
       <Shell section={section}>
+        <KidPortrait />
         <SectionHead eyebrow={copy.eyebrow} title={copy.title || undefined} />
         <FactList facts={facts} className="occ-facts-grid" />
         {body.length > 0 && (
@@ -92,6 +107,7 @@ export function AboutSection({ section }: { section: SectionConfig }) {
   }
   return (
     <Shell section={section}>
+      <KidPortrait />
       <div className="occ-about">
         <div>
           <SectionHead eyebrow={copy.eyebrow} title={copy.title || undefined} align="left" className="!mb-8" />
@@ -380,14 +396,18 @@ export function PeopleSection({ section }: { section: SectionConfig }) {
     <Shell section={section} wide={cards}>
       <SectionHead eyebrow={copy.eyebrow} title={copy.title || undefined} intro={copy.intro} />
       <div className="occ-groups">
-        {groups.map((g, gi) => (
+        {groups.map((g, gi) => {
+          const lead = g.items[0];
+          const together = !!lead?.photo && g.items.length > 1 && g.items.slice(1).every((p) => !p.photo);
+          return (
           <Reveal key={g.group || gi} className="occ-group">
             {g.group && <p className="inv-eyebrow occ-group-name">{g.group}</p>}
+            {together && <Reveal variant="mask" className="occ-groupphoto"><div className="occ-groupphoto-frame"><Photo id={lead.photo} ratio="aspect-[3/2]" className="w-full" seed={gi} sizes="(max-width: 768px) 92vw, 430px" alt={g.group || undefined} /></div></Reveal>}
             {cards ? (
               <ul className="occ-people occ-people-sm">
                 {g.items.map((p, i) => (
                   <li key={p.id} className="occ-person">
-                    <Avatar name={L(p.name)} photo={p.photo} seed={i + gi} ratio="aspect-square" className="occ-round" sizes="160px" />
+                    <Avatar name={L(p.name)} photo={together && i === 0 ? undefined : p.photo} seed={i + gi} ratio="aspect-square" className="occ-round" sizes="160px" />
                     <h3 className="occ-person-name">{L(p.name)}</h3>
                     {L(p.relation) && <p className="occ-person-role">{L(p.relation)}</p>}
                     {L(p.note) && <p className="occ-person-topic">{L(p.note)}</p>}
@@ -405,7 +425,8 @@ export function PeopleSection({ section }: { section: SectionConfig }) {
               </ul>
             )}
           </Reveal>
-        ))}
+          );
+        })}
       </div>
     </Shell>
   );
@@ -418,16 +439,31 @@ export function PrayerSection({ section }: { section: SectionConfig }) {
   const copy = useCopy(section, { eyebrow: L(p.title) ? undefined : "prayer.eyebrow", title: L(p.title) || "prayer.title" });
   const text = lines(L(p.text));
   if (!text.length) return null;
+  const gold = section.variant === "scripture";
+  const own = section.settings.tone;
+  // the golden reveal sits on a soft parchment tint unless the editor chose a background
+  const tone: Tone | undefined = gold && own !== "light" && own !== "tint" && own !== "night" ? "tint" : undefined;
   return (
-    <Shell section={section} wide={false}>
+    <Shell section={section} wide={false} tone={tone}>
       <div className="occ-prayer">
         <SectionHead eyebrow={copy.eyebrow} title={copy.title || undefined} />
         <Reveal>
-          <blockquote className="occ-verse">
-            {text.map((l, i) => (<p key={i}>{l}</p>))}
-          </blockquote>
-          {L(p.source) && <p className="inv-eyebrow occ-verse-source">{L(p.source)}</p>}
-          <Divider kind={view.tokens.divider} className="mt-10" />
+          {gold ? (
+            <div className="scr">
+              <span className="scr-rule" aria-hidden />
+              <blockquote className="scr-verse">{text.map((l, i) => (<p key={i} style={{ "--i": i } as CSSProperties}>{l}</p>))}</blockquote>
+              {L(p.source) && <p className="inv-eyebrow scr-ref" style={{ "--n": text.length } as CSSProperties}>{L(p.source)}</p>}
+              <svg className="scr-cross" viewBox="0 0 20 28" aria-hidden focusable="false" style={{ "--n": text.length } as CSSProperties}><path d="M10 1 V27 M2 9 H18" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" pathLength={1} /></svg>
+            </div>
+          ) : (
+            <>
+              <blockquote className="occ-verse">
+                {text.map((l, i) => (<p key={i}>{l}</p>))}
+              </blockquote>
+              {L(p.source) && <p className="inv-eyebrow occ-verse-source">{L(p.source)}</p>}
+              <Divider kind={view.tokens.divider} className="mt-10" />
+            </>
+          )}
         </Reveal>
       </div>
     </Shell>

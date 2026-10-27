@@ -1,7 +1,8 @@
 "use client";
 import type { ReactNode } from "react";
 import { Reveal, RevealWords } from "../engine/motion";
-import { SCENES, type Scene } from "./grace-art";
+import type { PortraitReveal } from "@/domain/design/reveals";
+import { Motes, SCENES, type Scene } from "./grace-art";
 
 /**
  * The twenty baptism heroes. Each variant (`gr-…`) is one drawn scene (`grace-art.tsx`) and a layout; the words around it are the same
@@ -22,6 +23,10 @@ export interface GraceViewProps {
   cue?: ReactNode;
   /** Text is shown at once (the studio preview and the thumbnail tool) rather than revealed on scroll. */
   still?: boolean;
+  /** How the portrait arrives; empty = the scene’s own. */
+  reveal?: PortraitReveal;
+  /** The words of a candle the guest may light (only the scenes that have one use them). */
+  candle?: { label: string; message: string };
 }
 
 /** Pointed-arch outline shared by the doorway, the nave window and the gold plate. */
@@ -38,15 +43,21 @@ function Line({ still, children }: { still?: boolean; children: ReactNode }) {
   return still ? <>{children}</> : <Reveal variant="fade">{children}</Reveal>;
 }
 
-export function GraceView({ variant, eyebrow, name, size, phrase, date, place, hosts, photo, cue, still }: GraceViewProps) {
+export function GraceView({ variant, eyebrow, name, size, phrase, date, place, hosts, photo, cue, still, reveal, candle }: GraceViewProps) {
   const scene: Scene = SCENES[variant] ?? SCENES["gr-heavenly"];
   const initial = (name.trim().match(/\p{L}/u)?.[0] ?? "").toUpperCase();
+  const kind: PortraitReveal = reveal ?? scene.reveal;
   return (
-    <header data-section="hero" id="s-hero" className={`hv hv-grace ${variant}`} data-layout={scene.layout} data-photo={photo ? "1" : "0"}>
+    <header data-section="hero" id="s-hero" className={`hv hv-grace ${variant}`} data-layout={scene.layout} data-photo={photo ? "1" : "0"} data-reveal={kind} data-lit={scene.lights ? "0" : undefined}>
       <Defs />
       <div className="gh-scene" aria-hidden>{scene.back({ photo, initial })}</div>
       <div className="gh-stack inv-wrap">
-        {scene.figure && <div className="gh-fig">{scene.figure({ photo, initial })}</div>}
+        {scene.figure && (
+          <div className="gh-fig">
+            {scene.figure({ photo, initial, candle })}
+            {photo && (kind === "heavenly" || kind === "royal" || kind === "floral") && <span className="gh-aura" aria-hidden><Motes n={7} /></span>}
+          </div>
+        )}
         <div className="gh-text">
           {eyebrow && <Line still={still}><p className="gh-eyebrow">{eyebrow}</p></Line>}
           <h1 className="gh-name" data-len={size}>{still ? name : <RevealWords as="span" text={name} className="gh-nm" delay={260} />}</h1>
@@ -61,6 +72,7 @@ export function GraceView({ variant, eyebrow, name, size, phrase, date, place, h
         </div>
         {cue}
       </div>
+      {scene.veil?.()}
     </header>
   );
 }

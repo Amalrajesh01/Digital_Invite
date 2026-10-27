@@ -41,6 +41,27 @@ export const IMAGE_SLOTS: Record<ImageSlot, ImageSlotDef> = {
   venue: { label: "Venue photograph", usedFor: "Venue & map, and the ceremony venue card", ratio: "Landscape 16:9", aspect: "aspect-[16/9]", category: "VENUE", fallback: "a themed placeholder" },
 };
 
+/**
+ * The same slots, named for a baptism: the “couple photograph” is the child’s portrait, “our story” is the second portrait beside it, and
+ * there is no bride or groom. The wording is chosen by the occasion; the slots (and so the invitations already made) do not change.
+ */
+const CHILD: Partial<Record<ImageSlot, Pick<ImageSlotDef, "label" | "usedFor" | "ratio" | "fallback">>> = {
+  couple: { label: "The baby’s portrait", usedFor: "The opening picture, the finale and the link preview", ratio: "Portrait 4:5, at least 1600 px tall — the face in the upper half", fallback: "the first gallery photograph" },
+  coupleWide: { label: "The baby’s portrait — landscape", usedFor: "Wide screens (optional)", ratio: "Landscape 3:2, at least 2400 px wide", fallback: "the portrait, cropped" },
+  story: { label: "“Our little story” photograph", usedFor: "In an arch above “our little story”", ratio: "Portrait 4:5 — a tiny hand, a sleeping face", fallback: "nothing: the section is words only" },
+  family: { label: "Family photograph", usedFor: "With the family, where the template has one", ratio: "Landscape 3:2", fallback: "typography only" },
+  ceremony: { label: "The baptism photograph", usedFor: "The ceremony section", ratio: "Landscape 3:2", fallback: "the first gallery photograph" },
+  venue: { label: "The church photograph", usedFor: "The venue and the map", ratio: "Landscape 16:9", fallback: "a themed placeholder" },
+};
+/** The slot’s name and job for this occasion. */
+export function slotDef(slot: ImageSlot, eventType?: string): ImageSlotDef {
+  return eventType === "baptism" && CHILD[slot] ? { ...IMAGE_SLOTS[slot], ...CHILD[slot] } : IMAGE_SLOTS[slot];
+}
+/** The slots worth showing for this occasion: a baptism has no bride and no groom. */
+export function slotsFor(eventType?: string): readonly ImageSlot[] {
+  return eventType === "baptism" ? IMAGE_SLOT_KEYS.filter((k) => k !== "bride" && k !== "groom") : IMAGE_SLOT_KEYS;
+}
+
 /** The slice of the invitation the resolver needs (kept small so it is trivial to test and to call anywhere). */
 export interface SlotContext {
   doc: InvitationDoc;

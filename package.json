@@ -32,7 +32,8 @@
     "baptism:scripture": "tsx scripts/baptism-scripture.ts",
     "baptism:check": "tsx scripts/baptism-check.ts",
     "baptism:images": "tsx scripts/baptism-images.ts",
-    "baptism:ingest": "tsx scripts/baptism-ingest.ts"
+    "baptism:ingest": "tsx scripts/baptism-ingest.ts",
+    "baptism:photos": "tsx scripts/baptism-photos.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1142.0",
