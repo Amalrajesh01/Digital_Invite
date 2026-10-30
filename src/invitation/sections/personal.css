@@ -30,7 +30,7 @@
 .fy-tip > svg { flex: none; margin-top: 0.25rem; color: var(--c-accent); }
 .fy-tip p { margin: 0.35rem 0 0; }
 
-.fy-wish { margin: 1rem 0 0; padding: 1.1rem 1.25rem; border-left: 3px solid var(--c-accent); background: var(--c-surface); font-family: var(--f-heading); font-style: italic; line-height: 1.6; }
+.fy-wish { margin: 1rem 0 0; padding: 1.1rem 1.25rem; border: 1px solid var(--c-border); border-radius: var(--r); background: var(--c-surface); font-family: var(--f-heading); font-style: italic; line-height: 1.6; }
 .fy-wish small { display: block; margin-bottom: 0.4rem; font-family: var(--f-body); font-style: normal; font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.6; }
 .fy-wish cite { display: block; margin-top: 0.6rem; font-style: normal; font-family: var(--f-script); font-size: 1.35rem; color: var(--c-accent); }
 .fy-photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 0.9rem; }
