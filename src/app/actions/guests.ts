@@ -2,7 +2,7 @@
 import { revalidatePath } from "next/cache";
 import { act } from "@/lib/act";
 import {
-  archiveGuests, bulkSetGroup, buildShareList, createGroup, createGuest, deleteGroup, importGuestsCsv, listGroups, listGuests, markInvitationSent, regenerateInvite, sendInvitationEmails,
+  archiveGuests, bulkSetGroup, buildShareList, createGroup, createGuest, deleteGroup, draftGuestMessages, importGuestsCsv, listGroups, listGuests, markInvitationSent, regenerateInvite, sendInvitationEmails,
   updateGuest, type GuestFilter, type GuestInput,
 } from "@/domain/guests/service";
 import { rsvpSummary, sendRsvpReminders, updateAccommodation, updateTransport } from "@/domain/guests/rsvp";
@@ -17,6 +17,7 @@ export const listGuestsAction = async (weddingId: string, filter: GuestFilter = 
     const rows = await listGuests(a, weddingId, filter);
     return rows.map((g) => ({
       id: g.id, name: g.name, phone: g.phone, email: g.email, seats: g.seats, relationship: g.relationship, notes: g.notes, invitationStatus: g.invitationStatus, preferredLocale: g.preferredLocale,
+      nameLocal: g.nameLocal, city: g.city, tableLabel: g.tableLabel, roomLabel: g.roomLabel,
       customGreeting: g.customGreeting, groupId: g.group?.id ?? null, groupName: g.group?.name ?? null, token: g.token, checkedIn: g.checkedIn, accommodation: g.accommodation, transport: g.transport,
       rsvp: g.rsvp ? { status: g.rsvp.status, attendingCount: g.rsvp.attendingCount, meal: g.rsvp.meal, note: g.rsvp.note, respondedAt: g.rsvp.respondedAt.toISOString() } : null,
       lastOpenedAt: g.lastOpenedAt?.toISOString() ?? null, openCount: g.openCount, reminderCount: g.reminderCount,
@@ -25,6 +26,7 @@ export const listGuestsAction = async (weddingId: string, filter: GuestFilter = 
 
 export interface GuestRow {
   id: string; name: string; phone: string | null; email: string | null; seats: number; relationship: string; notes: string; invitationStatus: "NOT_SENT" | "SENT" | "OPENED" | "RESPONDED"; preferredLocale: string | null;
+  nameLocal: string; city: string; tableLabel: string; roomLabel: string;
   customGreeting: Record<string, string>; groupId: string | null; groupName: string | null; token: string | null; checkedIn: boolean; accommodation: string | null; transport: string | null;
   rsvp: { status: "YES" | "NO" | "MAYBE"; attendingCount: number; meal: string; note: string; respondedAt: string } | null;
   lastOpenedAt: string | null; openCount: number; reminderCount: number;
@@ -43,6 +45,8 @@ export const shareListAction = async (weddingId: string, ids?: string[], locale 
 export const sendEmailsAction = async (weddingId: string, ids?: string[]) => act(async (a) => { const r = await sendInvitationEmails(a, weddingId, ids); bust(weddingId); return r; }, { weddingId });
 export const markSentAction = async (weddingId: string, ids: string[]) => act(async (a) => (await markInvitationSent(a, weddingId, ids), bust(weddingId), true), { weddingId });
 export const remindersAction = async (weddingId: string, ids?: string[], locale = "en") => act(async (a) => { const r = await sendRsvpReminders(a, weddingId, { guestIds: ids, locale }); bust(weddingId); return r; }, { weddingId });
+/** Writes a heartfelt message for every guest who has none (or for all, when overwriting), for the couple to read and edit. */
+export const draftMessagesAction = async (weddingId: string, overwrite = false) => act(async (a) => { const r = await draftGuestMessages(a, weddingId, { overwrite }); bust(weddingId); return r; }, { weddingId });
 export const rsvpSummaryAction = async (weddingId: string) => act((a) => rsvpSummary(a, weddingId), { weddingId });
 export const updateAccommodationAction = async (weddingId: string, id: string, patch: { status?: "REQUESTED" | "CONFIRMED" | "DECLINED"; assignment?: string }) => act(async (a) => (await updateAccommodation(a, weddingId, id, patch), bust(weddingId), true), { weddingId });
 export const updateTransportAction = async (weddingId: string, id: string, patch: { status?: "REQUESTED" | "CONFIRMED" | "DECLINED"; vehicle?: string }) => act(async (a) => (await updateTransport(a, weddingId, id, patch), bust(weddingId), true), { weddingId });

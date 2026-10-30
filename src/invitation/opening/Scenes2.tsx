@@ -23,7 +23,8 @@ export interface Scene2Props {
   mainDate: string;
   locale: string;
   invited: string;
-  greeting: string | null;
+  /** "Dear Priya," and the message written for them (GateNote), or null for a visitor without a personal link. */
+  greeting: ReactNode;
   seatsText: string | null;
   tapLabel: string;
   starsHint: string;
@@ -73,8 +74,8 @@ export function Scene2(p: Scene2Props) {
   );
   const Top = (
     <>
+      {p.greeting}
       <p className="inv-eyebrow !text-[var(--c-accent)]">{p.invited}</p>
-      {p.greeting && <p className="gate-dear">{p.greeting}</p>}
     </>
   );
   const Foot = (
@@ -105,7 +106,7 @@ export function Scene2(p: Scene2Props) {
             {dots && <p className="marq-date">{dots}</p>}
           </div>
         </div>
-        {p.greeting && <p className="gate-dear">{p.greeting}</p>}
+        {p.greeting}
         {Foot}
       </>);
 
@@ -148,7 +149,7 @@ export function Scene2(p: Scene2Props) {
             <span className="book-orn" aria-hidden />
           </div>
         </div>
-        {p.greeting && <p className="gate-dear">{p.greeting}</p>}
+        {p.greeting}
         {Foot}
       </>);
 
@@ -158,7 +159,7 @@ export function Scene2(p: Scene2Props) {
           <svg viewBox="0 0 200 200" className="leader-ring" aria-hidden><circle cx="100" cy="100" r="86" /><circle cx="100" cy="100" r="62" /><path d="M100 4v192M4 100h192" /></svg>
           <div className="leader-nums" aria-hidden><b>3</b><b>2</b><b>1</b></div>
         </div>
-        <div className="leader-title"><p className="inv-eyebrow !text-[var(--c-accent)]">{p.invited}</p>{nameEl()}{p.greeting && <p className="gate-dear">{p.greeting}</p>}</div>
+        <div className="leader-title">{p.greeting}<p className="inv-eyebrow !text-[var(--c-accent)]">{p.invited}</p>{nameEl()}</div>
         {Foot}
       </>);
 
@@ -173,7 +174,7 @@ export function Scene2(p: Scene2Props) {
             <i className="mag-bars" aria-hidden />
           </div>
         </div>
-        {p.greeting && <p className="gate-dear">{p.greeting}</p>}
+        {p.greeting}
         {Foot}
       </>);
 
@@ -230,7 +231,7 @@ export function Scene2(p: Scene2Props) {
           {nameEl("tt-line tt-b gate-names")}
           {date && <p className="tt-line tt-c" style={{ "--n": date.length } as CSSProperties}>{date}</p>}
         </div>
-        {p.greeting && <p className="gate-dear">{p.greeting}</p>}
+        {p.greeting}
         {Foot}
       </>);
   }

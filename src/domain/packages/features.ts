@@ -67,6 +67,7 @@ export const FEATURES = {
   qr_checkin: { label: "QR check-in", description: "Scan at the venue to check guests in and update the dashboard live.", group: "Event day", tier: "LUXURY" },
   advanced_greetings: { label: "Relationship-specific greetings", description: "Different heartfelt messages for uncle, college friend, colleague…", group: "Guests & RSVP", tier: "LUXURY" },
   event_visibility: { label: "Personalised event visibility", description: "Guests only see the events meant for them (enforced on the server).", group: "Guests & RSVP", tier: "LUXURY" },
+  personal_touch: { label: "Personal touches throughout", description: "A heartfelt message for every guest in the envelope, a \"Just for you\" section, a message from the couple for each group, their own days, table and travel tips, and a personal link preview.", group: "Guests & RSVP", tier: "LUXURY" },
   live_schedule: { label: "Live schedule & What's Happening Now", description: "A live schedule that highlights the current and next event.", group: "Event day", tier: "LUXURY" },
   live_updates: { label: "Live updates", description: "Post announcements to every guest's invitation in real time.", group: "Event day", tier: "LUXURY" },
   live_stream: { label: "Live stream", description: "Stream the ceremony for those who can't travel: a scheduled countdown, YouTube or Vimeo played inside the invitation (or a link for Zoom, Facebook and others), and a replay afterwards.", group: "Event day", tier: "LUXURY" },

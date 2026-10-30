@@ -1,1 +1,1 @@
-export const CSV_TEMPLATE = "name,phone,email,group,seats,relationship,meal,accommodation,transport\nMeera Menon,9846000001,meera@example.com,Bride's family,3,Aunt,Vegetarian,yes,no\n";
+export const CSV_TEMPLATE = "name,phone,email,group,seats,relationship,meal,accommodation,transport,name_local,city,table,room\nMeera Menon,9846000001,meera@example.com,Bride's family,3,Aunt,Vegetarian,yes,no,മീര മേനോൻ,Dubai,Table 4 · with the Menon family,\n";

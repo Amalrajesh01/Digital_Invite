@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   BarChart3, Bell, BookHeart, Boxes, Camera, ClipboardList, Clock, Command, Crown, FileClock, Gamepad2, Globe, Hotel, Image as ImageIcon, LayoutDashboard, Layers, LogOut,
-  MessageSquareHeart, Menu, Mic, Palette as PaletteIcon, PartyPopper, Package, QrCode, Radio, ScrollText, Search, Send, Settings, Share2, Sparkles, Users, UserRound, Video, Wallet, X, CalendarDays, Bus, Hourglass, Heart, LineChart, BadgeIndianRupee, Gift, Images, Inbox, Filter,
+  MessageSquareHeart, Menu, Mic, Palette as PaletteIcon, PartyPopper, Package, QrCode, Radio, ScrollText, Search, Send, Settings, Share2, Sparkles, Users, UserRound, Video, Wallet, X, CalendarDays, Bus, Hourglass, Heart, LineChart, BadgeIndianRupee, Gift, Images, Inbox, Filter, HeartHandshake,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { brand } from "@/lib/brand";
@@ -16,7 +16,7 @@ const ICONS = {
   dashboard: LayoutDashboard, weddings: Heart, clients: UserRound, orders: BadgeIndianRupee, packages: Package, templates: Layers, themes: PaletteIcon, media: ImageIcon, guests: Users, analytics: BarChart3,
   domains: Globe, notifications: Bell, audit: ScrollText, settings: Settings, invitation: Sparkles, rsvp: ClipboardList, events: CalendarDays, gallery: Camera, wishes: MessageSquareHeart, guestbook: BookHeart,
   photowall: PartyPopper, video: Video, voice: Mic, stay: Hotel, transport: Bus, share: Share2, checkin: QrCode, live: Radio, games: Gamepad2, capsule: Hourglass, memory: FileClock, anniversary: Clock,
-  overview: LayoutDashboard, send: Send, crown: Crown, wallet: Wallet, chart: LineChart, boxes: Boxes, gifts: Gift, leads: Inbox, funnel: Filter, portfolio: Images,
+  personal: HeartHandshake, overview: LayoutDashboard, send: Send, crown: Crown, wallet: Wallet, chart: LineChart, boxes: Boxes, gifts: Gift, leads: Inbox, funnel: Filter, portfolio: Images,
 } as const;
 export type IconName = keyof typeof ICONS;
 

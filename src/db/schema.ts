@@ -400,6 +400,13 @@ export const guests = pgTable(
     relationship: text("relationship").notNull().default(""),
     customGreeting: jsonb("custom_greeting").$type<LocalizedText>().notNull().default({}),
     preferredLocale: text("preferred_locale"),
+    /** The name in the second language's script ("പ്രിയ"), so a Malayalam invitation does not say "ഡിയർ Priya". */
+    nameLocal: text("name_local").notNull().default(""),
+    /** Where they are coming from — picks the couple's travel tip for that place. */
+    city: text("city").notNull().default(""),
+    /** "Table 7 · with Anu & Rahul" and "Room 204" — free text, so another guest's name is never revealed by the system. */
+    tableLabel: text("table_label").notNull().default(""),
+    roomLabel: text("room_label").notNull().default(""),
     notes: text("notes").notNull().default(""),
     invitationStatus: text("invitation_status").$type<"NOT_SENT" | "SENT" | "OPENED" | "RESPONDED">().notNull().default("NOT_SENT"),
     sentAt: ts("sent_at"),

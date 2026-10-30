@@ -60,7 +60,7 @@ export function PreviewFrame({ view: initial, initialLocale, interactive }: { vi
     const ent = initial.entitlements;
     const raw = patch.doc ?? initial.doc;
     const groupKey = initial.guest?.groupKey ?? null;
-    const doc = filterDocForGuest(raw, { groupKey, enforceEventVisibility: canUse(ent, "event_visibility") });
+    const doc = filterDocForGuest(raw, { groupKey, enforceEventVisibility: canUse(ent, "event_visibility"), guest: initial.guest ? { city: initial.guest.city } : null });
     const status = patch.status ?? initial.wedding.status;
     return {
       ...initial,
@@ -68,7 +68,7 @@ export function PreviewFrame({ view: initial, initialLocale, interactive }: { vi
       tokens: patch.tokens ?? initial.tokens,
       flavor: patch.flavor ?? initial.flavor,
       media: { ...initial.media, ...(patch.media ?? {}) },
-      sections: visibleSections(doc.sections, { status, entitlements: ent, hasGuest: !!initial.guest, groupKey }),
+      sections: visibleSections(doc.sections, { status, entitlements: ent, hasGuest: !!initial.guest, groupKey, personalEnabled: canUse(ent, "personal_touch") && doc.personal.enabled }),
       wedding: { ...initial.wedding, status, title: patch.title ?? initial.wedding.title, secondaryLocale: patch.secondaryLocale === undefined ? initial.wedding.secondaryLocale : patch.secondaryLocale },
     };
   }, [patch, initial]);

@@ -9,7 +9,7 @@ import { getReportStatus } from "@/domain/reports/service";
 import { ReportPanel } from "../ReportPanel";
 import { canUse } from "@/domain/packages/entitlements";
 import { FEATURES, type FeatureKey } from "@/domain/packages/features";
-import { listGuests, listGroups } from "@/domain/guests/service";
+import { coupleNames, listGuests, listGroups } from "@/domain/guests/service";
 import { listAccommodation, listTransport, rsvpSummary } from "@/domain/guests/rsvp";
 import { weddingAnalytics } from "@/domain/analytics/service";
 import { getMemoryBook } from "@/domain/memory/service";
@@ -26,6 +26,7 @@ import { InboxBoard, MediaWishesBoard, MessagesBoard, UploadsBoard } from "@/com
 import { GalleryManager } from "@/components/workspace/GalleryManager";
 import { DocScope } from "@/components/workspace/DocScope";
 import { GamesSetup } from "@/components/workspace/GamesSetup";
+import { PersonalPanel } from "@/components/workspace/PersonalPanel";
 import { AnniversaryEditor, CapsulePanel, MemoryEditor, SettingsForm, VersionsPanel } from "@/components/workspace/Editors";
 import { DayBars, HBars } from "@/components/workspace/Charts";
 import { PasswordForm } from "@/components/workspace/PasswordForm";
@@ -80,8 +81,21 @@ export async function renderWorkspace(section: string, ctx: WsCtx): Promise<Reac
       return (
         <>
           {head}
-          <GuestManager weddingId={weddingId} slug={ctx.slug} base={ctx.appUrl} secondary={secondary} canRemind={canUse(ent, "rsvp_reminders")} canShare={canUse(ent, "personalized_urls")} groups={groups.map((g) => ({ id: g.id, name: g.name, key: g.key, count: g.count }))}
-            initial={guests.map((g) => ({ id: g.id, name: g.name, phone: g.phone, email: g.email, seats: g.seats, relationship: g.relationship, notes: g.notes, invitationStatus: g.invitationStatus, preferredLocale: g.preferredLocale, customGreeting: g.customGreeting, groupId: g.group?.id ?? null, groupName: g.group?.name ?? null, token: g.token, checkedIn: g.checkedIn, accommodation: g.accommodation, transport: g.transport, rsvp: g.rsvp ? { status: g.rsvp.status, attendingCount: g.rsvp.attendingCount, meal: g.rsvp.meal, note: g.rsvp.note, respondedAt: g.rsvp.respondedAt.toISOString() } : null, lastOpenedAt: g.lastOpenedAt?.toISOString() ?? null, openCount: g.openCount, reminderCount: g.reminderCount }))} />
+          <GuestManager weddingId={weddingId} slug={ctx.slug} base={ctx.appUrl} secondary={secondary ?? (ctx.wedding.defaultLocale !== "en" ? ctx.wedding.defaultLocale : null)} personal={canUse(ent, "personal_touch")} defaultLocale={ctx.wedding.defaultLocale} couple={{ en: coupleNames(doc, "en"), [ctx.wedding.defaultLocale]: coupleNames(doc, ctx.wedding.defaultLocale) }} canRemind={canUse(ent, "rsvp_reminders")} canShare={canUse(ent, "personalized_urls")} groups={groups.map((g) => ({ id: g.id, name: g.name, key: g.key, count: g.count }))}
+            initial={guests.map((g) => ({ id: g.id, name: g.name, phone: g.phone, email: g.email, seats: g.seats, relationship: g.relationship, notes: g.notes, invitationStatus: g.invitationStatus, preferredLocale: g.preferredLocale, nameLocal: g.nameLocal, city: g.city, tableLabel: g.tableLabel, roomLabel: g.roomLabel, customGreeting: g.customGreeting, groupId: g.group?.id ?? null, groupName: g.group?.name ?? null, token: g.token, checkedIn: g.checkedIn, accommodation: g.accommodation, transport: g.transport, rsvp: g.rsvp ? { status: g.rsvp.status, attendingCount: g.rsvp.attendingCount, meal: g.rsvp.meal, note: g.rsvp.note, respondedAt: g.rsvp.respondedAt.toISOString() } : null, lastOpenedAt: g.lastOpenedAt?.toISOString() ?? null, openCount: g.openCount, reminderCount: g.reminderCount }))} />
+        </>
+      );
+    }
+
+    case "personal": {
+      const guests = await listGuests(actor, weddingId).catch(() => []);
+      const locale = ctx.wedding.defaultLocale;
+      return (
+        <>
+          {head}
+          <DocScope {...docScopeProps(ctx, doc, await groupList(weddingId))}>
+            <PersonalPanel weddingId={weddingId} guestCount={guests.length} defaultLocale={locale} base={base} couple={{ en: coupleNames(doc, "en"), [locale]: coupleNames(doc, locale) }} />
+          </DocScope>
         </>
       );
     }

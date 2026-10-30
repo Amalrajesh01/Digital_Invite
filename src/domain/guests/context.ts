@@ -16,6 +16,10 @@ export interface GuestContext {
   relationship: string;
   customGreeting: LocalizedText;
   preferredLocale: string | null;
+  nameLocal: string;
+  city: string;
+  tableLabel: string;
+  roomLabel: string;
   token: string;
 }
 
@@ -35,6 +39,10 @@ export async function resolveGuestContext(slug: string, token: string | null | u
       relationship: schema.guests.relationship,
       customGreeting: schema.guests.customGreeting,
       preferredLocale: schema.guests.preferredLocale,
+      nameLocal: schema.guests.nameLocal,
+      city: schema.guests.city,
+      tableLabel: schema.guests.tableLabel,
+      roomLabel: schema.guests.roomLabel,
     })
     .from(schema.guestInvites)
     .innerJoin(schema.guests, eq(schema.guests.id, schema.guestInvites.guestId))
@@ -59,6 +67,10 @@ export async function resolveGuestContext(slug: string, token: string | null | u
     relationship: row.relationship,
     customGreeting: row.customGreeting,
     preferredLocale: row.preferredLocale,
+    nameLocal: row.nameLocal,
+    city: row.city,
+    tableLabel: row.tableLabel,
+    roomLabel: row.roomLabel,
     token,
   };
 }

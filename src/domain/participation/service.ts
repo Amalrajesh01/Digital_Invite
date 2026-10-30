@@ -174,6 +174,24 @@ export async function listPhotoWall(weddingId: string, opts: { since?: Date; lim
   return rows.map((a) => ({ ...toResolved(a), by: a.title, approvedAt: (a.moderatedAt ?? a.createdAt).toISOString() }));
 }
 
+/** A guest's own contribution, to hand back to them after the day: what they wrote and the photographs of theirs that were approved. */
+export async function myMoments(weddingId: string, guestId: string): Promise<{ wishes: { id: string; body: string }[]; photos: ResolvedMedia[] }> {
+  const db = await getDb();
+  const wishes = await db
+    .select({ id: schema.guestMessages.id, body: schema.guestMessages.body })
+    .from(schema.guestMessages)
+    .where(and(eq(schema.guestMessages.weddingId, weddingId), eq(schema.guestMessages.guestId, guestId), inArray(schema.guestMessages.kind, ["WISH", "SHOUTOUT"]), inArray(schema.guestMessages.moderation, ["PENDING", "APPROVED"])))
+    .orderBy(desc(schema.guestMessages.createdAt))
+    .limit(3);
+  const rows = await db
+    .select()
+    .from(schema.mediaAssets)
+    .where(and(eq(schema.mediaAssets.weddingId, weddingId), eq(schema.mediaAssets.uploadedByGuestId, guestId), eq(schema.mediaAssets.category, "GUEST_UPLOAD"), eq(schema.mediaAssets.moderation, "APPROVED"), eq(schema.mediaAssets.visibility, "PUBLIC"), eq(schema.mediaAssets.kind, "IMAGE"), isNull(schema.mediaAssets.archivedAt)))
+    .orderBy(desc(schema.mediaAssets.createdAt))
+    .limit(6);
+  return { wishes, photos: rows.map((a) => toResolved(a)) };
+}
+
 // ── video & voice wishes ───────────────────────────────────────────────────
 export async function submitMediaWish(p: Participant, kind: "VIDEO" | "VOICE", file: { buffer: Buffer; filename: string; durationSec?: number | null }, message = "") {
   await needFeature(p.weddingId, kind === "VIDEO" ? "video_wishes" : "voice_wishes");

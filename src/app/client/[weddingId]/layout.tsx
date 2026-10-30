@@ -35,7 +35,7 @@ export default async function ClientLayout({ children, params }: { children: Rea
   const mk = (slugs: string[]) => slugs.map((s) => nav(s)).filter(Boolean).map((i) => ({ href: hrefFor(ctx.base, i!.slug, "client"), label: i!.label, icon: i!.icon, exact: i!.slug === "", badge: i!.slug === "wishes" ? pending || undefined : i!.slug === "accommodation" || i!.slug === "transport" ? stay || undefined : undefined }));
   const groups: NavGroup[] = [
     { items: mk(["", "invitation"]) },
-    { label: "Guests", items: mk(["guests", "rsvp", "events", "accommodation", "transport", "share"]) },
+    { label: "Guests", items: mk(["guests", "personal", "rsvp", "events", "accommodation", "transport", "share"]) },
     { label: "Memories & wishes", items: mk(["gallery", "guestbook", "wishes", "photos", "video-wishes", "voice-wishes"]) },
     { label: "On the day", items: mk(["checkin", "live", "games"]) },
     { label: "Keepsakes", items: mk(["time-capsule", "memory", "anniversary"]) },

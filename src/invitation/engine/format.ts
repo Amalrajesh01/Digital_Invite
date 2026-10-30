@@ -52,15 +52,24 @@ export function eventStart(e: Pick<WeddingEvent, "date" | "startTime">, tz: stri
 const icsEscape = (s: string) => s.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
 const icsStamp = (d: Date) => d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
 
-/** Standards-compliant .ics so the event lands in any calendar app. */
-export function buildIcs(opts: { id: string; title: string; description: string; location: string; start: Date; end: Date; url: string }): string {
+type IcsEvent = { id: string; title: string; description: string; location: string; start: Date; end: Date; url: string };
+
+/** Standards-compliant .ics (one or several events) so they land in any calendar app. */
+export function buildIcsAll(events: IcsEvent[]): string {
+  const stamp = icsStamp(new Date());
   return [
-    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//StackBridge Labs//StackBridge Invites//EN", "CALSCALE:GREGORIAN", "BEGIN:VEVENT",
-    `UID:${opts.id}@stackbridge-invites`, `DTSTAMP:${icsStamp(new Date())}`, `DTSTART:${icsStamp(opts.start)}`, `DTEND:${icsStamp(opts.end)}`,
-    `SUMMARY:${icsEscape(opts.title)}`, `DESCRIPTION:${icsEscape(opts.description)}`, `LOCATION:${icsEscape(opts.location)}`, `URL:${opts.url}`,
-    "END:VEVENT", "END:VCALENDAR",
+    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//StackBridge Labs//StackBridge Invites//EN", "CALSCALE:GREGORIAN",
+    ...events.flatMap((o) => [
+      "BEGIN:VEVENT",
+      `UID:${o.id}@stackbridge-invites`, `DTSTAMP:${stamp}`, `DTSTART:${icsStamp(o.start)}`, `DTEND:${icsStamp(o.end)}`,
+      `SUMMARY:${icsEscape(o.title)}`, `DESCRIPTION:${icsEscape(o.description)}`, `LOCATION:${icsEscape(o.location)}`, `URL:${o.url}`,
+      "END:VEVENT",
+    ]),
+    "END:VCALENDAR",
   ].join("\r\n");
 }
+
+export const buildIcs = (opts: IcsEvent): string => buildIcsAll([opts]);
 
 export function downloadText(filename: string, mime: string, text: string) {
   const url = URL.createObjectURL(new Blob([text], { type: mime }));

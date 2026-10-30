@@ -76,6 +76,8 @@ export const SECTION_META: Record<SectionType, SectionMeta> = {
   people: { type: "people", label: "People", description: "Hosts, organisers, guests of honour — or the family of the person being remembered.", group: "Occasion", feature: "invitation", phases: ALL, single: true, variants: v(["groups", "Grouped list"], ["cards", "Cards"]) },
   prayer: { type: "prayer", label: "Prayer / reading", description: "A prayer, verse or reading for a memorial or a religious ceremony.", group: "Occasion", feature: "invitation", phases: ALL, single: true, variants: v(["verse", "Verse"], ["scripture", "Golden scripture reveal"]) },
   finale: { type: "finale", label: "Grand finale", description: "The last scene: the child’s portrait, a closing blessing and the day’s essentials, with a soft glow.", group: "Occasion", feature: "invitation", phases: ALL, single: true, variants: v(["heavenly", "Heavenly glow"], ["royal", "Royal frame"], ["floral", "Floral"], ["minimal", "Minimal"]) },
+  foryou: { type: "foryou", label: "Just for you", description: "A page that knows the guest: their reply, their days, their table, a travel tip for where they are coming from. Only for guests with a personal link.", group: "Guests", feature: "personal_touch", phases: ALL, single: true, variants: v(["card", "Card"]), needsGuest: true },
+  groupmessage: { type: "groupmessage", label: "A message from the couple", description: "A short video, voice message or written note for the guest’s own group (family, friends, colleagues…). Only for guests with a personal link.", group: "Guests", feature: "personal_touch", phases: PRE_LIVE, single: true, variants: v(["reel", "Message reel"]), needsGuest: true },
 };
 
 export const SECTION_TYPES_ORDERED = Object.keys(SECTION_META) as SectionType[];

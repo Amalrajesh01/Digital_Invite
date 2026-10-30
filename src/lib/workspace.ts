@@ -17,6 +17,7 @@ export const WORKSPACE: WsItem[] = [
   { slug: "", label: "Overview", icon: "overview", client: true, desc: "Where things stand" },
   { slug: "invitation", label: "Invitation", icon: "invitation", client: true, desc: "Edit and preview the invitation" },
   { slug: "guests", label: "Guests", icon: "guests", feature: "guest_management", client: true, desc: "Guest list, groups and personal links" },
+  { slug: "personal", label: "Personal touches", icon: "personal", feature: "personal_touch", client: true, desc: "Heartfelt messages, a message for each group, and details that make every guest feel invited by name" },
   { slug: "rsvp", label: "RSVP", icon: "rsvp", feature: "rsvp_dashboard", client: true, desc: "Who is coming" },
   { slug: "events", label: "Events", icon: "events", client: true, desc: "Times, places and dress codes" },
   { slug: "gallery", label: "Gallery", icon: "gallery", feature: "gallery", client: true, desc: "Photographs and albums" },

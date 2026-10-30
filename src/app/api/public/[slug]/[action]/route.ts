@@ -4,7 +4,7 @@ import { ok, fail, clientIp, assertUploadSize } from "@/lib/http";
 import { getWeddingBySlug, loadPublishedSnapshot } from "@/domain/wedding/snapshot";
 import { resolveGuestContext, touchGuestOpen, type GuestContext } from "@/domain/guests/context";
 import { submitGuestRsvp, submitOpenRsvp } from "@/domain/guests/rsvp";
-import { participantAnonymous, participantFromGuest, submitMessage, listPublicMessages, submitGuestUpload, submitMediaWish, listPublicMediaWishes, listPhotoWall, type Participant } from "@/domain/participation/service";
+import { participantAnonymous, participantFromGuest, submitMessage, listPublicMessages, submitGuestUpload, submitMediaWish, listPublicMediaWishes, listPhotoWall, myMoments, type Participant } from "@/domain/participation/service";
 import { livePayload, getGuestPass } from "@/domain/live/service";
 import { playGame, leaderboard, myPlays } from "@/domain/games/service";
 import { capsuleStatus, listCapsuleItems, submitCapsuleItem } from "@/domain/memory/service";
@@ -65,6 +65,11 @@ export async function GET(req: Request, { params }: Params) {
         return ok({ items: await listPhotoWall(c.wedding.id, { since, limit: Math.min(Number(url.searchParams.get("limit") ?? 60) || 60, 120) }) });
       }
       case "live": return ok(await livePayload(c.wedding.id, c.guest));
+      case "mine": {
+        // "Your moments" in the thank-you: only for the guest who holds the link, only where the package has personal touches.
+        if (!c.guest || !canUse(c.ent, "personal_touch")) throw notFound();
+        return ok(await myMoments(c.wedding.id, c.guest.guestId));
+      }
       case "pass": {
         if (!c.guest) throw notFound();
         return ok(await getGuestPass(c.guest));

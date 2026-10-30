@@ -9,7 +9,8 @@ import { InvitationApp } from "@/invitation/InvitationApp";
 import { brand } from "@/lib/brand";
 import { absoluteUrl } from "@/lib/site";
 import { env } from "@/lib/env";
-import { linkPreview } from "@/domain/wedding/link-preview";
+import { linkPreview, personalPreviewTitle } from "@/domain/wedding/link-preview";
+import { firstNameOf } from "@/domain/guests/personalize";
 
 export const loadInvite = cache((slug: string, token: string | null, state: string | null = null) =>
   loadPublicInvitation(slug, token, { asStatus: WEDDING_STATUSES.find((x) => x === state) }),
@@ -32,8 +33,13 @@ export async function inviteMetadata(slug: string, token: string | null, state: 
     return { title, description: "Someone made this for you.", metadataBase: new URL(env.appUrl), robots: { index: false, follow: false, noarchive: true, nosnippet: true }, referrer: "no-referrer", openGraph: { type: "website", title, description: "Someone made this for you.", siteName: brand.name }, twitter: { card: "summary", title } };
   }
   const loc = view.wedding.defaultLocale;
-  const { title, description } = linkPreview(view.doc, view.wedding.title, view.wedding.weddingDate, loc);
-  const image = view.urls.ogImage ? new URL(view.urls.ogImage, env.appUrl).toString() : undefined;
+  const preview = linkPreview(view.doc, view.wedding.title, view.wedding.weddingDate, loc);
+  const { description } = preview;
+  // Luxury: the preview of a personal link greets the guest by name and carries a card made for them (see /api/og).
+  const personal = !!(token && view.guest && !view.guest.isPreview && view.entitlements.features.includes("personal_touch"));
+  const shown = view.guest && loc.toLowerCase() !== "en" && view.guest.nameLocal.trim() ? view.guest.nameLocal.trim() : view.guest?.name ?? "";
+  const title = personal ? personalPreviewTitle(firstNameOf(shown), view.wedding.title, loc) : preview.title;
+  const image = personal ? `${env.appUrl}/api/og/${encodeURIComponent(slug)}/${encodeURIComponent(token!)}` : view.urls.ogImage ? new URL(view.urls.ogImage, env.appUrl).toString() : undefined;
   return {
     title,
     description,

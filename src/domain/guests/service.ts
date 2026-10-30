@@ -9,6 +9,8 @@ import { audit } from "@/domain/audit/audit";
 import { enqueue, whatsappLink } from "@/domain/notify/service";
 import type { LocalizedText } from "@/domain/doc/schema";
 import { tx } from "@/domain/doc/schema";
+import { composeMessage, relationKind } from "./messages";
+import { firstNameOf, personalize } from "./personalize";
 
 export type GuestRow = typeof schema.guests.$inferSelect;
 
@@ -125,6 +127,10 @@ export interface GuestInput {
   relationship?: string;
   customGreeting?: LocalizedText;
   preferredLocale?: string | null;
+  nameLocal?: string;
+  city?: string;
+  tableLabel?: string;
+  roomLabel?: string;
   notes?: string;
   source?: "MANUAL" | "IMPORT" | "OPEN_RSVP";
 }
@@ -172,6 +178,10 @@ export async function insertGuest(weddingId: string, input: GuestInput, actor: A
       relationship: input.relationship?.trim() ?? "",
       customGreeting: input.customGreeting ?? {},
       preferredLocale: input.preferredLocale ?? null,
+      nameLocal: input.nameLocal?.trim().slice(0, 120) ?? "",
+      city: input.city?.trim().slice(0, 80) ?? "",
+      tableLabel: input.tableLabel?.trim().slice(0, 120) ?? "",
+      roomLabel: input.roomLabel?.trim().slice(0, 80) ?? "",
       notes: input.notes?.trim() ?? "",
       source: input.source ?? "MANUAL",
     })
@@ -210,6 +220,10 @@ export async function updateGuest(actor: Actor | null, weddingId: string, guestI
       relationship: patch.relationship ?? cur.relationship,
       customGreeting: patch.customGreeting ?? cur.customGreeting,
       preferredLocale: patch.preferredLocale === undefined ? cur.preferredLocale : patch.preferredLocale,
+      nameLocal: patch.nameLocal === undefined ? cur.nameLocal : patch.nameLocal.trim().slice(0, 120),
+      city: patch.city === undefined ? cur.city : patch.city.trim().slice(0, 80),
+      tableLabel: patch.tableLabel === undefined ? cur.tableLabel : patch.tableLabel.trim().slice(0, 120),
+      roomLabel: patch.roomLabel === undefined ? cur.roomLabel : patch.roomLabel.trim().slice(0, 80),
       notes: patch.notes ?? cur.notes,
       updatedAt: new Date(),
     })
@@ -353,7 +367,7 @@ export async function importGuestsCsv(actor: Actor | null, weddingId: string, cs
       }
     }
     try {
-      const guest = await insertGuest(weddingId, { name, phone: r.phone, email: r.email, groupId: group?.id ?? null, seats: Number(r.seats) || 1, relationship: r.relationship, source: "IMPORT" });
+      const guest = await insertGuest(weddingId, { name, phone: r.phone, email: r.email, groupId: group?.id ?? null, seats: Number(r.seats) || 1, relationship: r.relationship, nameLocal: r.name_local, city: r.city, tableLabel: r.table, roomLabel: r.room, source: "IMPORT" });
       // Optional pre-filled needs so the couple's plan is ready before replies arrive.
       if (truthy(r.accommodation)) await db.insert(schema.accommodationRequests).values({ weddingId, guestId: guest.id, status: "REQUESTED", notes: "Imported" }).onConflictDoNothing();
       if (truthy(r.transport)) await db.insert(schema.transportRequests).values({ weddingId, guestId: guest.id, status: "REQUESTED", notes: "Imported" }).onConflictDoNothing();
@@ -403,23 +417,72 @@ export async function exportRsvpCsv(actor: Actor | null, weddingId: string): Pro
   return Papa.unparse(data);
 }
 
+/** The names of the two people being celebrated, in the order the invitation shows them. */
+export function coupleNames(doc: { couple: { bride: { name: LocalizedText }; groom: { name: LocalizedText }; order: string } }, locale: string): { a: string; b: string } {
+  const bride = tx(doc.couple.bride.name, locale, "en") || "Bride";
+  const groom = tx(doc.couple.groom.name, locale, "en") || "Groom";
+  return doc.couple.order === "groom-first" ? { a: groom, b: bride } : { a: bride, b: groom };
+}
+
+/**
+ * The words a guest finds in their envelope. In order: what the couple wrote for this guest, what they wrote for this kind of
+ * relationship (Luxury), a heartfelt message written for the relationship (`auto`, Luxury), the couple's general greeting.
+ * {name} {first} {relationship} {seats} are filled in; in a second language the guest's name in that script is used if known.
+ */
 export function guestGreeting(
-  guest: { name: string; customGreeting: LocalizedText; relationship: string },
+  guest: { id?: string; name: string; nameLocal?: string; customGreeting: LocalizedText; relationship: string; groupKey?: string | null; seats?: number },
   greetings: { default: LocalizedText; byRelationship: { match: string; text: LocalizedText }[] },
   locale: string,
-  opts: { advanced: boolean; fallback: string },
+  opts: { advanced: boolean; fallback: string; auto?: { a: string; b: string } | null },
 ): string {
-  const replace = (s: string) => s.replace(/\{name\}/gi, guest.name);
+  const shown = locale.toLowerCase() !== "en" && guest.nameLocal?.trim() ? guest.nameLocal.trim() : guest.name;
+  const replace = (s: string) => personalize(s, { name: shown, first: firstNameOf(shown), relationship: guest.relationship, seats: guest.seats });
+  const written = (o: { text?: LocalizedText }) => replace(tx(o.text, locale, "en"));
   const custom = tx(guest.customGreeting, locale, "en");
   if (custom) return replace(custom);
   if (opts.advanced && guest.relationship) {
     const rel = guest.relationship.toLowerCase();
     const hit = greetings.byRelationship.find((r) => r.match.trim() && rel.includes(r.match.trim().toLowerCase()));
-    if (hit) {
-      const t = tx(hit.text, locale, "en");
-      if (t) return replace(t);
-    }
+    const t = hit ? written(hit) : "";
+    if (t) return t;
   }
-  const dflt = tx(greetings.default, locale, "en");
-  return replace(dflt || opts.fallback);
+  const kind = relationKind(guest.relationship, guest.groupKey);
+  const auto = (k: typeof kind) => composeMessage({ kind: k, locale, a: opts.auto!.a, b: opts.auto!.b, first: firstNameOf(shown), seed: guest.id ?? guest.name });
+  if (opts.auto && kind !== "default") return auto(kind);
+  const dflt = written({ text: greetings.default });
+  if (dflt) return dflt;
+  return opts.auto ? auto("default") : replace(opts.fallback);
+}
+
+/**
+ * Writes a message for every guest who has none (or for all, with `overwrite`) so the couple can read, edit and keep them.
+ * Guests who already have a message of their own are never touched unless asked.
+ */
+export async function draftGuestMessages(actor: Actor | null, weddingId: string, opts: { overwrite?: boolean } = {}): Promise<{ written: number; kept: number }> {
+  await requireWeddingAccess(actor, weddingId, { feature: "personal_touch" });
+  const db = await getDb();
+  const [w] = await db.select({ doc: schema.weddings.draftDoc, locale: schema.weddings.defaultLocale }).from(schema.weddings).where(eq(schema.weddings.id, weddingId));
+  if (!w) throw notFound("Wedding not found.");
+  const rows = await db
+    .select({ g: schema.guests, groupKey: schema.guestGroups.key })
+    .from(schema.guests)
+    .leftJoin(schema.guestGroups, eq(schema.guestGroups.id, schema.guests.groupId))
+    .where(and(eq(schema.guests.weddingId, weddingId), isNull(schema.guests.archivedAt)));
+  let written = 0;
+  let kept = 0;
+  for (const { g, groupKey } of rows) {
+    if (tx(g.customGreeting, w.locale, "") && !opts.overwrite) { kept++; continue; }
+    const kind = relationKind(g.relationship, groupKey);
+    // English is always written (so it can be read and edited); the invitation's own language as well when it is not English.
+    const next = { ...g.customGreeting };
+    for (const locale of new Set(["en", w.locale])) {
+      const names = coupleNames(w.doc, locale);
+      const shown = locale !== "en" && g.nameLocal.trim() ? g.nameLocal.trim() : g.name;
+      next[locale] = composeMessage({ kind, locale, a: names.a, b: names.b, first: firstNameOf(shown), seed: g.id });
+    }
+    await db.update(schema.guests).set({ customGreeting: next, updatedAt: new Date() }).where(eq(schema.guests.id, g.id));
+    written++;
+  }
+  await audit(actor, "guest.messages_drafted", { weddingId, metadata: { written, kept } });
+  return { written, kept };
 }

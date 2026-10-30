@@ -8,6 +8,8 @@ import { useInvitation } from "../engine/context";
 import { fmtDate } from "../engine/format";
 import { distanceKm } from "../engine/format";
 import { useSubject, type Subject } from "../engine/subject";
+import { GateNote } from "./GateNote";
+import { firstNameOf } from "@/domain/guests/personalize";
 import { BalloonsArt, BloomArt, DoorsArt, LampArt } from "./scenes";
 import { SCENE2_DURATION, Scene2, isScene2 } from "./Scenes2";
 
@@ -172,10 +174,13 @@ export function Gate({ skip }: { skip?: boolean }) {
     [state, music, reducedMotion, variant, setEntered, key],
   );
 
-  const greeting = useMemo(() => {
+  // "Dear Priya," and the message written for them — in the second script's name when the couple has written it.
+  const note = useMemo(() => {
     if (!guest) return null;
-    return t("invite.dear", { name: guest.name.split(" ")[0] });
-  }, [guest, t]);
+    const shown = locale.toLowerCase() !== "en" && guest.nameLocal.trim() ? guest.nameLocal.trim() : guest.name;
+    return { dear: t("invite.dear", { name: firstNameOf(shown) }), message: guest.greetings[locale] ?? Object.values(guest.greetings)[0] ?? "" };
+  }, [guest, t, locale]);
+  const greeting = note ? <GateNote dear={note.dear} message={note.message} from={`— ${L(view.doc.personal.signature) || names.joined}`} /> : null;
 
   if (state === "gone") return null;
   const isOpening = state !== "closed";
@@ -200,8 +205,8 @@ export function Gate({ skip }: { skip?: boolean }) {
   const Header = (
     <>
       {op.showInitials && variant !== "cinematic" && <GateMonogram />}
+      {greeting}
       <p className="inv-eyebrow !text-[var(--c-accent)]">{invited}</p>
-      {greeting && <p className="gate-dear">{greeting}</p>}
     </>
   );
 
@@ -210,6 +215,7 @@ export function Gate({ skip }: { skip?: boolean }) {
       className="gate"
       data-variant={variant}
       data-state={state}
+      data-note={note?.message ? "" : undefined}
       role="dialog"
       aria-modal="true"
       aria-label={invited}
@@ -224,8 +230,8 @@ export function Gate({ skip }: { skip?: boolean }) {
     >
       {variant === "envelope" && (
         <div className="gate-inner">
+          {greeting}
           <p className="inv-eyebrow !text-[var(--c-accent)]">{invited}</p>
-          {greeting && <p className="gate-dear">{greeting}</p>}
           <div className="env" data-open={isOpening} role="button" tabIndex={0} aria-label={t("gate.tapToOpen")} onClick={() => open(wantsMusic)} onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), open(wantsMusic))}>
             <div className="env-back" />
             <div className="env-card">
@@ -282,8 +288,8 @@ export function Gate({ skip }: { skip?: boolean }) {
         <div className={`cine ${seqDone ? "cine-skip" : ""}`} onClick={() => setSeqDone(true)}>
           <div className="cine-bar t" /><div className="cine-bar b" />
           <div className="gate-inner">
+            {greeting && <div className="cine-line l1" style={seqDone ? { animation: "none", opacity: 1, transform: "none" } : undefined}>{greeting}</div>}
             <p className="cine-line l1 inv-eyebrow !text-[var(--c-accent)]" style={seqDone ? { animation: "none", opacity: 1, transform: "none" } : undefined}>{invited}</p>
-            {greeting && <p className="cine-line l1 gate-dear" style={seqDone ? { animation: "none", opacity: 1, transform: "none" } : undefined}>{greeting}</p>}
             <h1 className="cine-line l2 gate-names" style={{ fontSize: "clamp(2.6rem, 12vw, 5rem)", ...(seqDone ? { animation: "none", opacity: 1, transform: "none" } : {}) }}>
               {names.a}{names.isCouple && <><span className="amp"> {t("invite.and")} </span>{names.b}</>}
             </h1>
@@ -339,8 +345,8 @@ export function Gate({ skip }: { skip?: boolean }) {
 
       {variant === "doors" && (
         <div className="gate-inner">
+          {greeting}
           <p className="inv-eyebrow !text-[var(--c-accent)]">{invited}</p>
-          {greeting && <p className="gate-dear">{greeting}</p>}
           <h1 className="gate-names">{names.a}{names.isCouple && <> <span className="amp">{t("invite.and")}</span> {names.b}</>}</h1>
           <div className="doors" data-open={isOpening} role="button" tabIndex={0} aria-label={t("gate.tapToOpen")} onClick={() => open(wantsMusic)} onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), open(wantsMusic))}>
             <DoorsArt />
@@ -364,8 +370,8 @@ export function Gate({ skip }: { skip?: boolean }) {
 
       {variant === "ticket" && (
         <div className="gate-inner">
+          {greeting}
           <p className="inv-eyebrow !text-[var(--c-accent)]">{invited}</p>
-          {greeting && <p className="gate-dear">{greeting}</p>}
           <div className="ticket" data-open={isOpening} role="button" tabIndex={0} aria-label={t("gate.tapToOpen")} onClick={() => open(wantsMusic)} onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), open(wantsMusic))}>
             <div className="ticket-main">
               <p className="ticket-line">{names.isCouple ? t("invite.together") : names.invitation || t("gate.cardLine")}</p>

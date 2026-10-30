@@ -95,6 +95,12 @@ and feature sets; clients (one-time sign-in links, pause access); orders ledger 
 photos, gallery, check-in, live day, games, time capsule, memories. Clients can never edit design code and can only
 publish updates to an invitation Super Admin has already launched.
 
+**Personal touches** (Luxury, `personal_touch`) — a guest with a personal link is greeted by name in the opening with a
+heartfelt message written for their relationship, then finds a "Just for you" page (their reply, their own days, table,
+room, a travel tip), a message from the couple for their group and a link preview that says their name. The client
+writes and publishes all of it from **Personal touches** and **Guests** in their own dashboard.
+See [docs/PERSONAL-TOUCH.md](docs/PERSONAL-TOUCH.md).
+
 **Guest experience** (`/invite/{slug}` and `/invite/{slug}/{secureToken}`): opening gate (envelope, seal, cinematic,
 swipe, curtains), countdown, couple, story, events with per-guest visibility, venue and travel, gallery, dress code,
 menu, RSVP, guestbook, video/voice wishes, photo uploads (moderated), live updates, QR guest pass, games, time

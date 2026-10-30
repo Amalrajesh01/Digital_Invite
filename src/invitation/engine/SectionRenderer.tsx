@@ -43,6 +43,8 @@ const REGISTRY: Record<SectionType, React.ComponentType<{ section: SectionConfig
   timecapsule: dynamic(() => import("../sections/ParticipateSections").then((m) => m.TimeCapsuleSection)),
   memory: dynamic(() => import("../sections/MemorySections").then((m) => m.MemorySection)),
   anniversary: dynamic(() => import("../sections/MemorySections").then((m) => m.AnniversarySection)),
+  foryou: dynamic(() => import("../sections/PersonalSections").then((m) => m.ForYouSection)),
+  groupmessage: dynamic(() => import("../sections/PersonalSections").then((m) => m.GroupMessageSection)),
   thankyou: dynamic(() => import("../sections/SmallSections").then((m) => m.ThankYouSection)),
   contact: dynamic(() => import("../sections/SmallSections").then((m) => m.ContactSection)),
   about: dynamic(() => import("../sections/OccasionSections").then((m) => m.AboutSection)),

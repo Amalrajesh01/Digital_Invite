@@ -470,6 +470,40 @@ export const GreetingsDoc = ObjDefault({
 });
 export type GreetingsDoc = z.infer<typeof GreetingsDoc>;
 
+/** Personal touches for guests with a personal link (Luxury): what the couple says to each guest and each group of guests. */
+export const PersonalDoc = ObjDefault({
+  /** Show the "Just for you" and group-message sections to guests with a personal link. */
+  enabled: z.boolean().default(true),
+  /** Write a heartfelt message for any guest who has none of their own (see src/domain/guests/messages.ts). */
+  autoMessages: z.boolean().default(true),
+  /** The sign-off under every message. Empty = the couple's names. */
+  signature: L(),
+  /** A message for each group of guests. Only the entry for the guest's own group is ever sent to their browser. */
+  groups: z
+    .array(
+      z.object({
+        id: z.string(),
+        /** The guest group's key. Empty = every guest whose group has no entry of its own. */
+        groupKey: z.string().max(60).default(""),
+        title: L(),
+        /** What the couple says. Empty = a short note is written for the group. */
+        text: L(),
+        /** A video or voice message recorded by the couple. */
+        clip: MediaId,
+        /** Photographs "from our past with you" (at most six). */
+        photos: z.array(z.string()).max(6).default([]),
+      }),
+    )
+    .max(24)
+    .default([]),
+  /** Travel tips by place: shown to a guest whose city contains `match` ("Dubai", "Bengaluru"). */
+  travel: z
+    .array(z.object({ id: z.string(), match: z.string().max(60).default(""), text: L(), link: z.string().max(300).default("") }))
+    .max(40)
+    .default([]),
+});
+export type PersonalDoc = z.infer<typeof PersonalDoc>;
+
 export const I18nDoc = ObjDefault({
   /** Per-wedding overrides of built-in interface strings: { ml: { "rsvp.title": "…" } } */
   overrides: z.record(z.string(), z.record(z.string(), z.string())).default({}),
@@ -580,6 +614,7 @@ export const InvitationDoc = z.object({
   seo: SeoDoc,
   i18n: I18nDoc,
   guestGreetings: GreetingsDoc,
+  personal: PersonalDoc,
   sections: z.array(SectionConfig).default([]),
 });
 export type InvitationDoc = z.infer<typeof InvitationDoc>;

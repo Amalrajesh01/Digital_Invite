@@ -7,7 +7,9 @@ import type { ThemeTokens } from "@/domain/design/tokens";
 import { collectAssetIds, ensureFaces, loadPublicGallery, loadPublicTracks, resolveMediaMap, type PublicTrack, type ResolvedMedia } from "@/domain/media/service";
 import { type GuestContext, resolveGuestContext } from "@/domain/guests/context";
 import { getGuestRsvp } from "@/domain/guests/rsvp";
-import { guestGreeting } from "@/domain/guests/service";
+import { coupleNames, guestGreeting } from "@/domain/guests/service";
+import { isCoupleEvent } from "@/domain/doc/event-types";
+import { firstNameOf, stripSalutation } from "@/domain/guests/personalize";
 import { capsuleStatus, listAnniversaryEntries, loadPublicMemoryBook, type PublicMemoryBook } from "@/domain/memory/service";
 import { listPublicMessages, listPublicMediaWishes } from "@/domain/participation/service";
 import { listLiveUpdates } from "@/domain/live/service";
@@ -29,6 +31,12 @@ export interface PublicGuest {
   token: string | null;
   greetings: Record<string, string>;
   preferredLocale: string | null;
+  /** The name in the invitation's second script, where the couple has written it. */
+  nameLocal: string;
+  /** Where they are coming from, and the table and room the couple has given them (all optional, all theirs alone). */
+  city: string;
+  tableLabel: string;
+  roomLabel: string;
   rsvp: Awaited<ReturnType<typeof getGuestRsvp>>;
   isPreview?: boolean;
 }
@@ -80,12 +88,15 @@ export type LoadResult =
   | { ok: true; view: InvitationView }
   | { ok: false; reason: "not_found" | "unpublished" | "invite_required" | "invalid_invite" };
 
-export const PREVIEW_GUEST = { name: "Priya Nair", seats: 3, groupKey: "friends", relationship: "College friend" };
+export const PREVIEW_GUEST = { name: "Priya Nair", seats: 3, groupKey: "friends", relationship: "College friend", nameLocal: "പ്രിയ നായർ", city: "Dubai", tableLabel: "Table 7 · with Anu & Rahul", roomLabel: "Room 204" };
 
-function greetingsFor(g: { name: string; customGreeting: Record<string, string>; relationship: string }, doc: InvitationDoc, locales: string[], advanced: boolean): Record<string, string> {
+function greetingsFor(g: { id?: string; name: string; nameLocal?: string; customGreeting: Record<string, string>; relationship: string; groupKey?: string | null; seats?: number }, doc: InvitationDoc, locales: string[], advanced: boolean, autoWrite: boolean): Record<string, string> {
   const out: Record<string, string> = {};
   for (const l of locales) {
-    out[l] = guestGreeting(g, doc.guestGreetings, l, { advanced, fallback: "" });
+    // A heartfelt message is written for the relationship only where the couple has not written their own (Luxury, couples only).
+    const auto = autoWrite && doc.personal.autoMessages && isCoupleEvent(doc) ? coupleNames(doc, l) : null;
+    const shown = l.toLowerCase() !== "en" && g.nameLocal?.trim() ? g.nameLocal.trim() : g.name;
+    out[l] = stripSalutation(guestGreeting(g, doc.guestGreetings, l, { advanced, fallback: "", auto }), [g.name, shown, firstNameOf(shown)]);
   }
   return out;
 }
@@ -95,14 +106,16 @@ async function assemble(opts: { snap: Snapshot; guest: GuestContext | null; mode
   const { wedding, meta } = snap;
   const ent = opts.entitlements ?? (await getEntitlements(wedding.id));
   const status = opts.asStatus ?? effectiveStatus(wedding);
-  const locales = [meta.defaultLocale]; // one language per invitation
+  // The invitation is in one language, but a guest the couple marked "Opens in Malayalam" is greeted in it.
+  const locales = [...new Set([meta.defaultLocale, guest?.preferredLocale ?? ""].filter(Boolean))];
   const advanced = canUse(ent, "advanced_greetings");
   const enforceVis = canUse(ent, "event_visibility");
+  const personalTouch = canUse(ent, "personal_touch");
 
   const previewGuest = opts.previewAsGuest && !guest ? PREVIEW_GUEST : null;
   const groupKey = guest?.groupKey ?? previewGuest?.groupKey ?? null;
-  const doc = filterDocForGuest(snap.doc, { groupKey, enforceEventVisibility: enforceVis });
-  const sections = visibleSections(doc.sections, { status, entitlements: ent, hasGuest: !!guest || !!previewGuest, groupKey });
+  const doc = filterDocForGuest(snap.doc, { groupKey, enforceEventVisibility: enforceVis, guest: personalTouch ? guest ?? previewGuest ?? null : null });
+  const sections = visibleSections(doc.sections, { status, entitlements: ent, hasGuest: !!guest || !!previewGuest, groupKey, personalEnabled: personalTouch && doc.personal.enabled });
   const types = new Set(sections.map((s) => s.type));
 
   const mediaIds = [...collectAssetIds(doc)];
@@ -121,15 +134,19 @@ async function assemble(opts: { snap: Snapshot; guest: GuestContext | null; mode
       groupKey: guest.groupKey,
       relationship: guest.relationship,
       token: guest.token,
-      greetings: greetingsFor(guest, doc, locales, advanced),
+      greetings: greetingsFor({ ...guest, id: guest.guestId }, doc, locales, advanced, personalTouch),
       preferredLocale: guest.preferredLocale,
+      nameLocal: guest.nameLocal,
+      city: guest.city,
+      tableLabel: personalTouch ? guest.tableLabel : "",
+      roomLabel: personalTouch ? guest.roomLabel : "",
       rsvp: await getGuestRsvp(guest),
     };
   } else if (previewGuest) {
     publicGuest = {
       ...previewGuest,
       token: null,
-      greetings: greetingsFor({ name: previewGuest.name, customGreeting: {}, relationship: previewGuest.relationship }, doc, locales, advanced),
+      greetings: greetingsFor({ ...previewGuest, customGreeting: {} }, doc, locales, advanced, personalTouch),
       preferredLocale: null,
       rsvp: null,
       isPreview: true,

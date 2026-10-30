@@ -6,6 +6,8 @@
  *   SEED_ONLY=public-demos npm run db:seed       → add every sample invitation shown on the public template gallery
  *   SEED_DEMO_CLIENTS=false                      → never create the demo client logins (use this in production)
  */
+// Without the Cloudinary keys the sample photographs would silently be stored on disk (src/domain/media/cloud.ts, wantsCloudinary).
+try { process.loadEnvFile(".env.local"); } catch { /* the variables may come from the real environment */ }
 import { eq, sql } from "drizzle-orm";
 import { closeDb, getDb, schema } from "../src/db/client";
 import { ensurePackages } from "../src/domain/packages/service";
@@ -432,9 +434,16 @@ async function seedPeople(admin: AdminActor, weddingId: string, slug: string, pk
     ["Arun Prasad", "friends", "Friend", 1, "9000000013"], ["Meera Krishnan", "bride-family", "Cousin", 3, "9000000014"], ["Vijayan Nair", "bride-family", "Uncle", 2, "9000000015"],
     ["Sneha Rajan", "office", "Colleague", 2, "9000000016"], ["Abdul Rahman", "friends", "Friend", 2, "9000000017"], ["Reshma Das", "relatives", "Cousin", 2, "9000000018"],
   ];
+  // personal touches (Luxury): where they are coming from, their table and room, their name in Malayalam
+  const personal: Record<string, { nameLocal?: string; city?: string; tableLabel?: string; roomLabel?: string }> = {
+    "Priya Nair": { nameLocal: "പ്രിയ നായർ", city: "Dubai", tableLabel: "Table 7 · with Anu & Rahul" },
+    "Latha Menon": { nameLocal: "ലത മേനോൻ", city: "Thrissur", tableLabel: "Table 1 · family", roomLabel: "Room 204" },
+    "Ramesh Kumar": { city: "Bengaluru", tableLabel: "Table 2 · family" },
+    "Divya Suresh": { city: "Dubai", tableLabel: "Table 7 · with Anu & Rahul" },
+  };
   const ctxs: Record<string, Awaited<ReturnType<typeof resolveGuestContext>>> = {};
   for (const [name, group, rel, seats, phone, loc] of people) {
-    const guest = await createGuest(admin, weddingId, { name, groupId: g(group), relationship: rel, seats, phone, preferredLocale: loc ?? null, email: name === "Priya Nair" ? "priya@example.com" : undefined });
+    const guest = await createGuest(admin, weddingId, { name, groupId: g(group), relationship: rel, seats, phone, preferredLocale: loc ?? null, email: name === "Priya Nair" ? "priya@example.com" : undefined, ...personal[name] });
     ctxs[name] = await resolveGuestContext(slug, await ensureInvite(weddingId, guest.id));
   }
   // some replies

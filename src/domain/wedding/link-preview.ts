@@ -26,6 +26,10 @@ export function linkPreview(doc: InvitationDoc, weddingTitle: string, weddingDat
   };
 }
 
+/** The heading of a pasted *personal* link: it greets the guest by name, so the preview already feels like it was written for them. */
+export const personalPreviewTitle = (first: string, weddingTitle: string, locale = "en"): string =>
+  locale.toLowerCase().startsWith("ml") ? `${first}, നിങ്ങളെ ${weddingTitle}-ലേക്ക് ക്ഷണിക്കുന്നു` : `${first}, you are invited to ${weddingTitle}`;
+
 /** The message only when the person wrote one (the guest page falls back to its own, translated, default). */
 export const customShareMessage = (doc: InvitationDoc, weddingTitle: string, locale = "en"): string | null => {
   const m = pick(doc.seo.shareMessage, locale);

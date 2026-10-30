@@ -4,13 +4,15 @@ import type { SectionConfig, LocalizedText } from "@/domain/doc/schema";
 import { useInvitation } from "../engine/context";
 import { Reveal, RevealWords } from "../engine/motion";
 import type { StringKey } from "../i18n/strings";
+import { personalize } from "@/domain/guests/personalize";
+import { useGuestVars } from "../engine/personal";
 
 export type Tone = "light" | "tint" | "night";
 
 const DEFAULT_TONE: Partial<Record<SectionConfig["type"], Tone>> = {
   story: "light", timeline: "tint", countdown: "night", events: "light", ceremonies: "tint", dresscode: "tint", games: "tint", quiz: "tint", scavenger: "tint",
   film: "night", rsvp: "tint", livesched: "night", photowall: "night", liveupdate: "tint", livestream: "night", qrpass: "tint", checkin: "light",
-  timecapsule: "night", anniversary: "night", thankyou: "tint", memory: "light", travel: "tint", wishes: "tint", guestupload: "light", gallery: "light",
+  foryou: "tint", groupmessage: "night", timecapsule: "night", anniversary: "night", thankyou: "tint", memory: "light", travel: "tint", wishes: "tint", guestupload: "light", gallery: "light",
   about: "light", tribute: "light", speakers: "tint", agenda: "light", sponsors: "tint", message: "tint", people: "light", prayer: "night", finale: "tint",
 };
 
@@ -26,9 +28,11 @@ export function toneFor(section: SectionConfig, flavor: string): Tone {
 /** Section copy: super admin overrides (content.eyebrow/title/intro) or the built-in translated default. */
 export function useCopy(section: SectionConfig, defaults: { eyebrow?: StringKey | string; title?: StringKey | string; intro?: StringKey | string } = {}) {
   const { t, L } = useInvitation();
+  const vars = useGuestVars();
   const c = section.content as Record<string, LocalizedText | undefined>;
   const pick = (k: "eyebrow" | "title" | "intro") => {
-    const own = L(c[k]);
+    // The couple's own words may say {first}, {name}, {relationship} or {seats}: "Priya, here is how our weekend unfolds".
+    const own = personalize(L(c[k]), vars);
     if (own) return own;
     const d = defaults[k];
     if (!d) return "";

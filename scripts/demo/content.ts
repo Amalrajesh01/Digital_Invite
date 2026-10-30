@@ -324,5 +324,10 @@ export function buildDemoDoc(base: InvitationDoc, m: DemoMedia, opts: { full: bo
     if (s.type === "travel" && opts.full) s.variant = "planner";
     if (s.type === "family") s.variant = opts.full ? "tree" : "editorial";
   }
+  // personal touches (Luxury): a travel tip for guests flying in, and a message for the friends; every other group gets the short note written for it
+  if (opts.full) {
+    doc.personal.travel = [{ id: "pt-dubai", match: "Dubai", text: { en: "Fly into Kochi (COK) on Friday evening — we will have a car waiting for you, and the Mehendi starts at 6.", ml: "വെള്ളിയാഴ്ച വൈകുന്നേരം കൊച്ചിയിൽ (COK) എത്തുക — നിങ്ങൾക്കായി ഒരു കാർ കാത്തുനിൽക്കും, ആറ് മണിക്ക് മെഹന്തി തുടങ്ങും." }, link: "" }];
+    doc.personal.groups = [{ id: "pg-friends", groupKey: "friends", title: { en: "A message for our friends" }, text: { en: "To our friends,\nfrom the umbrella to the altar, you have seen every chapter.\nCome and laugh with us one more time." }, clip: undefined, photos: [] }];
+  }
   return doc;
 }

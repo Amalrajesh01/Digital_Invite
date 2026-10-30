@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useMemo, useState, useTransition } from "react";
-import { Copy, Download, Mail, MessageCircle, Plus, Search, Send, Upload, UserPlus, Users } from "lucide-react";
+import { Copy, Download, Mail, MessageCircle, Plus, RefreshCw, Search, Send, Sparkles, Upload, UserPlus, Users } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/Button";
@@ -12,19 +12,23 @@ import { Menu } from "@/components/ui/Menu";
 import { useConfirm } from "@/components/ui/Confirm";
 import { LText, LocaleProvider } from "@/components/admin/forms";
 import type { LocalizedText } from "@/domain/doc/schema";
+import { composeMessage, relationKind } from "@/domain/guests/messages";
+import { firstNameOf } from "@/domain/guests/personalize";
+import { localeInfo } from "@/domain/doc/constants";
 import { CSV_TEMPLATE } from "@/domain/guests/csv";
 import {
-  archiveGuestsAction, bulkGroupAction, createGroupAction, createGuestAction, listGroupsAction, importCsvAction, listGuestsAction, markSentAction, regenerateInviteAction, remindersAction, sendEmailsAction, shareListAction,
+  archiveGuestsAction, bulkGroupAction, createGroupAction, createGuestAction, draftMessagesAction, listGroupsAction, importCsvAction, listGuestsAction, markSentAction, regenerateInviteAction, remindersAction, sendEmailsAction, shareListAction,
   updateGuestAction, type GuestRow,
 } from "@/app/actions/guests";
 
 interface Group { id: string; name: string; key: string; count: number }
 const INVITE: Record<string, [string, "neutral" | "info" | "warn" | "ok"]> = { NOT_SENT: ["Not sent", "neutral"], SENT: ["Sent", "info"], OPENED: ["Opened", "warn"], RESPONDED: ["Replied", "ok"] };
 
-interface FormState { id?: string; name: string; phone: string; email: string; groupId: string; seats: number; relationship: string; notes: string; customGreeting: LocalizedText; preferredLocale: string }
-const empty = (): FormState => ({ name: "", phone: "", email: "", groupId: "", seats: 1, relationship: "", notes: "", customGreeting: {}, preferredLocale: "" });
+interface FormState { id?: string; name: string; phone: string; email: string; groupId: string; seats: number; relationship: string; notes: string; customGreeting: LocalizedText; preferredLocale: string; nameLocal: string; city: string; tableLabel: string; roomLabel: string }
+const empty = (): FormState => ({ name: "", phone: "", email: "", groupId: "", seats: 1, relationship: "", notes: "", customGreeting: {}, preferredLocale: "", nameLocal: "", city: "", tableLabel: "", roomLabel: "" });
+const toForm = (g: GuestRow): FormState => ({ id: g.id, name: g.name, phone: g.phone ?? "", email: g.email ?? "", groupId: g.groupId ?? "", seats: g.seats, relationship: g.relationship, notes: g.notes, customGreeting: g.customGreeting, preferredLocale: g.preferredLocale ?? "", nameLocal: g.nameLocal, city: g.city, tableLabel: g.tableLabel, roomLabel: g.roomLabel });
 
-export function GuestManager({ weddingId, slug, initial, groups: initialGroups, secondary, canRemind, canShare, base }: { weddingId: string; slug: string; initial: GuestRow[]; groups: Group[]; secondary: string | null; canRemind: boolean; canShare: boolean; base: string }) {
+export function GuestManager({ weddingId, slug, initial, groups: initialGroups, secondary, canRemind, canShare, base, personal, defaultLocale, couple }: { weddingId: string; slug: string; initial: GuestRow[]; groups: Group[]; secondary: string | null; canRemind: boolean; canShare: boolean; base: string; personal: boolean; defaultLocale: string; couple: Record<string, { a: string; b: string }> }) {
   const ask = useConfirm();
   const [rows, setRows] = useState(initial);
   const [groups, setGroups] = useState(initialGroups);
@@ -42,6 +46,19 @@ export function GuestManager({ weddingId, slug, initial, groups: initialGroups, 
   const [groupSheet, setGroupSheet] = useState(false);
   const [newGroup, setNewGroup] = useState("");
   const [pending, start] = useTransition();
+  const [variant, setVariant] = useState(0);
+  const scriptLabel = localeInfo(secondary ?? (defaultLocale !== "en" ? defaultLocale : null))?.label ?? "";
+
+  /** Writes a heartfelt message for the form's guest, from their relationship; the couple can edit every word. */
+  const writeFor = (f: FormState, next: number): FormState => {
+    const kind = relationKind(f.relationship, groups.find((g) => g.id === f.groupId)?.key);
+    const out = { ...f.customGreeting };
+    for (const locale of new Set(["en", ...(secondary === "ml" || defaultLocale === "ml" ? ["ml"] : [])])) {
+      const n = couple[locale] ?? couple.en;
+      out[locale] = composeMessage({ kind, locale, a: n.a, b: n.b, first: firstNameOf(locale !== "en" && f.nameLocal.trim() ? f.nameLocal : f.name), seed: f.id ?? (f.name || "guest"), variant: next });
+    }
+    return { ...f, customGreeting: out };
+  };
 
   const refresh = useCallback(async () => {
     const r = await listGuestsAction(weddingId);
@@ -73,7 +90,7 @@ export function GuestManager({ weddingId, slug, initial, groups: initialGroups, 
     start(async () => {
       if (!form) return;
       setErrors({});
-      const payload = { name: form.name, phone: form.phone || null, email: form.email || null, groupId: form.groupId || null, seats: form.seats, relationship: form.relationship, notes: form.notes, customGreeting: form.customGreeting, preferredLocale: form.preferredLocale || null };
+      const payload = { name: form.name, phone: form.phone || null, email: form.email || null, groupId: form.groupId || null, seats: form.seats, relationship: form.relationship, notes: form.notes, customGreeting: form.customGreeting, preferredLocale: form.preferredLocale || null, nameLocal: form.nameLocal, city: form.city, tableLabel: form.tableLabel, roomLabel: form.roomLabel };
       const r = form.id ? await updateGuestAction(weddingId, form.id, payload) : await createGuestAction(weddingId, payload);
       if (r.ok) {
         toast.success(form.id ? "Guest updated" : "Guest added — their personal link is ready");
@@ -101,6 +118,7 @@ export function GuestManager({ weddingId, slug, initial, groups: initialGroups, 
           {canShare && <Button variant="quiet" icon={<Send className="size-4" />} onClick={() => openShare()}>Share all invitations</Button>}
           <a className="btn btn-quiet" href={`/api/export/rsvp?weddingId=${weddingId}`}><Download className="size-4" />Export RSVPs</a>
           <Button variant="ghost" icon={<Users className="size-4" />} onClick={() => setGroupSheet(true)}>Groups</Button>
+          {personal && rows.length > 0 && <Button variant="quiet" icon={<Sparkles className="size-4" />} loading={pending} onClick={() => start(async () => { const r = await draftMessagesAction(weddingId, false); if (r.ok) { toast.success(r.data.written ? `Wrote ${r.data.written} heartfelt message${r.data.written === 1 ? "" : "s"}${r.data.kept ? ` — kept the ${r.data.kept} you had already written` : ""}. Open a guest to read or change theirs.` : "Every guest already has a message."); await refresh(); } else toast.error(r.error.message); })}>Write messages for everyone</Button>}
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
@@ -136,14 +154,14 @@ export function GuestManager({ weddingId, slug, initial, groups: initialGroups, 
                 {list.map((g) => (
                   <tr key={g.id} className={cn(sel.has(g.id) && "bg-accent-soft/40")}>
                     <td><input type="checkbox" aria-label={`Select ${g.name}`} className="size-4 accent-[var(--accent)]" checked={sel.has(g.id)} onChange={(e) => setSel((s) => { const n = new Set(s); if (e.target.checked) n.add(g.id); else n.delete(g.id); return n; })} /></td>
-                    <td><button type="button" className="text-left font-medium hover:underline" onClick={() => { setErrors({}); setForm({ id: g.id, name: g.name, phone: g.phone ?? "", email: g.email ?? "", groupId: g.groupId ?? "", seats: g.seats, relationship: g.relationship, notes: g.notes, customGreeting: g.customGreeting, preferredLocale: g.preferredLocale ?? "" }); }}>{g.name}</button><span className="block text-[12.5px] text-muted">{[g.relationship, g.phone ? `+${g.phone}` : "", g.email].filter(Boolean).join(" · ")}</span></td>
+                    <td><button type="button" className="text-left font-medium hover:underline" onClick={() => { setErrors({}); setVariant(0); setForm(toForm(g)); }}>{g.name}</button><span className="block text-[12.5px] text-muted">{[g.relationship, g.phone ? `+${g.phone}` : "", g.email].filter(Boolean).join(" · ")}</span></td>
                     <td className="text-[13.5px]">{g.groupName ?? <span className="text-muted">—</span>}</td>
                     <td className="text-center tnum">{g.seats}</td>
                     <td><RsvpChip status={g.rsvp?.status ?? "PENDING"} />{g.rsvp?.status === "YES" && <span className="ml-1.5 text-[12.5px] text-muted tnum">{g.rsvp.attendingCount}/{g.seats}</span>}{(g.accommodation || g.transport) && <span className="mt-1 flex gap-1">{g.accommodation && <Chip tone="info">Stay</Chip>}{g.transport && <Chip tone="info">Ride</Chip>}</span>}</td>
                     <td><Chip tone={INVITE[g.invitationStatus][1]}>{INVITE[g.invitationStatus][0]}</Chip>{g.checkedIn && <Chip tone="ok" className="ml-1">Arrived</Chip>}</td>
                     <td>
                       <Menu label={`Actions for ${g.name}`} items={[
-                        { label: "Edit", onSelect: () => setForm({ id: g.id, name: g.name, phone: g.phone ?? "", email: g.email ?? "", groupId: g.groupId ?? "", seats: g.seats, relationship: g.relationship, notes: g.notes, customGreeting: g.customGreeting, preferredLocale: g.preferredLocale ?? "" }) },
+                        { label: "Edit", onSelect: () => { setVariant(0); setForm(toForm(g)); } },
                         ...(canShare ? [
                           { label: "Copy personal link", onSelect: () => { void navigator.clipboard.writeText(link(g)); toast.success("Link copied"); } },
                           ...(g.phone ? [{ label: "Send on WhatsApp", onSelect: () => openShare([g.id]) }] : []),
@@ -171,8 +189,28 @@ export function GuestManager({ weddingId, slug, initial, groups: initialGroups, 
               <SelectField label="Group" value={form.groupId} onChange={(e) => setForm({ ...form, groupId: e.target.value })}><option value="">No group</option>{groups.map((g) => (<option key={g.id} value={g.id}>{g.name}</option>))}</SelectField>
               <TextField label="Seats reserved" type="number" min={1} max={30} value={form.seats} onChange={(e) => setForm({ ...form, seats: Number(e.target.value) || 1 })} hint="Guest + family they may bring." />
             </div>
-            <TextField label="Relationship" value={form.relationship} onChange={(e) => setForm({ ...form, relationship: e.target.value })} placeholder="Aunt, College friend, Colleague…" hint="Can select a different heartfelt greeting (Luxury)." />
-            <LText label="Personal greeting (optional)" multiline value={form.customGreeting} onChange={(v) => setForm({ ...form, customGreeting: v })} hint="Overrides the default greeting for this guest. Use {name} for their name." />
+            <TextField label="Relationship" value={form.relationship} onChange={(e) => setForm({ ...form, relationship: e.target.value })} placeholder="Aunt, College friend, Colleague…" hint="Picks the kind of heartfelt message they receive (Luxury)." />
+            <div className="space-y-2">
+              <LText label="Message for this guest" multiline rows={5} value={form.customGreeting} onChange={(v) => setForm({ ...form, customGreeting: v })} hint="Shown to them in the envelope, under “Dear …”. Use {first} for their first name." />
+              {personal && (
+                <div className="flex flex-wrap items-center gap-2">
+                  <Button size="sm" variant="quiet" icon={<Sparkles className="size-4" />} onClick={() => { setVariant(0); setForm(writeFor(form, 0)); }}>Write one for me</Button>
+                  <Button size="sm" variant="ghost" icon={<RefreshCw className="size-4" />} onClick={() => { setVariant(variant + 1); setForm(writeFor(form, variant + 1)); }}>Write another</Button>
+                  <span className="text-[12.5px] text-muted">Written for their relationship — change any word you like.</span>
+                </div>
+              )}
+            </div>
+            {personal && (
+              <div className="space-y-4 rounded-md border border-rule p-4">
+                <p className="eyebrow">Personal touches (Luxury)</p>
+                {scriptLabel && <TextField label={`Name in ${scriptLabel}`} lang={secondary ?? defaultLocale} value={form.nameLocal} onChange={(e) => setForm({ ...form, nameLocal: e.target.value })} hint={`So the ${scriptLabel} invitation says “Dear …” in their own script.`} />}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <TextField label="Coming from" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} placeholder="Dubai, Bengaluru…" hint="Shows your travel tip for that place (see Personal touches)." />
+                  <TextField label="Room" value={form.roomLabel} onChange={(e) => setForm({ ...form, roomLabel: e.target.value })} placeholder="Room 204" />
+                </div>
+                <TextField label="Table" value={form.tableLabel} onChange={(e) => setForm({ ...form, tableLabel: e.target.value })} placeholder="Table 7 · with the Menon family" hint="Written exactly as you want them to read it." />
+              </div>
+            )}
             {secondary && <SelectField label="Opens in" value={form.preferredLocale} onChange={(e) => setForm({ ...form, preferredLocale: e.target.value })}><option value="">Default language</option><option value="en">English</option><option value={secondary}>{secondary.toUpperCase()}</option></SelectField>}
             <TextArea label="Private notes" rows={2} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} hint="Only you see these (e.g. allergies, seating wishes)." />
           </div>
@@ -182,7 +220,7 @@ export function GuestManager({ weddingId, slug, initial, groups: initialGroups, 
       <Sheet open={importing} onClose={() => setImporting(false)} title="Import guests" description="Use a spreadsheet saved as CSV. Duplicate phone numbers are skipped safely." wide
         footer={<><Button variant="quiet" onClick={() => setImporting(false)}>Close</Button><Button loading={pending} disabled={!csv.trim()} onClick={() => start(async () => { const r = await importCsvAction(weddingId, csv); if (r.ok) { setImportResult(r.data); await refresh(); toast.success(`${r.data.created} guest${r.data.created === 1 ? "" : "s"} added`); } else toast.error(r.error.message); })}>Import</Button></>}>
         <div className="space-y-4">
-          <p className="text-[14px] text-muted">Columns: <code>name, phone, email, group, seats, relationship, meal, accommodation, transport</code>. Only <em>name</em> is required.</p>
+          <p className="text-[14px] text-muted">Columns: <code>name, phone, email, group, seats, relationship, meal, accommodation, transport, name_local, city, table, room</code>. Only <em>name</em> is required.</p>
           <div className="flex flex-wrap gap-3"><a className="btn btn-quiet btn-sm" href={`data:text/csv;charset=utf-8,${encodeURIComponent(CSV_TEMPLATE)}`} download="guest-list-template.csv"><Download className="size-4" />Download the template</a><label className="btn btn-quiet btn-sm cursor-pointer"><Upload className="size-4" />Choose a CSV file<input type="file" accept=".csv,text/csv" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (f) setCsv(await f.text()); e.target.value = ""; }} /></label></div>
           <TextArea label="Or paste rows here" rows={8} value={csv} onChange={(e) => setCsv(e.target.value)} placeholder={CSV_TEMPLATE} />
           {importResult && (
